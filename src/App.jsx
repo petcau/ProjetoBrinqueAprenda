@@ -1,12 +1,16 @@
-import Header from "./componentes/Header";
-import GameContainer from "./componentes/GameContainer";
+import { Route, BrowserRouter, Routes } from "react-router-dom";
+import Home from "./pages/Home.jsx";
+import Games from "./pages/Games.jsx";
+
 
 function App() {
   return (
-    <>
-      <Header></Header>
-      <GameContainer></GameContainer>
-    </>
+    <BrowserRouter>
+    <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/jogos" element={<Games />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
