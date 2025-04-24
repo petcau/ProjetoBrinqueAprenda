@@ -4,10 +4,10 @@ function GameContainer() {
   return (
       <main className="container">
         <div className="cards">
-          <GameCard image="" altText="Anagrama" />
-          <GameCard image="" altText="Abaco Mania" />
-          <GameCard image="" altText="Digitacao" />
-          <GameCard image="" altText="Jornada Bicho" />
+          <GameCard route={'/anagrama'} image="" altText="Anagrama" />
+          <GameCard route={'/abacomania'} image="" altText="Abaco Mania" />
+          <GameCard route={'/digitacao'} image="" altText="Digitacao" />
+          <GameCard route={'/jornadabicho'} image="" altText="Jornada Bicho" />
         </div>
       </main>
   );
