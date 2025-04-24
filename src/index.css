@@ -82,6 +82,7 @@ img {
   border-radius: 8px;
   box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
   display: flex;
+  cursor: pointer;
   justify-content: center;
   align-items: center;
 }

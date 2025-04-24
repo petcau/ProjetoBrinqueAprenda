@@ -6,7 +6,7 @@ import Games from "./pages/Games.jsx";
 function App() {
   return (
     <BrowserRouter>
-    <Routes>
+      <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/jogos" element={<Games />} />
       </Routes>
