@@ -1,0 +1,24 @@
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.fredericka-the-great-regular {
+  font-family: "Fredericka the Great", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+body{
+  font-family: 'Fredericka the Great', serif;
+}
+.butão{
+  background-color: '#228B22';
+   position : 'absolute'; 
+   top: '20%'; 
+   left:'50%'; 
+   transform: 'translate(-50%, -50%)'; 
+   font-size: 20;
+   border-radius: 5px;
+}
