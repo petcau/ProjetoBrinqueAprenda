@@ -1,0 +1,96 @@
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.game-container {
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+
+  background-image: url('game_assets/desk.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  position: relative;
+  box-sizing: border-box;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #67bf66;
+}
+
+.fase {
+  position: absolute;
+  top: 40px;
+  right: 100px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #9b3535;
+}
+
+.letras button {
+  margin: 0.3rem;
+  font-size: 1.5rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #090101;
+  color: white;
+  border: 2px solid #333;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.letras button:hover {
+  background-color: #e0e0e0;
+  color: #000;
+}
+
+.tentativa {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #222;
+}
+
+.botoes button {
+  margin: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.botoes button:hover {
+  background-color: #357bd8;
+}
+
+.palavras-validas {
+  width: 100%;
+  max-height: 120px; /* altura máxima controlada */
+  overflow-y: auto;
+  text-align: center;
+  word-wrap: break-word;
+  padding: 0.5rem 1rem;
+  box-sizing: border-box;
+}
+
+.palavras-validas div {
+  font-size: 1.2rem;
+  font-family: monospace;
+  color: #222;
+}
