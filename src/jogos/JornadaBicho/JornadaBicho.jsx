@@ -1,5 +1,5 @@
 import LogicaArrastar from "./componenetes/LogicaArastar";
-//import './game.css'; // Não Implementado ainda
+import './game.css'; // Não Implementado ainda
 
 /*
  * Componente que representa o jogo JornadaBicho.

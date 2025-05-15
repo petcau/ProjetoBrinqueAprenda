@@ -7,7 +7,7 @@ function GameContainer() {
           <GameCard route={'/anagrama'} image="" altText="Anagrama" />
           <GameCard route={'/abacomania'} image="" altText="Abaco Mania" />
           <GameCard route={'/digitacao'} image="" altText="Digitacao" />
-          <GameCard route={'/jornadabicho'} image="" altText="Jornada Bicho" />
+          <GameCard route={'/jornadabicho'} image="../assets/card-jornada-bicho.png" altText="Jornada Bicho" />
         </div>
       </main>
   );
