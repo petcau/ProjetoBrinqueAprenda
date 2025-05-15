@@ -1,0 +1,39 @@
+.container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .objects {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .drag-item {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #888;
+    cursor: grab;
+  }
+  
+  .zones {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .drop-zone {
+    width: 150px;
+    height: 150px;
+    border: 2px dashed #aaa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: capitalize;
+    background-color: #fff;
+  }
+  
+  .result {
+    margin-top: 20px;
+  }
+  
