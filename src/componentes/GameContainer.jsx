@@ -1,4 +1,6 @@
 import GameCard from './GameCard'
+import logo from '../assets/card-jornada-bicho.png';
+
 
 function GameContainer() {
   return (
@@ -7,7 +9,7 @@ function GameContainer() {
           <GameCard route={'/anagrama'} image="" altText="Anagrama" />
           <GameCard route={'/abacomania'} image="" altText="Abaco Mania" />
           <GameCard route={'/digitacao'} image="" altText="Digitacao" />
-          <GameCard route={'/jornadabicho'} image="../assets/card-jornada-bicho.png" altText="Jornada Bicho" />
+          <GameCard route={'/jornadabicho'} image={logo} altText="Jornada Bicho" />
         </div>
       </main>
   );

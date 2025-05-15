@@ -9,7 +9,7 @@ const GameCard = ({ image, altText, route }) => {
     };
     return (
         <button onClick={handleClick} className="card">
-            <img src="C:\Users\uneb\Desktop\Nova pasta\ProjetoBrinqueAprenda\src\assets\card-jornada-bicho.png" alt={altText}  className="card-image" />
+            <img src={image} alt={altText}  className="card-image" />
         </button>
     );
 };
