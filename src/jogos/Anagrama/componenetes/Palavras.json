@@ -1,0 +1,44 @@
+{
+  "anagramas": [
+    {
+      "palavrasValidas": ["SAPO", "POSA", "ASPO"],
+      "palavraEmbaralhada": "OSAP"
+    },
+    {
+      "palavrasValidas": ["CASA", "SACA"],
+      "palavraEmbaralhada": "ASAC"
+    },
+    {
+      "palavrasValidas": ["RATO", "TORA", "ROTA", "ARTO"],
+      "palavraEmbaralhada": "RATO"
+    },
+    {
+      "palavrasValidas": ["PATO", "TOPA", "APTO"],
+      "palavraEmbaralhada": "PTAO"
+    },
+    {
+      "palavrasValidas": ["BOLO", "LOBO"],
+      "palavraEmbaralhada": "BOLO"
+    },
+    {
+      "palavrasValidas": ["FADA", "DAFA"],
+      "palavraEmbaralhada": "DAAF"
+    },
+    {
+      "palavrasValidas": ["DADO", "ADDO"],
+      "palavraEmbaralhada": "ODAD"
+    },
+    {
+      "palavrasValidas": ["LATA", "TALA"],
+      "palavraEmbaralhada": "ATAL"
+    },
+    {
+      "palavrasValidas": ["MALA", "LAMA"],
+      "palavraEmbaralhada": "ALMA"
+    },
+    {
+      "palavrasValidas": ["NATO", "TONA", "ANTO"],
+      "palavraEmbaralhada": "OANT"
+    }
+  ]
+}

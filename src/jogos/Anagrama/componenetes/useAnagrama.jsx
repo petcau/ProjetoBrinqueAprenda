@@ -1,7 +1,12 @@
 import { useState } from "react";
+import PalavrasData from './Palavras.json'
 
-const palavraBase = "LEGARIA";
-const palavrasValidas = ["ALEGRIA", "ALERGIA", "GALERIA", "REGALIA"];
+//const palavraBase = "LEGARIA";
+//const palavrasValidas = ["ALEGRIA", "ALERGIA", "GALERIA", "REGALIA"];
+
+const rodada = PalavrasData.anagramas[0]; 
+const palavraBase = rodada.palavraEmbaralhada;
+const palavrasValidas = rodada.palavrasValidas;
 
 export function useAnagrama() {
   const letras = palavraBase.split("");
@@ -24,5 +29,9 @@ export function useAnagrama() {
     resetarTentativa();
   };
 
-  return { letras, tentativa, descobertas, adicionarLetra, enviarPalavra };
+  const limparDescobertas = () => {
+  setDescobertas([]);
+};
+
+  return { letras, tentativa, descobertas, adicionarLetra, enviarPalavra, limparDescobertas, palavrasValidas};
 }
