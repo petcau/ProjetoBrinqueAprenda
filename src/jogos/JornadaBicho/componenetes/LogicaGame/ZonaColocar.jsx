@@ -1,5 +1,5 @@
 import React from "react";
-//import './DropZone.css'; // Não Implementado ainda
+//import './ZonaColocar.css'; // Não Implementado ainda
 
 /**
  * Componente que representa uma zona onde um item pode ser colocado.

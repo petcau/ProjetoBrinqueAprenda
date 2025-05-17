@@ -1,0 +1,140 @@
+{
+  "levels": [
+    {
+      "id": 1,
+      "description": "Classifique os veículos corretamente.",
+      "zones": ["veiculos"],
+      "items": [
+        { "name": "Carro", "correctZone": "veiculos", "image": "/public/images/carro.jpg" },
+        { "name": "Moto", "correctZone": "veiculos" },
+        { "name": "Caminhão", "correctZone": "veiculos" },
+        { "name": "Leão", "correctZone": "animais" },     
+        { "name": "Cachorro", "correctZone": "animais" },
+        { "name": "Gato", "correctZone": "animais" },
+        { "name": "Helicoptero", "correctZone": "veiculos" },
+        { "name": "Cachorro", "correctZone": "animais" },
+        { "name": "Gato", "correctZone": "animais" }
+      ]
+    },
+    {
+      "id": 2,
+      "description": "Classifique os animais corretamente.",
+      "zones": ["animais"],
+      "items": [
+        { "name": "Leão", "correctZone": "animais" },
+        { "name": "Cachorro", "correctZone": "animais" },
+        { "name": "Gato", "correctZone": "animais" },
+        { "name": "Carro", "correctZone": "veiculos" },
+        { "name": "Moto", "correctZone": "veiculos" },
+        { "name": "Caminhão", "correctZone": "veiculos" }
+
+      ]
+    },
+    {
+      "id": 3,
+      "description": "Classifique os veículos e animais corretamente.",
+      "zones": ["veiculos", "animais"],
+      "items": [
+        { "name": "Carro", "correctZone": "veiculos" },
+        { "name": "Moto", "correctZone": "veiculos" },
+        { "name": "Caminhão", "correctZone": "veiculos" },
+        { "name": "Leão", "correctZone": "animais" },
+        { "name": "Cachorro", "correctZone": "animais" },
+        { "name": "Gato", "correctZone": "animais" }
+      ]
+    },
+    {
+      "id": 4,
+      "description": "Classifique os veículos e animais corretamente.",
+      "zones": ["veiculos", "animais"],
+      "items": [
+        { "name": "Carro", "correctZone": "veiculos" },
+        { "name": "Moto", "correctZone": "veiculos" },
+        { "name": "Caminhão", "correctZone": "veiculos" },
+        { "name": "Leão", "correctZone": "animais" },
+        { "name": "Cachorro", "correctZone": "animais" },
+        { "name": "Gato", "correctZone": "animais" }
+      ]
+    },
+    {
+      "id": 5,
+      "description": "Classifique os veículos e animais corretamente.",
+      "zones": ["veiculos", "animais"],
+      "items": [
+        { "name": "Carro", "correctZone": "veiculos" },
+        { "name": "Moto", "correctZone": "veiculos" },
+        { "name": "Caminhão", "correctZone": "veiculos" },
+        { "name": "Leão", "correctZone": "animais" },
+        { "name": "Cachorro", "correctZone": "animais" },
+        { "name": "Gato", "correctZone": "animais" }
+      ]
+    },
+    {
+      "id": 6,
+      "description": "Classifique os veículos e animais corretamente.",
+      "zones": ["veiculos", "animais"],
+      "items": [
+        { "name": "Carro", "correctZone": "veiculos" },
+        { "name": "Moto", "correctZone": "veiculos" },
+        { "name": "Caminhão", "correctZone": "veiculos" },
+        { "name": "Leão", "correctZone": "animais" },
+        { "name": "Cachorro", "correctZone": "animais" },
+        { "name": "Gato", "correctZone": "animais" }
+      ]
+    },
+    {
+      "id": 7,
+      "description": "Classifique os veículos e animais corretamente.",
+      "zones": ["veiculos", "animais"],
+      "items": [
+        { "name": "Carro", "correctZone": "veiculos" },
+        { "name": "Moto", "correctZone": "veiculos" },
+        { "name": "Caminhão", "correctZone": "veiculos" },
+        { "name": "Leão", "correctZone": "animais" },
+        { "name": "Cachorro", "correctZone": "animais" },
+        { "name": "Gato", "correctZone": "animais" }
+      ]
+    },
+    {
+      "id": 8,
+      "description": "Classifique os veículos e animais corretamente.",
+      "zones": ["veiculos", "animais"],
+      "items": [
+        { "name": "Carro", "correctZone": "veiculos" },
+        { "name": "Moto", "correctZone": "veiculos" },
+        { "name": "Caminhão", "correctZone": "veiculos" },
+        { "name": "Leão", "correctZone": "animais" },
+        { "name": "Cachorro", "correctZone": "animais" },
+        { "name": "Gato", "correctZone": "animais" }
+      ]
+    },
+    {
+      "id": 9,
+      "description": "Classifique os veículos e animais corretamente.",
+      "zones": ["veiculos", "animais"],
+      "items": [
+        { "name": "Carro", "correctZone": "veiculos" },
+        { "name": "Moto", "correctZone": "veiculos" },
+        { "name": "Caminhão", "correctZone": "veiculos" },
+        { "name": "Leão", "correctZone": "animais" },
+        { "name": "Cachorro", "correctZone": "animais" },
+        { "name": "Gato", "correctZone": "animais" }
+      ]
+    },
+    {
+      "id": 10,
+      "description": "Classifique os veículos e animais corretamente.",
+      "zones": ["veiculos", "animais"],
+      "items": [
+        { "name": "Carro", "correctZone": "veiculos" },
+        { "name": "Moto", "correctZone": "veiculos" },
+        { "name": "Caminhão", "correctZone": "veiculos" },
+        { "name": "Leão", "correctZone": "animais" },
+        { "name": "Cachorro", "correctZone": "animais" },
+        { "name": "Gato", "correctZone": "animais" }
+      ]
+    }
+
+  ]
+  
+}

@@ -1,4 +1,4 @@
-import LogicaArrastar from "./componenetes/LogicaArastar";
+import GameLogic from "./componenetes/LogicaGame/LogicaGame";
 import './game.css'; // Não Implementado ainda
 
 /*
@@ -10,11 +10,9 @@ import './game.css'; // Não Implementado ainda
  */
 function JornadaBicho() {
   return (
-    <>
       <main className="container">
-        <div className="game-container">{<LogicaArrastar />}</div>
+        <div className="game-container">{<GameLogic />}</div>
       </main>
-    </>
   );
 }
 

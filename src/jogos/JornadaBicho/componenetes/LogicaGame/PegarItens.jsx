@@ -17,7 +17,14 @@ function PegarItem({ item }) {
       draggable
       onDragStart={(e) => e.dataTransfer.setData("text/plain", item.id)}
     >
-      {item.name}
+      {item.image && (
+        <img
+          src={item.image}
+          //alt={item.name}
+          style={{ width: "80px", height: "80px", objectFit: "contain" }}
+        />
+      )}
+      <div>{item.name}</div>
     </div>
   );
 }

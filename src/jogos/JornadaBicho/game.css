@@ -37,4 +37,9 @@
   .result {
     margin-top: 20px;
   }
+
+  .result p {
+    font-size: 18px;
+    font-weight: bold;
+  }
   
