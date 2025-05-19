@@ -1,0 +1,10 @@
+.start-button {
+  background-color: #f4c95d;
+  padding: 10px 30px;
+  font-size: 20px;
+  border-radius: 15px;
+  border: none;
+  font-family: 'Blackboard', cursive;
+  box-shadow: 3px 3px 0 #000;
+  cursor: pointer;
+}

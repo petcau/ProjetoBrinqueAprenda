@@ -114,11 +114,11 @@ img {
   align-items: center;
   gap: 1.5 rem;
   
-  background-color: rgb(28, 147, 28);
+  background-color: #0b3d0b; /* Verde escuro tipo lousa */
   width: 70%;
   height: 500px;
-  border: 15px solid rgb(0, 0, 0);
-  border-radius: 10px;
+  border: 20px solid #4e342e; /* Borda marrom de madeira */
+  border-radius: 16px;
 
   padding: 2rem;
   border-radius: 15px;

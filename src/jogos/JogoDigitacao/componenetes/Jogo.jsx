@@ -48,12 +48,12 @@ export default function Jogo(){
     <>
     <div>
     { fim ?
-    <><label className="blackboard">
+    <><label className="textoMD">
     GAME OVER
     </label>
     <img src={imageUrl}></img></>
      : <label>
-        <h1>{palavra}</h1>
+        <h1 className="textoMD">{palavra}</h1>
     <h2 className="textoMD">{count}</h2>
         Digite o a palavra escrita acima; <input type="text" value={input} onChange={mudança} placeholder="Digite a palavra"/>
         <button className = 'butão' onClick={comparar}>Comparar</button>
