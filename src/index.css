@@ -104,3 +104,40 @@ img {
   border: 3px solid #fadc6dff;
   border-radius: 10px;
 }
+.game-container-D {
+  max-width: 8000px;
+  max-height: 5000px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5 rem;
+  
+  background-color: rgb(28, 147, 28);
+  width: 70%;
+  height: 500px;
+  border: 15px solid rgb(0, 0, 0);
+  border-radius: 10px;
+
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  position: center;
+  box-sizing: border-box;
+}
+/* Css do Jogo da digitação */
+.textoMD{
+  font-family: 'Fredericka the great';
+  font-size: 20px;
+}
+.butão{
+  background-color: #242424;
+   font-size: 15px;
+   font-family: 'Fredericka the great';
+}
+.fredericka-the-great-regular {
+  font-family: "Fredericka the Great", serif;
+  font-weight: 800;
+  font-style: normal;
+}

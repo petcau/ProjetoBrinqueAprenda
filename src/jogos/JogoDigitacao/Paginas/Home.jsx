@@ -10,9 +10,9 @@ return(
    <>
       <div>
          {estado ? 
-         <><p>Bem vindo ao jogo da digitação!</p><button onClick={irParaJogo}>Jogar</button></>
+         <><p className="textoMD">Bem vindo ao jogo da digitação!</p><button onClick={irParaJogo}>Jogar</button></>
          :  
-         <><button onClick={irParaJogo}>Voltar para a tela inicial</button><Jogo /></>}
+         <><button className="butão" onClick={irParaJogo}>Voltar para a tela inicial</button><Jogo /></>}
       </div>
    </>
 )
