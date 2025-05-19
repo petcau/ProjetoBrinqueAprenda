@@ -4,7 +4,7 @@ function App(){
   return(
      <main className="container">
       <div className="game-container-D">
-        <h1 className="textoMD">DIGITAÇÃO</h1>
+        <h1 className="textoMD">DIGIRACE</h1>
         <Home />
 
       </div>

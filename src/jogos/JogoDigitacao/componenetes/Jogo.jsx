@@ -55,7 +55,7 @@ export default function Jogo(){
      : <label>
         <h1 className="textoMD">{palavra}</h1>
     <h2 className="textoMD">{count}</h2>
-        Digite o a palavra escrita acima; <input type="text" value={input} onChange={mudança} placeholder="Digite a palavra"/>
+        <p className="textoMD">Digite o a palavra escrita acima;</p><input type="text" value={input} onChange={mudança} placeholder="Digite a palavra"/>
         <button className = 'butão' onClick={comparar}>Comparar</button>
     </label> }
     </div>
