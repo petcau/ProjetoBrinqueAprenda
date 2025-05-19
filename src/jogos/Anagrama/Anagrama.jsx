@@ -1,4 +1,4 @@
-import Letras from "./componenetes/letras";
+import Letras from "./componenetes/Letras";
 import PalavraTentativa from "./componenetes/PalavraTentativa";
 import PalavrasDescobertas from "./componenetes/PalavrasDescobertas";
 import { useAnagrama } from "./componenetes/useAnagrama";
