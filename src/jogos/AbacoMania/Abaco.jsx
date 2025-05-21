@@ -1,16 +1,139 @@
-
+import React, { useState } from 'react';
+import './game.css';
 
 function Abaco() {
+    const [valor, setValor] = useState(0);
+    const [contas, setContas] = useState([0, 0, 0, 0, 0]);
+    const [alvo, setAlvo] = useState(gerarNumeroAleatorio());
+    const [mensagem, setMensagem] = useState('');
+    const [mostrarAlvo, setMostrarAlvo] = useState(true);
+
+    const linhasValores = [1, 5, 10, 50, 100];
+
+    function gerarNumeroAleatorio() {
+        return Math.floor(Math.random() * 500) + 1;
+    }
+
+    const verificarAcerto = () => {
+        if (valor === alvo) {
+            setMensagem('Parabéns! Você acertou! ');
+        } else if (valor < alvo) {
+            setMensagem(`Faltam ${alvo - valor}. Tente novamente!`);
+        } else {
+            setMensagem(`Passou ${valor - alvo}. Tente novamente!`);
+        }
+    };
+
+    const gerarNovoAlvo = () => {
+        setAlvo(gerarNumeroAleatorio());
+        setMensagem('');
+        resetarAbaco();
+    };
+
+    const moverConta = (linhaIndex, direcao) => {
+        const novasContas = [...contas];
+        if (direcao === 'cima' && novasContas[linhaIndex] < 4) {
+            novasContas[linhaIndex] += 1;
+        } else if (direcao === 'baixo' && novasContas[linhaIndex] > 0) {
+            novasContas[linhaIndex] -= 1;
+        }
+        
+        setContas(novasContas);
+        calcularTotal(novasContas);
+        setMensagem('');
+    };
+
+    const calcularTotal = (contasAtuais) => {
+        const total = contasAtuais.reduce((acc, qtd, index) => {
+            return acc + (qtd * linhasValores[index]);
+        }, 0);
+        setValor(total);
+    };
+
+    const resetarAbaco = () => {
+        setContas([0, 0, 0, 0, 0]);
+        setValor(0);
+        setMensagem('');
+    };
+
     return (
-      <>
         <main className="container">
-          <div className="game-container">
-            {/* COLOQUE O JOGO AGUI */}
-            
-          </div>
+            <div className="game-container">
+                <h1 className="titulo">Abaco Mania</h1>
+                
+                <div className="painel-controle">
+                    <div className="valores">
+                        <div className="valor-atual">Seu valor: <strong>{valor}</strong></div>
+                        {mostrarAlvo && (
+                            <div className="valor-alvo">Valor alvo: <strong>{alvo}</strong></div>
+                        )}
+                    </div>
+                    
+                    <div className="botoes">
+                        <button onClick={() => setMostrarAlvo(!mostrarAlvo)}>
+                            {mostrarAlvo ? ' Esconder' : ' Mostrar'}
+                        </button>
+                        <button onClick={verificarAcerto} className="verificar">
+                             Verificar
+                        </button>
+                        <button onClick={gerarNovoAlvo} className="novo-alvo">
+                             Novo Alvo
+                        </button>
+                        <button onClick={resetarAbaco} className="resetar">
+                             Resetar
+                        </button>
+                    </div>
+                </div>
+                
+                {mensagem && (
+                    <div className={`feedback ${valor === alvo ? 'acerto' : 'erro'}`}>
+                        {mensagem}
+                    </div>
+                )}
+                
+                <div className="abaco">
+                    {contas.map((qtdContas, linhaIndex) => (
+                        <LinhaAbaco 
+                            key={linhaIndex}
+                            valorLinha={linhasValores[linhaIndex]}
+                            qtdContas={qtdContas}
+                            onClick={(direcao) => moverConta(linhaIndex, direcao)}
+                        />
+                    ))}
+                </div>
+                
+                <div className="instrucoes">
+                    <p>Clique nas contas para movê-las para cima ou para baixo</p>
+                    <p>Cada linha vale: 1, 5, 10, 50, 100</p>
+                    <p>Tente alcançar o valor alvo mostrado acima!</p>
+                </div>
+            </div>
         </main>
-      </>
     );
-  }
-  
-  export default Abaco;
+}
+
+function LinhaAbaco({ valorLinha, qtdContas, onClick }) {
+    return (
+        <div className="linha-abaco">
+            <div className="valor-linha">{valorLinha}</div>
+            <div className="contas">
+                {[...Array(4)].map((_, i) => (
+                    <div 
+                        key={i} 
+                        className={`conta ${i < qtdContas ? 'ativo' : ''}`}
+                        onClick={() => onClick(i < qtdContas ? 'baixo' : 'cima')}
+                    />
+                ))}
+            </div>
+            <div className="barra"></div>
+            <div className="contas">
+                <div 
+                    className={`conta ${qtdContas === 4 ? 'ativo' : ''}`}
+                    onClick={() => onClick(qtdContas === 4 ? 'baixo' : 'cima')}
+                />
+            </div>
+        </div>
+    );
+}
+
+export default Abaco;

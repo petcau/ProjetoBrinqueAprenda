@@ -1,0 +1,158 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.game-container {
+    text-align: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.titulo {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 2.2em;
+}
+
+.painel-controle {
+    background-color: #eef2f5;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.valores {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.valor-atual, .valor-alvo {
+    font-size: 1.2em;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+.valor-atual {
+    background-color: #2196f3;
+}
+
+.valor-alvo {
+    background-color: #2196f3;
+}
+
+.botoes {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+button:hover {
+    transform: translateY(2px);
+}
+
+.verificar {
+    background-color: #4caf50;
+    color: white;
+}
+
+.novo-alvo {
+    background-color: #2196f3;
+    color: white;
+}
+
+.resetar {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Estilos do ábaco (mantidos do anterior) */
+.abaco {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.linha-abaco {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+
+.valor-linha {
+    width: 40px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.contas {
+    display: flex;
+    gap: 5px;
+}
+
+.conta {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ddd;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.conta.ativo {
+    background-color: #3498db;
+}
+
+.barra {
+    width: 2px;
+    height: 40px;
+    background-color: #2c3e50;
+    margin: 0 10px;
+}
+
+/* Feedback */
+.feedback {
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.feedback.acerto {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.feedback.erro {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.instrucoes {
+    margin-top: 20px;
+    color: #666;
+    font-size: 0.9em;
+    line-height: 1.5;
+}
