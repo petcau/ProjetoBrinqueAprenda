@@ -11,19 +11,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 6.5rem;
 
   background-image: url('game_assets/desk.png');
-  background-size: cover;
+  background-size: contain; 
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center top; 
 
   padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
   position: relative;
   box-sizing: border-box;
 }
+
 
 .title {
   font-size: 2.5rem;
