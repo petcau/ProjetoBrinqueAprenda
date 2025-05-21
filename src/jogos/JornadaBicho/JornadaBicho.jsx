@@ -12,8 +12,8 @@ import './game.css'; // Não Implementado ainda
 function JornadaBicho() {
   const navigate = useNavigate();
   return (
-      <main className="container">
-        <div className="game-container">
+      <main className="container_jornada">
+        <div className="game_conteiner_Jornada">
           {
             <>
               <button className="Butao_Voltar_Ao_Menu" onClick={() => navigate ("/")}>

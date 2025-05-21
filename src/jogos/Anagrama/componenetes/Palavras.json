@@ -1,7 +1,7 @@
 {
   "anagramas": [
     {
-      "palavrasValidas": ["SAPO", "POSA", "ASPO"],
+      "palavrasValidas": ["SAPO", "POSA", "SOPA"],
       "palavraEmbaralhada": "OSAP"
     },
     {

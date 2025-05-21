@@ -1,5 +1,10 @@
-.container {
+.container_jornada {
+    background-color: aqua;
     padding: 20px;
+    width: 1024px;
+    height: 1536px;
+    align-items: center;
+    margin: 0 auto;
     font-family: Arial, sans-serif;
   }
   
@@ -42,4 +47,3 @@
     font-size: 18px;
     font-weight: bold;
   }
-  
