@@ -17,16 +17,18 @@ import Results from "./Resultados";
  * @returns {JSX.Element} O componente renderizado.
  */
 function GameLogic() {
-  const [levelIndex, setLevelIndex] = useState(() => Math.floor(Math.random() * levels.length));
+  
+  const [levelIndex, setLevelIndex] = useState(0);
   const [dropped, setDropped] = useState({});
   const [shuffledItems, setShuffledItems] = useState([]);
   const currentLevel = levels[levelIndex];
+  const currentLevelItems = levels[levelIndex].items;
 
   useEffect(() => {
-    const items = [...currentLevel.items].sort(() => Math.random() - 0.5);
+    const items = [...currentLevelItems].sort(() => Math.random() - 0.5);
     setShuffledItems(items);
     setDropped({});
-  }, [levelIndex]);
+  }, [currentLevelItems]);
 
   const objects = shuffledItems.map((item, index) => ({
     id: String(index),
