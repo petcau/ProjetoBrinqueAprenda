@@ -1,4 +1,5 @@
-import GameLogic from "./componenetes/LogicaGame/LogicaGame";
+import Menu from "./componenetes/Menu";
+import { useNavigate } from 'react-router-dom';
 import './game.css'; // Não Implementado ainda
 
 /*
@@ -9,9 +10,19 @@ import './game.css'; // Não Implementado ainda
  *
  */
 function JornadaBicho() {
+  const navigate = useNavigate();
   return (
       <main className="container">
-        <div className="game-container">{<GameLogic />}</div>
+        <div className="game-container">
+          {
+            <>
+              <button className="Butao_Voltar_Ao_Menu" onClick={() => navigate ("/")}>
+                Voltar para o menu
+              </button>
+              <Menu />
+            </>
+          }
+          </div>
       </main>
   );
 }
