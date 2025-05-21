@@ -25,7 +25,7 @@ function Anagrama() {
 
   return (
     <main className="container">
-      <div className="game-container">
+      <div className="game-container-anagrama">
         <h1 className="title">ANAGRAMA</h1>
         <h2 className="fase">Lvl 1</h2>
  <Cronometro
