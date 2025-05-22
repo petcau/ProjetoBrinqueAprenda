@@ -124,7 +124,7 @@ img {
   gap: 1.5 rem;
   background-color: #0b3d0b; /* Verde escuro tipo lousa */
   height: 500px;
-  border: 20px solid #4e342e; /* Borda marrom de madeira */
+  border: 20px solid #352523; /* Borda marrom de madeira */
   border-radius: 16px;
   padding: 2rem;
   border-radius: 15px;
@@ -147,4 +147,27 @@ img {
   font-family: "Fredericka the Great", serif;
   font-weight: 800;
   font-style: normal;
+}
+.start-button {
+  background-color: #b88b12;
+  padding: 10px 30px;
+  font-size: 20px;
+  border-radius: 15px;
+  border: none;
+  font-family: 'Fredericka the Great', cursive;
+  box-shadow: 3px 3px 0 #000;
+  cursor: pointer;
+}
+.inputD {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 10px 0;
+  border: 2px solid #4CAF50;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #333;
+  font-size: 16px;
+  font-family: 'Arial', sans-serif;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
 }

@@ -1,0 +1,21 @@
+{
+    "palavras": [
+      "Cachorro", "Gato", "Computador", "Programar", "Teclado", "Mouse",
+      "Janela", "Monitor", "Cadeira", "Livro", "Caneta", "Papel", "Mochila",
+      "Telefone", "Internet", "Javascript", "React", "Vite", "Tempo", "Digitar",
+      "Desafio", "Pontuar", "Velocidade", "Precisão", "Jogo", "Digitacao"
+    ],
+    "tempo": 10
+  }
+
+  {
+    {
+        "palavras": [
+          "Cachorro", "Gato", "Computador", "Programar", "Teclado", "Mouse",
+          "Janela", "Monitor", "Cadeira", "Livro", "Caneta", "Papel", "Mochila",
+          "Telefone", "Internet", "Javascript", "React", "Vite", "Tempo", "Digitar",
+          "Desafio", "Pontuar", "Velocidade", "Precisão", "Jogo", "Digitacao"
+        ],
+        "tempo": 6
+      }
+  }

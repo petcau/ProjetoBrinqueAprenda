@@ -9,28 +9,29 @@ export default function Jogo(){
   "Desafio", "Pontuar", "Velocidade", "Precisão", "Jogo", "Digitacao"
 ];
     const[input, setInput]=useState('');
-    const[mensagem, setmensagem]=useState('');
-    const[tempo, setTempo] = useState('0');
-    const [count, setCount] = useState(0);
+    const [count, setCount] = useState(10);
     const timeoutID = useRef(null);
     const [fim, setFim] = useState(false);
     const [acerto, setAcerto] = useState(0);
-    // Timer
+    const [limite, setLimite] = useState();
+    
+    // INPUT
     const teclaPress = (event) =>{
         if (event.key == 'Enter') {
             event.preventDefault();
             comparar();
         }
     }
+    //timer
     useEffect(() => {
        timeoutID.current = setTimeout(() => {
-        if (count == 10) {
+        if (count == 0) {
           clearTimeout(timeoutID.current);
           timeoutID.current = null;
           setFim(true);
           return;
         }
-        setCount((count) => count + 1);
+        setCount((count) => count - 1);
        }, 1000);
        return () => clearTimeout(timeoutID.current);
     },[count]); 
@@ -64,7 +65,7 @@ export default function Jogo(){
      : <label>
         <h1 className="textoMD">{palavra}</h1>
     <h2 className="textoMD">{count}</h2>
-        <p className="textoMD">Digite o a palavra escrita acima;</p><input type="text" value={input} onChange={mudança} placeholder="Digite a palavra" onKeyDown={teclaPress}/>
+        <p className="textoMD">Digite o a palavra escrita acima;</p><input className = "inputD" type="text" value={input} onChange={mudança} placeholder="Digite a palavra" onKeyDown={teclaPress}/>
     </label> }
     </div>
     </>
