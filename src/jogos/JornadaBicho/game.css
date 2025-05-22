@@ -1,13 +1,28 @@
 .container_jornada {
-    background-color: aqua;
+    background-image: url(game_assets/imagens/Background.png);
     padding: 20px;
-    width: 1024px;
-    height: 1536px;
-    align-items: center;
+    width: 1440px;
+    height: 800px;
     margin: 0 auto;
-    font-family: Arial, sans-serif;
+    text-align: center;
+    img{
+      width: 800px;
+      height: auto;
+    }
   }
-  
+
+
+  button.Butao_Voltar_Ao_Menu{
+      font-size: 20px;
+      position: relative;
+      right: 43%;
+      background-color: #05c24e;
+      color: #ffffff;
+       width: 200px;
+       height: 55px;
+       border-color: #05c24d00;
+       
+    }
   .objects {
     display: flex;
     gap: 20px;
@@ -21,6 +36,7 @@
     cursor: grab;
     color: #000000;
   }
+
   
   .zones {
     display: flex;

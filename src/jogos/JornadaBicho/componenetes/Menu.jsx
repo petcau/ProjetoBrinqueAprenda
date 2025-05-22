@@ -30,14 +30,14 @@ function Menu() {
         {estado ? (
           <>
             <p className="Titulo_Jornada">
-              Bem vindo ao jogo JORNADAS DE BICHOS
+              <img src="src/jogos/JornadaBicho/game_assets/imagens/titulo.png"/>
             </p>
             <button onClick={irParaJogo}>Jogar</button>
           </>
         ) : (
           <>
             <button className="Butao_Voltar_Jornada" onClick={irParaJogo}>
-              Voltar para a tela inicial
+              Voltar para a tela inicial;
             </button>
             <GameLogic />
           </>
