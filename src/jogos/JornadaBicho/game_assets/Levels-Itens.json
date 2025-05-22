@@ -5,7 +5,7 @@
       "description": "Classifique os veículos corretamente.",
       "zones": ["veiculos"],
       "items": [
-        { "name": "Carro", "correctZone": "veiculos", "image": "/public/images/carro.jpg" },
+        { "name": "Carro", "correctZone": "veiculos"  },
         { "name": "Moto", "correctZone": "veiculos" },
         { "name": "Caminhão", "correctZone": "veiculos" },
         { "name": "Leão", "correctZone": "animais" },     
