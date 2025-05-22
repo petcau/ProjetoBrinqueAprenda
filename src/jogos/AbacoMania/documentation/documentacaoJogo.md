@@ -17,7 +17,7 @@
 
 ## Equipe 
 
-- Emanuel Vítor – Função - Programador
+- Emanuel Vítor – Função - Designer
 - Vítor Tadeu – Função - Programador
 - Thiago Sampaio – Função - Programador
 - Gustavo Ramon – Função - Gestor
@@ -30,7 +30,7 @@ O jogo ABACOMANIA, foi criado pra mostrar uma antiga ferramenta eficaz para o ap
 
 ## Objetivo
 
-Criar desenvoltura para realização de contas aos usuários, e dar uma análise prévia ao mentor sobre como foi o resultado.
+Criar desenvoltura para realização de contas matemáticas aos usuários, e dar uma análise prévia ao mentor sobre como foi o resultado de tal usuário.
 
 ## Público Alvo
 
@@ -56,18 +56,21 @@ Crianças de todas as idades entre 7 a 12 anos.
 - Desenvolvimento da documentação - gestão
 - Atualização do trello - gestão
 - Desenvolvimento da lógica do jogo - programação
-- Desenvolvimento do CSS - programação
-- 
+- Desenvolvimento da validação de acerto - programação
+- Desenvolvimento da mecãnica de arrastar item - programação
+- Desenvolvimento das telas internas do jogo CSS - design
+- Desenvolvimento dos botões de interação -programação
 
 ## Cronograma
 
 | Etapa                  | Período               | Status       |
 |------------------------|-----------------------|------------  |
-| reunião de decisão     |  13/05/2025           | finalizado   |
+| reunião de discussão   |  13/05/2025           | finalizado   |
 | design da capa         |  15/05/2025           | finalizado   |
 | design da apresentação |  15/05/2025           | finalizado   |
 | criação do CSS do jogo |  20/05/2025           | em andamento |
-|                        |                       |              |
+| criação da v1 do jogo  |  20/05/2025           | em andamento |
+| reunião de documentação|  21/05/2025           | finalizado   |
 
 ## Funcionalidades do jogo
 
@@ -75,3 +78,4 @@ Crianças de todas as idades entre 7 a 12 anos.
 2. Botão do manual de como jogar.
 3. Botão de início pra retornar a tela principal.
 4. Botão de níveis que está numerado em ordem crescente.
+5. Botão pra próximo nível.
