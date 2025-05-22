@@ -12,66 +12,40 @@
 
 ## Projeto brinque e aprenda.
 
-##  Jogo=Jornadabicho.
-
-*Tecnologia:* React e JSON.
-*Lógica do Jogo:* A lógica do jogo consiste em um recurso React de drag and drop (pegar e lagar) para arrastar elementos e poderem ser verificados se está certo ou não.
-*Componentes:*
-ControlesLevel.jsx
-
-Header.jsx
-
-ListaItens.jsx
-
-ListaZonas.jsx
-
-LogicaGame.jsx
-
-PegarItens.jsx
-
-Resultados.jsx
-
-ZonaColocar.jsx
-
-
-O background feito pelo figma, usando os emojis disponíveis lá
-E o título do jogo foi feito no canva (versão gratuita) usando a fonte "luckiest guy"
 
 ## Equipe 
-- Jadson 1 – Gestão
-- Emanuel G. 2 – Programador
-- Silas 3 – designer
-- Joabe 4 – Gestão
-- Felipe 5 – designer
+- Jadson  – Gestão
+- Emanuel G.  – Programador
+- Silas – designer
+- Joabe  – Gestão
+- Felipe – designer
 ## Descrição
 
-O projeto Brinque e Aprenda é um software educacional voltado para o público infantil, com foco em atividades interativas que estimulam o raciocínio, alfabetização e coordenação motora por meio de jogos lúdicos.
+O Jogo desenvolvido pela equipe 4 foi o Arrasta o bicho, que consiste em arrastar um animal para seu respectivo Bioma.
 
 ## Objetivo
 
-Promover o aprendizado de forma divertida e acessível para crianças em fase de alfabetização, usando recursos digitais que favoreçam a concentração e o desenvolvimento cognitivo.
+ O objetivo do jogo consiste em colocar o bicho  no Bioma  em que ele vive. 
 
 ## Público Alvo
 
-Crianças em fase inicial de aprendizagem escolar, principalmente em biologia.
+Crianças em fase inicial de aprendizagem escolar.
 
 ## Manual do Jogo
 
 1. Acesse o jogo através do link ou aplicativo.
 2. Escolha o perfil ou crie um novo.
 3. Selecione uma das atividades disponíveis:
-   - Jogo arrasta o bicho
-   
-5. Siga as instruções de cada jogo.
-6. Acumule pontos e medalhas conforme o desempenho.
+   - Jogo de formar palavras
+   - Jogo de somar e subtrair
+   - Atividades de memória
+4. Siga as instruções de cada jogo.
+5. Acumule pontos e medalhas conforme o desempenho.
 
-## Micro Atividades
-
-- Arrastando o bicho: arraste a imagem do bicho para cada bioma
 
 ## Cronograma
 
-| Etapa               | Período               | Status       |
+| Etapa | Período | Status|
 |---------------------|-----------------------|------------  |
 | *****      |  *****       | **** |
 | *****      |  *****       | **** |
