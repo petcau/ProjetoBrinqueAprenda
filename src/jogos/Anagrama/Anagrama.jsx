@@ -9,7 +9,8 @@ function Anagrama() {
     <main className="container">
       <div className="game-container-anagrama">
         <h1 className="title">ANAGRAMA</h1>
-        <h2 className="fase">Lvl 1</h2>
+        <div className="fase">Lvl {anagrama.nivelAtual + 1}</div>
+
         <AnagramaJogo {...anagrama} />
       </div>
     </main>
