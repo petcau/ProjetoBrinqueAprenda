@@ -1,3 +1,11 @@
+:root{
+    --Cor-branca: #f9f9f9;
+    --Cor-preta: rgba(22, 22, 22, 0.63);
+    --Cor-cinza-claro: #2c3e50;
+    --Cor-Branco-Mais-Escuro: #eef2f5;
+    --Cor-Azul: #2196f3;
+    --Cor-Azul-Menor: #238ce2;
+}
 .container {
     margin: 0 auto;
     padding: 20px;
@@ -6,20 +14,21 @@
 
 .game-container-V{
     text-align: center;
-    background-color: #f9f9f9;
+    background-color: var(--Cor-branca);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px var(--Cor-preta);
+    width: 600px;
 }
 
 .titulo {
-    color: #2c3e50;
+    color: var(--Cor-preta);
     margin-bottom: 20px;
     font-size: 2.2em;
 }
 
 .painel-controle {
-    background-color: #eef2f5;
+    background-color: var(--Cor-Branco-Mais-Escuro);
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 20px;
@@ -38,19 +47,25 @@
 }
 
 .valor-atual {
-    background-color: #2196f3;
+    background-color: var(--Cor-Azul);
 }
 
 .valor-alvo {
-    background-color: #2196f3;
+    background-color: var(--Cor-Azul);
 }
 
+.botoesContainer{
+    display: flex;
+    justify-content: center;
+}
 .botoes {
     display: flex;
     justify-content: center;
     gap: 10px;
     flex-wrap: wrap;
+    font-size: 19px;
 }
+
 
 button {
     padding: 10px 15px;
@@ -64,14 +79,17 @@ button {
 button:hover {
     transform: translateY(2px);
 }
+.botoes:hover{
+    background-color: rgb(73, 88, 221);
+}
 
 .verificar {
-    background-color: #4caf50;
+    background-color: var(--Cor-Azul-Menor);
     color: white;
 }
 
 .novo-alvo {
-    background-color: #2196f3;
+    background-color: var(--Cor-Azul);
     color: white;
 }
 
@@ -91,6 +109,7 @@ button:hover {
 .linha-abaco {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
     padding: 10px;
     background-color: #f5f5f5;

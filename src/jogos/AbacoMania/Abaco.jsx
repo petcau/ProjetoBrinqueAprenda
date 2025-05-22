@@ -1,3 +1,4 @@
+import levels from "./fases.json"
 import React, { useState } from 'react';
 import './game.css';
 
@@ -58,32 +59,18 @@ function Abaco() {
 
     return (
         <main className="container">
-            <div className="game-container">
+            <div className="game-container-V">
                 <h1 className="titulo">Abaco Mania</h1>
                 
                 <div className="painel-controle">
                     <div className="valores">
-                        <div className="valor-atual">Seu valor: <strong>{valor}</strong></div>
-                        {mostrarAlvo && (
-                            <div className="valor-alvo">Valor alvo: <strong>{alvo}</strong></div>
+                    {/*<div className="valor-atual">Seu valor: <strong>{valor}</strong></div>*/}
+                    {mostrarAlvo && (
+                            <div className="valor-alvo">Valor: <strong>{alvo}</strong></div>
                         )}
                     </div>
                     
-                    <div className="botoes">
-                        <button onClick={() => setMostrarAlvo(!mostrarAlvo)}>
-                            {mostrarAlvo ? ' Esconder' : ' Mostrar'}
-                        </button>
-                        <button onClick={verificarAcerto} className="verificar">
-                             Verificar
-                        </button>
-                        <button onClick={gerarNovoAlvo} className="novo-alvo">
-                             Novo Alvo
-                        </button>
-                        <button onClick={resetarAbaco} className="resetar">
-                             Resetar
-                        </button>
-                    </div>
-                </div>
+                    
                 
                 {mensagem && (
                     <div className={`feedback ${valor === alvo ? 'acerto' : 'erro'}`}>
@@ -100,6 +87,21 @@ function Abaco() {
                             onClick={(direcao) => moverConta(linhaIndex, direcao)}
                         />
                     ))}
+                </div>
+                <div className="botoesContainer">
+                        {/* <button onClick={() => setMostrarAlvo(!mostrarAlvo)}>
+                            {mostrarAlvo ? ' Esconder' : ' Mostrar'}
+                        </button>*/}
+                        <button onClick={verificarAcerto} className="verificar botoes">
+                             Verificar
+                        </button>
+                        {/*<button onClick={gerarNovoAlvo} className="novo-alvo">
+                             Novo Alvo
+                        </button>*/}
+                        {/*<button onClick={resetarAbaco} className="resetar">
+                             Resetar
+                        </button>*/}
+                    </div>
                 </div>
                 
                 <div className="instrucoes">
@@ -125,12 +127,12 @@ function LinhaAbaco({ valorLinha, qtdContas, onClick }) {
                     />
                 ))}
             </div>
-            <div className="barra"></div>
+            {/*<div className="barra"></div>  Faz aparecer uma barra entre o menu do ábaco*/}
             <div className="contas">
-                <div 
+            {/* <div 
                     className={`conta ${qtdContas === 4 ? 'ativo' : ''}`}
                     onClick={() => onClick(qtdContas === 4 ? 'baixo' : 'cima')}
-                />
+                />  Faz aparecer uma nova aba de informação ao lado dos menus aritiméticos*/}
             </div>
         </div>
     );
