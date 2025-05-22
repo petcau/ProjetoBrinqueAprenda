@@ -32,7 +32,7 @@ function Menu() {
             <p className="Titulo_Jornada">
               <img src="src/jogos/JornadaBicho/game_assets/imagens/titulo.png"/>
             </p>
-            <button onClick={irParaJogo}>Jogar</button>
+            <button className="Botao_jogar_Jornada_bicho" onClick={irParaJogo}>Jogar</button>
           </>
         ) : (
           <>

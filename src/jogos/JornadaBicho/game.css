@@ -11,9 +11,20 @@
     }
   }
 
+  .Botao_jogar_Jornada_bicho{
+    font-size: 25px;
+    position: center;
+    box-shadow: #00000069 0px 6px 3px;
+    background-color: #05c24e;
+    color: #ffffff;
+     width: 200px;
+     height: 55px;
+     border-color: #05c24d00;
+     
+  }
 
-  button.Butao_Voltar_Ao_Menu{
-      font-size: 20px;
+  .Butao_Voltar_Ao_Menu{
+      font-size: 18px;
       position: relative;
       right: 43%;
       background-color: #05c24e;
@@ -21,6 +32,7 @@
        width: 200px;
        height: 55px;
        border-color: #05c24d00;
+       box-shadow: #00000069 0px 6px 3px;
        
     }
   .objects {
