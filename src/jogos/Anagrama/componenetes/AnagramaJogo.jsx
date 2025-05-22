@@ -15,6 +15,7 @@ function AnagramaJogo({
 }) {
   return (
     <>
+    <div className="mesa-container">
       <Cronometro
         tempoInicial={30}
         onTempoEsgotado={() => console.log("Tempo acabou!")}
@@ -30,6 +31,7 @@ function AnagramaJogo({
         descobertas={descobertas}
         palavrasValidas={palavrasValidas}
       />
+      </div>
     </>
   );
 }

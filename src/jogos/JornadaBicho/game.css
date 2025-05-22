@@ -1,4 +1,5 @@
 .container_jornada {
+    display: fixed;
     background-image: url(game_assets/imagens/Background.png);
     padding: 20px;
     width: 1440px;
@@ -6,14 +7,53 @@
     margin: 0 auto;
     text-align: center;
     img{
-      width: 800px;
+      width: 900px;
       height: auto;
+    }
+  }
+  
+  .Controles_jornada NAnterior{
+    font-size: 12px;
+    position: relative;
+    left: 0%;
+    box-shadow: #00000069 0px 6px 3px;
+    background-color: #05c24e;
+    color: #ffffff;
+     width: 100px;
+     height: 55px;
+     border-color: #05c24d00;
+  }
+
+  .Controles_jornada Nposterior{
+    font-size: 12px;
+    position: relative;
+    left: 0%;
+    box-shadow: #00000069 0px 6px 3px;
+    background-color: #05c24e;
+    color: #ffffff;
+     width: 100px;
+     height: 55%;
+     border-color: #05c24d00;
+  }
+
+.level_jornada{
+    .header{
+      font-size: 30px;
+      position: relative;
+      left: 0%;
+      box-shadow: #00000069 0px 6px 3px;
+      background-color: #05c24e;
+      color: #ffffff;
+       width: 200px;
+       height: 55px;
+       border-color: #05c24d00;
     }
   }
 
   .Botao_jogar_Jornada_bicho{
     font-size: 25px;
-    position: center;
+    position: relative;
+    left: 0%;
     box-shadow: #00000069 0px 6px 3px;
     background-color: #05c24e;
     color: #ffffff;
@@ -57,14 +97,18 @@
   }
   
   .drop-zone {
-    width: 150px;
-    height: 150px;
-    border: 2px dashed #aaa;
+    width: 950px;
+    height: 450px;
+    border: 3px #000000;
     display: flex;
     justify-content: center;
     align-items: center;
     text-transform: capitalize;
-    background-color: #d41616;
+    background-image: url(game_assets/imagens/Amazonia.png);
+    img{
+      width: 900px;
+      height: auto;
+    }
   }
   
   .result {
