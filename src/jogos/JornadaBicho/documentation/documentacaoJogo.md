@@ -53,25 +53,21 @@ Promover o aprendizado de forma divertida e acessível para crianças em fase de
 
 ## Público Alvo
 
-Crianças em fase inicial de aprendizagem escolar, especialmente nas disciplinas de português e matemática.
+Crianças em fase inicial de aprendizagem escolar, principalmente em biologia.
 
 ## Manual do Jogo
 
 1. Acesse o jogo através do link ou aplicativo.
 2. Escolha o perfil ou crie um novo.
 3. Selecione uma das atividades disponíveis:
-   - Jogo de formar palavras
-   - Jogo de somar e subtrair
-   - Atividades de memória
-4. Siga as instruções de cada jogo.
-5. Acumule pontos e medalhas conforme o desempenho.
+   - Jogo arrasta o bicho
+   
+5. Siga as instruções de cada jogo.
+6. Acumule pontos e medalhas conforme o desempenho.
 
 ## Micro Atividades
 
-- Formando Palavras: arraste letras para formar palavras corretas.
-- Contando Frutas: atividade de somar e subtrair com ilustrações.
-- Encontre o Par: jogo da memória com letras e números.
-- Pinte o Alfabeto: atividade de colorir letras com sons associados.
+- Arrastando o bicho: arraste a imagem do bicho para cada bioma
 
 ## Cronograma
 
