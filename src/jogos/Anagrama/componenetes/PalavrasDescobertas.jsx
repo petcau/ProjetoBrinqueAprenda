@@ -1,23 +1,21 @@
-  //const palavrasValidas = ["ALEGRIA", "ALERGIA", "GALERIA", "REGALIA"];
-
-
-  function PalavrasDescobertas({ descobertas, palavrasValidas }) {
-
-      if (!palavrasValidas || !Array.isArray(palavrasValidas)) {
-    return <div>Erro: palavras não carregadas.</div>;
-  }
-  
-    return (
-      <div className="palavras-validas">
-        {palavrasValidas.map((palavra, index) => (
-          <div key={index}>
-            {descobertas.includes(palavra)
-              ? palavra
-              : "_ ".repeat(palavra.length)}
-          </div>
-        ))}
-      </div>
-    );
+function PalavrasDescobertas({ descobertas, palavrasValidas }) {
+  if (!palavrasValidas || !Array.isArray(palavrasValidas)) {
+    return <div className="erro">Erro: palavras não carregadas.</div>;
   }
 
-  export default PalavrasDescobertas;
+  return (
+    <div className="container-palavras">
+      {palavrasValidas.map((palavra, index) => (
+        <span key={index} className="palavra">
+          <span className="separador">| </span>
+          {descobertas.includes(palavra)
+            ? palavra
+            : "_ ".repeat(palavra.length)}
+          <span className="separador">| </span>
+        </span>
+      ))}
+    </div>
+  );
+}
+
+export default PalavrasDescobertas;

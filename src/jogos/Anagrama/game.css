@@ -105,6 +105,10 @@
 }
 
 .palavras-validas div {
+  display: flex;          
+  flex-direction: row;   
+  gap: 4px;            
+  flex-wrap: wrap;  
   font-size: 1.2rem;
   font-family: monospace;
   color: #222;
