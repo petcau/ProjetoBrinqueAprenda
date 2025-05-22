@@ -92,9 +92,9 @@ function GameLogic() {
 
   return (
     <div className="game_container_jornada">
-      <Header level={levelIndex + 1} description={currentLevel.description} />
-      <Controls onNext={nextLevel} onPrevious={previousLevel} levelIndex={levelIndex} totalLevels={levels.length} />
+      <Header className="level_jornada" level={levelIndex + 1} description={currentLevel.description} />
       <ZonesList zones={zones} onDrop={handleDrop} />
+      <Controls className="Controles_jornada" onNext={nextLevel} onPrevious={previousLevel} levelIndex={levelIndex} totalLevels={levels.length} />
       <ItemsList objects={objects} />
       
       <Results objects={objects} checkCorrectness={checkCorrectness} />

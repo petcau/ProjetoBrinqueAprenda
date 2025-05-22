@@ -14,7 +14,14 @@ export default function Jogo(){
     const [count, setCount] = useState(0);
     const timeoutID = useRef(null);
     const [fim, setFim] = useState(false);
+    const [acerto, setAcerto] = useState(0);
     // Timer
+    const teclaPress = (event) =>{
+        if (event.key == 'Enter') {
+            event.preventDefault();
+            comparar();
+        }
+    }
     useEffect(() => {
        timeoutID.current = setTimeout(() => {
         if (count == 10) {
@@ -37,10 +44,12 @@ export default function Jogo(){
     // Compara o input do usuario com a palavra correta
     const comparar = () =>{
         if (input == palavra ) {
-            alert('Palavra correta')
+            setAcerto(acerto + 1);
+            setPalavra(palavras[Math.floor(Math.random() * palavras.length)]);
+            setCount(0)
+            setInput('')
         }
         else{
-            alert('palavra incorreta')
             setFim(true);
         }
     }
@@ -55,8 +64,7 @@ export default function Jogo(){
      : <label>
         <h1 className="textoMD">{palavra}</h1>
     <h2 className="textoMD">{count}</h2>
-        <p className="textoMD">Digite o a palavra escrita acima;</p><input type="text" value={input} onChange={mudança} placeholder="Digite a palavra"/>
-        <button className = 'butão' onClick={comparar}>Comparar</button>
+        <p className="textoMD">Digite o a palavra escrita acima;</p><input type="text" value={input} onChange={mudança} placeholder="Digite a palavra" onKeyDown={teclaPress}/>
     </label> }
     </div>
     </>
