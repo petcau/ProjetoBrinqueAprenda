@@ -1,11 +1,10 @@
 .container {
-    max-width: 800px;
     margin: 0 auto;
     padding: 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.game-container {
+.game-container-V{
     text-align: center;
     background-color: #f9f9f9;
     padding: 20px;
