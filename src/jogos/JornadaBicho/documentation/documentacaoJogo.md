@@ -41,8 +41,8 @@ E o título do jogo foi feito no canva (versão gratuita) usando a fonte "luckie
 - Jadson 1 – Gestão
 - Emanuel G. 2 – Programador
 - Silas 3 – designer
-- Joabe 1 – Gestão
-- Felipe 1 – designer
+- Joabe 4 – Gestão
+- Felipe 5 – designer
 ## Descrição
 
 O projeto Brinque e Aprenda é um software educacional voltado para o público infantil, com foco em atividades interativas que estimulam o raciocínio, alfabetização e coordenação motora por meio de jogos lúdicos.
