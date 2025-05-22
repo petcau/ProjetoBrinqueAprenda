@@ -12,10 +12,10 @@
 
 const Controls = ({ onPrevious, onNext, isFirst, isLast }) => (
     <div>
-      <button onClick={onPrevious} disabled={isFirst} >
+      <button className="NAnterior" onClick={onPrevious} disabled={isFirst} >
         Nível Anterior
       </button>
-      <button onClick={onNext} disabled={isLast}>
+      <button className="Nposterior" onClick={onNext} disabled={isLast}>
         Próximo Nível
       </button>
     </div>
