@@ -1,6 +1,6 @@
 import Menu from "./componenetes/Menu";
 import { useNavigate } from 'react-router-dom';
-import './game.css'; // Não Implementado ainda
+import './game.css';
 
 /*
  * Componente que representa o jogo JornadaBicho.

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import GameLogic from "./LogicaGame/LogicaGame";
+import "./Menu.css";
 
 /**
  * Componente que representa o menu do jogo JornadaBicho.
@@ -25,13 +26,13 @@ function Menu() {
   };
 
   return (
-    <>
-      <div>
+    
+      <div className="conteiner_Menu_Jornada">
         {estado ? (
           <>
-            <p className="Titulo_Jornada">
-              <img src="src/jogos/JornadaBicho/game_assets/imagens/titulo.png"/>
-            </p>
+            <h1 className="Titulo_Jornada">
+               
+            </h1>
             <button className="Botao_jogar_Jornada_bicho" onClick={irParaJogo}>Jogar</button>
           </>
         ) : (
@@ -43,7 +44,7 @@ function Menu() {
           </>
         )}
       </div>
-    </>
+    
   );
 }
 export default Menu;
