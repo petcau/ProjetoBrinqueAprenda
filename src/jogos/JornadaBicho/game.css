@@ -1,21 +1,27 @@
 .container_jornada {
-    display: fixed;
-    background-image: url(game_assets/imagens/Background.png);
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .game_container_jornada{
+background-image: url(game_assets/imagens/BackgroundJornadaBicho.png);
     padding: 20px;
     width: 1440px;
     height: 800px;
-    margin: 0 auto;
-    text-align: center;
+    margin: 0px auto;
     img{
       width: 900px;
       height: auto;
     }
   }
-  
-  .Controles_jornada NAnterior{
+
+  .Controles_jornada{
     font-size: 12px;
-    position: relative;
-    left: 0%;
+    top: 0px;
+    left: 10px;
     box-shadow: #00000069 0px 6px 3px;
     background-color: #05c24e;
     color: #ffffff;
@@ -23,32 +29,30 @@
      height: 55px;
      border-color: #05c24d00;
   }
+  
 
-  .Controles_jornada Nposterior{
-    font-size: 12px;
+  .Nposterior{
+    font-size: 11px;
     position: relative;
-    left: 0%;
+    border-left: 8px;
+    right: 58%;
     box-shadow: #00000069 0px 6px 3px;
     background-color: #05c24e;
     color: #ffffff;
-     width: 100px;
+     width: 99px;
      height: 55%;
      border-color: #05c24d00;
   }
 
-.level_jornada{
-    .header{
+.level_jornada h1{
       font-size: 30px;
       position: relative;
       left: 0%;
-      box-shadow: #00000069 0px 6px 3px;
-      background-color: #05c24e;
-      color: #ffffff;
+      color: #a72700;
        width: 200px;
        height: 55px;
        border-color: #05c24d00;
     }
-  }
 
   .Botao_jogar_Jornada_bicho{
     font-size: 25px;
@@ -99,16 +103,13 @@
   .drop-zone {
     width: 950px;
     height: 450px;
-    border: 3px #000000;
+    border: 10px #000000;
     display: flex;
     justify-content: center;
     align-items: center;
     text-transform: capitalize;
     background-image: url(game_assets/imagens/Amazonia.png);
-    img{
-      width: 900px;
-      height: auto;
-    }
+    background-size: cover;
   }
   
   .result {
