@@ -12,10 +12,14 @@ function AnagramaJogo({
   enviarPalavra,
   resetarTentativa,
   limparDescobertas,
+  
 }) {
   return (
+       
     <>
+   
     <div className="mesa-container">
+
       <Cronometro
         tempoInicial={30}
         onTempoEsgotado={() => console.log("Tempo acabou!")}
@@ -23,6 +27,7 @@ function AnagramaJogo({
           resetarTentativa();
           limparDescobertas();
         }}
+       
       />
 
       <Letras letras={letras} onAdicionarLetra={adicionarLetra} />

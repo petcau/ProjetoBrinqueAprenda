@@ -9,7 +9,13 @@ function Anagrama() {
     <main className="container">
       <div className="game-container-anagrama">
         <h1 className="title">ANAGRAMA</h1>
-        <div className="fase">Lvl {anagrama.nivelAtual + 1}</div>
+           <button className="botao_voltar_menu"
+  onClick={() => window.location.href = "/"} >
+  Voltar para o menu
+</button>
+
+
+        <div className="fase">Nível {anagrama.nivelAtual + 1}</div>
 
         <AnagramaJogo {...anagrama} />
       </div>

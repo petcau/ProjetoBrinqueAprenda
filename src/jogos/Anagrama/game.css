@@ -27,32 +27,39 @@
   flex-direction: column;
   align-items: center;
   gap: 6.5rem;
-
   background-image: url('game_assets/desk.png');
   background-size: contain; 
   background-repeat: no-repeat;
   background-position: center top; 
-
-
-
   position: relative;
   box-sizing: border-box;
 }
 
 
-.title {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #67bf66;
+
+ .title {
+   font-size: 3.5rem;
+  color: white;
+  text-shadow: 3px 3px 0 #000, 5px 5px 5px rgba(0, 0, 0, 0.3);
+  font-family: 'Luckiest Guy', cursive; /* ou algo estilo cartoon/divertido */
 }
 
+
+
 .fase {
-  position: absolute;
+   position: absolute;
   top: 1.5rem;
   right: 10rem;
   font-size: 1.8rem;
   font-weight: bold;
-  color: #9b3535;
+  color: #fff;
+  background-color: rgba(155, 53, 53, 0.85); /* fundo avermelhado sem perder contraste */
+  padding: 6px 14px;
+  border-radius: 12px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
+  font-family: 'Luckiest Guy', cursive; /* ou outra que combine com o estilo do jogo */
+  letter-spacing: 1px;
+  text-shadow: 1px 1px #000;
 }
 
 .letras button {
@@ -113,3 +120,23 @@
   font-family: monospace;
   color: #222;
 }
+
+
+ .botao_voltar_menu {
+  position: absolute;
+  top: 35px;
+  left: 130px;
+  padding: 8px 12px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  z-index: 1000;
+  font-size: 12px;
+}
+
+    
+  
+

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import PalavrasData from "./Palavras.json";
 
 export function useAnagrama() {
@@ -32,24 +32,24 @@ export function useAnagrama() {
     setDescobertas([]);
   };
 
-  const proximoNivel = () => {
-    if (nivelAtual < PalavrasData.anagramas.length - 1) {
-      setNivelAtual((n) => n + 1);
-      setTentativa("");
-      setDescobertas([]);
-    }
-  };
+const proximoNivel = useCallback(() => {
+  if (nivelAtual < PalavrasData.anagramas.length - 1) {
+    setNivelAtual((n) => n + 1);
+    setTentativa("");
+    setDescobertas([]);
+  }
+}, [nivelAtual]); // ✅ Apenas `nivelAtual` é necessário
 
   // Quando todas forem descobertas, avança o nível automaticamente
-  useEffect(() => {
-    if (
-      palavrasValidas.length > 0 &&
-      descobertas.length === palavrasValidas.length
-    ) {
-      const timer = setTimeout(proximoNivel, 1500); // pequeno delay
-      return () => clearTimeout(timer);
-    }
-  }, [descobertas]);
+    useEffect(() => {
+      if (
+        palavrasValidas.length > 0 &&
+        descobertas.length === palavrasValidas.length
+      ) {
+        const timer = setTimeout(proximoNivel, 1500); // pequeno delay
+        return () => clearTimeout(timer);
+      }
+    }, [descobertas, palavrasValidas,proximoNivel]);
 
   return {
     letras,
