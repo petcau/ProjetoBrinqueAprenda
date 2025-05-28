@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import GameLogic from "./LogicaGame/LogicaGame";
 import "./Menu.css";
 
@@ -11,35 +11,39 @@ import "./Menu.css";
  *
  * @returns {JSX.Element} O componente renderizado.
  */
-function Menu() {
-  const [estado, setEstado] = useState(true);
 
-  /**
-   * Fun o que altera o estado da vari vel estado.
-   *
-   * Quando chamada, esta fun o altera o estado da vari vel estado,
-   * o que renderiza o componente GameLogic.
-   *
-   */
+function MenuJornada({ estado, setEstado }) {
+  const navigate = useNavigate()
   const irParaJogo = () => {
-    setEstado(!estado);
+    setEstado(false);
   };
 
+  function getBack() {
+    if (estado) {
+      setEstado(false)
+      navigate('/')
+    } else {
+      setEstado(true)
+    }
+  }
   return (
-    
       <div className="conteiner_Menu_Jornada">
+        <button className="Butao_Voltar_Ao_Menu" onClick={getBack}>
+                Voltar para o menu
+         </button>
         {estado ? (
           <>
             <h1 className="Titulo_Jornada">
-               
+            <img 
+            className="Titulo_Jonada_img"
+            src="src/jogos/JornadaBicho/game_assets/imagens/titulo.png"
+            alt="Título do jogo Jornada Bicho"
+            />  
             </h1>
             <button className="Botao_jogar_Jornada_bicho" onClick={irParaJogo}>Jogar</button>
           </>
         ) : (
           <>
-            <button className="Butao_Voltar_Jornada" onClick={irParaJogo}>
-              Voltar para a tela inicial;
-            </button>
             <GameLogic />
           </>
         )}
@@ -47,4 +51,4 @@ function Menu() {
     
   );
 }
-export default Menu;
+export default MenuJornada;

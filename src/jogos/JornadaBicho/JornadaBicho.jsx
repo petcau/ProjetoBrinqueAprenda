@@ -1,7 +1,7 @@
-import Menu from "./componenetes/Menu";
-import { useNavigate } from 'react-router-dom';
-import './game.css';
+import MenuJonada from "./componenetes/MenuJornada";
 
+import './game.css';
+import Estado from "./componenetes/LogicaGame/Estado";
 /*
  * Componente que representa o jogo JornadaBicho.
  *
@@ -10,18 +10,14 @@ import './game.css';
  *
  */
 function JornadaBicho() {
-  const navigate = useNavigate();
+ 
+
+
   return (
       <main className="container_jornada">
+       
         <div className="game_conteiner_Jornada">
-          {
-            <>
-              <button className="Butao_Voltar_Ao_Menu" onClick={() => navigate ("/")}>
-                Voltar para o menu
-              </button>
-              <Menu />
-            </>
-          }
+          <Estado />
           </div>
       </main>
   );
