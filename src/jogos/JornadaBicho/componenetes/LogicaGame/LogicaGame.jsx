@@ -8,17 +8,10 @@ import ItemsList from "./ListaItens";
 import ZonesList from "./ListaZonas";
 import Results from "./Resultados";
 
-/**
- * Componente que representa a lógica do jogo Jornada Bicho.
- *
- * Renderiza o componente Header, ControlesLevel, ListarItems, ListarZonas e Resultados,
- * que por sua vez renderizam a logica do jogo.
- *
- * @returns {JSX.Element} O componente renderizado.
- */
 function GameLogic() {
   
   const [levelIndex, setLevelIndex] = useState(0);
+  const [acertos, setAcertos] = useState(0);
   const [dropped, setDropped] = useState({});
   const [shuffledItems, setShuffledItems] = useState([]);
   const currentLevel = levels[levelIndex];
@@ -38,50 +31,41 @@ function GameLogic() {
   }));
 
   const zones = currentLevel.zones;
+  const acertosNecessarios = levels[levelIndex].acertosNecessarios;
 
-  /**
-   * Função chamada quando um item  arrastado e solto em uma zona.
-   *
-   * Atualiza o estado dropped com o item que foi solto e a zona em que
-   * ele foi solto.
-   *
-   * @param {string} itemId - O id do item que foi solto.
-   * @param {string} zone - A zona em que o item foi solto.
-   */
+  const handleAcerto = () => {
+    setAcertos(prev => prev + 1);
+  }
+
   function handleDrop(itemId, zone) {
+    const item = objects.find(obj => obj.id === itemId);
+    const isCorrect = item && zone === item.correctZone;
+
+      if (!dropped[itemId] && isCorrect) {
+        handleAcerto();
+      }
     setDropped((prev) => ({ ...prev, [itemId]: zone }));
   }
 
-  /**
-   * Verifica se o item foi colocado na zona correta.
-   *
-   * @param {object} item - O item a ser verificado.
-   * @returns {boolean} true se o item foi colocado na zona correta, false caso contr rio.
-   */
   function checkCorrectness(item) {
     return dropped[item.id] === item.correctZone;
   }
 
-  /**
-   * Vai para o próximo nível do jogo.
-   *
-   * Se o nível atual for o último, uma mensagem de parabéns é exibida e
-   * o estado levelIndex não é alterado.
-   */
   function nextLevel() {
-    if (levelIndex < levels.length - 1) {
-      setLevelIndex(levelIndex + 1);
-    } else {
-      alert("Parabéns! Você completou todos os níveis!");
-    }
+  if (acertos < acertosNecessarios) {
+    alert("Você precisa acertar mais itens antes de avançar para o próximo nível!");
+    return;
   }
 
-  /**
-   * Volta para o nível anterior do jogo.
-   *
-   * Se o nível atual for o primeiro, uma mensagem de alerta é exibida e
-   * o estado levelIndex não é alterado.
-   */
+  if (levelIndex < levels.length - 1) {
+    setLevelIndex(levelIndex + 1);
+    setAcertos(0);
+  } else {
+    alert("Parabéns! Você completou todos os níveis!");
+  }
+}
+
+
   function previousLevel() {
     if (levelIndex > 0) {
       setLevelIndex(levelIndex - 1);

@@ -3,7 +3,7 @@
     {
       "id": 1,
       "description": "Classifique os veículos corretamente.",
-      "zones": ["veiculos"],
+      "zones": ["veiculos", "animais"],
       "items": [
         { "name": "Carro", "correctZone": "veiculos"  },
         { "name": "Moto", "correctZone": "veiculos" },
@@ -13,8 +13,8 @@
         { "name": "Gato", "correctZone": "animais" },
         { "name": "Helicoptero", "correctZone": "veiculos" },
         { "name": "Cachorro", "correctZone": "animais" },
-        { "name": "Gato", "correctZone": "animais" }
-      ]
+        { "name": "Gato", "correctZone": "animais" }],
+      "acertosNecessarios": 9
     },
     {
       "id": 2,
@@ -27,8 +27,8 @@
         { "name": "Carro", "correctZone": "veiculos" },
         { "name": "Moto", "correctZone": "veiculos" },
         { "name": "Caminhão", "correctZone": "veiculos" }
-
-      ]
+      ],
+      "acertosNecessarios": 6
     },
     {
       "id": 3,
