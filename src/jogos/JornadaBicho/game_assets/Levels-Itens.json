@@ -2,139 +2,149 @@
   "levels": [
     {
       "id": 1,
-      "description": "Classifique os veículos corretamente.",
-      "zones": ["veiculos", "animais"],
+      "description": "Animais domésticos (fácil)",
+      "zones": ["animais"],
       "items": [
-        { "name": "Carro", "correctZone": "veiculos"  },
-        { "name": "Moto", "correctZone": "veiculos" },
-        { "name": "Caminhão", "correctZone": "veiculos" },
-        { "name": "Leão", "correctZone": "animais" },     
-        { "name": "Cachorro", "correctZone": "animais" },
-        { "name": "Gato", "correctZone": "animais" },
-        { "name": "Helicoptero", "correctZone": "veiculos" },
-        { "name": "Cachorro", "correctZone": "animais" },
-        { "name": "Gato", "correctZone": "animais" }],
-      "acertosNecessarios": 9
+        { "name": "Cachorro", "correctZone": "animais", "image": "dog.png" },
+        { "name": "Gato", "correctZone": "animais", "image": "cat.png" },
+        { "name": "Peixe", "correctZone": "animais", "image": "fish.png" },
+        { "name": "Pássaro", "correctZone": "animais", "image": "bird.png" }
+      ],
+      "acertosNecessarios": 3,
+      "dica": "Todos vivem em casas humanas"
     },
     {
       "id": 2,
-      "description": "Classifique os animais corretamente.",
+      "description": "Animais da fazenda (fácil)",
       "zones": ["animais"],
       "items": [
-        { "name": "Leão", "correctZone": "animais" },
-        { "name": "Cachorro", "correctZone": "animais" },
-        { "name": "Gato", "correctZone": "animais" },
-        { "name": "Carro", "correctZone": "veiculos" },
-        { "name": "Moto", "correctZone": "veiculos" },
-        { "name": "Caminhão", "correctZone": "veiculos" }
+        { "name": "Vaca", "correctZone": "animais", "image": "cow.png" },
+        { "name": "Galinha", "correctZone": "animais", "image": "chicken.png" },
+        { "name": "Cavalo", "correctZone": "animais", "image": "horse.png" },
+        { "name": "Ovelha", "correctZone": "animais", "image": "sheep.png" }
       ],
-      "acertosNecessarios": 6
+      "acertosNecessarios": 4,
+      "dica": "Produzem alimentos"
     },
     {
       "id": 3,
-      "description": "Classifique os veículos e animais corretamente.",
-      "zones": ["veiculos", "animais"],
+      "description": "Selva africana (intermediário)",
+      "zones": ["animais"],
       "items": [
-        { "name": "Carro", "correctZone": "veiculos" },
-        { "name": "Moto", "correctZone": "veiculos" },
-        { "name": "Caminhão", "correctZone": "veiculos" },
-        { "name": "Leão", "correctZone": "animais" },
-        { "name": "Cachorro", "correctZone": "animais" },
-        { "name": "Gato", "correctZone": "animais" }
-      ]
+        { "name": "Leão", "correctZone": "animais", "image": "lion.png" },
+        { "name": "Elefante", "correctZone": "animais", "image": "elephant.png" },
+        { "name": "Zebra", "correctZone": "animais", "image": "zebra.png" },
+        { "name": "Girafa", "correctZone": "animais", "image": "giraffe.png" },
+        { "name": "Hipopótamo", "correctZone": "animais", "image": "hippo.png" }
+      ],
+      "acertosNecessarios": 4,
+      "dica": "Savana africana"
     },
     {
       "id": 4,
-      "description": "Classifique os veículos e animais corretamente.",
-      "zones": ["veiculos", "animais"],
+      "description": "Animais noturnos (intermediário)",
+      "zones": ["animais"],
       "items": [
-        { "name": "Carro", "correctZone": "veiculos" },
-        { "name": "Moto", "correctZone": "veiculos" },
-        { "name": "Caminhão", "correctZone": "veiculos" },
-        { "name": "Leão", "correctZone": "animais" },
-        { "name": "Cachorro", "correctZone": "animais" },
-        { "name": "Gato", "correctZone": "animais" }
-      ]
+        { "name": "Coruja", "correctZone": "animais", "image": "owl.png" },
+        { "name": "Morcego", "correctZone": "animais", "image": "bat.png" },
+        { "name": "Gambá", "correctZone": "animais", "image": "opossum.png" },
+        { "name": "Raposa", "correctZone": "animais", "image": "fox.png" },
+        { "name": "Tatu", "correctZone": "animais", "image": "armadillo.png" }
+      ],
+      "acertosNecessarios": 5,
+      "dica": "Ativos durante a noite"
     },
     {
       "id": 5,
-      "description": "Classifique os veículos e animais corretamente.",
-      "zones": ["veiculos", "animais"],
+      "description": "Vida marinha (difícil)",
+      "zones": ["animais"],
       "items": [
-        { "name": "Carro", "correctZone": "veiculos" },
-        { "name": "Moto", "correctZone": "veiculos" },
-        { "name": "Caminhão", "correctZone": "veiculos" },
-        { "name": "Leão", "correctZone": "animais" },
-        { "name": "Cachorro", "correctZone": "animais" },
-        { "name": "Gato", "correctZone": "animais" }
-      ]
+        { "name": "Tubarão", "correctZone": "animais", "image": "shark.png" },
+        { "name": "Golfinho", "correctZone": "animais", "image": "dolphin.png" },
+        { "name": "Polvo", "correctZone": "animais", "image": "octopus.png" },
+        { "name": "Cavalo-marinho", "correctZone": "animais", "image": "seahorse.png" },
+        { "name": "Estrela-do-mar", "correctZone": "animais", "image": "starfish.png" },
+        { "name": "Baleia", "correctZone": "animais", "image": "whale.png" }
+      ],
+      "acertosNecessarios": 5,
+      "dica": "Habitat aquático"
     },
     {
       "id": 6,
-      "description": "Classifique os veículos e animais corretamente.",
-      "zones": ["veiculos", "animais"],
+      "description": "Répteis e anfíbios (difícil)",
+      "zones": ["animais"],
       "items": [
-        { "name": "Carro", "correctZone": "veiculos" },
-        { "name": "Moto", "correctZone": "veiculos" },
-        { "name": "Caminhão", "correctZone": "veiculos" },
-        { "name": "Leão", "correctZone": "animais" },
-        { "name": "Cachorro", "correctZone": "animais" },
-        { "name": "Gato", "correctZone": "animais" }
-      ]
+        { "name": "Cobra", "correctZone": "animais", "image": "snake.png" },
+        { "name": "Lagarto", "correctZone": "animais", "image": "lizard.png" },
+        { "name": "Sapo", "correctZone": "animais", "image": "frog.png" },
+        { "name": "Tartaruga", "correctZone": "animais", "image": "turtle.png" },
+        { "name": "Jacaré", "correctZone": "animais", "image": "alligator.png" },
+        { "name": "Camaleão", "correctZone": "animais", "image": "chameleon.png" }
+      ],
+      "acertosNecessarios": 6,
+      "dica": "Sangue frio"
     },
     {
       "id": 7,
-      "description": "Classifique os veículos e animais corretamente.",
-      "zones": ["veiculos", "animais"],
+      "description": "Aves exóticas (avançado)",
+      "zones": ["animais"],
       "items": [
-        { "name": "Carro", "correctZone": "veiculos" },
-        { "name": "Moto", "correctZone": "veiculos" },
-        { "name": "Caminhão", "correctZone": "veiculos" },
-        { "name": "Leão", "correctZone": "animais" },
-        { "name": "Cachorro", "correctZone": "animais" },
-        { "name": "Gato", "correctZone": "animais" }
-      ]
+        { "name": "Arara", "correctZone": "animais", "image": "macaw.png" },
+        { "name": "Pavão", "correctZone": "animais", "image": "peacock.png" },
+        { "name": "Tucano", "correctZone": "animais", "image": "toucan.png" },
+        { "name": "Águia", "correctZone": "animais", "image": "eagle.png" },
+        { "name": "Pelicano", "correctZone": "animais", "image": "pelican.png" },
+        { "name": "Flamingo", "correctZone": "animais", "image": "flamingo.png" }
+      ],
+      "acertosNecessarios": 6,
+      "dica": "Penas coloridas"
     },
     {
       "id": 8,
-      "description": "Classifique os veículos e animais corretamente.",
-      "zones": ["veiculos", "animais"],
+      "description": "Animais polares (avançado)",
+      "zones": ["animais"],
       "items": [
-        { "name": "Carro", "correctZone": "veiculos" },
-        { "name": "Moto", "correctZone": "veiculos" },
-        { "name": "Caminhão", "correctZone": "veiculos" },
-        { "name": "Leão", "correctZone": "animais" },
-        { "name": "Cachorro", "correctZone": "animais" },
-        { "name": "Gato", "correctZone": "animais" }
-      ]
+        { "name": "Urso Polar", "correctZone": "animais", "image": "polar_bear.png" },
+        { "name": "Pinguim", "correctZone": "animais", "image": "penguin.png" },
+        { "name": "Foca", "correctZone": "animais", "image": "seal.png" },
+        { "name": "Rena", "correctZone": "animais", "image": "reindeer.png" },
+        { "name": "Raposa-do-Ártico", "correctZone": "animais", "image": "arctic_fox.png" },
+        { "name": "Morsa", "correctZone": "animais", "image": "walrus.png" }
+      ],
+      "acertosNecessarios": 6,
+      "dica": "Habitat gelado"
     },
     {
       "id": 9,
-      "description": "Classifique os veículos e animais corretamente.",
-      "zones": ["veiculos", "animais"],
+      "description": "Insetos e aracnídeos (desafiador)",
+      "zones": ["animais"],
       "items": [
-        { "name": "Carro", "correctZone": "veiculos" },
-        { "name": "Moto", "correctZone": "veiculos" },
-        { "name": "Caminhão", "correctZone": "veiculos" },
-        { "name": "Leão", "correctZone": "animais" },
-        { "name": "Cachorro", "correctZone": "animais" },
-        { "name": "Gato", "correctZone": "animais" }
-      ]
+        { "name": "Borboleta", "correctZone": "animais", "image": "butterfly.png" },
+        { "name": "Abelha", "correctZone": "animais", "image": "bee.png" },
+        { "name": "Aranha", "correctZone": "animais", "image": "spider.png" },
+        { "name": "Formiga", "correctZone": "animais", "image": "ant.png" },
+        { "name": "Libélula", "correctZone": "animais", "image": "dragonfly.png" },
+        { "name": "Escorpião", "correctZone": "animais", "image": "scorpion.png" },
+        { "name": "Louva-a-deus", "correctZone": "animais", "image": "mantis.png" }
+      ],
+      "acertosNecessarios": 7,
+      "dica": "Artrópodes"
     },
     {
       "id": 10,
-      "description": "Classifique os veículos e animais corretamente.",
-      "zones": ["veiculos", "animais"],
+      "description": "Animais em extinção (especial)",
+      "zones": ["animais"],
       "items": [
-        { "name": "Carro", "correctZone": "veiculos" },
-        { "name": "Moto", "correctZone": "veiculos" },
-        { "name": "Caminhão", "correctZone": "veiculos" },
-        { "name": "Leão", "correctZone": "animais" },
-        { "name": "Cachorro", "correctZone": "animais" },
-        { "name": "Gato", "correctZone": "animais" }
-      ]
+        { "name": "Panda Gigante", "correctZone": "animais", "image": "panda.png" },
+        { "name": "Tigre-de-Bengala", "correctZone": "animais", "image": "tiger.png" },
+        { "name": "Orangotango", "correctZone": "animais", "image": "orangutan.png" },
+        { "name": "Rinoceronte", "correctZone": "animais", "image": "rhino.png" },
+        { "name": "Arara-Azul", "correctZone": "animais", "image": "blue_macaw.png" },
+        { "name": "Lobo-Guará", "correctZone": "animais", "image": "maned_wolf.png" },
+        { "name": "Baleia-Azul", "correctZone": "animais", "image": "blue_whale.png" }
+      ],
+      "acertosNecessarios": 7,
+      "dica": "Protegidos por leis"
     }
-
   ]
-  
 }
