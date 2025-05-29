@@ -146,7 +146,6 @@ export function useAnagrama() {
       setNivelAtual((n) => n + 1);
       setTentativa("");
       setDescobertas([]);
-      setTempoEsgotado(true);
     }
   }, [nivelAtual]);
 
