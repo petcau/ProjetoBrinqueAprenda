@@ -2,57 +2,68 @@
   "fases": [
     {
       "fase": 1,
-      "quantidadePalavras": 1,
-      "tempoLimite": 60,
-      "palavras": ["Gato", "Cão", "Sol"]
+      "quantidadePalavras": 10,
+      "tempoLimite": 30,
+      "palavras": ["Amigo", "Bola", "Canto", "Dente", "Ecoa", "Feliz", "Gente", "Hora", "Igreja", "Jogo", "Luz", "Mente", "Nuvem", "Olho", "Pato", "Quente", "Rato", "Sapo", "Tempo", "Urso", "Vento", "Xadrez", "Zebra", "Arco", "Bico", "Café", "Dado", "Eixo", "Foca", "Gato", "Hino", "Igreja", "Jogo", "Lago", "Mato", "Neto", "Ovo", "Pato", 
+      "Quarto", "Rato", "Sapo", "Teto", "Uva", "Vaca", "Xale", "Zelo"]
     },
     {
       "fase": 2,
-      "quantidadePalavras": 2,
+      "quantidadePalavras": 10,
       "tempoLimite": 55,
-      "palavras": ["Livro", "Mesa", "Casa", "Janela"]
+      "palavras": ["Amigo", "Bola", "Café", "Dado", "Ecoa", "Fogo", "Gato", "Hino", "Igreja", "Jogo", "Luz", "Mato", "Nuvem", "Ouro", "Pato", "Quase", "Rato", "Sapo", "Teto", "Uva", "Vela", "Wok", "Xarope", "Yeti", "Zebra", "Água", "Bola", "Cima", "Dado", "Eixo", "Fato", "Gelo", 
+      "Hera", "Íris", "Jogo", "Lago", "Mato", "Nuvem", "Ouro", "Pato", "Quase", "Rato", "Sapo"]
     },
     {
       "fase": 3,
-      "quantidadePalavras": 1,
+      "quantidadePalavras": 10,
       "tempoLimite": 50,
-      "palavras": ["Computador", "Monitor", "Teclado", "Mouse", "Cadeira"]
+      "palavras": ["Amigo", "Balde", "Cacho", "Dardo", "Ética", "Fazer", "Gosto", "Hiena", "Ícone", "Jovem", "Karma", "Lento", "Moral", "Navio", "Ouvir", "Prato", "Quase", "Resto", "Susto", "Troca", "Unido", "Vento", "Xingo", "Yacht", "Zebra", "Anzol", "Besta", "Cesta", "Dessa", "Expor", "Fugir", "Globo", "Herói", "Ítens", "Jaula", "Kebab", "Lapis", "Misto", "Nobre", "Olhar", "Pular", "Queda", "Rampa", "Senso", "Tenso", "Usura"
+]
     },
     {
       "fase": 4,
-      "quantidadePalavras": 1,
+      "quantidadePalavras": 10,
       "tempoLimite": 45,
-      "palavras": ["Programar", "Internet", "Telefone", "Notebook", "Caneta", "Papel"]
+      "palavras": ["Abajur", "Agenda", "Agulha", "Alarme", "Aljava", "Âncora", "Anilha", "Antena", "Balaio", "Barril", "Bastão", "Batina", "Batuta", "Bazuca", "Bíblia", "Bicama", "Biombo", "Biruta", "Bolero", "Boneca", "Bornal", "Botina", "Brinco", "Broche", "Buzina", "Cabide", "Caixão", "Cajado", "Cálice", "Calota", "Camisa", "Caneca", "Caneta", "Cantil", "Canudo", "Capelo", "Cartão", "Casaco", "Caxixi", "Chapéu", "Cinzel", "Coador", "Colcha", 
+      "Coldre", "Colete", "Colher", "Cômoda", "Concha", "Crachá", "Cutelo"]
     },
     {
       "fase": 5,
-      "quantidadePalavras": 1,
-      "tempoLimite": 40,
-      "palavras": ["Javascript", "React", "Vite", "Framework", "Desenvolvimento", "Front-end", "Back-end"]
+      "quantidadePalavras": 10,
+      "tempoLimite": 45,
+      "palavras": ["Amizade", "Cultura", "Família", "Caráter", "Sucesso", "Estigma", "Virtude", "Estável", "Aspecto", "Alegria", "Cordial", "Análogo", "Genuíno", "Sublime", "Inferir", "Apático", "Sucinto", "Acepção", "Redimir", "Prolixo", "Estória", "Empatia", "Aurélio", "Cônjuge", "Embuste", "Exceção", "Verbete", "Idílico", "Análogo", "Família", "Genuíno", "Sublime", "Estória", "Inferir", "Pêsames", "Apático", "Sucinto", "Acepção", "Redimir", 
+      "Cultura", "Pródigo", "Astúcia", "Estigma", "Audácia", "Recesso", "Virtude"]
     },
     {
       "fase": 6,
-      "quantidadePalavras": 1,
+      "quantidadePalavras": 10,
       "tempoLimite": 35,
-      "palavras": ["Algoritmo", "Função", "Variável", "Objeto", "Classe", "Array", "Componente", "Sintaxe"]
+      "palavras": ["Amizade", "Caráter", "Cultura", "Família", "Genuíno", "Estigma", "Estória", "Inferir", "Apático", "Sucinto", "Acepção", "Redimir", "Prolixo", "Astúcia", "Recesso", "Virtude", "Icônico", "Soberba", "Refutar", "Mitigar", "Exortar", "Cinismo", "Mórbido", "Trivial", "Estável", "Aspecto", "Sucesso", "Síntese", "Luxúria", "Alegria", "Cordial", "Anátema", "Imputar", "Emergir", "Ademais", "Escória", "Orgulho", "Excerto", "Candura", 
+      "Deboche", "Saudade", "Coragem", "Frívolo", "Amizade", "Salutar"]
     },
     {
       "fase": 7,
-      "quantidadePalavras": 1,
+      "quantidadePalavras": 10,
       "tempoLimite": 30,
-      "palavras": ["Persistência", "Assíncrono", "Callback", "Promise", "Looping", "Renderização", "Estado", "Propriedade", "Hook"]
+      "palavras": ["Inerente", "Respeito", "Peculiar", "Denegrir", "Genocida", "Anuência", "Equidade", "Deferido", "Prudente", "Essência", "Iminente", "Pandemia", "Desgraça", "Misógino", "Eminente", "Premissa", "Invasivo", "Abstrato", "Alienado", "Extensão", "Empírico", "Rapariga", "Conceito", "Ardiloso", "Talarico", "Ascensão", "Reiterar", "Devaneio", "Lascívia", "Prodígio", "Relativo", "Inefável", "Passível", "Conserto", "Gratidão", "Destarte", "Analogia", "Inserção", "Remissão", "Modéstia", "Fomentar", "Apologia", "Despeito", "Ativista", "Inóspito",
+       "Medíocre", "Retórica", "Monótono", "História", "Alicerce", "Concerne"]
     },
     {
       "fase": 8,
-      "quantidadePalavras": 1,
-      "tempoLimite": 25,
-      "palavras": ["Desempenho", "Escalabilidade", "Componentização", "Modularização", "Refatoração", "Documentação", "Testabilidade", "Manutenibilidade", "Integração", "Deploy"]
+      "quantidadePalavras": 5,
+      "tempoLimite": 90,
+      "palavras": ["Só se vê bem com o coração, o essencial é invisível aos olhos", "Quando acordei hoje de manhã, eu sabia quem eu era", "Mas acho que já mudei muitas vezes desde então", "As coisas têm vida própria", "Tudo é questão de despertar a sua alma", "Cada qual sabe amar a seu modo","O modo pouco importa, o essencial é que saiba amar.", 
+      "Amor não é coisa que se possa pedir a alguém", "Você quer um coração? Você não sabe o quão sortudo és por não ter um","Corações nunca serão práticos enquanto não forem feitos para não se partirem", 
+      "O tempo até voa, mas é você quem pilota", "Sentir é estar distraído"]
     },
     {
       "fase": 9,
-      "quantidadePalavras": 10,
-      "tempoLimite": 20,
-      "palavras": ["Virtualização", "Microserviço", "Autenticação", "Autorização", "Criptografia", "Deserialização", "Serialização", "Desestruturação", "Prototipagem", "Versionamento", "Persistência", "Observabilidade"]
+      "quantidadePalavras": 5,
+      "tempoLimite": 90,
+      "palavras": ["Há coisas que são preciosas por não durarem", "Podemos julgar o coração de um homem pela forma como ele trata os animais", "O homem não é nada além daquilo que a educação faz dele", "A moral, propriamente dita, não é a doutrina que nos ensina como sermos felizes, mas como devemos tornar-nos dignos da felicidade", "É no problema da educação que assenta o grande segredo do aperfeiçoamento da humanidade", "Quanto mais amor temos, tanto mais fácil fazemos a nossa passagem pelo mundo", 
+      "Todo o conhecimento humano começou com intuições, passou daí aos conceitos e terminou com ideias", "A paciência é a fortaleza do débil e a impaciência a debilidade do forte", 
+      "A paciência é a fortaleza do débil e a impaciência a debilidade do forte", "O homem é o único animal que precisa de trabalhar", "O princípio da finalidade não é constituitivo, mas regulador", "Quem não sabe o que busca, não identifica o que acha"]
     },
     {
       "fase": 10,
