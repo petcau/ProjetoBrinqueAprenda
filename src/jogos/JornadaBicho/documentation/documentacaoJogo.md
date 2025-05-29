@@ -49,8 +49,7 @@ Crianças em fase inicial de aprendizagem escolar.
 
 | Etapa | Período | Status|
 |---------------------|-----------------------|------------  |
-| criação do código principal    |  8
-08/05/25      | feito |
-| ajustes no código     |   15/05/25     | feito|
+| criação do código principal  | 08/05/25      | feito |
+| ajustes no código    |   15/05/25     | feito|
 |    18/05/25  |  inicio da documentação do jogo      | feito |
 | 20/05/25    |  criação de designers    | em andamento|
