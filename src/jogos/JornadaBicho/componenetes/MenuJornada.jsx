@@ -31,15 +31,16 @@ function MenuJornada({ estado, setEstado }) {
         <button className="Butao_Voltar_Ao_Menu" onClick={getBack}>
                 Voltar para o menu
          </button>
-        {estado ? (
-          <>
-            <h1 className="Titulo_Jornada">
+         <figure className="Titulo_JornadaFig">
             <img 
             className="Titulo_Jonada_img"
             src="src/jogos/JornadaBicho/game_assets/imagens/titulo.png"
             alt="Título do jogo Jornada Bicho"
+            id="Titulo_Jornada"
             />  
-            </h1>
+            </figure>
+        {estado ? (
+         <>    
             <button className="Botao_jogar_Jornada_bicho" onClick={irParaJogo}>Jogar</button>
           </>
         ) : (

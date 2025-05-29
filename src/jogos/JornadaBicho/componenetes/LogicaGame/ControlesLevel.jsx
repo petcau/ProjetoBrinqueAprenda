@@ -11,7 +11,7 @@
  */
 
 const Controls = ({ onPrevious, onNext, isFirst, isLast }) => (
-    <div>
+    <div className="Controles_JornadaPA">
       <button className="NAnterior" onClick={onPrevious} disabled={isFirst} >
         Nível Anterior
       </button>

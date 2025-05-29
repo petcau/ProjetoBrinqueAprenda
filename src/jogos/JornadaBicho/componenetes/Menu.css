@@ -1,17 +1,17 @@
 .conteiner_Menu_Jornada{
-    position: relative;
+    margin-top: 50px;
     padding: 20px;
-    width: 1440px;
-    height: 800px;
-    margin: 0px auto;
-    background-image: url(src/jogos/JornadaBicho/game_assets/imagens/Background.png);
     display: flex;
+    width: 1440px;
+    height: auto;
+    background-image: url(src/jogos/JornadaBicho/game_assets/imagens/Background.png);
+    justify-content: center;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    overflow: hidden;
+    object-fit: cover;
 }
 
-.Titulo_Jorrnada{
-   img{ 
-    background-image: url(src/jogos/JornadaBicho/game_assets/imagens/titulo.png);}
+#Titulo_Jorrnada{
+   width: 720px;
 }

@@ -87,7 +87,7 @@ function GameLogic() {
       <div className="acertos_jornada">
         <p>Acertos: {acertos} / {acertosNecessarios}</p>
       </div>
-      <Results objects={objects} checkCorrectness={checkCorrectness} />
+      {/* <Results objects={objects} checkCorrectness={checkCorrectness} /> */}
     </div>
   );
 }
