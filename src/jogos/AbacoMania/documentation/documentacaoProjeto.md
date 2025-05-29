@@ -18,7 +18,7 @@
 ## Equipe 
 
 - Emanuel Vítor – Função - Designer
-- Vítor Tadeu – Função - Programador
+- Vítor Thadeu – Função - Programador
 - Thiago Sampaio – Função - Programador
 - Gustavo Ramon – Função - Gestor
 - Rafael  – Função - Designer
@@ -70,10 +70,12 @@ IMG--
 | reunião de discussão   |  13/05/2025           | finalizado   |
 | design da capa         |  15/05/2025           | finalizado   |
 | design da apresentação |  15/05/2025           | finalizado   |
-| criação do CSS do jogo |  20/05/2025           | em andamento |
+| criação do CSS do jogo |  20/05/2025           | finalizado   |
 | criação da v1 do jogo  |  22/05/2025           | finalizado   |
 | reunião de documentação|  21/05/2025           | finalizado   |
 | produção em aula       |  22/05/2025           | finalizada   |
+| finalzação do jogo     |  29/05/2025           | finalizado   |
+| implementação dos CSS  |  29/05/2025           | em andamento |
 
 ## Funcionalidades do jogo
 

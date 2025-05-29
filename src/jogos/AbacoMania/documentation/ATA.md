@@ -38,8 +38,21 @@ falta criar os css das telas
 - Thiago
 - Gustavo Ramon
 - Rafael
-- Vitor Tadeu
+- Vitor Thadeu
 ### o que foi feito
 - Organização da lógica do Ábaco, e primeiro funcionamento do jogo em sala de aula.
 ### o que fazer
 - Temporizador pro jogo, telas do CSS, tela de manual do jogo, unir as telas de design com o codigo do jogo,e atribuir sons.
+
+## Data (29/05/25)
+### participação
+- Gustavo Ramon
+- Thiago
+- Rafael
+- Vitor Thadeu
+### o que foi feito
+- Finalização do código de funcionamento do jogo inteiro.
+- Busca do design das telas de níveis.
+### o que fazer
+- Implementar o background das telas no código do jogo.
+- Realizar os testes e avaliações de funcionamento.
