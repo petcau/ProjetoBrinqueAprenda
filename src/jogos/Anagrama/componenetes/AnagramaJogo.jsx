@@ -13,32 +13,96 @@ function AnagramaJogo({
   enviarPalavra,
   resetarTentativa,
   limparDescobertas,
-  
+  proximoNivel,
 }) {
-  return (
-       
-    <>
-   
-    <div className="mesa-container">
+  const timesUpSoundRef = useRef(null);
+  const [tempoEsgotado, setTempoEsgotado] = useState(false);
+  const [faseCompleta, setFaseCompleta] = useState(false);
+  const [reiniciarTrigger, setReiniciarTrigger] = useState(0);
 
-      <Cronometro
-        tempoInicial={30}
-        onTempoEsgotado={() => console.log("Tempo acabou!")}
-        onReiniciarTempo={() => {
-          resetarTentativa();
-          limparDescobertas();
-        }}
-       
+  // Verifica se o jogador completou a fase
+  useEffect(() => {
+    if (
+      palavrasValidas.length > 0 &&
+      descobertas.length === palavrasValidas.length
+    ) {
+      setFaseCompleta(true);
+      setTempoEsgotado(false); // evita conflito
+    }
+  }, [descobertas, palavrasValidas]);
+
+  const handleTempoEsgotado = () => {
+    setTempoEsgotado(true);
+
+    if (timesUpSoundRef.current) {
+      timesUpSoundRef.current.currentTime = 0;
+      timesUpSoundRef.current.play();
+    }
+  };
+
+  const handleReiniciar = () => {
+    setTempoEsgotado(false);
+    resetarTentativa();
+    limparDescobertas();
+    setReiniciarTrigger((t) => t + 1); // força reinício do cronômetro
+  };
+
+  const handleProximaFase = () => {
+    setFaseCompleta(false);
+    proximoNivel(); // avança a fase
+    setReiniciarTrigger((t) => t + 1); // reinicia o cronômetro
+  };
+
+  return (
+    <div className="mesa-container">
+      <audio
+        ref={timesUpSoundRef}
+        src="src/assets/Sons/somDerrota.mp3"
+        preload="auto"
       />
 
-      <Letras letras={letras} onAdicionarLetra={adicionarLetra} />
-      <PalavraTentativa tentativa={tentativa} onEnviar={enviarPalavra} />
+      {!faseCompleta && !tempoEsgotado && (
+        <Cronometro
+          tempoInicial={30}
+          onTempoEsgotado={handleTempoEsgotado}
+          onReiniciarTempo={handleReiniciar}
+          reiniciarTrigger={reiniciarTrigger}
+        />
+      )}
+
+      {tempoEsgotado && (
+        <div>
+          <h3>Tempo esgotado!</h3>
+          <button className="botoes" onClick={handleReiniciar}>
+            Tentar novamente
+          </button>
+        </div>
+      )}
+
+      {faseCompleta && (
+        <div>
+          <h3>Você descobriu todas as palavras!</h3>
+          <button className="botoes" onClick={handleProximaFase}>
+            Próxima fase
+          </button>
+        </div>
+      )}
+
+      <Letras
+        letras={letras}
+        onAdicionarLetra={adicionarLetra}
+        desabilitado={tempoEsgotado || faseCompleta}
+      />
+      <PalavraTentativa
+        tentativa={tentativa}
+        onEnviar={enviarPalavra}
+        desabilitado={tempoEsgotado || faseCompleta}
+      />
       <PalavrasDescobertas
         descobertas={descobertas}
         palavrasValidas={palavrasValidas}
       />
-      </div>
-    </>
+    </div>
   );
 }
 
