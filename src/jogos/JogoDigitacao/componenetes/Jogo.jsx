@@ -1,73 +1,109 @@
+import React, { useState, useEffect, useRef } from "react";
+import fasesData from './fases.json';
 
-import React,{useState, useEffect, useRef} from "react";
-export default function Jogo(){
-    const imageUrl = './src/jogos/JogoDigitacao/game_assets/GAMEOVER.png'
-    const palavras = [
-  "Cachorro", "Gato", "Computador", "Programar", "Teclado", "Mouse",
-  "Janela", "Monitor", "Cadeira", "Livro", "Caneta", "Papel", "Mochila",
-  "Telefone", "Internet", "Javascript", "React", "Vite", "Tempo", "Digitar",
-  "Desafio", "Pontuar", "Velocidade", "Precisão", "Jogo", "Digitacao"
-];
-    const[input, setInput]=useState('');
-    const [count, setCount] = useState(10);
-    const timeoutID = useRef(null);
-    const [fim, setFim] = useState(false);
-    const [acerto, setAcerto] = useState(0);
-    const [limite, setLimite] = useState();
-    
-    // INPUT
-    const teclaPress = (event) =>{
-        if (event.key == 'Enter') {
-            event.preventDefault();
-            comparar();
-        }
-    }
-    //timer
-    useEffect(() => {
-       timeoutID.current = setTimeout(() => {
-        if (count == 0) {
-          clearTimeout(timeoutID.current);
-          timeoutID.current = null;
+export default function Jogo() {
+  const imageUrl = './src/jogos/JogoDigitacao/game_assets/GAMEOVER.png';
+
+  const [faseAtual, setFaseAtual] = useState(0);
+  const [palavra, setPalavra] = useState('');
+  const [input, setInput] = useState('');
+  const [mensagem, setMensagem] = useState('');
+  const [count, setCount] = useState(0);
+  const timeoutID = useRef(null);
+  const [fim, setFim] = useState(false);
+  const [acertos, setAcertos] = useState(0);
+
+  const fase = fasesData.fases[faseAtual];
+  const palavras = fase.palavras;
+
+  useEffect(() => {
+    novaPalavra();
+    setCount(0);
+    setAcertos(0);
+    setFim(false);
+    setMensagem('');
+  }, [faseAtual]);
+
+  useEffect(() => {
+    if (fim) return;
+
+    timeoutID.current = setTimeout(() => {
+      if (count >= fase.tempoLimite) {
+        clearTimeout(timeoutID.current);
+        setFim(true);
+        setMensagem('Tempo esgotado!');
+        return;
+      }
+      setCount(prev => prev + 1);
+    }, 1000);
+
+    return () => clearTimeout(timeoutID.current);
+  }, [count, fim, fase.tempoLimite]);
+
+  const novaPalavra = () => {
+    const nova = palavras[Math.floor(Math.random() * palavras.length)];
+    setPalavra(nova);
+    setInput('');
+  };
+
+  const mudança = (event) => setInput(event.target.value);
+
+  const comparar = () => {
+    if (fim) return;
+
+    if (input.trim().toLowerCase() === palavra.toLowerCase()) {
+      setMensagem('Palavra correta!');
+      setAcertos(prev => prev + 1);
+
+      if (acertos + 1 >= fase.quantidadePalavras) {
+        if (faseAtual + 1 < fasesData.fases.length) {
+          setMensagem('Parabéns! Indo para a próxima fase.');
+          setTimeout(() => {
+            setFaseAtual(prev => prev + 1);
+          }, 2000);
+        } else {
           setFim(true);
-          return;
+          setMensagem('Você completou todas as fases!');
         }
-        setCount((count) => count - 1);
-       }, 1000);
-       return () => clearTimeout(timeoutID.current);
-    },[count]); 
-    const mudança =(event) =>{
-        setInput(event.target.value);
-    };
-    // Aleatorizador de palavras
-     const [palavra, setPalavra] = useState(() => {
-    return palavras[Math.floor(Math.random() * palavras.length)];
-  });
-    // Compara o input do usuario com a palavra correta
-    const comparar = () =>{
-        if (input == palavra ) {
-            setAcerto(acerto + 1);
-            setPalavra(palavras[Math.floor(Math.random() * palavras.length)]);
-            setCount(0)
-            setInput('')
-        }
-        else{
-            setFim(true);
-        }
+      } else {
+        novaPalavra();
+      }
+    } else {
+      setMensagem('Palavra incorreta, tente de novo!');
     }
-    return(
-    <>
+  };
+
+  return (
     <div>
-    { fim ?
-    <><label className="textoMD">
-    GAME OVER
-    </label>
-    <img src={imageUrl}></img></>
-     : <label>
-        <h1 className="textoMD">{palavra}</h1>
-    <h2 className="textoMD">{count}</h2>
-        <p className="textoMD">Digite o a palavra escrita acima;</p><input className = "inputD" type="text" value={input} onChange={mudança} placeholder="Digite a palavra" onKeyDown={teclaPress}/>
-    </label> }
+      <h1 className="textoMD">Fase {fase.fase}</h1>
+      {fim ? (
+        <>
+          <label className="textoMD">GAME OVER</label>
+          <img src={imageUrl} alt="Game Over" />
+          <p className="textoMD">{mensagem}</p>
+          {faseAtual + 1 < fasesData.fases.length && (
+            <button className="botao" onClick={() => setFaseAtual(prev => prev + 1)}>
+              Próxima Fase
+            </button>
+          )}
+        </>
+      ) : (
+        <label>
+          <h1 className="textoMD">{palavra}</h1>
+          <h2 className="textoMD">Tempo: {count}s / {fase.tempoLimite}s</h2>
+          <p className="textoMD">Digite a palavra escrita acima:</p>
+          <input
+            type="text"
+            value={input}
+            onChange={mudança}
+            placeholder="Digite a palavra"
+            onKeyDown={(e) => e.key === 'Enter' && comparar()}
+          />
+          <button className="botao" onClick={comparar}>Comparar</button>
+          <p className="textoMD">{mensagem}</p>
+          <p className="textoMD">Acertos: {acertos} / {fase.quantidadePalavras}</p>
+        </label>
+      )}
     </div>
-    </>
-    )
+  );
 }

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Barriecito&display=swap');
+
 :root{
     --Cor-branca: #f9f9f9;
     --Cor-preta: rgba(22, 22, 22, 0.63);
@@ -12,6 +14,7 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+
 .game-container-V{
     text-align: center;
     background-color: var(--Cor-branca);
@@ -25,6 +28,7 @@
     color: var(--Cor-preta);
     margin-bottom: 20px;
     font-size: 2.2em;
+    font-family: "Barriecito", system-ui;
 }
 
 .painel-controle {
@@ -54,9 +58,16 @@
     background-color: var(--Cor-Azul);
 }
 
+.proxima-fase-botoes{
+    background-color: var(--Cor-Azul-Menor);
+    color: var(--Cor-branca);
+    font-size: 19px;
+}
+
 .botoesContainer{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    gap: 10px;
 }
 .botoes {
     display: flex;
@@ -66,7 +77,6 @@
     font-size: 19px;
 }
 
-
 button {
     padding: 10px 15px;
     border: none;
@@ -74,6 +84,9 @@ button {
     cursor: pointer;
     font-weight: bold;
     transition: all 0.2s;
+}
+.Invisible{
+    width: 155px;
 }
 
 button:hover {

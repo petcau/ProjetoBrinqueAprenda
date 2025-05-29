@@ -1,0 +1,64 @@
+{
+  "fases": [
+    {
+      "fase": 1,
+      "quantidadePalavras": 1,
+      "tempoLimite": 60,
+      "palavras": ["Gato", "Cão", "Sol"]
+    },
+    {
+      "fase": 2,
+      "quantidadePalavras": 2,
+      "tempoLimite": 55,
+      "palavras": ["Livro", "Mesa", "Casa", "Janela"]
+    },
+    {
+      "fase": 3,
+      "quantidadePalavras": 1,
+      "tempoLimite": 50,
+      "palavras": ["Computador", "Monitor", "Teclado", "Mouse", "Cadeira"]
+    },
+    {
+      "fase": 4,
+      "quantidadePalavras": 1,
+      "tempoLimite": 45,
+      "palavras": ["Programar", "Internet", "Telefone", "Notebook", "Caneta", "Papel"]
+    },
+    {
+      "fase": 5,
+      "quantidadePalavras": 1,
+      "tempoLimite": 40,
+      "palavras": ["Javascript", "React", "Vite", "Framework", "Desenvolvimento", "Front-end", "Back-end"]
+    },
+    {
+      "fase": 6,
+      "quantidadePalavras": 1,
+      "tempoLimite": 35,
+      "palavras": ["Algoritmo", "Função", "Variável", "Objeto", "Classe", "Array", "Componente", "Sintaxe"]
+    },
+    {
+      "fase": 7,
+      "quantidadePalavras": 1,
+      "tempoLimite": 30,
+      "palavras": ["Persistência", "Assíncrono", "Callback", "Promise", "Looping", "Renderização", "Estado", "Propriedade", "Hook"]
+    },
+    {
+      "fase": 8,
+      "quantidadePalavras": 1,
+      "tempoLimite": 25,
+      "palavras": ["Desempenho", "Escalabilidade", "Componentização", "Modularização", "Refatoração", "Documentação", "Testabilidade", "Manutenibilidade", "Integração", "Deploy"]
+    },
+    {
+      "fase": 9,
+      "quantidadePalavras": 10,
+      "tempoLimite": 20,
+      "palavras": ["Virtualização", "Microserviço", "Autenticação", "Autorização", "Criptografia", "Deserialização", "Serialização", "Desestruturação", "Prototipagem", "Versionamento", "Persistência", "Observabilidade"]
+    },
+    {
+      "fase": 10,
+      "quantidadePalavras": 15,
+      "tempoLimite": 15,
+      "palavras": ["Programabilidade", "Multithreading", "Orientação", "Polimorfismo", "Encapsulamento", "Herança", "Abstração", "Responsividade", "Acessibilidade", "Internacionalização", "Globalização", "Performance", "Escalabilidade", "Containerização", "Orquestração"]
+    }
+  ]
+}

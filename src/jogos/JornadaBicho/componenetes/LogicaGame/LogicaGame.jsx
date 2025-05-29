@@ -27,7 +27,8 @@ function GameLogic() {
     id: String(index),
     name: item.name,
     correctZone: item.correctZone,
-    image: item.image
+    image: item.image,
+    dica: levels[levelIndex].dica
   }));
 
   const zones = currentLevel.zones;
@@ -76,11 +77,16 @@ function GameLogic() {
 
   return (
     <div className="game_container_jornada">
-      <Header className="level_jornada" level={levelIndex + 1} description={currentLevel.description} />
+      <Header className="level_jornada"
+      level={levelIndex + 1} 
+      description={currentLevel.description}
+      dica={currentLevel.dica}/>
       <ZonesList zones={zones} onDrop={handleDrop} />
       <Controls className="Controles_jornada" onNext={nextLevel} onPrevious={previousLevel} levelIndex={levelIndex} totalLevels={levels.length} />
       <ItemsList objects={objects} />
-      
+      <div className="acertos_jornada">
+        <p>Acertos: {acertos} / {acertosNecessarios}</p>
+      </div>
       <Results objects={objects} checkCorrectness={checkCorrectness} />
     </div>
   );
