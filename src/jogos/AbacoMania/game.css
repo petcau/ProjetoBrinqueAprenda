@@ -61,6 +61,12 @@
     font-size: 19px;
 }
 
+.verificar-botoes {
+    background-color: var(--Cor-Azul-Menor);
+    color: var(--Cor-branca);
+    font-size: 19px;
+    margin-left: 225px;
+}
 .botoesContainer{
     display: flex;
     justify-content: space-between;
