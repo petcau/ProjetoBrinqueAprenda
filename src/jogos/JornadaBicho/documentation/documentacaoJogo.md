@@ -1,3 +1,4 @@
+
 <table style="width: 100%;">
   <tr>
     <td style="vertical-align: middle; padding-right: 10px;">
@@ -33,21 +34,13 @@ Crianças em fase inicial de aprendizagem escolar.
 
 ## Manual do Jogo
 
-1. Acesse o jogo através do link ou aplicativo.
-2. Escolha o perfil ou crie um novo.
-3. Selecione uma das atividades disponíveis:
-   - Jogo de formar palavras
-   - Jogo de somar e subtrair
-   - Atividades de memória
-4. Siga as instruções de cada jogo.
-5. Acumule pontos e medalhas conforme o desempenho.
-
+1. Tela inicial do jogo
+   ![17484881203953480083007441330882](https://github.com/user-attachments/assets/2b51ff8b-842f-4b93-8a33-79a921057643)
 
 ## Cronograma
 
 | Etapa | Período | Status|
 |---------------------|-----------------------|------------  |
-| *****      |  *****       | **** |
-| *****      |  *****       | **** |
-| *****      |  *****       | **** |
-| *****      |  *****       | **** |
+| criação do código principal  | 08/05/25      | feito |
+| ajustes no código    |   15/05/25     | feito|
+|    18
