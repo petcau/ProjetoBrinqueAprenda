@@ -5,6 +5,7 @@ export function useAnagrama() {
   const [nivelAtual, setNivelAtual] = useState(0);
   const [tentativa, setTentativa] = useState("");
   const [descobertas, setDescobertas] = useState([]);
+  const [tempoEsgotado, setTempoEsgotado] = useState(false); 
 
   const rodada = PalavrasData.anagramas[nivelAtual];
   const palavraBase = rodada.palavraEmbaralhada;
@@ -12,7 +13,9 @@ export function useAnagrama() {
   const letras = palavraBase.split("");
 
   const adicionarLetra = (letra) => {
-    setTentativa((t) => t + letra);
+    if (!tempoEsgotado) {
+      setTentativa((t) => t + letra);
+    }
   };
 
   const resetarTentativa = () => {
@@ -20,6 +23,7 @@ export function useAnagrama() {
   };
 
   const enviarPalavra = () => {
+    if (tempoEsgotado) return;
     const palavra = tentativa.toUpperCase();
     if (palavrasValidas.includes(palavra) && !descobertas.includes(palavra)) {
       const novas = [...descobertas, palavra];
@@ -32,24 +36,35 @@ export function useAnagrama() {
     setDescobertas([]);
   };
 
-const proximoNivel = useCallback(() => {
-  if (nivelAtual < PalavrasData.anagramas.length - 1) {
-    setNivelAtual((n) => n + 1);
-    setTentativa("");
-    setDescobertas([]);
-  }
-}, [nivelAtual]); // ✅ Apenas `nivelAtual` é necessário
+  const lidarComTempoEsgotado = () => {
+    setTempoEsgotado(true); 
+  };
 
-  // Quando todas forem descobertas, avança o nível automaticamente
-    useEffect(() => {
-      if (
-        palavrasValidas.length > 0 &&
-        descobertas.length === palavrasValidas.length
-      ) {
-        const timer = setTimeout(proximoNivel, 1500); // pequeno delay
-        return () => clearTimeout(timer);
-      }
-    }, [descobertas, palavrasValidas,proximoNivel]);
+  const reiniciarTempo = () => {
+    setTempoEsgotado(false); 
+    resetarTentativa();
+    limparDescobertas();
+  };
+
+  const proximoNivel = useCallback(() => {
+    if (nivelAtual < PalavrasData.anagramas.length - 1) {
+      setNivelAtual((n) => n + 1);
+      setTentativa("");
+      setDescobertas([]);
+      setTempoEsgotado(true); 
+    }
+  }, [nivelAtual]);
+
+  
+  useEffect(() => {
+    if (
+      palavrasValidas.length > 0 &&
+      descobertas.length === palavrasValidas.length
+    ) {
+      const timer = setTimeout(proximoNivel, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [descobertas, palavrasValidas, proximoNivel]);
 
   return {
     letras,
@@ -61,5 +76,8 @@ const proximoNivel = useCallback(() => {
     resetarTentativa,
     enviarPalavra,
     limparDescobertas,
+    tempoEsgotado,         
+    lidarComTempoEsgotado, 
+    reiniciarTempo         
   };
 }

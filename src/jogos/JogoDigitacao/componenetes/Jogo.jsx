@@ -18,7 +18,7 @@ export default function Jogo() {
 
   useEffect(() => {
     novaPalavra();
-    setCount(0);
+    setCount(fase.tempoLimite);
     setAcertos(0);
     setFim(false);
     setMensagem('');
@@ -28,13 +28,13 @@ export default function Jogo() {
     if (fim) return;
 
     timeoutID.current = setTimeout(() => {
-      if (count >= fase.tempoLimite) {
+      if (count == 0) {
         clearTimeout(timeoutID.current);
         setFim(true);
         setMensagem('Tempo esgotado!');
         return;
       }
-      setCount(prev => prev + 1);
+      setCount(prev => prev - 1);
     }, 1000);
 
     return () => clearTimeout(timeoutID.current);
@@ -90,7 +90,7 @@ export default function Jogo() {
       ) : (
         <label>
           <h1 className="textoMD">{palavra}</h1>
-          <h2 className="textoMD">Tempo: {count}s / {fase.tempoLimite}s</h2>
+          <h2 className="textoMD">Tempo: {count}s</h2>
           <p className="textoMD">Digite a palavra escrita acima:</p>
           <input
             type="text"
@@ -99,7 +99,6 @@ export default function Jogo() {
             placeholder="Digite a palavra"
             onKeyDown={(e) => e.key === 'Enter' && comparar()}
           />
-          <button className="botao" onClick={comparar}>Comparar</button>
           <p className="textoMD">{mensagem}</p>
           <p className="textoMD">Acertos: {acertos} / {fase.quantidadePalavras}</p>
         </label>

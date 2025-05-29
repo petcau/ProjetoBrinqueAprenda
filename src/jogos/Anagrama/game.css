@@ -154,9 +154,6 @@
   .fase{
      position:static;
   }
-  .title{
-    background-color: red;
-  }
   .game-container-anagrama{
     width: 100%;
     gap: 3.5rem;
