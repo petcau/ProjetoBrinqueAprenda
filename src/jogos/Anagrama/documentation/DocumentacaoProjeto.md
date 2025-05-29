@@ -40,12 +40,13 @@
 
 <img src="imgs\imginicial.PNG" width="500" height="400">
 
-- 2.1 -Nível do jogo - Indica em que nivel o jogador se encontra;
-- 2.2 -Cronometro - O jogador possui tempo limitado para encontrar as palavras necessárias para completar o nível;
-- 2.3 -Letras - As letras necessarias para formar as palavras escondidas, ao selecionar uma letra ela será indicada no campo "Palavra";
-- 2.4 -Campo palavra - Neste campo as letra selecionadas pelo jogador irão aparecer na sequencia que foram selecionadas, sendo limitada pela quantidade de letras da maior palavra escondida;
-- 2.5 -Botão montar - Após inserir as letras necessarias para formar uma palavra, o jogador irá apertar o botão para verificar se a palavra montada é uma das palavras escondidas;
-- 2.6 -Campo de palavras - As palavras escondidas encontradas ficarão armazenadas neste campo;
+- 2.1 -Retorno ao menu de jogos - Botão para retornar para o menu de jogos na pagina inicial;
+- 2.2 -Nível do jogo - Indica em que nivel o jogador se encontra;
+- 2.3 -Cronometro - O jogador possui tempo limitado para encontrar as palavras necessárias para completar o nível;
+- 2.4 -Letras - As letras necessarias para formar as palavras escondidas, ao selecionar uma letra ela será indicada no campo "Palavra";
+- 2.5 -Campo palavra - Neste campo as letra selecionadas pelo jogador irão aparecer na sequencia que foram selecionadas, sendo limitada pela quantidade de letras da maior palavra escondida;
+- 2.6 -Botão montar - Após inserir as letras necessarias para formar uma palavra, o jogador irá apertar o botão para verificar se a palavra montada é uma das palavras escondidas;
+- 2.7 -Campo de palavras - As palavras escondidas encontradas ficarão armazenadas neste campo;
 
 3. Alguns eventos do jogo:
 
@@ -62,6 +63,8 @@
 |------------------------|-----------------------|------------  |
 | Reunião                |  15/05/2025           | finalizado   |
 | Design da capa         |  15/05/2025           | finalizado   |
-| Apresentação           |  15/05/2025           | finalizado   |
-| Estilização            |  20/05/2025           | em andamento |
-| Apresentação II        |  21/05/2025           | em andamento |
+| Apresentação I         |  15/05/2025           | finalizado   |
+| Estilização I          |  20/05/2025           | Finalizado   |
+| Apresentação II        |  21/05/2025           | Finalizado   |
+| Apresentação III       |  29/05/2025           | em andamento |
+| Estilização II         |  29/05/2025           | em andamento |

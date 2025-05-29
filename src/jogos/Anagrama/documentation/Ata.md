@@ -21,3 +21,23 @@
 
 # Dia 21/05/2025 
 <p>Entrega de: documentação do projeto, Ata</p>
+
+# Dia 22/05/2025
+<p>Segunda apresentação do jogo e suas funcionalidades, bem como atualizações no planejamento da equipe.</p> 
+<p>Após todas as aprenstações os seguintes topicos foram levantados: </p>
+1. Utilização de efeitos sonoros gerais;
+2. Correções para evitar desestabilização na aplicação;
+3. Mudanças estéticas no jogo;
+
+<p>As seguintes mudanças foram feitas pela equipe de programação:</p>
+1. Nivel dinâmico;
+2. Distribuição da apresentação das palavras encontradas;
+3. Implementação do nivel dinâmico ao arquivo .json;
+
+# Dia 28/05/2025
+
+<p>As seguintes mudanças foram feitas:</p>
+1. Implementação do botão de retorno ao menu principal;
+2. Mudança no estilo do titulo e nivel;
+
+<p>Descoberta de um erro ao subir de nivel: O tempo não reinicia.</p>
