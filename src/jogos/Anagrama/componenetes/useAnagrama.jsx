@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from "react";
 import PalavrasData from "./Palavras.json";
 
@@ -21,10 +22,20 @@ export function useAnagrama() {
 
   const enviarPalavra = () => {
     const palavra = tentativa.toUpperCase();
+
     if (palavrasValidas.includes(palavra) && !descobertas.includes(palavra)) {
       const novas = [...descobertas, palavra];
       setDescobertas(novas);
+
+      // Som de palavra correta
+      const audioCorreta = new Audio('src/assets/Sons/respCorreta.mp3');
+      audioCorreta.play().catch(() => {});
+    } else {
+      // Som de palavra errada
+      const audioErrada = new Audio('src/assets/Sons/respErrada.mp3');
+      audioErrada.play().catch(() => {});
     }
+
     resetarTentativa();
   };
 
@@ -32,24 +43,27 @@ export function useAnagrama() {
     setDescobertas([]);
   };
 
-const proximoNivel = useCallback(() => {
-  if (nivelAtual < PalavrasData.anagramas.length - 1) {
-    setNivelAtual((n) => n + 1);
-    setTentativa("");
-    setDescobertas([]);
-  }
-}, [nivelAtual]); // ✅ Apenas `nivelAtual` é necessário
+  const proximoNivel = useCallback(() => {
+    if (nivelAtual < PalavrasData.anagramas.length - 1) {
+      setNivelAtual((n) => n + 1);
+      setTentativa("");
+      setDescobertas([]);
+    }
+  }, [nivelAtual]);
 
-  // Quando todas forem descobertas, avança o nível automaticamente
-    useEffect(() => {
-      if (
-        palavrasValidas.length > 0 &&
-        descobertas.length === palavrasValidas.length
-      ) {
-        const timer = setTimeout(proximoNivel, 1500); // pequeno delay
-        return () => clearTimeout(timer);
-      }
-    }, [descobertas, palavrasValidas,proximoNivel]);
+  useEffect(() => {
+    if (
+      palavrasValidas.length > 0 &&
+      descobertas.length === palavrasValidas.length
+    ) {
+      // Som de avanço de nível
+      const audioVitoria = new Audio('src/assets/Sons/somVitoria.mp3');
+      audioVitoria.play().catch(() => {});
+
+      const timer = setTimeout(proximoNivel, 1500); // pequeno delay
+      return () => clearTimeout(timer);
+    }
+  }, [descobertas, palavrasValidas, proximoNivel]);
 
   return {
     letras,
