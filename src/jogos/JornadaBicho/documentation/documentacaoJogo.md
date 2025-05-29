@@ -36,15 +36,6 @@ Crianças em fase inicial de aprendizagem escolar.
 1. Tela inicial do jogo
    ![17484881203953480083007441330882](https://github.com/user-attachments/assets/2b51ff8b-842f-4b93-8a33-79a921057643)
 
-3. Escolha o perfil ou crie um novo.
-4. Selecione uma das atividades disponíveis:
-   - Jogo de formar palavras
-   - Jogo de somar e subtrair
-   - Atividades de memória
-5. Siga as instruções de cada jogo.
-6. Acumule pontos e medalhas conforme o desempenho.
-
-
 ## Cronograma
 
 | Etapa | Período | Status|
