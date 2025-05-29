@@ -1,15 +1,26 @@
 import levels from "./fases.json"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './game.css';
 
 function Abaco() {
     const [valor, setValor] = useState(0);
     const [contas, setContas] = useState([0, 0, 0, 0, 0]);
+    const [faseAtual, setFaseAtual] = useState(1);
     const [alvo, setAlvo] = useState(gerarNumeroAleatorio());
     const [mensagem, setMensagem] = useState('');
     const [mostrarAlvo, setMostrarAlvo] = useState(true);
 
     const linhasValores = [1, 5, 10, 50, 100];
+
+    const atualizarAlvo = () => {
+        const fase = levels.levels.find(level => level.id === faseAtual);
+        if (fase){
+            setAlvo(fase.alvo);
+        }
+    };
+    useEffect(() => {
+        atualizarAlvo();
+    }, [faseAtual]);
 
     function gerarNumeroAleatorio() {
         return Math.floor(Math.random() * 500) + 1;
@@ -57,6 +68,14 @@ function Abaco() {
         setMensagem('');
     };
 
+    const proximaFase = () => {
+        if (faseAtual < 10){
+            setFaseAtual(faseAtual + 1);
+        } else {
+            setMensagem("Acabou! Uhull");
+        }
+    };
+
     return (
         <main className="container">
             <div className="game-container-V">
@@ -92,6 +111,7 @@ function Abaco() {
                         {/* <button onClick={() => setMostrarAlvo(!mostrarAlvo)}>
                             {mostrarAlvo ? ' Esconder' : ' Mostrar'}
                         </button>*/}
+                        <div className="Invisible"></div>
                         <button onClick={verificarAcerto} className="verificar botoes">
                              Verificar
                         </button>
@@ -101,6 +121,9 @@ function Abaco() {
                         {/*<button onClick={resetarAbaco} className="resetar">
                              Resetar
                         </button>*/}
+                        <button onClick={proximaFase} className="proxima-fase-botoes">
+                            Próxima Fase
+                        </button>
                     </div>
                 </div>
                 
