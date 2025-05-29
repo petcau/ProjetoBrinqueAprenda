@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import Letras from "./Letras";
 import PalavraTentativa from "./PalavraTentativa";
 import PalavrasDescobertas from "./PalavrasDescobertas";
@@ -19,6 +19,7 @@ function AnagramaJogo({
   const [tempoEsgotado, setTempoEsgotado] = useState(false);
   const [faseCompleta, setFaseCompleta] = useState(false);
   const [reiniciarTrigger, setReiniciarTrigger] = useState(0);
+  const [carregandoProximaFase, setCarregandoProximaFase] = useState(false); // 👈 novo estado
 
   // Verifica se o jogador completou a fase
   useEffect(() => {
@@ -27,7 +28,6 @@ function AnagramaJogo({
       descobertas.length === palavrasValidas.length
     ) {
       setFaseCompleta(true);
-    // evita conflito com tempo
     }
   }, [descobertas, palavrasValidas]);
 
@@ -48,14 +48,18 @@ function AnagramaJogo({
   };
 
   const handleProximaFase = () => {
-  handleReiniciar()
-  setFaseCompleta(false);
-  setTempoEsgotado(false);
-  resetarTentativa();
-  limparDescobertas();
-  setReiniciarTrigger(t => t + 1); 
-  proximoNivel(); // Avança fase
-};
+    setCarregandoProximaFase(true); 
+    setTimeout(() => {
+      handleReiniciar();
+      setFaseCompleta(false);
+      setTempoEsgotado(false);
+      resetarTentativa();
+      limparDescobertas();
+      setReiniciarTrigger(t => t + 1); 
+      proximoNivel(); // Avança fase
+      setCarregandoProximaFase(false); 
+    }, 1000); 
+  };
 
   return (
     <div className="mesa-container">
@@ -68,17 +72,17 @@ function AnagramaJogo({
 
       {/* Cronômetro aparece só se a fase estiver ativa */}
       {!faseCompleta && !tempoEsgotado && (
-      <Cronometro
-  tempoInicial={30}
-  onTempoEsgotado={handleTempoEsgotado}
-  reiniciarTrigger={reiniciarTrigger}
-/>
+        <Cronometro
+          tempoInicial={30}
+          onTempoEsgotado={handleTempoEsgotado}
+          reiniciarTrigger={reiniciarTrigger}
+        />
       )}
 
       {/* Tela de derrota */}
       {tempoEsgotado && (
         <div>
-          <h3>Tempo esgotado!</h3>
+          <h3 className="finish">Tempo Esgotado!</h3>
           <button className="botoes" onClick={handleReiniciar}>
             Tentar novamente
           </button>
@@ -88,9 +92,13 @@ function AnagramaJogo({
       {/* Tela de sucesso */}
       {faseCompleta && (
         <div>
-          <h3>Você descobriu todas as palavras!</h3>
-          <button className="botoes" onClick={handleProximaFase}>
-            Próxima fase
+          <h3 className="finish">Você Venceu!</h3>
+          <button
+            className="botoes"
+            onClick={handleProximaFase}
+            disabled={carregandoProximaFase} // 👈 botão desabilitado enquanto carrega
+          >
+            {carregandoProximaFase ? "Carregando..." : "Próxima fase"}
           </button>
         </div>
       )}
