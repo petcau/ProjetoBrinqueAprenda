@@ -9,17 +9,18 @@
   </tr>
 </table>
 
-## Tecnologias atribuídas
-
 ## lógica do jogo
+X
 
 ## Componentes ( React )
+X
 
 ## Design imagens (prompt)
 
 - Foi utilidado a seguinte ordem para o ChatGPT : " Bom dia chatgpt, crie para mim um abaco animado em 2D"
 - Próximo comando foi : " Transforme em PNG "
 
-  #### Imagens de IA
+
 
   ## Sons
+  em progresso de busca...

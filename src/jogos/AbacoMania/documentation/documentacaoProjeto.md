@@ -47,6 +47,8 @@ Crianças de todas as idades entre 7 a 12 anos.
    - A letra C representa centenas. conta-se de 100 em 100.
 5. Após o número atingir o resultado pedido, um botão acenderá para ser clicado e passar para a próxima fase com um novo número, cada vez mais difícil.
 
+IMG--
+
 ## Micro Atividades
 
 - Desenvolvimento da capa - design
@@ -71,7 +73,7 @@ Crianças de todas as idades entre 7 a 12 anos.
 | criação do CSS do jogo |  20/05/2025           | em andamento |
 | criação da v1 do jogo  |  22/05/2025           | finalizado   |
 | reunião de documentação|  21/05/2025           | finalizado   |
-| produção em aula       |  22/05/2025           | finalizada
+| produção em aula       |  22/05/2025           | finalizada   |
 
 ## Funcionalidades do jogo
 
@@ -80,3 +82,4 @@ Crianças de todas as idades entre 7 a 12 anos.
 3. Botão de início pra retornar a tela principal.
 4. Botão de níveis que está numerado em ordem crescente.
 5. Botão pra próximo nível.
+6. Botão de regulagem do volume dos sons(opcional).
