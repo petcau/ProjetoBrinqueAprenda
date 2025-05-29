@@ -41,3 +41,15 @@
 2. Mudança no estilo do titulo e nivel;
 
 <p>Descoberta de um erro ao subir de nivel: O tempo não reinicia.</p>
+
+# Dia 28/05/2025
+
+<p>As seguintes mudanças foram feitas:</p>
+1. Correções de bug do cronometro;
+2. Adição dos efeitos sonoros;
+3. Estilização do campo de palavras;
+4. Nova capa;
+5. Design tela vitoria;
+6. Botão de vitoria;
+
+- Definição de formulario para teste dos jogos;

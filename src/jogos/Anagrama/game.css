@@ -160,3 +160,25 @@
     background-size: cover;
   }
 }
+
+.container-palavras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem; /* espaçamento natural entre as palavras */
+  justify-content: center;
+  margin: 0.1rem 0;
+}
+
+.palavra-bloco {
+  padding: 1rem 0.5rem;
+  background: #df8526;
+  border-radius: 25px;
+}
+
+.palavra-descoberta,
+.palavra-oculta {
+  font-size: 1.5rem; /* tamanho maior */
+  font-weight: bold;
+  color: #000000; /* cor preta */
+  letter-spacing: 0.5rem; /* espaço entre caracteres */
+}
