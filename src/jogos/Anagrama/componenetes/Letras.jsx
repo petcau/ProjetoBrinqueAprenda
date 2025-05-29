@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 
 function Letras({ letras, onAdicionarLetra, desabilitado }) {
   const clickSoundRef = useRef(null);
@@ -6,6 +6,7 @@ function Letras({ letras, onAdicionarLetra, desabilitado }) {
   const handleClick = (letra) => {
     if (desabilitado) return;
 
+    // Toca som de clique
     if (clickSoundRef.current) {
       clickSoundRef.current.currentTime = 0;
       clickSoundRef.current.play();
@@ -16,6 +17,7 @@ function Letras({ letras, onAdicionarLetra, desabilitado }) {
 
   return (
     <div className="letras">
+      {/* Som de clique */}
       <audio
         ref={clickSoundRef}
         src="src/assets/Sons/somClick.wav"

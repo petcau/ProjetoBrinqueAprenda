@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
-function Cronometro({ tempoInicial = 30, onTempoEsgotado, onReiniciarTempo, reiniciarTrigger }) {
+function Cronometro({ tempoInicial = 30, onTempoEsgotado, reiniciarTrigger }) {
   const [tempo, setTempo] = useState(tempoInicial);
   const [ativo, setAtivo] = useState(true);
 
   const tickSoundRef = useRef(null);
   const timesUpSoundRef = useRef(null);
 
-  // *** NOVO: reinicia o cronômetro quando reiniciarTrigger mudar ***
+  // Reinicia o cronômetro quando o reiniciarTrigger mudar
   useEffect(() => {
     setTempo(tempoInicial);
     setAtivo(true);
@@ -22,7 +22,6 @@ function Cronometro({ tempoInicial = 30, onTempoEsgotado, onReiniciarTempo, rein
           clearInterval(intervalo);
           setAtivo(false);
 
-          // Toca som de tempo esgotado
           if (timesUpSoundRef.current) {
             timesUpSoundRef.current.currentTime = 0;
             timesUpSoundRef.current.play();
@@ -32,7 +31,6 @@ function Cronometro({ tempoInicial = 30, onTempoEsgotado, onReiniciarTempo, rein
           return 0;
         }
 
-        // Toca som de tique-taque a cada segundo
         if (tickSoundRef.current) {
           tickSoundRef.current.currentTime = 0;
           tickSoundRef.current.play();
@@ -45,28 +43,12 @@ function Cronometro({ tempoInicial = 30, onTempoEsgotado, onReiniciarTempo, rein
     return () => clearInterval(intervalo);
   }, [ativo, onTempoEsgotado]);
 
-  const reiniciar = () => {
-    setTempo(tempoInicial);
-    setAtivo(true);
-    onReiniciarTempo();
-  };
-
   return (
     <div>
-      {/* Sons */}
       <audio ref={tickSoundRef} src="src/assets/Sons/contagem.wav" preload="auto" />
       <audio ref={timesUpSoundRef} src="src/assets/Sons/contagem.wav" preload="auto" />
 
-      {ativo ? (
-        <h3>Tempo: {tempo}s</h3>
-      ) : (
-        <div>
-          <h3>Tempo esgotado!</h3>
-          <button className="botoes" onClick={reiniciar}>
-            Tentar novamente
-          </button>
-        </div>
-      )}
+      <h3>Tempo: {tempo}s</h3>
     </div>
   );
 }

@@ -27,7 +27,7 @@ function AnagramaJogo({
       descobertas.length === palavrasValidas.length
     ) {
       setFaseCompleta(true);
-      setTempoEsgotado(false); // evita conflito
+    // evita conflito com tempo
     }
   }, [descobertas, palavrasValidas]);
 
@@ -48,28 +48,34 @@ function AnagramaJogo({
   };
 
   const handleProximaFase = () => {
-    setFaseCompleta(false);
-    proximoNivel(); // avança a fase
-    setReiniciarTrigger((t) => t + 1); // reinicia o cronômetro
-  };
+  handleReiniciar()
+  setFaseCompleta(false);
+  setTempoEsgotado(false);
+  resetarTentativa();
+  limparDescobertas();
+  setReiniciarTrigger(t => t + 1); 
+  proximoNivel(); // Avança fase
+};
 
   return (
     <div className="mesa-container">
+      {/* Som de tempo esgotado */}
       <audio
         ref={timesUpSoundRef}
         src="src/assets/Sons/somDerrota.mp3"
         preload="auto"
       />
 
+      {/* Cronômetro aparece só se a fase estiver ativa */}
       {!faseCompleta && !tempoEsgotado && (
-        <Cronometro
-          tempoInicial={30}
-          onTempoEsgotado={handleTempoEsgotado}
-          onReiniciarTempo={handleReiniciar}
-          reiniciarTrigger={reiniciarTrigger}
-        />
+      <Cronometro
+  tempoInicial={30}
+  onTempoEsgotado={handleTempoEsgotado}
+  reiniciarTrigger={reiniciarTrigger}
+/>
       )}
 
+      {/* Tela de derrota */}
       {tempoEsgotado && (
         <div>
           <h3>Tempo esgotado!</h3>
@@ -79,6 +85,7 @@ function AnagramaJogo({
         </div>
       )}
 
+      {/* Tela de sucesso */}
       {faseCompleta && (
         <div>
           <h3>Você descobriu todas as palavras!</h3>
