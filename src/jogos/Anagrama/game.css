@@ -53,11 +53,11 @@
   font-size: 1.8rem;
   font-weight: bold;
   color: #fff;
-  background-color: rgba(155, 53, 53, 0.85); /* fundo avermelhado sem perder contraste */
+  background-color: rgba(155, 53, 53, 0.85); 
   padding: 6px 14px;
   border-radius: 12px;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
-  font-family: 'Luckiest Guy', cursive; /* ou outra que combine com o estilo do jogo */
+  font-family: 'Luckiest Guy', cursive;
   letter-spacing: 1px;
   text-shadow: 1px 1px #000;
 }
@@ -85,7 +85,7 @@
   color: #222;
 }
 
-.botoes button {
+.real-botoes button {
   margin: 0.5rem;
   padding: 0.6rem 1.2rem;
   font-size: 1rem;
@@ -97,13 +97,13 @@
   transition: background-color 0.3s;
 }
 
-.botoes button:hover {
+.real-botoes button:hover {
   background-color: #357bd8;
 }
 
 .palavras-validas {
   width: 100%;
-  max-height: 120px; /* altura máxima controlada */
+  max-height: 120px; 
   overflow-y: auto;
   text-align: center;
   word-wrap: break-word;
@@ -139,4 +139,27 @@
 
     
   
+/* responsividade */
 
+@media (max-width: 768px) {
+  .Anagrama-header{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .botao_voltar_menu{
+    position:static;
+    font-size: 20px;
+  }
+  .fase{
+     position:static;
+  }
+  .title{
+    background-color: red;
+  }
+  .game-container-anagrama{
+    width: 100%;
+    gap: 3.5rem;
+    background-size: cover;
+  }
+}

@@ -2,7 +2,7 @@ function PalavraTentativa({ tentativa, onEnviar }) {
   return (
     <>
       <div className="tentativa">Palavra: {tentativa}</div>
-      <div className="botoes">
+      <div className="real-botoes">
         <button onClick={onEnviar}>Montar</button>
       </div>
     </>
