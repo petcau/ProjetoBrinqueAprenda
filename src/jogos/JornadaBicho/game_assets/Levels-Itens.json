@@ -5,7 +5,7 @@
       "description": "Animais domésticos (fácil)",
       "zones": ["animais"],
       "items": [
-        { "name": "Cachorro", "correctZone": "animais", "image": "dog.png" },
+        { "name": "Cervo", "correctZone": "animais", "image": "cervo.png" },
         { "name": "Gato", "correctZone": "animais", "image": "cat.png" },
         { "name": "Peixe", "correctZone": "animais", "image": "fish.png" },
         { "name": "Pássaro", "correctZone": "animais", "image": "bird.png" }

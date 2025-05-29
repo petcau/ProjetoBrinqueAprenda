@@ -37,7 +37,7 @@ function MenuJornada({ estado, setEstado }) {
           <figure className="Titulo_JornadaFig">
             <img
               className="Titulo_Jonada_img"
-              src="src/jogos/JornadaBicho/game_assets/imagens/titulo.png"
+              src="src/jogos/JornadaBicho/game_assets/imagens/titulo-jornada.png"
               alt="Título do jogo Jornada Bicho"
               id="Titulo_Jornada"
             />
