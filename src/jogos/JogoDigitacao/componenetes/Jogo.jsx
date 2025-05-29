@@ -93,6 +93,7 @@ export default function Jogo() {
           <h2 className="textoMD">Tempo: {count}s</h2>
           <p className="textoMD">Digite a palavra escrita acima:</p>
           <input
+           className="inputD"
             type="text"
             value={input}
             onChange={mudança}
