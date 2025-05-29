@@ -32,6 +32,7 @@ O Jogo desenvolvido pela equipe 4 foi o Arrasta o bicho, que consiste em arrasta
 Crianças em fase inicial de aprendizagem escolar.
 
 ## Manual do Jogo
+![17484877619866989054499534390835](https://github.com/user-attachments/assets/15ae9044-2f71-48f3-bf23-52e933565574)
 
 1. Acesse o jogo através do link ou aplicativo.
 2. Escolha o perfil ou crie um novo.
