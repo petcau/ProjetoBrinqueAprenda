@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Jogo from "../componenetes/Jogo";
-import Giz from "../componenetes/Giz";
 function Home(){
    const [estado, setEstado] = useState(true)
    const irParaJogo = () =>{
