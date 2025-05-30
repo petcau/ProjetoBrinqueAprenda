@@ -206,7 +206,6 @@ img {
   transition: border-color 0.3s ease, background-color 0.3s ease;
   font-family: 'Fredericka the Great', cursive;
 }
-
 @media (max-width: 1024px) {
   .container {
     padding: 20px 15px;
