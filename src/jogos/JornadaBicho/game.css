@@ -132,24 +132,23 @@
     font-weight: bold;
   }
 
-  h1 {
+  .h1b {
   font-size: 35px; /* tamanho do h1 */
   margin-bottom: 0%;
 }
 
-h2 {
+.h2b{
   font-size: 10px; /* tamanho do h2 */
   margin-left: 10%;
   margin-bottom: -8%;
 }
 
-h3 {
+.h3b{
   font-size: 10px; /* tamanho do h3 */
   margin-left: 10%;
   margin-bottom: -8%;
 }
 
-p{
+.pb{
 font-size: 10px;
-margin-left: 10%;
   }

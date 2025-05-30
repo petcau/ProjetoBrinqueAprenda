@@ -75,34 +75,35 @@ export default function Jogo() {
 
   return (
     <div>
-      <h1 className="textoMD">Fase {fase.fase}</h1>
       {fim ? (
         <>
-          <label className="textoMD">GAME OVER</label>
-          <img src={imageUrl} alt="Game Over" />
+        <div className="imagemcontainerd">
+          <p className="textoMD" class ="texto-piscando">GAME OVER</p>
+          <img src={imageUrl} alt="Game Over" className="containerimgD"/>
           <p className="textoMD">{mensagem}</p>
-          {faseAtual + 1 < fasesData.fases.length && (
-            <button className="botao" onClick={() => setFaseAtual(prev => prev + 1)}>
-              Próxima Fase
-            </button>
-          )}
+        </div>
         </>
       ) : (
-        <label>
-          <h1 className="textoMD">{palavra}</h1>
-          <h2 className="textoMD">Tempo: {count}s</h2>
+        
+          <><h1 className="textoMDfase">Fase {fase.fase}</h1>
+          <div className="linhaPalavra">
+              <h1 className="textoMDT">{palavra}</h1>
+          <h2 className="textoMD">{count}s</h2>
+          </div>
           <p className="textoMD">Digite a palavra escrita acima:</p>
           <input
-           className="inputD"
+            className="inputD"
             type="text"
             value={input}
             onChange={mudança}
             placeholder="Digite a palavra"
-            onKeyDown={(e) => e.key === 'Enter' && comparar()}
-          />
-          <p className="textoMD">{mensagem}</p>
-          <p className="textoMD">Acertos: {acertos} / {fase.quantidadePalavras}</p>
-        </label>
+            onKeyDown={(e) => e.key === 'Enter' && comparar()} />
+            <p className="textoMD">{mensagem}</p>
+            <p className="textoMD">Acertos: {acertos} / {fase.quantidadePalavras}</p>
+
+            </>
+            
+        
       )}
     </div>
   );
