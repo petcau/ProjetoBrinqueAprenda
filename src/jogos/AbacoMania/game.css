@@ -1,12 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Barriecito&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap');
 
 :root{
     --Cor-branca: #f9f9f9;
-    --Cor-preta: rgba(22, 22, 22, 0.63);
+    --Cor-preta: rgba(0, 0, 0, 0.63);
     --Cor-cinza-claro: #2c3e50;
     --Cor-Branco-Mais-Escuro: #eef2f5;
     --Cor-Azul: #2196f3;
     --Cor-Azul-Menor: #238ce2;
+    --Cor-Laranja1-abaco: #f85d03;
+    --Cor-Laranja2-abaco: #fd8d4d;
+    --Cor-Verde1-abaco: #08a3a3;
+    --Cor-Verde2-abaco: #bdf7df;
+    --Cor-Lavanda-abaco: #a259ff;
+    --Cor-amarela-abaco: #fff176;
+    --Cor-azulvibrante-abaco: #03a9f4;
 }
 .container {
     margin: 0 auto;
@@ -17,22 +25,25 @@
 
 .game-container-V{
     text-align: center;
-    background-color: var(--Cor-branca);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px var(--Cor-preta);
-    width: 600px;
+    width: 1440px;
+    height: 800px;
+    background-image: url(game_assets/Imagemfundoabaco.png) ;
 }
 
 .titulo {
-    color: var(--Cor-preta);
-    margin-bottom: 20px;
-    font-size: 2.2em;
-    font-family: "Barriecito", system-ui;
+    color: var(--Cor-Laranja1-abaco);
+    margin-top: -20px;
+    margin-bottom: -20px;
+    font-size: 85px;
+    font-family: "Jersey 10", sans-serif;
+    font-weight: bold;
 }
 
 .painel-controle {
-    background-color: var(--Cor-Branco-Mais-Escuro);
+    background-color: var(--Cor-Verde2-abaco);
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 20px;
@@ -42,34 +53,43 @@
     display: flex;
     justify-content: space-around;
     margin-bottom: 10px;
+    font-family: "Jersey 10", sans-serif;
+    font-size: 22px;
 }
 
 .valor-atual, .valor-alvo {
     font-size: 1.2em;
     padding: 8px 15px;
     border-radius: 5px;
+    font-family: "Jersey 10", sans-serif;
 }
 
 .valor-atual {
-    background-color: var(--Cor-Azul);
+    background-color: var(--Cor-Verde1-abaco);
 }
 
 .valor-alvo {
-    background-color: var(--Cor-Azul);
+    color: var(--Cor-preta);
+    background-color: var(--Cor-azulvibrante-abaco);
+    font-size: 35px;
 }
 
 .proxima-fase-botoes{
-    background-color: var(--Cor-Azul-Menor);
-    color: var(--Cor-branca);
-    font-size: 19px;
+    background-color: var(--Cor-amarela-abaco);
+    color: var(--Cor-preta);
+    font-size: 30px;
+    font-family: "Jersey 10", sans-serif;
 }
 
 .verificar-botoes {
-    background-color: var(--Cor-Azul-Menor);
-    color: var(--Cor-branca);
-    font-size: 19px;
-    margin-left: 225px;
+    background-color: var(--Cor-Laranja2-abaco);
+    color: var(--Cor-preta);
+    font-size: 30px;
+    margin-left: 47%;
+    font-family: "Jersey 10", sans-serif;
+    cursor: pointer;
 }
+
 .botoesContainer{
     display: flex;
     justify-content: space-between;
@@ -104,7 +124,7 @@ button:hover {
 
 .verificar {
     background-color: var(--Cor-Azul-Menor);
-    color: white;
+    color: rgb(5, 235, 74);
 }
 
 .novo-alvo {
@@ -131,32 +151,37 @@ button:hover {
     justify-content: center;
     gap: 10px;
     padding: 10px;
-    background-color: #f5f5f5;
+    background-color: var(--Cor-Verde2-abaco);
     border-radius: 5px;
+
 }
 
 .valor-linha {
     width: 40px;
     font-weight: bold;
-    color: #2c3e50;
+    font-size: 30px;
+    color: var(--Cor-preta);
+    font-family: "Bubblegum Sans", sans-serif;
+    text-align: right ;
+    margin-right: 30px;
 }
 
 .contas {
     display: flex;
-    gap: 5px;
+    gap: 30px;
 }
 
 .conta {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
-    background-color: #ddd;
+    background-color: #ffffff;
     cursor: pointer;
     transition: all 0.3s;
 }
 
 .conta.ativo {
-    background-color: #3498db;
+    background-color: rgba(62, 51, 221, 1);
 }
 
 .barra {
@@ -176,20 +201,21 @@ button:hover {
 }
 
 .feedback.acerto {
-    background-color: #d4edda;
-    color: #155724;
+    background-color: #77eb92;
+    color: #084416;
     border: 1px solid #c3e6cb;
 }
 
 .feedback.erro {
-    background-color: #f8d7da;
-    color: #721c24;
+    background-color: #eb7b77;
+    color: #42090f;
     border: 1px solid #f5c6cb;
 }
 
 .instrucoes {
-    margin-top: 20px;
-    color: #666;
-    font-size: 0.9em;
-    line-height: 1.5;
+    margin-top: -21px;
+    color: #000000;
+    font-size: 17px;
+    line-height: 1,5;
+    font-weight: bold;
 }
