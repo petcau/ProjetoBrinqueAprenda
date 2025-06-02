@@ -74,7 +74,7 @@
       background-color: #05c24e;
       color: #ffffff;
        width: 200px;
-       height: 55px;
+       height: 45px;
        box-shadow: #00000069 0px 6px 3px;
        
        
@@ -94,6 +94,8 @@
     border: 1px solid #888;
     cursor: grab;
     color: #000000;
+     width: 100px;
+     height: 100px;
   }
 
   
@@ -135,7 +137,7 @@
 .NV{
   font-size: 36px;
   font-weight: bold;
-  margin-left: 11%;
+  margin-left: -7%;
   margin-bottom: -8%;
   color: aqua;
 }
@@ -144,17 +146,21 @@
   color: #05c24e;
   font-size: 20px;
   font-weight: bold;
-  margin-left: 15%;
+  margin-left: 2%;
+  margin-right: -2%;
 
-}
-
-.DICA{
-  font-size: 15px; /* tamanho do h2 */
-  margin-left: 10%;
-  margin-bottom: -8%;
 }
 
 .p-jornada{
-font-size: 15px;
-margin-bottom: 0px;
+font-size: 19px;
+margin-bottom: -8px;
+margin-left: 10%;
+  margin-bottom: -8%;
+  font-weight: bold;
+}
+
+.acertos_jornada {
+font-weight: bold;
+font-size: 20px;
+color: rgb(255, 255, 255);
 }
