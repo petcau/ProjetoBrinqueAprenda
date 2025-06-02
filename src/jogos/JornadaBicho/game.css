@@ -80,19 +80,12 @@
        
     }
 
-    /* Manipulção do titulo dos niveis */
-  .Header-Nivel-Jornada{
-  margin-top: auto;
-  padding: 15px;
-   
-  }
-
   .objects {
     display: flex;
     margin-top: 20px;
     justify-content: center;
     gap: 20px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
   }
   
   .drag-item {
@@ -108,6 +101,7 @@
     display: flex;
     gap: 20px;
     margin-bottom: 30px;
+    justify-content: center;
   }
   
   .drop-zone {
@@ -132,23 +126,35 @@
     font-weight: bold;
   }
 
-  .h1b {
-  font-size: 35px; /* tamanho do h1 */
-  margin-bottom: 0%;
+  .Header-Nivel-Jornada{
+   display: flex;
+   justify-content: space-around;
+   align-items: baseline;
 }
 
-.h2b{
-  font-size: 10px; /* tamanho do h2 */
+.NV{
+  font-size: 36px;
+  font-weight: bold;
+  margin-left: 11%;
+  margin-bottom: -8%;
+  color: aqua;
+}
+
+.desc-jornada {
+  color: #05c24e;
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 15%;
+
+}
+
+.DICA{
+  font-size: 15px; /* tamanho do h2 */
   margin-left: 10%;
   margin-bottom: -8%;
 }
 
-.h3b{
-  font-size: 10px; /* tamanho do h3 */
-  margin-left: 10%;
-  margin-bottom: -8%;
+.p-jornada{
+font-size: 15px;
+margin-bottom: 0px;
 }
-
-.pb{
-font-size: 10px;
-  }

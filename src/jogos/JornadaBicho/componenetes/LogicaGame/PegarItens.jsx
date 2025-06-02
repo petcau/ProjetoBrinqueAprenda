@@ -19,9 +19,8 @@ function PegarItem({ item }) {
     >
       {item.image && (
         <img
-          src={"src/jogos/JornadaBicho/game_assets/imagens/${item.image}"}
-          //alt={item.name}
-          style={{ width: "80px", height: "80px", objectFit: "contain" }}
+          src={`../../game_assets/imagens/${item.image}`}
+          style={{ width: "300px", height: "30px", objectFit: "contain" }}
         />
       )}
       <div>{item.name}</div>
