@@ -82,7 +82,7 @@ export function useAnagrama() {
   };
 }*/
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import PalavrasData from "./Palavras.json";
 
 export function useAnagrama() {
@@ -149,7 +149,7 @@ export function useAnagrama() {
     }
   }, [nivelAtual]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (
       palavrasValidas.length > 0 &&
       descobertas.length === palavrasValidas.length
@@ -158,7 +158,7 @@ export function useAnagrama() {
       return () => clearTimeout(timer);
     }
   }, [descobertas, palavrasValidas, proximoNivel]);
-
+*/
   return {
     letras,
     tentativa,
@@ -169,6 +169,7 @@ export function useAnagrama() {
     resetarTentativa,
     enviarPalavra,
     limparDescobertas,
+    proximoNivel,
     tempoEsgotado,
     lidarComTempoEsgotado,
     reiniciarTempo
