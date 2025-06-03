@@ -259,3 +259,52 @@ img {
     height: 350px;
   }
 }
+
+#sobrecreditos{
+  font-size: 30px;
+  color: #ffffff;
+  text-align: center;
+  padding-top: 30px;
+  transform: translateX(15px);
+}
+
+#textsobre1{
+  font-size: 20px;
+  color: #ffffff;
+  position: relative;
+  text-align: justify;
+  text-justify: inter-word;
+  margin-top: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+  transform: translateX(15px);
+}
+
+.backSobre{
+  width: 100%;
+  min-height: 100vh;
+  background-image: url("src/assets/background-sobre.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow-x: hidden;
+}
+
+#sobrecontainer{
+  position: relative;
+  flex: content;
+  margin-left: auto;
+  margin-right: auto;
+  width: 1440px;
+  min-height: 100vh;
+  background-color: #06162e;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow-x: hidden;
+}
+
+#listcredito{
+  margin-left: 60px;
+}
