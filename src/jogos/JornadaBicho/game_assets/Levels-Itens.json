@@ -35,7 +35,7 @@
         { "name": "Elefante", "correctZone": "animais", "image": "elephant.png" },
         { "name": "Zebra", "correctZone": "animais", "image": "zebra.png" },
         { "name": "Girafa", "correctZone": "animais", "image": "giraffe.png" },
-        { "name": "Hipopótamo", "correctZone": "animais", "image": "hippo.png" }
+        { "name": "Hipopótamo", "correctZone": "animais", "image": "hipopotamo.png" }
       ],
       "acertosNecessarios": 4,
       "dica": "Savana africana"

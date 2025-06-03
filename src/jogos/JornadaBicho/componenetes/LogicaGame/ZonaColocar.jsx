@@ -9,7 +9,6 @@ function AreaColocar({ zoneName, onDrop }) {
         onDrop(itemId, zoneName);
       }}
     >
-      {zoneName.toUpperCase()}
     </div>
   );
 }

@@ -80,8 +80,9 @@ function GameLogic() {
       <Header className="level_jornada"
       level={levelIndex + 1} 
       description={currentLevel.description}
-      dica={currentLevel.dica}/>
+      />
       <ZonesList zones={zones} onDrop={handleDrop} />
+      <p className="dica_jornada">{currentLevel.dica}</p>
       <Controls className="Controles_jornada" onNext={nextLevel} onPrevious={previousLevel} levelIndex={levelIndex} totalLevels={levels.length} />
       <ItemsList objects={objects} />
       <div className="acertos_jornada">
