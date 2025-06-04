@@ -15,9 +15,7 @@ const Controls = ({ onPrevious, onNext, isFirst, isLast }) => (
       <button className="NAnterior" onClick={onPrevious} disabled={isFirst} >
         Nível Anterior
       </button>
-      <button className="Nposterior" onClick={onNext} disabled={isLast}>
-        Próximo Nível
-      </button>
+      
     </div>
   );
   

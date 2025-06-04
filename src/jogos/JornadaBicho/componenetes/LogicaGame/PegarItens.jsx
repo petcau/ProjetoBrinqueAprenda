@@ -21,10 +21,10 @@ function PegarItem({ item }) {
       {item.image && (
         <img
           src={`/JornadaBicho/${item.image}`}
-          style={{ width: "300px", height: "30px", objectFit: "contain" }}
+          style={{ width: "90px", height: "90px", objectFit: "contain" }}
         />
       )}
-      <div>{item.name}</div>
+     <div>{item.name}</div>
     </div>
   );
 }
