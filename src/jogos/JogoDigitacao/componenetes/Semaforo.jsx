@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import '../CSS/Semaforo.css';
 // Importe apenas as imagens das luzes
 import luzVermelha from '../game_assets/luz_vermelha.png';
-import luzAmarela from '../game_assets/luz_verde.png';
-import luzVerde from '../game_assets/luz_amarela.png';
+import luzAmarela from '../game_assets/luz_amarela.png';
+import luzVerde from '../game_assets/luz_verde.png';
 
 export default function Semaforo({ onComplete }) {
   const [corAtiva, setCorAtiva] = useState('vermelho');
