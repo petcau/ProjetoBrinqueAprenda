@@ -1,4 +1,4 @@
-import './ZonaColocar.css'; 
+import "./ZonaColocar.css";
 function AreaColocar({ zoneName, onDrop }) {
   return (
     <div
@@ -8,8 +8,7 @@ function AreaColocar({ zoneName, onDrop }) {
         const itemId = e.dataTransfer.getData("text/plain");
         onDrop(itemId, zoneName);
       }}
-    >
-    </div>
+    ></div>
   );
 }
 

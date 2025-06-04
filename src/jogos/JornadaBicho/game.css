@@ -96,7 +96,6 @@
     color: #000000;
     object-fit: contain;
   }
-
   
   .zones {
     display: flex;
@@ -160,9 +159,18 @@ font-weight: bold;
 }
 
 .acertos_jornada {
+display: flex;
+align-items: center;
+justify-content: center;
 font-weight: bold;
 font-size: 20px;
 color: rgb(255, 255, 255);
 justify-items: center;
-
+}
+.acertos_jornada p {
+  margin-left: 10px;
+  margin-right: 10px;
+  color: #05c24e;
+  font-size: 20px;
+  font-weight: bold;
 }
