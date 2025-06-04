@@ -33,6 +33,8 @@ O Jogo desenvolvido pela equipe 4 foi o Arrasta o bicho, que consiste em arrasta
 Crianças em fase inicial de aprendizagem escolar.
 
 ## Manual do Jogo
+Ao abrir nosso site, escolha o jogo "Jornada dos bichos". 
+![17490675688203945294271444070569](https://github.com/user-attachments/assets/866cc632-5efd-4b30-a3f8-301c63f964e1)
 
 1. Tela inicial do jogo
    ![17484881203953480083007441330882](https://github.com/user-attachments/assets/2b51ff8b-842f-4b93-8a33-79a921057643)
