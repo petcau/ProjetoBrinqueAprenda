@@ -61,15 +61,18 @@
       "fase": 9,
       "quantidadePalavras": 5,
       "tempoLimite": 90,
-      "palavras": ["Há coisas que são preciosas por não durarem", "Podemos julgar o coração de um homem pela forma como ele trata os animais", "O homem não é nada além daquilo que a educação faz dele", "A moral, propriamente dita, não é a doutrina que nos ensina como sermos felizes, mas como devemos tornar-nos dignos da felicidade", "É no problema da educação que assenta o grande segredo do aperfeiçoamento da humanidade", "Quanto mais amor temos, tanto mais fácil fazemos a nossa passagem pelo mundo", 
-      "Todo o conhecimento humano começou com intuições, passou daí aos conceitos e terminou com ideias", "A paciência é a fortaleza do débil e a impaciência a debilidade do forte", 
-      "A paciência é a fortaleza do débil e a impaciência a debilidade do forte", "O homem é o único animal que precisa de trabalhar", "O princípio da finalidade não é constituitivo, mas regulador", "Quem não sabe o que busca, não identifica o que acha"]
+      "palavras": ["Há coisas que são preciosas por não durarem", "Podemos julgar o coração de um homem pela forma como ele trata os animais", "O homem não é nada além daquilo que a educação faz dele", "A moral, propriamente dita, não é a doutrina que nos ensina como sermos felizes, mas como devemos tornar-nos dignos da felicidade", "É no problema da educação que assenta o grande segredo do aperfeiçoamento da humanidade", 
+      "Quanto mais amor temos, tanto mais fácil fazemos a nossa passagem pelo mundo", 
+      "O medo mata a mente", "A paciência é a fortaleza do débil e a impaciência a debilidade do forte", 
+      "Não é que o poder corrompa, mas que ele é magnético para os corruptíveis", "O homem é o único animal que precisa de trabalhar", "O princípio da finalidade não é constituitivo, mas regulador", "Quem não sabe o que busca, não identifica o que acha"]
     },
     {
       "fase": 10,
-      "quantidadePalavras": 15,
-      "tempoLimite": 15,
-      "palavras": ["Programabilidade", "Multithreading", "Orientação", "Polimorfismo", "Encapsulamento", "Herança", "Abstração", "Responsividade", "Acessibilidade", "Internacionalização", "Globalização", "Performance", "Escalabilidade", "Containerização", "Orquestração"]
+      "quantidadePalavras": 5,
+      "tempoLimite": 90,
+      "palavras": ["As convicções são inimigas mais perigosas da verdade do que as mentiras", "Não há fatos eternos, como não há verdades absolutas", "O que não provoca minha morte faz com que eu fique mais forte", "Aquilo que se faz por amor está sempre além do bem e do mal", "O caminho do inferno está pavimentado de boas intenções", 
+      "O povo que subjuga outro forja suas próprias cadeias", "A razão sempre existiu, mas nem sempre de uma forma razoáve", "As revoluções são a locomotiva da história", "A história se repete, a primeira vez como tragédia, e a segunda como farsa", "É preciso que a leitura seja um ato de amor", "Me movo como educador, porque, primeiro, me movo como gente", "Quando a educação não é libertadora, o sonho do oprimido é ser o opressor", 
+      "Amar é um ato de coragem", "A leitura do mundo precede a leitura da palavra", "A melhor maneira de ser feliz é contribuir para a felicidade dos outros"]
     }
   ]
 }

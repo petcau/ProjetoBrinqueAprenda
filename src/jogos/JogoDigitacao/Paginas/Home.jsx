@@ -13,7 +13,6 @@ return(
       <div className="MenuD">
          {estado ? 
          <>
-         <button>Tutorial</button>
          <button className="start-button" onClick={irParaJogo}>Começar</button>
          <button className="start-button" onClick={() => (window.location.href = "/")}>Voltar
       </button>
