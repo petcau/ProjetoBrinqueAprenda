@@ -43,6 +43,8 @@ Ao abrir nosso site, escolha o jogo "Jornada dos bichos".
 
 | Etapa | Período | Status|
 |---------------------|-----------------------|------------  |
-| criação do código principal  | 08/05/25      | feito |
-| ajustes no código  |   15/05/25   | feito|   |criação das imagens e backlog  |17/05/2025 | feito | 
-|inicio de trabalhos no CSS | 21/05/2025 | feito | Últimos ajustes no menu | 29/05/2025 | feito
+|criação do código principal  | 08/05/25      | feito |
+|ajustes no código  |   15/05/25   | feito|   
+|criação das imagens e backlog  |17/05/2025 | feito | 
+|inicio de trabalhos no CSS | 21/05/2025 | feito | 
+|Últimos ajustes no menu | 29/05/2025 | feito
