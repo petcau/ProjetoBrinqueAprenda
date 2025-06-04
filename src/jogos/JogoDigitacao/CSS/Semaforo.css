@@ -1,0 +1,101 @@
+
+.semaforo-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 100;
+}
+
+.semaforo-body {
+  width: 80px;
+  height: 200px;
+  background-color: #333;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 15px 0;
+  box-shadow: 
+    0 0 10px rgba(0, 0, 0, 0.5),
+    inset 0 0 20px rgba(0, 0, 0, 0.3);
+  border: 3px solid #555;
+  position: relative;
+}
+
+/* Detalhes decorativos do corpo */
+.semaforo-body::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 30px;
+  background-color: #222;
+  border-radius: 5px 5px 0 0;
+}
+
+.semaforo-body::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 10px;
+  background-color: #111;
+  border-radius: 0 0 5px 5px;
+}
+
+/* Container para cada luz */
+.luz-container {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 0;
+}
+
+/* Estilo das luzes */
+.luz {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  opacity: 0.3;
+  transition: all 0.3s ease;
+}
+
+.luz.ativo {
+  opacity: 1;
+  filter: 
+    drop-shadow(0 0 5px currentColor)
+    brightness(1.2);
+}
+
+/* Cores específicas para efeito de sombra */
+.luz.vermelho.ativo {
+  color: #ff0000;
+}
+
+.luz.amarelo.ativo {
+  color: #ffff00;
+}
+
+.luz.verde.ativo {
+  color: #00ff00;
+}
+
+.contagem-texto {
+  font-family: 'Fredericka the Great', cursive;
+  font-size: 20px;
+  color: white;
+  margin-top: 10px;
+  text-shadow: 1px 1px 2px black;
+}

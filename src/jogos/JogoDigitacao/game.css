@@ -100,3 +100,38 @@
   animation: piscar 1s step-start infinite;
   font-size: 20px;
 }
+.carro-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  z-index: 100;
+  text-align: center;
+  bottom: -5%;
+}
+
+.carro-img {
+  width: 100%;
+  max-width: 180px;
+  height: auto;
+  display: block;
+  margin: 0 auto; 
+}
+
+.carro-img:hover {
+  transform: scale(1.1);
+}
+.mensagem-derrota {
+  font-family: 'Fredericka the Great', cursive;
+  font-size: 30px; /* 48px - tamanho grande */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin: 20px 0;
+  text-align: center;
+  animation: pulsar 1.5s infinite alternate;
+}
+
+@keyframes pulsar {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}

@@ -7,7 +7,7 @@ const flagUrl = './src/jogos/JogoDigitacao/game_assets/istockphoto-1337596555-61
       <div className="game-container-D">
         <h1 className="textoMDTtitulo">🏁DIGIRACE🏁</h1>
         <Home />
-        <img src={carroUrl} ></img>
+        <img  className= "carro-img"src={carroUrl} ></img>
       </div>
     </main>
   )

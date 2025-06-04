@@ -10,14 +10,14 @@
     {
       "fase": 2,
       "quantidadePalavras": 10,
-      "tempoLimite": 55,
+      "tempoLimite": 45,
       "palavras": ["Amigo", "Bola", "Café", "Dado", "Ecoa", "Fogo", "Gato", "Hino", "Igreja", "Jogo", "Luz", "Mato", "Nuvem", "Ouro", "Pato", "Quase", "Rato", "Sapo", "Teto", "Uva", "Vela", "Wok", "Xarope", "Yeti", "Zebra", "Água", "Bola", "Cima", "Dado", "Eixo", "Fato", "Gelo", 
       "Hera", "Íris", "Jogo", "Lago", "Mato", "Nuvem", "Ouro", "Pato", "Quase", "Rato", "Sapo"]
     },
     {
       "fase": 3,
       "quantidadePalavras": 10,
-      "tempoLimite": 50,
+      "tempoLimite": 45,
       "palavras": ["Amigo", "Balde", "Cacho", "Dardo", "Ética", "Fazer", "Gosto", "Hiena", "Ícone", "Jovem", "Karma", "Lento", "Moral", "Navio", "Ouvir", "Prato", "Quase", "Resto", "Susto", "Troca", "Unido", "Vento", "Xingo", "Yacht", "Zebra", "Anzol", "Besta", "Cesta", "Dessa", "Expor", "Fugir", "Globo", "Herói", "Ítens", "Jaula", "Kebab", "Lapis", "Misto", "Nobre", "Olhar", "Pular", "Queda", "Rampa", "Senso", "Tenso", "Usura"
 ]
     },
@@ -53,26 +53,37 @@
       "fase": 8,
       "quantidadePalavras": 5,
       "tempoLimite": 90,
-      "palavras": ["Só se vê bem com o coração, o essencial é invisível aos olhos", "Quando acordei hoje de manhã, eu sabia quem eu era", "Mas acho que já mudei muitas vezes desde então", "As coisas têm vida própria", "Tudo é questão de despertar a sua alma", "Cada qual sabe amar a seu modo","O modo pouco importa, o essencial é que saiba amar.", 
-      "Amor não é coisa que se possa pedir a alguém", "Você quer um coração? Você não sabe o quão sortudo és por não ter um","Corações nunca serão práticos enquanto não forem feitos para não se partirem", 
-      "O tempo até voa, mas é você quem pilota", "Sentir é estar distraído"]
+      "autor" : "Immanuel Kant",
+      "palavras": ["Só se vê bem com o coração, o essencial é invisível aos olhos", "Quando acordei hoje de manhã, eu sabia quem eu era", "Mas acho que já mudei muitas vezes desde então", "As coisas têm vida própria", "Tudo é questão de despertar a sua alma", 
+      "Cada qual sabe amar a seu modo","O modo pouco importa, o essencial é que saiba amar", 
+      "Amor não é coisa que se possa pedir a alguém", "Lembre-se de esquecer","O homem não é nada além daquilo que a educação faz dele", 
+      "A felicidade não é um ideal da razão mas sim da imaginação", "O sonho é uma arte poética involuntária"]
     },
     {
       "fase": 9,
       "quantidadePalavras": 5,
       "tempoLimite": 90,
-      "palavras": ["Há coisas que são preciosas por não durarem", "Podemos julgar o coração de um homem pela forma como ele trata os animais", "O homem não é nada além daquilo que a educação faz dele", "A moral, propriamente dita, não é a doutrina que nos ensina como sermos felizes, mas como devemos tornar-nos dignos da felicidade", "É no problema da educação que assenta o grande segredo do aperfeiçoamento da humanidade", 
-      "Quanto mais amor temos, tanto mais fácil fazemos a nossa passagem pelo mundo", 
-      "O medo mata a mente", "A paciência é a fortaleza do débil e a impaciência a debilidade do forte", 
-      "Não é que o poder corrompa, mas que ele é magnético para os corruptíveis", "O homem é o único animal que precisa de trabalhar", "O princípio da finalidade não é constituitivo, mas regulador", "Quem não sabe o que busca, não identifica o que acha"]
+      "autor" : "Karl Marx",
+      "palavras": ["O caminho do inferno está pavimentado de boas intenções", "O povo que subjuga outro forja suas próprias cadeias", "Eu não sou nada, mas devo ser tudo", 
+      "Mudanças sociais são impossíveis sem o fermento feminino", 
+      "As revoluções são a locomotiva da história", "O capitalismo gera o seu próprio coveiro", 
+      "Os operários não têm pátria", 
+      "O trabalhar na pele branca nunca poderá se libertar enquanto o trabalho na pele negra for marcado", 
+      "A história se repete, a primeira vez como tragédia, e a segunda como farsa", 
+      "Proletários de todos os países, uni-vos", 
+      "A relgião é o ópio do povo"]
     },
     {
       "fase": 10,
       "quantidadePalavras": 5,
       "tempoLimite": 90,
-      "palavras": ["As convicções são inimigas mais perigosas da verdade do que as mentiras", "Não há fatos eternos, como não há verdades absolutas", "O que não provoca minha morte faz com que eu fique mais forte", "Aquilo que se faz por amor está sempre além do bem e do mal", "O caminho do inferno está pavimentado de boas intenções", 
-      "O povo que subjuga outro forja suas próprias cadeias", "A razão sempre existiu, mas nem sempre de uma forma razoáve", "As revoluções são a locomotiva da história", "A história se repete, a primeira vez como tragédia, e a segunda como farsa", "É preciso que a leitura seja um ato de amor", "Me movo como educador, porque, primeiro, me movo como gente", "Quando a educação não é libertadora, o sonho do oprimido é ser o opressor", 
-      "Amar é um ato de coragem", "A leitura do mundo precede a leitura da palavra", "A melhor maneira de ser feliz é contribuir para a felicidade dos outros"]
+      "autor" : "Paulo Freire",
+      "palavras": ["É preciso que a leitura seja um ato de amor", "Me movo como educador, porque, primeiro, me movo como gente", "Quando a educação não é libertadora, o sonho do oprimido é ser o opressor", 
+      "Amar é um ato de coragem", "A leitura do mundo precede a leitura da palavra", 
+      "Ninguém liberta ninguém, ninguém se liberta sozinho: os homens se libertam em comunhão", 
+      "O direito incontestável de criticar exige de quem o exerce o dever de não mentir", "Ninguém nasce feito, é experimentando-nos no mundo que nós nos fazemos", "Quando a educação não é libertadora, o sonho do oprimido é ser o opressor", 
+      "Lavar as mãos do conflito entre os poderosos e os impotentes significa ficar do lado dos poderosos", "Ensinar não é transferir conhecimento, mas criar as possibilidades para a sua própria produção ou a sua construção",
+       "A humildade exprime uma das raras certezas de que estou certo: a de que ninguém é superior a ninguém"]
     }
   ]
 }

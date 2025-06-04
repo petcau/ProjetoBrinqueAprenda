@@ -130,20 +130,26 @@ img {
 .game-container-D {
   max-width: 1440px;
   max-height: 800px;
-  width: 50%;
+  width: 55vw; /* Ocupa 95% da largura da tela */
+  min-width: 320px;
+  height: 50vh; /* Ocupa 90% da altura da tela */
+  min-height: 600px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.5 rem;
   background-color: #0b3d0b; /* Verde escuro tipo lousa */
-  height: 500px;
   border: 20px solid #352523; /* Borda marrom de madeira */
   border-radius: 16px;
   padding: 20px;
+  padding-bottom: 100px;
   border-radius: 15px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  position: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   box-sizing: border-box;
   
 }
