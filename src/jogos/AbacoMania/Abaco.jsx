@@ -1,6 +1,8 @@
 import levels from "./fases.json"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef} from 'react';
 import './game.css';
+import somVitoriaSound from '../../assets/Sons/somVitoria.mp3';
+import somDerrotaSound from '../../assets/Sons/somDerrota.mp3';
 
 function Abaco() {
     const [valor, setValor] = useState(0);
@@ -10,6 +12,8 @@ function Abaco() {
     const [mensagem, setMensagem] = useState('');
     const [mostrarAlvo, setMostrarAlvo] = useState(true);
     const [acertou, setAcertou] = useState(false);
+
+    const audioEvento = useRef(null);
 
     const linhasValores = [1, 5, 10, 50, 100];
 
@@ -31,12 +35,18 @@ function Abaco() {
         if (valor === alvo) {
             setMensagem('Parabéns! Você acertou! 🥳 ');
             setAcertou(true);
+            audioEvento.current = new Audio(somVitoriaSound);
+            audioEvento.current.play();
         } else if (valor < alvo) {
             setMensagem(`Faltam ${alvo - valor}. Tente novamente! 🤔`);
             setAcertou(false);
+            audioEvento.current = new Audio(somDerrotaSound);
+            audioEvento.current.play();
         } else {
             setMensagem(`Passou ${valor - alvo}. Tente novamente! 🤔`);
             setAcertou(false);
+            audioEvento.current = new Audio(somDerrotaSound);
+            audioEvento.current.play();
         }
     };
 
@@ -48,7 +58,7 @@ function Abaco() {
 
     const moverConta = (linhaIndex, direcao) => {
         const novasContas = [...contas];
-        if (direcao === 'cima' && novasContas[linhaIndex] < 4) {
+        if (direcao === 'cima' && novasContas[linhaIndex] < 9) {
             novasContas[linhaIndex] += 1;
         } else if (direcao === 'baixo' && novasContas[linhaIndex] > 0) {
             novasContas[linhaIndex] -= 1;
@@ -149,7 +159,7 @@ function LinhaAbaco({ valorLinha, qtdContas, onClick }) {
         <div className="linha-abaco">
             <div className="valor-linha">{valorLinha}</div>
             <div className="contas">
-                {[...Array(4)].map((_, i) => (
+                {[...Array(9)].map((_, i) => (
                     <div 
                         key={i} 
                         className={`conta ${i < qtdContas ? 'ativo' : ''}`}
