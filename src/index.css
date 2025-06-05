@@ -130,61 +130,30 @@ img {
 .game-container-D {
   max-width: 1440px;
   max-height: 800px;
-  width: 50%;
+  width: 55vw; /* Ocupa 95% da largura da tela */
+  min-width: 320px;
+  height: 50vh; /* Ocupa 90% da altura da tela */
+  min-height: 600px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.5 rem;
   background-color: #0b3d0b; /* Verde escuro tipo lousa */
-  height: 500px;
   border: 20px solid #352523; /* Borda marrom de madeira */
   border-radius: 16px;
-  padding: 2rem;
+  padding: 20px;
+  padding-bottom: 100px;
   border-radius: 15px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  position: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   box-sizing: border-box;
+  
 }
 
-/* Css do Jogo da digitação */
-.textoMD{
-  font-family: 'Fredericka the great';
-  font-size: 20px;
-}
-.butão{
-  background-color: #242424;
-   font-size: 15px;
-   font-family: 'Fredericka the great';
-}
-.fredericka-the-great-regular {
-  font-family: "Fredericka the Great", serif;
-  font-weight: 800;
-  font-style: normal;
-}
-.start-button {
-  background-color: #b88b12;
-  padding: 10px 30px;
-  font-size: 20px;
-  border-radius: 15px;
-  border: none;
-  font-family: 'Fredericka the Great', cursive;
-  box-shadow: 3px 3px 0 #000;
-  cursor: pointer;
-}
-.inputD {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 10px 0;
-  border: 2px solid #4CAF50;
-  border-radius: 8px;
-  background-color: #ffffff;
-  color: #333;
-  font-size: 16px;
-  font-family: 'Arial', sans-serif;
-  box-sizing: border-box;
-  transition: border-color 0.3s ease, background-color 0.3s ease;
-}
 
 @media (max-width: 1024px) {
   .container {
@@ -295,4 +264,53 @@ img {
     width: 95%;
     height: 350px;
   }
+}
+
+#sobrecreditos{
+  font-size: 30px;
+  color: #ffffff;
+  text-align: center;
+  padding-top: 30px;
+  transform: translateX(15px);
+}
+
+#textsobre1{
+  font-size: 20px;
+  color: #ffffff;
+  position: relative;
+  text-align: justify;
+  text-justify: inter-word;
+  margin-top: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+  transform: translateX(15px);
+}
+
+.backSobre{
+  width: 100%;
+  min-height: 100vh;
+  background-image: url("src/assets/background-sobre.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow-x: hidden;
+}
+
+#sobrecontainer{
+  position: relative;
+  flex: content;
+  margin-left: auto;
+  margin-right: auto;
+  width: 1440px;
+  min-height: 100vh;
+  background-color: #06162e;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow-x: hidden;
+}
+
+#listcredito{
+  margin-left: 60px;
 }

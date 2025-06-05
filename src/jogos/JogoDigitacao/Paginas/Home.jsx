@@ -1,22 +1,47 @@
 import { useState } from "react";
 import Jogo from "../componenetes/Jogo";
+import '../game.css';
 
-function Home(){
-   const [estado, setEstado] = useState(true)
-   const irParaJogo = () =>{
-      setEstado(!estado);
-   }
+function Home() {
+  const [jogoAtivo, setJogoAtivo] = useState(false); // Estado mais descritivo
   
-return(
-   <>
-      <div>
-         {estado ? 
-         <>
-         <button className="start-button" onClick={irParaJogo}>Começar</button>
-         </>
-         :  
-         <><button className="butão" onClick={irParaJogo}>Voltar para a tela inicial</button><Jogo /></>}
-      </div>
-   </>
-)
-}export default Home;
+  const handleVoltar = () => {
+    setJogoAtivo(false); // Isso desmontará o componente Jogo automaticamente
+    // Os áudios serão parados pelo useEffect de limpeza no Jogo.jsx
+  };
+
+  return (
+    <div className="MenuD">
+      {!jogoAtivo ? (
+        /* TELA INICIAL */
+        <>
+          <button 
+            className="start-button" 
+            onClick={() => setJogoAtivo(true)}
+          >
+            Começar
+          </button>
+          <button 
+            className="start-button" 
+            onClick={() => (window.location.href = "/")}
+          >
+            Voltar
+          </button>
+        </>
+      ) : (
+        /* TELA DO JOGO */
+        <>
+          <Jogo />
+          <button 
+            className="buttonDD" 
+            onClick={handleVoltar}
+          >
+            Voltar
+          </button>
+        </>
+      )}
+    </div>
+  );
+}
+
+export default Home;

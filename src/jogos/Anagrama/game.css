@@ -137,6 +137,13 @@
   font-size: 12px;
 }
 
+.finish{
+  color: rgb(248, 248, 253);
+  display: flex;
+  justify-content: center;
+  font-family: 'Luckiest Guy', cursive;
+}
+
     
   
 /* responsividade */
@@ -154,12 +161,51 @@
   .fase{
      position:static;
   }
-  .title{
-    background-color: red;
-  }
   .game-container-anagrama{
     width: 100%;
     gap: 3.5rem;
     background-size: cover;
   }
+}
+
+.container-palavras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem; /* espaçamento natural entre as palavras */
+  justify-content: center;
+  margin: 0.1rem 0;
+}
+
+.palavra-bloco {
+  padding: 1rem 0.5rem;
+  background: #df8526;
+  border-radius: 25px;
+}
+
+.palavra-descoberta,
+.palavra-oculta {
+  font-size: 1.5rem; /* tamanho maior */
+  font-weight: bold;
+  color: #000000; /* cor preta */
+  letter-spacing: 0.5rem; /* espaço entre caracteres */
+}
+
+
+.botao-som {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  padding: 8px 12px;
+  background-color: #6b07ddcc;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.2s;
+}
+
+.botao-som:hover {
+  background-color: #b10909;
 }

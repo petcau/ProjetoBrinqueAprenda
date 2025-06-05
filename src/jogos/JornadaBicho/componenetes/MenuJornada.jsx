@@ -13,42 +13,46 @@ import "./Menu.css";
  */
 
 function MenuJornada({ estado, setEstado }) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const irParaJogo = () => {
     setEstado(false);
   };
 
   function getBack() {
     if (estado) {
-      setEstado(false)
-      navigate('/')
+      setEstado(false);
+      navigate("/");
     } else {
-      setEstado(true)
+      setEstado(true);
     }
   }
   return (
-      <div className="conteiner_Menu_Jornada">
-        <button className="Butao_Voltar_Ao_Menu" onClick={getBack}>
-                Voltar para o menu
-         </button>
-        {estado ? (
-          <>
-            <h1 className="Titulo_Jornada">
-            <img 
-            className="Titulo_Jonada_img"
-            src="src/jogos/JornadaBicho/game_assets/imagens/titulo.png"
-            alt="Título do jogo Jornada Bicho"
-            />  
-            </h1>
-            <button className="Botao_jogar_Jornada_bicho" onClick={irParaJogo}>Jogar</button>
-          </>
-        ) : (
-          <>
-            <GameLogic />
-          </>
-        )}
-      </div>
-    
+    <div className="conteiner_Menu_Jornada">
+      <button className="Butao_Voltar_Ao_Menu" onClick={getBack}>
+        Voltar para o menu
+      </button>
+
+      {estado ? (
+        <>
+          <figure className="Titulo_JornadaFig">
+            <img
+              className="Titulo_Jonada_img"
+              src="src/jogos/JornadaBicho/game_assets/imagens/titulo-jornada.png"
+              alt="Título do jogo Jornada Bicho"
+              id="Titulo_Jornada"
+            />
+          </figure>
+
+          <button className="Botao_jogar_Jornada_bicho" onClick={irParaJogo}>
+            Jogar
+          </button>
+        </>
+      ) : (
+        <>
+          <GameLogic />
+        </>
+      )}
+    </div>
   );
 }
 export default MenuJornada;

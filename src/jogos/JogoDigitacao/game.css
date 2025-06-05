@@ -1,24 +1,137 @@
-.vertical-center {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+.textoMD{
+  font-family: 'Fredericka the great';
+  font-size: 20px;
 }
-.fredericka-the-great-regular {
-  font-family: "Fredericka the Great", serif;
-  font-weight: 400;
-  font-style: normal;
+.textoMDTtitulo{
+  font-family: 'Fredericka the great';
+  font-size: 30px;
+  text-decoration: underline;
+  text-decoration-style: dashed;
 }
-body{
-  font-family: 'Fredericka the Great', serif;
+.textoMDT {
+  font-family: 'Fredericka the great';
+  font-size: 20px;
+}
+.textoMDTP{
+  font-family: 'Fredericka the great';
+  font-size: 45px;
+}.textoMDfase{
+  font-family: 'Fredericka the great';
+  font-size: 20px;
+  
 }
 .butão{
-  background-color: 'whitesmoke';
-   position : 'absolute'; 
-   top: '20%'; 
-   left:'50%'; 
-   transform: 'translate(-50%, -50%)'; 
-   font-size: 20;
-   border-radius: 5px;
+  background-color: #242424;
+   font-size: 15px;
+   font-family: 'Fredericka the great';
+}
+
+.start-button{
+  background-color: #b88b12;
+  padding: 10px 30px;
+  font-size: 30px;
+  border-radius: 15px;
+  border: none;
+  font-family: 'Fredericka the Great', cursive;
+  box-shadow: 3px 3px 0 #000;
+  cursor: pointer;
+}
+.buttonDD{
+  background-color: #b88b12;
+    padding: 10px 30px;
+  font-size: 15px;
+  border-radius: 15px;
+  border: none;
+  font-family: 'Fredericka the Great', cursive;
+  box-shadow: 3px 3px 0 #000;
+  cursor: pointer;
+  width: fit-content;
+
+}
+.MenuD{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+.inputD {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 10px 0;
+  border: 2px  #4CAF50;
+  border-radius: 8px;
+  background-color: 0b3d0b;
+  color: #ffffff;
+  font-size: 16px;
+  font-family: 'Arial', sans-serif;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  font-family: 'Fredericka the Great', cursive;
+}
+.linhaPalavra {
+  display: flex;
+  flex-direction: row;
+  align-items: center; 
+  gap: 10px; 
+}
+.imagemcontainerd{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 10vh; /* Garante que o conteúdo ocupe toda a altura da tela */
+  text-align: center;
+}
+.containerimgD{
+  max-width: 100%;
+  height: auto;
+}
+@keyframes piscar {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.texto-piscando {
+  font-family: 'Fredericka the Great', cursive;
+  animation: piscar 1s step-start infinite;
+  font-size: 20px;
+}
+.carro-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  z-index: 100;
+  text-align: center;
+  bottom: -5%;
+}
+
+.carro-img {
+  width: 100%;
+  max-width: 180px;
+  height: auto;
+  display: block;
+  margin: 0 auto; 
+}
+
+.carro-img:hover {
+  transform: scale(1.1);
+}
+.mensagem-derrota {
+  font-family: 'Fredericka the Great', cursive;
+  font-size: 30px; /* 48px - tamanho grande */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin: 20px 0;
+  text-align: center;
+  animation: pulsar 1.5s infinite alternate;
+}
+
+@keyframes pulsar {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
 }

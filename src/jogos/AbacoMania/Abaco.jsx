@@ -9,6 +9,7 @@ function Abaco() {
     const [alvo, setAlvo] = useState(gerarNumeroAleatorio());
     const [mensagem, setMensagem] = useState('');
     const [mostrarAlvo, setMostrarAlvo] = useState(true);
+    const [acertou, setAcertou] = useState(false);
 
     const linhasValores = [1, 5, 10, 50, 100];
 
@@ -28,11 +29,14 @@ function Abaco() {
 
     const verificarAcerto = () => {
         if (valor === alvo) {
-            setMensagem('Parabéns! Você acertou! ');
+            setMensagem('Parabéns! Você acertou! 🥳 ');
+            setAcertou(true);
         } else if (valor < alvo) {
-            setMensagem(`Faltam ${alvo - valor}. Tente novamente!`);
+            setMensagem(`Faltam ${alvo - valor}. Tente novamente! 🤔`);
+            setAcertou(false);
         } else {
-            setMensagem(`Passou ${valor - alvo}. Tente novamente!`);
+            setMensagem(`Passou ${valor - alvo}. Tente novamente! 🤔`);
+            setAcertou(false);
         }
     };
 
@@ -66,20 +70,23 @@ function Abaco() {
         setContas([0, 0, 0, 0, 0]);
         setValor(0);
         setMensagem('');
+        setAcertou(false);
     };
 
     const proximaFase = () => {
-        if (faseAtual < 10){
+        if (faseAtual < levels.levels.length){
             setFaseAtual(faseAtual + 1);
+            setAcertou(false);
+            resetarAbaco();
         } else {
-            setMensagem("Acabou! Uhull");
+            setMensagem("Parabéns! Você terminou todas as fases! 🤩 ");
         }
     };
 
     return (
         <main className="container">
             <div className="game-container-V">
-                <h1 className="titulo">Abaco Mania</h1>
+                <h1 className="titulo">🎮 Ábacomania 🧠</h1>
                 
                 <div className="painel-controle">
                     <div className="valores">
@@ -87,6 +94,7 @@ function Abaco() {
                     {mostrarAlvo && (
                             <div className="valor-alvo">Valor: <strong>{alvo}</strong></div>
                         )}
+                        <div className="valor-alvo">Nivel: <strong>{faseAtual}</strong></div>
                     </div>
                     
                     
@@ -111,8 +119,8 @@ function Abaco() {
                         {/* <button onClick={() => setMostrarAlvo(!mostrarAlvo)}>
                             {mostrarAlvo ? ' Esconder' : ' Mostrar'}
                         </button>*/}
-                        <div className="Invisible"></div>
-                        <button onClick={verificarAcerto} className="verificar botoes">
+                        
+                        <button onClick={verificarAcerto} className="verificar-botoes">
                              Verificar
                         </button>
                         {/*<button onClick={gerarNovoAlvo} className="novo-alvo">
@@ -121,16 +129,15 @@ function Abaco() {
                         {/*<button onClick={resetarAbaco} className="resetar">
                              Resetar
                         </button>*/}
-                        <button onClick={proximaFase} className="proxima-fase-botoes">
+                        {acertou && (<button onClick={proximaFase} className="proxima-fase-botoes">
+                            <div className="Invisible"></div>
                             Próxima Fase
-                        </button>
+                        </button>)}
                     </div>
                 </div>
                 
                 <div className="instrucoes">
-                    <p>Clique nas contas para movê-las para cima ou para baixo</p>
-                    <p>Cada linha vale: 1, 5, 10, 50, 100</p>
-                    <p>Tente alcançar o valor alvo mostrado acima!</p>
+                    <p>Clique nos círculos para adicionar valores ao seu ábaco. Cada linha vale: 1, 5, 10, 50, 100. Tente alcançar o valor alvo!</p>
                 </div>
             </div>
         </main>

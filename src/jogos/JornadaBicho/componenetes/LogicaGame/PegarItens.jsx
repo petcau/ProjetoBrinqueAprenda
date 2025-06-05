@@ -11,6 +11,7 @@ import React from "react";
  * @returns {JSX.Element} O JSX do item arrast vel.
  */
 function PegarItem({ item }) {
+  console.log(item.image);
   return (
     <div
       className="drag-item"
@@ -19,12 +20,10 @@ function PegarItem({ item }) {
     >
       {item.image && (
         <img
-          src={item.image}
-          //alt={item.name}
-          style={{ width: "80px", height: "80px", objectFit: "contain" }}
+          src={`/JornadaBicho/${item.image}`}
+          style={{ width: "90px", height: "90px", objectFit: "contain" }}
         />
       )}
-      <div>{item.name}</div>
     </div>
   );
 }

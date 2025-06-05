@@ -2,149 +2,163 @@
   "levels": [
     {
       "id": 1,
-      "description": "Animais domésticos (fácil)",
-      "zones": ["animais"],
+      "description": "Animais de estimação (fácil)",
+      "zones": ["Correto"],
       "items": [
-        { "name": "Cachorro", "correctZone": "animais", "image": "dog.png" },
-        { "name": "Gato", "correctZone": "animais", "image": "cat.png" },
-        { "name": "Peixe", "correctZone": "animais", "image": "fish.png" },
-        { "name": "Pássaro", "correctZone": "animais", "image": "bird.png" }
+        { "name": "Gato", "correctZone": "Correto", "image": "gato.png" },
+        { "name": "Cachorro", "correctZone": "Correto", "image": "cachorro.png" },
+        { "name": "Peixe", "correctZone": "Correto", "image": "peixe.png" },
+        { "name": "Periquito", "correctZone": "Correto", "image": "periquiro.png" },
+        { "name": "Cervo", "correctZone": "Errado", "image": "cervo.png" },
+        { "name": "Tamandua", "correctZone": "Errado", "image": "tamandua.png" },
+        { "name": "Garça", "correctZone": "Errado", "image": "garça.png" }
       ],
       "acertosNecessarios": 3,
-      "dica": "Todos vivem em casas humanas"
+      "dica": "Vivem em casas com pessoas"
     },
     {
       "id": 2,
       "description": "Animais da fazenda (fácil)",
-      "zones": ["animais"],
+      "zones": ["Correto"],
       "items": [
-        { "name": "Vaca", "correctZone": "animais", "image": "cow.png" },
-        { "name": "Galinha", "correctZone": "animais", "image": "chicken.png" },
-        { "name": "Cavalo", "correctZone": "animais", "image": "horse.png" },
-        { "name": "Ovelha", "correctZone": "animais", "image": "sheep.png" }
+        { "name": "Vaca", "correctZone": "Correto", "image": "vaca.png" },
+        { "name": "Galinha", "correctZone": "Correto", "image": "galinha.png" },
+        { "name": "Cavalo", "correctZone": "Correto", "image": "cavalo.png" },
+        { "name": "Ovelha", "correctZone": "Correto", "image": "ovelha.png" },
+        { "name": "Preguiça", "correctZone": "Errado", "image": "preguiça.png" },
+        { "name": "Aranha", "correctZone": "Errado", "image": "aranha.png" },
+        { "name": "Leão", "correctZone": "Errado", "image": "leao.png" }
       ],
-      "acertosNecessarios": 4,
-      "dica": "Produzem alimentos"
+      "acertosNecessarios": 3,
+      "dica": "Vivem em fazendas e ajudam com alimentos"
     },
     {
       "id": 3,
       "description": "Selva africana (intermediário)",
-      "zones": ["animais"],
+      "zones": ["Correto"],
       "items": [
-        { "name": "Leão", "correctZone": "animais", "image": "lion.png" },
-        { "name": "Elefante", "correctZone": "animais", "image": "elephant.png" },
-        { "name": "Zebra", "correctZone": "animais", "image": "zebra.png" },
-        { "name": "Girafa", "correctZone": "animais", "image": "giraffe.png" },
-        { "name": "Hipopótamo", "correctZone": "animais", "image": "hippo.png" }
+        { "name": "Leão", "correctZone": "Correto", "image": "leao.png" },
+        { "name": "Hipopótamo", "correctZone": "Correto", "image": "hipopotamo.png" },
+        { "name": "Javali", "correctZone": "Correto", "image": "javali.png" },
+        { "name": "Suricato", "correctZone": "Correto", "image": "suricato.png" },
+        { "name": "Pinguim", "correctZone": "Errado", "image": "penguim.png" },
+        { "name": "Cobra", "correctZone": "Errado", "image": "cobra.png" },
+        { "name": "Coelho", "correctZone": "Errado", "image": "coelho.png" }
       ],
-      "acertosNecessarios": 4,
-      "dica": "Savana africana"
+      "acertosNecessarios": 3,
+      "dica": "Vivem na savana africana"
     },
     {
       "id": 4,
       "description": "Animais noturnos (intermediário)",
-      "zones": ["animais"],
+      "zones": ["Correto"],
       "items": [
-        { "name": "Coruja", "correctZone": "animais", "image": "owl.png" },
-        { "name": "Morcego", "correctZone": "animais", "image": "bat.png" },
-        { "name": "Gambá", "correctZone": "animais", "image": "opossum.png" },
-        { "name": "Raposa", "correctZone": "animais", "image": "fox.png" },
-        { "name": "Tatu", "correctZone": "animais", "image": "armadillo.png" }
+        { "name": "Coruja", "correctZone": "Correto", "image": "coruja.png" },
+        { "name": "Morcego", "correctZone": "Correto", "image": "morcego.png" },
+        { "name": "Gambá", "correctZone": "Correto", "image": "gamba.png" },
+        { "name": "Raposa", "correctZone": "Correto", "image": "raposa.png" },
+        { "name": "Vaca", "correctZone": "Errado", "image": "vaca.png" },
+        { "name": "Golfinho", "correctZone": "Errado", "image": "golfinho.png" },
+        { "name": "Cachorro", "correctZone": "Errado", "image": "cachorro.png" }
       ],
-      "acertosNecessarios": 5,
-      "dica": "Ativos durante a noite"
+      "acertosNecessarios": 3,
+      "dica": "Ativos à noite"
     },
     {
       "id": 5,
       "description": "Vida marinha (difícil)",
-      "zones": ["animais"],
+      "zones": ["Correto"],
       "items": [
-        { "name": "Tubarão", "correctZone": "animais", "image": "shark.png" },
-        { "name": "Golfinho", "correctZone": "animais", "image": "dolphin.png" },
-        { "name": "Polvo", "correctZone": "animais", "image": "octopus.png" },
-        { "name": "Cavalo-marinho", "correctZone": "animais", "image": "seahorse.png" },
-        { "name": "Estrela-do-mar", "correctZone": "animais", "image": "starfish.png" },
-        { "name": "Baleia", "correctZone": "animais", "image": "whale.png" }
+        { "name": "Tubarão", "correctZone": "Correto", "image": "tubarao.png" },
+        { "name": "Golfinho", "correctZone": "Correto", "image": "golfinho.png" },
+        { "name": "Polvo", "correctZone": "Correto", "image": "polvo.png" },
+        { "name": "Cavalo-marinho", "correctZone": "Correto", "image": "cavalo_marinho.png" },
+        { "name": "Urso Polar", "correctZone": "Errado", "image": "urso_polar.png" },
+        { "name": "Arara", "correctZone": "Errado", "image": "arara.png" },
+        { "name": "Leão", "correctZone": "Errado", "image": "leao.png" }
       ],
-      "acertosNecessarios": 5,
-      "dica": "Habitat aquático"
+      "acertosNecessarios": 3,
+      "dica": "Vivem no oceano"
     },
     {
       "id": 6,
       "description": "Répteis e anfíbios (difícil)",
-      "zones": ["animais"],
+      "zones": ["Correto"],
       "items": [
-        { "name": "Cobra", "correctZone": "animais", "image": "snake.png" },
-        { "name": "Lagarto", "correctZone": "animais", "image": "lizard.png" },
-        { "name": "Sapo", "correctZone": "animais", "image": "frog.png" },
-        { "name": "Tartaruga", "correctZone": "animais", "image": "turtle.png" },
-        { "name": "Jacaré", "correctZone": "animais", "image": "alligator.png" },
-        { "name": "Camaleão", "correctZone": "animais", "image": "chameleon.png" }
+        { "name": "Cobra", "correctZone": "Correto", "image": "cobra.png" },
+        { "name": "Sapo", "correctZone": "Correto", "image": "sapo.png" },
+        { "name": "Tartaruga", "correctZone": "Correto", "image": "tartaruga.png" },
+        { "name": "Camaleão", "correctZone": "Correto", "image": "camaleao.png" },
+        { "name": "Leão", "correctZone": "Errado", "image": "leao.png" },
+        { "name": "Pavão", "correctZone": "Errado", "image": "pavao.png" },
+        { "name": "Vaca", "correctZone": "Errado", "image": "vaca.png" }
       ],
-      "acertosNecessarios": 6,
-      "dica": "Sangue frio"
+      "acertosNecessarios": 3,
+      "dica": "Têm sangue frio"
     },
     {
       "id": 7,
       "description": "Aves exóticas (avançado)",
-      "zones": ["animais"],
+      "zones": ["Correto"],
       "items": [
-        { "name": "Arara", "correctZone": "animais", "image": "macaw.png" },
-        { "name": "Pavão", "correctZone": "animais", "image": "peacock.png" },
-        { "name": "Tucano", "correctZone": "animais", "image": "toucan.png" },
-        { "name": "Águia", "correctZone": "animais", "image": "eagle.png" },
-        { "name": "Pelicano", "correctZone": "animais", "image": "pelican.png" },
-        { "name": "Flamingo", "correctZone": "animais", "image": "flamingo.png" }
+        { "name": "Arara", "correctZone": "Correto", "image": "arara.png" },
+        { "name": "Tucano", "correctZone": "Correto", "image": "tucano.png" },
+        { "name": "Pavão", "correctZone": "Correto", "image": "pavao.png" },
+        { "name": "Flamingo", "correctZone": "Correto", "image": "flamingo.png" },
+        { "name": "Cachorro", "correctZone": "Errado", "image": "cachorro.png" },
+        { "name": "Tubarão", "correctZone": "Errado", "image": "tubarao.png" },
+        { "name": "Cervo", "correctZone": "Errado", "image": "cervo.png" }
       ],
-      "acertosNecessarios": 6,
-      "dica": "Penas coloridas"
+      "acertosNecessarios": 3,
+      "dica": "Pássaros com penas coloridas"
     },
     {
       "id": 8,
       "description": "Animais polares (avançado)",
-      "zones": ["animais"],
+      "zones": ["Correto"],
       "items": [
-        { "name": "Urso Polar", "correctZone": "animais", "image": "polar_bear.png" },
-        { "name": "Pinguim", "correctZone": "animais", "image": "penguin.png" },
-        { "name": "Foca", "correctZone": "animais", "image": "seal.png" },
-        { "name": "Rena", "correctZone": "animais", "image": "reindeer.png" },
-        { "name": "Raposa-do-Ártico", "correctZone": "animais", "image": "arctic_fox.png" },
-        { "name": "Morsa", "correctZone": "animais", "image": "walrus.png" }
+        { "name": "Urso Polar", "correctZone": "Correto", "image": "urso_polar.png" },
+        { "name": "Pinguim", "correctZone": "Correto", "image": "penguim.png" },
+        { "name": "Foca", "correctZone": "Correto", "image": "foca.png" },
+        { "name": "Raposa-do-Ártico", "correctZone": "Correto", "image": "raposa_artico.png" },
+        { "name": "Suricato", "correctZone": "Errado", "image": "suricato.png" },
+        { "name": "Abelha", "correctZone": "Errado", "image": "abelha.png" },
+        { "name": "Cobra", "correctZone": "Errado", "image": "cobra.png" }
       ],
-      "acertosNecessarios": 6,
-      "dica": "Habitat gelado"
+      "acertosNecessarios": 3,
+      "dica": "Vivem em regiões geladas"
     },
     {
       "id": 9,
       "description": "Insetos e aracnídeos (desafiador)",
-      "zones": ["animais"],
+      "zones": ["Correto"],
       "items": [
-        { "name": "Borboleta", "correctZone": "animais", "image": "butterfly.png" },
-        { "name": "Abelha", "correctZone": "animais", "image": "bee.png" },
-        { "name": "Aranha", "correctZone": "animais", "image": "spider.png" },
-        { "name": "Formiga", "correctZone": "animais", "image": "ant.png" },
-        { "name": "Libélula", "correctZone": "animais", "image": "dragonfly.png" },
-        { "name": "Escorpião", "correctZone": "animais", "image": "scorpion.png" },
-        { "name": "Louva-a-deus", "correctZone": "animais", "image": "mantis.png" }
+        { "name": "Borboleta", "correctZone": "Correto", "image": "borboleta.png" },
+        { "name": "Abelha", "correctZone": "Correto", "image": "abelha.png" },
+        { "name": "Aranha", "correctZone": "Correto", "image": "aranha.png" },
+        { "name": "Formiga", "correctZone": "Correto", "image": "formiga.png" },
+        { "name": "Garça", "correctZone": "Errado", "image": "garça.png" },
+        { "name": "Sapo", "correctZone": "Errado", "image": "sapo.png" },
+        { "name": "Gato", "correctZone": "Errado", "image": "gato.png" }
       ],
-      "acertosNecessarios": 7,
-      "dica": "Artrópodes"
+      "acertosNecessarios": 3,
+      "dica": "Pequenos com muitas patas"
     },
     {
       "id": 10,
       "description": "Animais em extinção (especial)",
-      "zones": ["animais"],
+      "zones": ["Correto"],
       "items": [
-        { "name": "Panda Gigante", "correctZone": "animais", "image": "panda.png" },
-        { "name": "Tigre-de-Bengala", "correctZone": "animais", "image": "tiger.png" },
-        { "name": "Orangotango", "correctZone": "animais", "image": "orangutan.png" },
-        { "name": "Rinoceronte", "correctZone": "animais", "image": "rhino.png" },
-        { "name": "Arara-Azul", "correctZone": "animais", "image": "blue_macaw.png" },
-        { "name": "Lobo-Guará", "correctZone": "animais", "image": "maned_wolf.png" },
-        { "name": "Baleia-Azul", "correctZone": "animais", "image": "blue_whale.png" }
+        { "name": "Panda Gigante", "correctZone": "Correto", "image": "panda_gigante.png" },
+        { "name": "Tigre-de-Bengala", "correctZone": "Correto", "image": "tigre.png" },
+        { "name": "Rinoceronte", "correctZone": "Correto", "image": "rinoceronte.png" },
+        { "name": "Arara-Azul", "correctZone": "Correto", "image": "arara.png" },
+        { "name": "Gato", "correctZone": "Errado", "image": "gato.png" },
+        { "name": "Cavalo", "correctZone": "Errado", "image": "cavalo.png" },
+        { "name": "Vaca", "correctZone": "Errado", "image": "vaca.png" }
       ],
-      "acertosNecessarios": 7,
-      "dica": "Protegidos por leis"
+      "acertosNecessarios": 3,
+      "dica": "Animais raros protegidos"
     }
   ]
 }

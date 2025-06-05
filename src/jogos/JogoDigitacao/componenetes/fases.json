@@ -2,63 +2,88 @@
   "fases": [
     {
       "fase": 1,
-      "quantidadePalavras": 1,
-      "tempoLimite": 60,
-      "palavras": ["Gato", "Cão", "Sol"]
+      "quantidadePalavras": 10,
+      "tempoLimite": 30,
+      "palavras": ["Amigo", "Bola", "Canto", "Dente", "Ecoa", "Feliz", "Gente", "Hora", "Igreja", "Jogo", "Luz", "Mente", "Nuvem", "Olho", "Pato", "Quente", "Rato", "Sapo", "Tempo", "Urso", "Vento", "Xadrez", "Zebra", "Arco", "Bico", "Café", "Dado", "Eixo", "Foca", "Gato", "Hino", "Igreja", "Jogo", "Lago", "Mato", "Neto", "Ovo", "Pato", 
+      "Quarto", "Rato", "Sapo", "Teto", "Uva", "Vaca", "Xale", "Zelo"]
     },
     {
       "fase": 2,
-      "quantidadePalavras": 2,
-      "tempoLimite": 55,
-      "palavras": ["Livro", "Mesa", "Casa", "Janela"]
+      "quantidadePalavras": 10,
+      "tempoLimite": 45,
+      "palavras": ["Amigo", "Bola", "Café", "Dado", "Ecoa", "Fogo", "Gato", "Hino", "Igreja", "Jogo", "Luz", "Mato", "Nuvem", "Ouro", "Pato", "Quase", "Rato", "Sapo", "Teto", "Uva", "Vela", "Wok", "Xarope", "Yeti", "Zebra", "Água", "Bola", "Cima", "Dado", "Eixo", "Fato", "Gelo", 
+      "Hera", "Íris", "Jogo", "Lago", "Mato", "Nuvem", "Ouro", "Pato", "Quase", "Rato", "Sapo"]
     },
     {
       "fase": 3,
-      "quantidadePalavras": 1,
-      "tempoLimite": 50,
-      "palavras": ["Computador", "Monitor", "Teclado", "Mouse", "Cadeira"]
+      "quantidadePalavras": 10,
+      "tempoLimite": 45,
+      "palavras": ["Amigo", "Balde", "Cacho", "Dardo", "Ética", "Fazer", "Gosto", "Hiena", "Ícone", "Jovem", "Karma", "Lento", "Moral", "Navio", "Ouvir", "Prato", "Quase", "Resto", "Susto", "Troca", "Unido", "Vento", "Xingo", "Yacht", "Zebra", "Anzol", "Besta", "Cesta", "Dessa", "Expor", "Fugir", "Globo", "Herói", "Ítens", "Jaula", "Kebab", "Lapis", "Misto", "Nobre", "Olhar", "Pular", "Queda", "Rampa", "Senso", "Tenso", "Usura"
+]
     },
     {
       "fase": 4,
-      "quantidadePalavras": 1,
+      "quantidadePalavras": 10,
       "tempoLimite": 45,
-      "palavras": ["Programar", "Internet", "Telefone", "Notebook", "Caneta", "Papel"]
+      "palavras": ["Abajur", "Agenda", "Agulha", "Alarme", "Aljava", "Âncora", "Anilha", "Antena", "Balaio", "Barril", "Bastão", "Batina", "Batuta", "Bazuca", "Bíblia", "Bicama", "Biombo", "Biruta", "Bolero", "Boneca", "Bornal", "Botina", "Brinco", "Broche", "Buzina", "Cabide", "Caixão", "Cajado", "Cálice", "Calota", "Camisa", "Caneca", "Caneta", "Cantil", "Canudo", "Capelo", "Cartão", "Casaco", "Caxixi", "Chapéu", "Cinzel", "Coador", "Colcha", 
+      "Coldre", "Colete", "Colher", "Cômoda", "Concha", "Crachá", "Cutelo"]
     },
     {
       "fase": 5,
-      "quantidadePalavras": 1,
-      "tempoLimite": 40,
-      "palavras": ["Javascript", "React", "Vite", "Framework", "Desenvolvimento", "Front-end", "Back-end"]
+      "quantidadePalavras": 10,
+      "tempoLimite": 45,
+      "palavras": ["Amizade", "Cultura", "Família", "Caráter", "Sucesso", "Estigma", "Virtude", "Estável", "Aspecto", "Alegria", "Cordial", "Análogo", "Genuíno", "Sublime", "Inferir", "Apático", "Sucinto", "Acepção", "Redimir", "Prolixo", "Estória", "Empatia", "Aurélio", "Cônjuge", "Embuste", "Exceção", "Verbete", "Idílico", "Análogo", "Família", "Genuíno", "Sublime", "Estória", "Inferir", "Pêsames", "Apático", "Sucinto", "Acepção", "Redimir", 
+      "Cultura", "Pródigo", "Astúcia", "Estigma", "Audácia", "Recesso", "Virtude"]
     },
     {
       "fase": 6,
-      "quantidadePalavras": 1,
+      "quantidadePalavras": 10,
       "tempoLimite": 35,
-      "palavras": ["Algoritmo", "Função", "Variável", "Objeto", "Classe", "Array", "Componente", "Sintaxe"]
+      "palavras": ["Amizade", "Caráter", "Cultura", "Família", "Genuíno", "Estigma", "Estória", "Inferir", "Apático", "Sucinto", "Acepção", "Redimir", "Prolixo", "Astúcia", "Recesso", "Virtude", "Icônico", "Soberba", "Refutar", "Mitigar", "Exortar", "Cinismo", "Mórbido", "Trivial", "Estável", "Aspecto", "Sucesso", "Síntese", "Luxúria", "Alegria", "Cordial", "Anátema", "Imputar", "Emergir", "Ademais", "Bolacha", "Orgulho", "Excerto", "Candura", 
+      "Deboche", "Saudade", "Coragem", "Frívolo", "Garrafa", "Salutar"]
     },
     {
       "fase": 7,
-      "quantidadePalavras": 1,
+      "quantidadePalavras": 10,
       "tempoLimite": 30,
-      "palavras": ["Persistência", "Assíncrono", "Callback", "Promise", "Looping", "Renderização", "Estado", "Propriedade", "Hook"]
+      "palavras": ["Inerente", "Respeito", "Peculiar", "Florista", "Elefante", "Anuência", "Equidade", "Deferido", "Prudente", "Essência", "Iminente", "Pandemia", "Caminhar", "Alfinete", "Eminente", "Premissa", "Invasivo", "Abstrato", "Alienado", "Extensão", "Empírico", "Desenhar", "Conceito", "Ardiloso", "Algodão", "Ascensão", "Reiterar", "Devaneio", "Lascívia", "Prodígio", "Relativo", "Inefável", "Passível", "Conserto", "Gratidão", "Destarte", "Analogia", "Inserção", "Remissão", "Modéstia", "Fomentar", "Apologia", "Despeito", "Ativista", "Inóspito",
+       "Medíocre", "Retórica", "Monótono", "História", "Alicerce", "Concerne"]
     },
     {
       "fase": 8,
-      "quantidadePalavras": 1,
-      "tempoLimite": 25,
-      "palavras": ["Desempenho", "Escalabilidade", "Componentização", "Modularização", "Refatoração", "Documentação", "Testabilidade", "Manutenibilidade", "Integração", "Deploy"]
+      "quantidadePalavras": 5,
+      "tempoLimite": 90,
+      "autor" : "Immanuel Kant",
+      "palavras": ["Só se vê bem com o coração, o essencial é invisível aos olhos", "Quando acordei hoje de manhã, eu sabia quem eu era", "Mas acho que já mudei muitas vezes desde então", "As coisas têm vida própria", "Tudo é questão de despertar a sua alma", 
+      "Cada qual sabe amar a seu modo","O modo pouco importa, o essencial é que saiba amar", 
+      "Amor não é coisa que se possa pedir a alguém", "Lembre-se de esquecer","O homem não é nada além daquilo que a educação faz dele", 
+      "A felicidade não é um ideal da razão mas sim da imaginação", "O sonho é uma arte poética involuntária"]
     },
     {
       "fase": 9,
-      "quantidadePalavras": 10,
-      "tempoLimite": 20,
-      "palavras": ["Virtualização", "Microserviço", "Autenticação", "Autorização", "Criptografia", "Deserialização", "Serialização", "Desestruturação", "Prototipagem", "Versionamento", "Persistência", "Observabilidade"]
+      "quantidadePalavras": 5,
+      "tempoLimite": 90,
+      "autor" : "Karl Marx",
+      "palavras": ["O caminho do inferno está pavimentado de boas intenções", "O povo que subjuga outro forja suas próprias cadeias", "Eu não sou nada, mas devo ser tudo", 
+      "Mudanças sociais são impossíveis sem o fermento feminino", 
+      "As revoluções são a locomotiva da história", "O capitalismo gera o seu próprio coveiro", 
+      "Os operários não têm pátria", 
+      "O trabalhar na pele branca nunca poderá se libertar enquanto o trabalho na pele negra for marcado", 
+      "A história se repete, a primeira vez como tragédia, e a segunda como farsa", 
+      "Proletários de todos os países, uni-vos", 
+      "A religião é o ópio do povo"]
     },
     {
       "fase": 10,
-      "quantidadePalavras": 15,
-      "tempoLimite": 15,
-      "palavras": ["Programabilidade", "Multithreading", "Orientação", "Polimorfismo", "Encapsulamento", "Herança", "Abstração", "Responsividade", "Acessibilidade", "Internacionalização", "Globalização", "Performance", "Escalabilidade", "Containerização", "Orquestração"]
+      "quantidadePalavras": 5,
+      "tempoLimite": 90,
+      "autor" : "Paulo Freire",
+      "palavras": ["É preciso que a leitura seja um ato de amor", "Me movo como educador, porque, primeiro, me movo como gente", "Quando a educação não é libertadora, o sonho do oprimido é ser o opressor", 
+      "Amar é um ato de coragem", "A leitura do mundo precede a leitura da palavra", 
+      "Ninguém liberta ninguém, ninguém se liberta sozinho: os homens se libertam em comunhão", 
+      "O direito incontestável de criticar exige de quem o exerce o dever de não mentir", "Ninguém nasce feito, é experimentando-nos no mundo que nós nos fazemos", "Quando a educação não é libertadora, o sonho do oprimido é ser o opressor", 
+      "Lavar as mãos do conflito entre os poderosos e os impotentes significa ficar do lado dos poderosos", "Ensinar não é transferir conhecimento, mas criar as possibilidades para a sua própria produção ou a sua construção",
+       "A humildade exprime uma das raras certezas de que estou certo: a de que ninguém é superior a ninguém"]
     }
   ]
 }

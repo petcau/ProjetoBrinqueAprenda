@@ -57,14 +57,17 @@
 - 3.2 - Representação das letras selecionadas;
 - 3.3 - Palavra encontrada - ao  acertar uma das palavras escondidas, a palavra ficará armazenada neste campo;
 
+<p>Para uma melhor experiência recomendados os uso de fones de ouvido, headset ou caixas de som para garantir imersão com os efeitos sonoros.</p>
+
 ## Cronograma
 
 | Etapa                  | Período               | Status       |
 |------------------------|-----------------------|------------  |
-| Reunião                |  15/05/2025           | finalizado   |
-| Design da capa         |  15/05/2025           | finalizado   |
-| Apresentação I         |  15/05/2025           | finalizado   |
+| Reunião                |  15/05/2025           | Finalizado   |
+| Design da capa         |  15/05/2025           | Finalizado   |
+| Apresentação I         |  15/05/2025           | Finalizado   |
 | Estilização I          |  20/05/2025           | Finalizado   |
 | Apresentação II        |  21/05/2025           | Finalizado   |
-| Apresentação III       |  29/05/2025           | em andamento |
-| Estilização II         |  29/05/2025           | em andamento |
+| Estilização II         |  29/05/2025           | Finalizado   |
+| Apresentação III       |  05/06/2025           | em andamento |
+
