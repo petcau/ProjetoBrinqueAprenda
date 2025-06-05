@@ -58,13 +58,10 @@ export default function Jogo({ onVoltar }) {
       console.error('Erro ao tentar tocar áudio:', err);
     });
 };
-
-
    // Chama quando o componente desmonta
   useEffect(() => {
     return () => {
       pararTodosOsAudios();
-      if (onVoltar) onVoltar(); // Opcional: notifica o componente pai
     };
   }, [onVoltar]);
 
@@ -186,7 +183,7 @@ export default function Jogo({ onVoltar }) {
               <div className="imagemcontainerd">
                 <p className="textoMD texto-piscando">Vitória</p>
                 <img src={'./src/jogos/JogoDigitacao/game_assets/EMOJIVITORIAD.png'} alt="Vitória" className="containerimgD"/>
-                <p className="textoMD">{mensagem}</p>
+                <p className="mensagem-derrota">{mensagem}</p>
               </div>
             )}
           </div>
@@ -196,7 +193,7 @@ export default function Jogo({ onVoltar }) {
           <h1 className="textoMDfase">Fase {fase.fase}</h1>
           <div className="linhaPalavra">
             <h1 className="textoMDT">{palavra}</h1>
-            <h2 className="textoMD">{count}s</h2>
+            {!semaforoAtivo && <h2 className="textoMD">{count}s</h2>}
             {fase.fase > 7 && fase.autor && (
               <span style={{ marginLeft: '10px', fontSize: '0.8em', color: 'gray', fontFamily: "Fredericka the great"}}>
                 {fase.autor}
