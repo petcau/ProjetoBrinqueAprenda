@@ -51,3 +51,4 @@ Crianças em fase inicial de aprendizagem escolar.
 |criação das imagens e backlog  |17/05/2025 | feito | 
 |inicio de trabalhos no CSS | 21/05/2025 | feito | 
 |Últimos ajustes no menu | 29/05/2025 | feito
+|Apresentação do trabalho | 12/06/2025 | A fazer
