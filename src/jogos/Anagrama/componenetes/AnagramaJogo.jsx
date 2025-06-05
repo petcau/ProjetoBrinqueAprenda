@@ -15,10 +15,9 @@ function AnagramaJogo({
   resetarTentativa,
   limparDescobertas,
   proximoNivel,
-  nivelAtual,
+  nivelAtual, // 👈 importante para verificar última fase
 }) {
   const timesUpSoundRef = useRef(null);
-  const [somAtivo, setSomAtivo] = useState(true);
   const [tempoEsgotado, setTempoEsgotado] = useState(false);
   const [faseCompleta, setFaseCompleta] = useState(false);
   const [reiniciarTrigger, setReiniciarTrigger] = useState(0);
@@ -38,7 +37,7 @@ function AnagramaJogo({
   const handleTempoEsgotado = () => {
     setTempoEsgotado(true);
 
-    if (somAtivo && timesUpSoundRef.current) {
+    if (timesUpSoundRef.current) {
       timesUpSoundRef.current.currentTime = 0;
       timesUpSoundRef.current.play();
     }
@@ -65,10 +64,6 @@ function AnagramaJogo({
     }, 1000);
   };
 
-  const alternarSom = () => {
-    setSomAtivo((prev) => !prev);
-  };
-
   return (
     <div className="mesa-container">
       {/* Som de tempo esgotado */}
@@ -77,11 +72,6 @@ function AnagramaJogo({
         src="src/assets/Sons/somDerrota.mp3"
         preload="auto"
       />
-
-      {/* Botão para ativar/desativar som */}
-      <button className="botao-som" onClick={alternarSom}>
-        {somAtivo ? "🔊 Som Ativado" : "🔇 Som Desativado"}
-      </button>
 
       {/* Cronômetro */}
       {!faseCompleta && !tempoEsgotado && (
