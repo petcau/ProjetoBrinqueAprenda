@@ -3,6 +3,7 @@ import Letras from "./Letras";
 import PalavraTentativa from "./PalavraTentativa";
 import PalavrasDescobertas from "./PalavrasDescobertas";
 import Cronometro from "./Cronometro";
+import PalavrasData from "./Palavras.json"; // 👈 Importação necessária
 
 function AnagramaJogo({
   letras,
@@ -14,14 +15,16 @@ function AnagramaJogo({
   resetarTentativa,
   limparDescobertas,
   proximoNivel,
+  nivelAtual, // 👈 importante para verificar última fase
 }) {
   const timesUpSoundRef = useRef(null);
   const [tempoEsgotado, setTempoEsgotado] = useState(false);
   const [faseCompleta, setFaseCompleta] = useState(false);
   const [reiniciarTrigger, setReiniciarTrigger] = useState(0);
-  const [carregandoProximaFase, setCarregandoProximaFase] = useState(false); // 👈 novo estado
+  const [carregandoProximaFase, setCarregandoProximaFase] = useState(false);
 
-  // Verifica se o jogador completou a fase
+  const ultimaFase = nivelAtual === PalavrasData.anagramas.length - 1;
+
   useEffect(() => {
     if (
       palavrasValidas.length > 0 &&
@@ -44,21 +47,21 @@ function AnagramaJogo({
     setTempoEsgotado(false);
     resetarTentativa();
     limparDescobertas();
-    setReiniciarTrigger((t) => t + 1); // força reinício do cronômetro
+    setReiniciarTrigger((t) => t + 1);
   };
 
   const handleProximaFase = () => {
-    setCarregandoProximaFase(true); 
+    setCarregandoProximaFase(true);
     setTimeout(() => {
       handleReiniciar();
       setFaseCompleta(false);
       setTempoEsgotado(false);
       resetarTentativa();
       limparDescobertas();
-      setReiniciarTrigger(t => t + 1); 
-      proximoNivel(); // Avança fase
-      setCarregandoProximaFase(false); 
-    }, 1000); 
+      setReiniciarTrigger((t) => t + 1);
+      proximoNivel();
+      setCarregandoProximaFase(false);
+    }, 1000);
   };
 
   return (
@@ -70,7 +73,7 @@ function AnagramaJogo({
         preload="auto"
       />
 
-      {/* Cronômetro aparece só se a fase estiver ativa */}
+      {/* Cronômetro */}
       {!faseCompleta && !tempoEsgotado && (
         <Cronometro
           tempoInicial={30}
@@ -89,17 +92,23 @@ function AnagramaJogo({
         </div>
       )}
 
-      {/* Tela de sucesso */}
+      {/* Tela de vitória ou final */}
       {faseCompleta && (
         <div>
-          <h3 className="finish">Você Venceu!</h3>
-          <button
-            className="botoes"
-            onClick={handleProximaFase}
-            disabled={carregandoProximaFase} // 👈 botão desabilitado enquanto carrega
-          >
-            {carregandoProximaFase ? "Carregando..." : "Próxima fase"}
-          </button>
+          <h3 className="finish">
+            {ultimaFase
+              ? "Parabéns! Você completou todas as fases!"
+              : "Você Venceu!"}
+          </h3>
+          {!ultimaFase && (
+            <button
+              className="botoes"
+              onClick={handleProximaFase}
+              disabled={carregandoProximaFase}
+            >
+              {carregandoProximaFase ? "Carregando..." : "Próxima fase"}
+            </button>
+          )}
         </div>
       )}
 
