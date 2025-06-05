@@ -21,12 +21,12 @@
       "palavraEmbaralhada": "BOLO"
     },
     {
-      "palavrasValidas": ["FADA", "DAFA"],
-      "palavraEmbaralhada": "DAAF"
+      "palavrasValidas": ["LOTA", "ALTO"],
+      "palavraEmbaralhada": "ATLO"
     },
     {
-      "palavrasValidas": ["DADO", "ADDO"],
-      "palavraEmbaralhada": "ODAD"
+      "palavrasValidas": ["ARCO", "ROCA"],
+      "palavraEmbaralhada": "ORAC"
     },
     {
       "palavrasValidas": ["LATA", "TALA"],
@@ -37,7 +37,7 @@
       "palavraEmbaralhada": "ALMA"
     },
     {
-      "palavrasValidas": ["NATO", "TONA", "ANTO"],
+      "palavrasValidas": ["NATO", "TONA"],
       "palavraEmbaralhada": "OANT"
     }
   ]
