@@ -106,20 +106,20 @@ export default function Jogo({ onVoltar }) {
   // Efeito do cronômetro
   useEffect(() => {
     if (fim || semaforoAtivo) return;
-
-    timeoutID.current = setTimeout(() => {
-      if (count === 0) {
-        setFim(true);
-        setMensagem('Tempo esgotado!');
-        // Toca som de derrota
-        if (audioPrincipal.current) audioPrincipal.current.pause();
-        audioEvento.current = new Audio(somDerrotaSound);
-        audioEvento.current.play();
-        return;
-      }
-      setCount(prev => prev - 1);
-    }, 1000);
-
+    if (mudançafase == false) {
+      timeoutID.current = setTimeout(() => {
+        if (count === 0) {
+          setFim(true);
+          setMensagem('Tempo esgotado!');
+          // Toca som de derrota
+          if (audioPrincipal.current) audioPrincipal.current.pause();
+          audioEvento.current = new Audio(somDerrotaSound);
+          audioEvento.current.play();
+          return;
+        }
+        setCount(prev => prev - 1);
+      }, 1000);
+    }
     return () => clearTimeout(timeoutID.current);
   }, [count, fim, semaforoAtivo, fase.tempoLimite]);
 
