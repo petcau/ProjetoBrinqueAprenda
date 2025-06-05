@@ -1,4 +1,3 @@
-
 <table style="width: 100%;">
   <tr>
     <td style="vertical-align: middle; padding-right: 10px;">
@@ -53,11 +52,8 @@ Durante a aula, a equipe começou a modificar o design dos botões e caixas de t
 
 ---
 
-## Continuação (próximas etapas previstas)
+### 29/05 – Aplicação do Json
+Durante o tempo de aula nois criamos e implementamos o arquivo .json ao codigo dojogo, alem disso colocamos os modos de dificuldade diretamente no Json, excluindo a necessidade de botões de seleção feitos na ultima spring.
 
-
-
----
-
-## Observações  
-A equipe segue se reunindo semanalmente nas quintas-feiras nas aulas da disciplina, além de manter contato por chamadas on-line para acelerar o desenvolvimento. A entrega final está prevista para o fim do semestre.
+## 03/06- Finalização do projeto
+Durante as últimas etapas do projeto foram aprimorados os recursos gráficos e efeitos sonoros do jogo. Foi também finalizada a documentação do projeto.
