@@ -53,6 +53,10 @@ Durante a aula, a equipe começou a modificar o design dos botões e caixas de t
 
 ---
 
+### 05/06 – Finalização do design do jogo
+Ao decorrer da aula foram apresentadas as modificações no codigo do jogo, além de continuarmos fazendo as devidas modificações no projeto durante o tempo de aula.  
+---
+
 ## Continuação (próximas etapas previstas)
 
 
