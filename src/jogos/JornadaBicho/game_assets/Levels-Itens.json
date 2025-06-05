@@ -55,7 +55,7 @@
       "items": [
         { "name": "Coruja", "correctZone": "Correto", "image": "coruja.png" },
         { "name": "Morcego", "correctZone": "Correto", "image": "morcego.png" },
-        { "name": "Gambá", "correctZone": "Correto", "image": "opossum.png" },
+        { "name": "Gambá", "correctZone": "Correto", "image": "gamba.png" },
         { "name": "Raposa", "correctZone": "Correto", "image": "raposa.png" },
         { "name": "Vaca", "correctZone": "Errado", "image": "vaca.png" },
         { "name": "Golfinho", "correctZone": "Errado", "image": "golfinho.png" },
@@ -120,9 +120,9 @@
         { "name": "Urso Polar", "correctZone": "Correto", "image": "urso_polar.png" },
         { "name": "Pinguim", "correctZone": "Correto", "image": "penguim.png" },
         { "name": "Foca", "correctZone": "Correto", "image": "foca.png" },
-        { "name": "Raposa-do-Ártico", "correctZone": "Correto", "image": "arctic_fox.png" },
+        { "name": "Raposa-do-Ártico", "correctZone": "Correto", "image": "raposa_artico.png" },
         { "name": "Suricato", "correctZone": "Errado", "image": "suricato.png" },
-        { "name": "Abelha", "correctZone": "Errado", "image": "bee.png" },
+        { "name": "Abelha", "correctZone": "Errado", "image": "abelha.png" },
         { "name": "Cobra", "correctZone": "Errado", "image": "cobra.png" }
       ],
       "acertosNecessarios": 3,
@@ -149,7 +149,7 @@
       "description": "Animais em extinção (especial)",
       "zones": ["Correto"],
       "items": [
-        { "name": "Panda Gigante", "correctZone": "Correto", "image": "panda.png" },
+        { "name": "Panda Gigante", "correctZone": "Correto", "image": "panda_gigante.png" },
         { "name": "Tigre-de-Bengala", "correctZone": "Correto", "image": "tigre.png" },
         { "name": "Rinoceronte", "correctZone": "Correto", "image": "rinoceronte.png" },
         { "name": "Arara-Azul", "correctZone": "Correto", "image": "arara.png" },

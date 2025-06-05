@@ -12,6 +12,9 @@
     align-items: center;
     overflow: hidden;
     object-fit: cover;
+   border: 6px solid #ffda5f;
+   border-radius: 10px;
+   box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.418);
 }
 
 #Titulo_Jornada{

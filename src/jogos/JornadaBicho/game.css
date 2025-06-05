@@ -24,11 +24,12 @@
 }
 
 .NAnterior{
+  font-size: 14px;
     box-shadow: #00000069 0px 6px 3px;
     background-color: #05c24e;
     color: #ffffff;
-     width: 12%;
-     height: 4%;
+     width: 13%;
+     height: 5%;
      border-color: #05c24d00;
      display: flex;
      margin-left: 85%;
@@ -78,19 +79,18 @@
 
   .objects {
     display: flex;
-    margin-top: 20px;
-    justify-content: center;
+    margin-top: 15px;
+    justify-content: space-around;
     gap: 20px;
-    /*margin-bottom: 15px;*/
-   
+    background-color: #e1e970; 
+    border-radius: 10px;
   }
   .drag-item {
-    background-color: #e1e970;
-    border: 1px solid #888;
+    
     cursor: grab;
     color: #000000;
     object-fit: contain;
-     width: 90px;
+     width: 95px;
     height: 90px;
   
   }
@@ -106,12 +106,11 @@
     border: 5px solid #ffcc5d;
     border-radius: 10px;
     box-shadow: #00000063 0px 8px 12px;
-    width: 950px;
+    width: 965px;
     height: 450px;
     display: flex;
     background-image: url(game_assets/imagens/Catinga.png);
     background-size: cover;
-    color: transparent;
     
   }
   
@@ -177,14 +176,42 @@ justify-items: center;
 .game_won_jornada{
   display: flow-root;
   margin-bottom: -1px;
+  margin-top: -35px;
 }
 
 .texto_venceu_jornada{
   font-weight: bold;
   margin-top: -6px;
+  font-size: 20px;
 }
 
 .botton_proximo_nivel{
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 2px;
+  box-shadow: #00000069 0px 6px 3px;
+    background-color: #05c24e;
+    color: #ffffff;
+     width: auto;
+     height: 4%;
+     border-color: #05c24d00;
+}
+
+.game_over_jornada{
+   display: flow-root;
+  margin-bottom: -1px;
+  margin-top: -35px;
+}
+
+.texto_perdeu{
+  font-weight: bold;
+  margin-top: -6px;
+  font-size: 20px;
+}
+
+.botton_tentar_novamente{
+  font-size: 14px;
+  font-weight: bold;
   margin-top: 2px;
   box-shadow: #00000069 0px 6px 3px;
     background-color: #05c24e;

@@ -24,7 +24,6 @@ function PegarItem({ item }) {
           style={{ width: "90px", height: "90px", objectFit: "contain" }}
         />
       )}
-     <div>{item.name}</div>
     </div>
   );
 }
