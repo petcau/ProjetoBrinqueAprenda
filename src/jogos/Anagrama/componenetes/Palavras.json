@@ -1,44 +1,48 @@
 {
   "anagramas": [
     {
-      "palavrasValidas": ["SAPO", "POSA", "SOPA"],
-      "palavraEmbaralhada": "OSAP"
+      "palavraEmbaralhada": "SAPO",
+      "palavrasValidas": ["SAPO", "SOPA"]
     },
     {
-      "palavrasValidas": ["CASA", "SACA"],
-      "palavraEmbaralhada": "ASAC"
+      "palavraEmbaralhada": "CASA",
+      "palavrasValidas": ["CASA", "SACA"]
+    },
+     {
+      "palavraEmbaralhada": "LBOO",
+      "palavrasValidas": ["BOLO", "LOBO"]
     },
     {
-      "palavrasValidas": ["RATO", "TORA", "ROTA", "ATOR"],
-      "palavraEmbaralhada": "OTAR"
+      "palavraEmbaralhada": "LATA",
+      "palavrasValidas": ["LATA", "TALA", "ALTA"]
     },
     {
-      "palavrasValidas": ["PATO", "TOPA", "APTO"],
-      "palavraEmbaralhada": "PTAO"
+      "palavraEmbaralhada": "RATO",
+      "palavrasValidas": ["RATO", "TORA", "ROTA", "ATOR"]
     },
     {
-      "palavrasValidas": ["BOLO", "LOBO"],
-      "palavraEmbaralhada": "OLOB"
+      "palavrasValidas": ["AMOR", "ROMA", "MORA", "RAMO"],
+      "palavraEmbaralhada": "OMAR"
     },
     {
-      "palavrasValidas": ["LOTA", "ALTO"],
-      "palavraEmbaralhada": "ATLO"
+      "palavraEmbaralhada": "OARTP",
+      "palavrasValidas": ["PORTA", "TROPA", "PARTO", "RAPTO"]
+    },
+   {
+  "anagramas": [
+    {
+      "palavraEmbaralhada": "RETCO",
+      "palavrasValidas": ["CETRO", "CORTE", "TORCE", "TERÇO"]
     },
     {
-      "palavrasValidas": ["ARCO", "ROCA"],
-      "palavraEmbaralhada": "ORAC"
+      "palavraEmbaralhada": "OARGL",
+      "palavrasValidas": ["LARGO", "GOLAR", "GORAL", "ARGOL", "LOGAR"]
     },
     {
-      "palavrasValidas": ["LATA", "TALA"],
-      "palavraEmbaralhada": "ATAL"
-    },
-    {
-      "palavrasValidas": ["MALA", "LAMA"],
-      "palavraEmbaralhada": "ALMA"
-    },
-    {
-      "palavrasValidas": ["NATO", "TONA"],
-      "palavraEmbaralhada": "OANT"
+      "palavraEmbaralhada": "AINERM",
+      "palavrasValidas": ["MINERA", "REMINA", "ANEMIA", "MINEAR", "REMINAR"]
     }
+  ]
+}
   ]
 }
