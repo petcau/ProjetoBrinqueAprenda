@@ -86,7 +86,7 @@ function Abaco() {
     return (
         <main className="container">
             <div className="game-container-V">
-                <h1 className="titulo">Ábacomania</h1>
+                <h1 className="titulo">🎮 Ábacomania 🧠</h1>
                 
                 <div className="painel-controle">
                     <div className="valores">
@@ -137,7 +137,7 @@ function Abaco() {
                 </div>
                 
                 <div className="instrucoes">
-                    <p>Clique nos círculos para adicionar valores ao seu ábaco. Cada linha vale: 1, 5, 10, 50, 100. Tente alcançar o valor alvo mostrado acima!</p>
+                    <p>Clique nos círculos para adicionar valores ao seu ábaco. Cada linha vale: 1, 5, 10, 50, 100. Tente alcançar o valor alvo!</p>
                 </div>
             </div>
         </main>
