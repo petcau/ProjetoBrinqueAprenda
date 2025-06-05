@@ -39,14 +39,14 @@
       "fase": 6,
       "quantidadePalavras": 10,
       "tempoLimite": 35,
-      "palavras": ["Amizade", "Caráter", "Cultura", "Família", "Genuíno", "Estigma", "Estória", "Inferir", "Apático", "Sucinto", "Acepção", "Redimir", "Prolixo", "Astúcia", "Recesso", "Virtude", "Icônico", "Soberba", "Refutar", "Mitigar", "Exortar", "Cinismo", "Mórbido", "Trivial", "Estável", "Aspecto", "Sucesso", "Síntese", "Luxúria", "Alegria", "Cordial", "Anátema", "Imputar", "Emergir", "Ademais", "Escória", "Orgulho", "Excerto", "Candura", 
-      "Deboche", "Saudade", "Coragem", "Frívolo", "Amizade", "Salutar"]
+      "palavras": ["Amizade", "Caráter", "Cultura", "Família", "Genuíno", "Estigma", "Estória", "Inferir", "Apático", "Sucinto", "Acepção", "Redimir", "Prolixo", "Astúcia", "Recesso", "Virtude", "Icônico", "Soberba", "Refutar", "Mitigar", "Exortar", "Cinismo", "Mórbido", "Trivial", "Estável", "Aspecto", "Sucesso", "Síntese", "Luxúria", "Alegria", "Cordial", "Anátema", "Imputar", "Emergir", "Ademais", "Bolacha", "Orgulho", "Excerto", "Candura", 
+      "Deboche", "Saudade", "Coragem", "Frívolo", "Garrafa", "Salutar"]
     },
     {
       "fase": 7,
       "quantidadePalavras": 10,
       "tempoLimite": 30,
-      "palavras": ["Inerente", "Respeito", "Peculiar", "Denegrir", "Genocida", "Anuência", "Equidade", "Deferido", "Prudente", "Essência", "Iminente", "Pandemia", "Desgraça", "Misógino", "Eminente", "Premissa", "Invasivo", "Abstrato", "Alienado", "Extensão", "Empírico", "Rapariga", "Conceito", "Ardiloso", "Talarico", "Ascensão", "Reiterar", "Devaneio", "Lascívia", "Prodígio", "Relativo", "Inefável", "Passível", "Conserto", "Gratidão", "Destarte", "Analogia", "Inserção", "Remissão", "Modéstia", "Fomentar", "Apologia", "Despeito", "Ativista", "Inóspito",
+      "palavras": ["Inerente", "Respeito", "Peculiar", "Florista", "Elefante", "Anuência", "Equidade", "Deferido", "Prudente", "Essência", "Iminente", "Pandemia", "Caminhar", "Alfinete", "Eminente", "Premissa", "Invasivo", "Abstrato", "Alienado", "Extensão", "Empírico", "Desenhar", "Conceito", "Ardiloso", "Algodão", "Ascensão", "Reiterar", "Devaneio", "Lascívia", "Prodígio", "Relativo", "Inefável", "Passível", "Conserto", "Gratidão", "Destarte", "Analogia", "Inserção", "Remissão", "Modéstia", "Fomentar", "Apologia", "Despeito", "Ativista", "Inóspito",
        "Medíocre", "Retórica", "Monótono", "História", "Alicerce", "Concerne"]
     },
     {
