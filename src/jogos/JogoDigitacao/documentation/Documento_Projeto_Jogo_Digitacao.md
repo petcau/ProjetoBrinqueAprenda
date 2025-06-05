@@ -111,4 +111,12 @@ Estudantes do ensino fundamental e médio, ou qualquer pessoa que deseje aprimor
 - Realizar checklist final de entrega
 - Preparar apresentação do jogo para a turma/professor
 
+
+### IMAGENS DO JOGO :
+
+![alt text](<Captura de Tela (2).png>)
+
+
 ---
+
+![alt text](<Captura de Tela (5).png>)
