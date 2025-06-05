@@ -4,7 +4,8 @@
       <h1 style="margin: 0;">Documento do Projeto</h1>
     </td>
     <td style="vertical-align: middle; text-align: right;">
-      <img src="imagens/logo.png" alt="Logo do Projeto" width="80">
+      <img src="![Uploading image.png…]()
+">
     </td>
   </tr>
 </table>
