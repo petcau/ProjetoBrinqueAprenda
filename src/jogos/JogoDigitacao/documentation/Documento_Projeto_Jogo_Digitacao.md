@@ -35,16 +35,16 @@ Estudantes do ensino fundamental e médio, ou qualquer pessoa que deseje aprimor
 
 1. Acesse o jogo por meio do navegador.
 2. Clique em “Iniciar”.
-3. Escolha o modo de dificuldade:
-   - Fácil: palavras simples e tempo maior.
-   - Médio: palavras moderadas e tempo reduzido.
-   - Difícil: palavras complexas e tempo curto.
+3. O jogo ira por cada fase linearmente, ficando mais dificil a cada fase:
+   - 1-3: palavras simples e tempo maior.
+   - 4-7: palavras moderadas e tempo reduzido.
+   - 8-10: frases complexas e tempo maior.
 4. Digite corretamente as palavras que aparecem na tela.
 5. O sistema mostra um feedback para cada palavra:
-   - “Correto!” para palavras digitadas corretamente.
-   - “Errou” para palavras erradas ou não digitadas a tempo.
-6. Ao final do tempo, é exibido um resumo com pontuação, acertos e erros.
-7. O jogador pode reiniciar o jogo e tentar melhorar seu desempenho.
+   - Uma frase diferente é mostrada para o usuário quando ele erra ou acerta
+   - Um som distinto toca quando o usuário acerta ou erra a palavra.
+   - Caso aja um acerto o contador de acertos aumenta
+6. O jogador pode reiniciar o jogo e tentar melhorar seu desempenho.
 
 ## Micro Atividades
 
@@ -62,8 +62,8 @@ Estudantes do ensino fundamental e médio, ou qualquer pessoa que deseje aprimor
 | Planejamento e divisão de tarefas | Maio (1ª semana)          | Concluído     |
 | Desenvolvimento inicial (HTML/CSS)| Maio (2ª semana)          | Concluído     |
 | Implementação da lógica (JS)     | Maio (3ª e 4ª semana)      | Concluído     |
-| Testes e ajustes finais          | Junho (1ª quinzena)       | Pendente      |
-| Preparação para apresentação     | Junho (2ª quinzena)       | Pendente      |
+| Testes e ajustes finais          | Junho (1ª quinzena)       | Concluído      |
+| Preparação para apresentação     | Junho (2ª quinzena)       | Concluído     |
 
 ---
 
