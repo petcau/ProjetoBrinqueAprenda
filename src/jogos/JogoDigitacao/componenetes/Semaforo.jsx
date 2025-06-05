@@ -7,7 +7,7 @@ import luzVerde from '../game_assets/luz_verde.png';
 
 export default function Semaforo({ onComplete }) {
   const [corAtiva, setCorAtiva] = useState('vermelho');
-  const [contagem, setContagem] = useState(6);
+  const [contagem, setContagem] = useState(3);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -25,9 +25,9 @@ export default function Semaforo({ onComplete }) {
   }, [onComplete]);
 
   useEffect(() => {
-    if (contagem > 4) {
+    if (contagem == 3) {
       setCorAtiva('vermelho');
-    } else if (contagem > 2) {
+    } else if (contagem == 2) {
       setCorAtiva('amarelo');
     } else {
       setCorAtiva('verde');

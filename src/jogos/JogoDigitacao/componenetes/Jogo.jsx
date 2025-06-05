@@ -40,6 +40,25 @@ export default function Jogo({ onVoltar }) {
     if (audioSecundario.current) audioSecundario.current.pause();
     if (audioEvento.current) audioEvento.current.pause();
   };
+  const playAudioPrincipal = (src, loop = false) => {
+  if (audioPrincipal.current) {
+    audioPrincipal.current.pause();
+    audioPrincipal.current = null;
+  }
+
+  const audio = new Audio(src);
+  audio.loop = loop;
+
+  audio
+    .play()
+    .then(() => {
+      audioPrincipal.current = audio;
+    })
+    .catch((err) => {
+      console.error('Erro ao tentar tocar áudio:', err);
+    });
+};
+
 
    // Chama quando o componente desmonta
   useEffect(() => {
@@ -61,21 +80,17 @@ export default function Jogo({ onVoltar }) {
   // Efeito do semáforo e áudio
   useEffect(() => {
     if (semaforoAtivo) {
-      // Toca contagem do semáforo
-      audioPrincipal.current = new Audio(contagemSound);
-      audioPrincipal.current.play();
-      
-      // Configura para tocar o relógio após a contagem
-      const timer = setTimeout(() => {
-        setSemaforoAtivo(false);
-        audioPrincipal.current = new Audio(relogioSound);
-        audioPrincipal.current.loop = true;
-        audioPrincipal.current.play();
-      }, 6000);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [semaforoAtivo, faseAtual]);
+    console.log("🔊 Tocando áudio do semáforo...");
+    playAudioPrincipal(contagemSound);
+
+    const timer = setTimeout(() => {
+      setSemaforoAtivo(false);
+      playAudioPrincipal(relogioSound, true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }
+}, [semaforoAtivo]);
 
   // Efeito de reinício de fase
   useEffect(() => {
@@ -85,13 +100,11 @@ export default function Jogo({ onVoltar }) {
     setFim(false);
     setMensagem('');
     setPalavrasUsadas([]);
-    setSemaforoAtivo(true); // Reinicia o semáforo
-    
+    setSemaforoAtivo(true)
     // Limpa áudios ao mudar de fase
     if (audioPrincipal.current) audioPrincipal.current.pause();
     if (audioSecundario.current) audioSecundario.current.pause();
   }, [faseAtual]);
-
   // Efeito do cronômetro
   useEffect(() => {
     if (fim || semaforoAtivo) return;
@@ -123,7 +136,6 @@ export default function Jogo({ onVoltar }) {
 
   const mudança = (event) => {
     setInput(event.target.value);
-    playSomSecundario(somClickSound); // Som ao digitar
   };
 
   const comparar = () => {
