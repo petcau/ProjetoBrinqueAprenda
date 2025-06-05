@@ -24,7 +24,7 @@ export default function Jogo({ onVoltar }) {
   const [palavrasUsadas, setPalavrasUsadas] = useState([]);
   const [Perdeu, setPerdeu] = useState(true);
   const [semaforoAtivo, setSemaforoAtivo] = useState(true);
-
+  const[mudançafase, setMudançafase] = useState(false)
   // Referências de áudio
   const audioPrincipal = useRef(null);     // Semáforo e relógio
   const audioSecundario = useRef(null);   // Efeitos momentâneos
@@ -97,7 +97,8 @@ export default function Jogo({ onVoltar }) {
     setFim(false);
     setMensagem('');
     setPalavrasUsadas([]);
-    setSemaforoAtivo(true)
+    setSemaforoAtivo(true);
+    setMudançafase(false);
     // Limpa áudios ao mudar de fase
     if (audioPrincipal.current) audioPrincipal.current.pause();
     if (audioSecundario.current) audioSecundario.current.pause();
@@ -128,6 +129,7 @@ export default function Jogo({ onVoltar }) {
     const nova = palavrasDisponiveis[Math.floor(Math.random() * palavrasDisponiveis.length)];
     setPalavra(nova);
     setInput('');
+    console.log(palavrasUsadas);
     setPalavrasUsadas(prev => [...prev, nova]);
   };
 
@@ -146,6 +148,7 @@ export default function Jogo({ onVoltar }) {
       if (acertos + 1 >= fase.quantidadePalavras) {
         if (faseAtual + 1 < fasesData.fases.length) {
           setMensagem('Parabéns! Indo para a próxima fase.');
+          setMudançafase(true);
           setTimeout(() => setFaseAtual(prev => prev + 1), 2000);
         } else {
           setFim(true);
@@ -209,7 +212,7 @@ export default function Jogo({ onVoltar }) {
             placeholder="Digite a palavra"
             onKeyDown={(e) => e.key === 'Enter' && comparar()}
             onPaste={(e) => e.preventDefault()}
-            disabled={semaforoAtivo}
+            disabled={semaforoAtivo || mudançafase}
           />
           <p className="textoMD">{mensagem}</p>
           <p className="textoMD">Acertos: {acertos} / {fase.quantidadePalavras}</p>
