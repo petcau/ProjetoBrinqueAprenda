@@ -53,3 +53,8 @@
 6. Botão de vitoria;
 
 - Definição de formulario para teste dos jogos;
+
+# Dia 01/06/2025
+
+<p>As seguintes mudanças foram feitas:</p>
+1. Correções de bug na passagem de nível;
