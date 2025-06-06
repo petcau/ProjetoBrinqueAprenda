@@ -19,7 +19,7 @@
 .Controles_JornadaPA{
     display: flex;
     width: 105%;
-    /*justify-content: space-around;*/
+    justify-content: space-around;
     font-size: 12px;
 }
 
@@ -109,8 +109,9 @@
     width: 965px;
     height: 450px;
     display: flex;
-    background-image: url(game_assets/imagens/Catinga.png);
+    background-image: url(${background[ZoneName]});
     background-size: cover;
+    background-position: center;
     
   }
   
