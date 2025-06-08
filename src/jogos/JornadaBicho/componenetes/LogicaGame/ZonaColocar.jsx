@@ -15,7 +15,16 @@
  *   backgroundUrl="/imagens/fundo.png"
  * />
  */
-function AreaColocar({ zoneName, onDrop, backgroundUrl }) {
+function AreaColocar({ zoneName, onDrop, backgroundUrl, allObjects, droppedItems }) {
+  // Verifica se a URL do background foi fornecida
+  const itemsInThisZoneIds = Object.keys(droppedItems).filter(
+    itemId => droppedItems[itemId].zone === zoneName
+  );
+
+  const itemsToRender = allObjects.filter(obj => 
+    itemsInThisZoneIds.includes(obj.id)
+  );
+  
   return (
     <div
       className={`drop-zone ${zoneName}`}
@@ -28,9 +37,30 @@ function AreaColocar({ zoneName, onDrop, backgroundUrl }) {
       onDrop={(e) => {
         e.preventDefault();
         const itemId = e.dataTransfer.getData("text/plain");
-        onDrop(itemId, zoneName);
+        onDrop(itemId, zoneName, e);
       }}
-    ></div>
+    >
+      {itemsToRender.map(item => {
+        
+        const posicao = droppedItems[item.id];
+        
+        return (
+        <img 
+          key={item.id}
+          src={`/JornadaBicho/${item.image}`}
+          alt={item.name}
+          className="dropped-item-in-zone"
+          style={{ 
+            width: "90px", 
+            height: "90px", 
+            objectFit: "contain",
+            top: `${posicao.y}px`,
+            left: `${posicao.x}px`,
+        }}
+        />
+      );
+    })}
+    </div>
   );
 }
 

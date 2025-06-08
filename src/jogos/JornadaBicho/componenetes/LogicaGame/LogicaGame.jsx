@@ -76,17 +76,32 @@ function GameLogic() {
    * @param {string} itemId - O identificador do item.
    * @param {string} zone - A zona onde o item foi dropado.
    */
-  function handleDrop(itemId, zone) {
-    if (gameStatus !== "Jogando") return;
+  function handleDrop(itemId, zone, e) {
+    
+    if (gameStatus !== "Jogando" || dropped[itemId]) {
+      return;
+    }
 
     const item = objects.find((obj) => obj.id === itemId);
     if (!item) return;
 
     const isCorrect = item.correctZone === zone;
 
-    setDropped((prev) => ({ ...prev, [itemId]: zone }));
 
-    if (!dropped[itemId] && isCorrect) {
+    if (isCorrect) {
+
+      const dropZone = e.currentTarget;
+      const rect = dropZone.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      // Marca o item como dropado na zona correta
+      setDropped((prev) => ({
+        ...prev, 
+        [itemId]: { zone: zone , x :x, y: y },
+      }));
+
+      // Atualiza a contagem de acertos
       setAcertos((prev) => {
         const newCount = prev + 1;
         if (newCount >= acertosNecessarios) {
@@ -94,7 +109,7 @@ function GameLogic() {
         }
         return newCount;
       });
-    } else if (!isCorrect && !dropped[itemId]) {
+    } else {
       setErrorCount((prev) => {
         const newCount = prev + 1;
         if (newCount >= 3) {
@@ -104,6 +119,8 @@ function GameLogic() {
       });
     }
   }
+
+  const unplacedItems = objects.filter(obj => !dropped[obj.id]);
 
   /**
    * Função chamada quando o usuário completa um nível.
@@ -163,6 +180,8 @@ function GameLogic() {
       zones={zones} 
       onDrop={handleDrop} 
       backgroundUrl={backgroundUrl}
+      allObjects={objects}
+      droppedItems={dropped}
       />
       
       <p className="dica_jornada">{currentLevel.dica}</p>
@@ -205,7 +224,7 @@ function GameLogic() {
         totalLevels={levels.length}
       />
 
-      <ItemsList objects={objects} />
+      <ItemsList objects={unplacedItems} />
 
     </div>
   );

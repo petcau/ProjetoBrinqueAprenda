@@ -10,7 +10,7 @@ import ZonaColocar from "./ZonaColocar";
  * @param {string} props.backgroundUrl - URL da imagem de fundo para cada zona.
  * @returns {JSX.Element} A lista renderizada de zonas.
  */
-const ZonesList = ({ zones, onDrop, backgroundUrl }) => (
+const ZonesList = ({ zones, onDrop, backgroundUrl, allObjects, droppedItems}) => (
   <div className="zones">
     {zones.map((zone) => (
       <ZonaColocar 
@@ -18,6 +18,8 @@ const ZonesList = ({ zones, onDrop, backgroundUrl }) => (
         zoneName={zone} 
         onDrop={onDrop}
         backgroundUrl={backgroundUrl}
+        allObjects={allObjects}
+        droppedItems={droppedItems}
       />
     ))}
   </div>
