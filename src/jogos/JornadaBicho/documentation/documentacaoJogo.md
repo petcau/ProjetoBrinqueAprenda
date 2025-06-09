@@ -5,10 +5,11 @@
       <h1 style="margin: 0;">Documento do Projeto</h1>
     </td>
     <td style="vertical-align: middle; text-align: right;">
-      <img src="imagens/logo.png" alt="Logo do Projeto" width="80">
+      <img  src="../../Anagrama/documentation/imgs/UNEB-logo.png" width="200">
     </td>
   </tr>
 </table>
+
 
 
 ## Projeto brinque e aprenda.
@@ -47,8 +48,7 @@ Crianças em fase inicial de aprendizagem escolar.
 | Etapa | Período | Status|
 |---------------------|-----------------------|------------  |
 |criação do código principal  | 08/05/25      | feito |
-|ajustes no código  |   15/05/25   | feito|   
-|criação das imagens e backlog  |17/05/2025 | feito | 
-|inicio de trabalhos no CSS | 21/05/2025 | feito | 
-|Últimos ajustes no menu | 29/05/2025 | feito
-|Apresentação do trabalho | 12/06/2025 | A fazer
+|ajustes no código  |   15/05/25   | feito|
+|criação das imagens e backlog  |17/05/2025 | feito |
+|inicio de trabalhos no CSS | 21/05/2025 | feito |
+|Últimos ajustes no menu | 29/05/2025 | feito |
