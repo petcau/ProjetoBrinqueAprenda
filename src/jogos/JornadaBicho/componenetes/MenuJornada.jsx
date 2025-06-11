@@ -46,7 +46,7 @@ function MenuJornada({ estado, setEstado }) {
   }
 
   return (
-    <div className="conteiner_Menu_Jornada">
+    <div className="conteiner_Menu_Jornada">      
       <button className="Butao_Voltar_Ao_Menu" onClick={getBack}>
         Voltar para o menu
       </button>

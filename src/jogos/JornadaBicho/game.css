@@ -10,6 +10,19 @@
   font-size: 12px;
 }
 
+.audio_jornada{
+  display: flex;
+  margin-left: 915px;
+  margin-top: -40px;
+  box-shadow: #00000069 0px 6px 3px;
+  background-color: #05c24e;
+  color: #ffffff;
+  width: auto;
+  height: auto;
+  border-color: #05c24d00;
+  justify-content: center;
+}
+
 .NAnterior {
   font-size: 14px;
   box-shadow: #00000069 0px 6px 3px;
@@ -40,6 +53,7 @@
   width: auto;
   height: 4%;
   border-color: #05c24d00;
+  margin-top: 12px;
 
 }
 

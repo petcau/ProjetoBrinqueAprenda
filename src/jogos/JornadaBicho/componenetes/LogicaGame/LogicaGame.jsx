@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { levels } from "../../game_assets/Levels-Itens.json";
 import Header from "./Header";
 import Controls from "./ControlesLevel";
@@ -43,6 +43,8 @@ function GameLogic() {
   const [shuffledItems, setShuffledItems] = useState([]);
   const currentLevel = levels[levelIndex];
   const currentLevelItems = levels[levelIndex].items;
+  const [somAtivo, setSomAtivo] = useState(true);
+  const SoundRef = useRef(null);
 
   useEffect(() => {
     const items = [...currentLevelItems].sort(() => Math.random() - 0.5);
@@ -65,7 +67,7 @@ function GameLogic() {
   const acertosNecessarios = levels[levelIndex].acertosNecessarios;
   const errosMaximos = levels[levelIndex].errosMaximos;
 
-   // Pega a URL do background do nível atual
+  // Pega a URL do background do nível atual
   const backgroundUrl = currentLevel.background;
 
   /**
@@ -78,7 +80,7 @@ function GameLogic() {
    * @param {string} zone - A zona onde o item foi dropado.
    */
   function handleDrop(itemId, zone, e) {
-    
+
     if (gameStatus !== "Jogando" || dropped[itemId]) {
       return;
     }
@@ -94,11 +96,11 @@ function GameLogic() {
       const rect = dropZone.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      
+
       // Marca o item como dropado na zona correta
       setDropped((prev) => ({
-        ...prev, 
-        [itemId]: { zone: zone , x :x, y: y },
+        ...prev,
+        [itemId]: { zone: zone, x: x, y: y },
       }));
 
       // Atualiza a contagem de acertos
@@ -167,23 +169,45 @@ function GameLogic() {
     setGameStatus("Jogando");
   };
 
+  useEffect(() => {
+  if (SoundRef.current) {
+    if (somAtivo) {
+      SoundRef.current.play().catch(() => {});
+    } else {
+      SoundRef.current.pause();
+    }
+  }
+}, [somAtivo]);
+
   return (
-    <div className="game_container_jornada" >
-      
+    <div className="game_container_jornada">
+      <audio
+        ref={SoundRef}
+        src="src/jogos/JornadaBicho/game_assets/sons_para_iplementar/Mr-jornada.mp3"
+        autoPlay
+        loop
+        preload="auto"
+        style={{ display: "none" }}
+      />
+
+<button className="audio_jornada" onClick={() => setSomAtivo(!somAtivo)}>
+  {somAtivo ? "🔇" : "🔊"}
+</button>
+
       <Header
         className="level_jornada"
         level={levelIndex + 1}
         description={currentLevel.description}
       />
-      
-      <ZonesList 
-        zones={zones} 
-        onDrop={handleDrop} 
+
+      <ZonesList
+        zones={zones}
+        onDrop={handleDrop}
         backgroundUrl={backgroundUrl}
         allObjects={objects}
         droppedItems={dropped}
       />
-      
+
       <p className="dica_jornada">{currentLevel.dica}</p>
 
       <div className="acertos_jornada">
@@ -192,7 +216,7 @@ function GameLogic() {
         </p>
         <p>Erros: {errorCount} / {errosMaximos}</p>
       </div>
-      
+
       {gameStatus === "Ganhou" && (
         <div className="game_won_jornada">
           <p className="texto_venceu_jornada">
