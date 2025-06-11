@@ -15,8 +15,9 @@ function AnagramaJogo({
   resetarTentativa,
   limparDescobertas,
   proximoNivel,
-  nivelAtual, // 👈 importante para verificar última fase
+  nivelAtual,
 }) {
+  const [somAtivo, setSomAtivo] = useState(true);
   const timesUpSoundRef = useRef(null);
   const [tempoEsgotado, setTempoEsgotado] = useState(false);
   const [faseCompleta, setFaseCompleta] = useState(false);
@@ -34,14 +35,14 @@ function AnagramaJogo({
     }
   }, [descobertas, palavrasValidas]);
 
-  const handleTempoEsgotado = () => {
-    setTempoEsgotado(true);
+const handleTempoEsgotado = () => {
+  setTempoEsgotado(true);
+  if (somAtivo && timesUpSoundRef.current) {
+    timesUpSoundRef.current.currentTime = 0;
+    timesUpSoundRef.current.play();
+  }
+};
 
-    if (timesUpSoundRef.current) {
-      timesUpSoundRef.current.currentTime = 0;
-      timesUpSoundRef.current.play();
-    }
-  };
 
   const handleReiniciar = () => {
     setTempoEsgotado(false);
@@ -55,10 +56,6 @@ function AnagramaJogo({
     setTimeout(() => {
       handleReiniciar();
       setFaseCompleta(false);
-      setTempoEsgotado(false);
-      resetarTentativa();
-      limparDescobertas();
-      setReiniciarTrigger((t) => t + 1);
       proximoNivel();
       setCarregandoProximaFase(false);
     }, 1000);
@@ -66,23 +63,32 @@ function AnagramaJogo({
 
   return (
     <div className="mesa-container">
-      {/* Som de tempo esgotado */}
+      {/* 🔊 Som de tempo esgotado */}
       <audio
         ref={timesUpSoundRef}
         src="src/assets/Sons/somDerrota.mp3"
         preload="auto"
       />
 
-      {/* Cronômetro */}
+<button
+  className={`botao-som ${somAtivo ? "som-ligado" : "som-desligado"}`}
+  onClick={() => setSomAtivo((prev) => !prev)}
+>
+  Som: {somAtivo ? "🔊 Ligado" : "🔇 Desligado"}
+</button>
+
+
+      {/* ⏱️ Cronômetro */}
       {!faseCompleta && !tempoEsgotado && (
         <Cronometro
           tempoInicial={30}
           onTempoEsgotado={handleTempoEsgotado}
           reiniciarTrigger={reiniciarTrigger}
+          somAtivo={somAtivo}
         />
       )}
 
-      {/* Tela de derrota */}
+      {/* ❌ Tela de derrota */}
       {tempoEsgotado && (
         <div>
           <h3 className="finish">Tempo Esgotado!</h3>
@@ -92,7 +98,7 @@ function AnagramaJogo({
         </div>
       )}
 
-      {/* Tela de vitória ou final */}
+      {/* ✅ Tela de vitória ou final */}
       {faseCompleta && (
         <div>
           <h3 className="finish">
@@ -112,16 +118,21 @@ function AnagramaJogo({
         </div>
       )}
 
+      {/* 🔤 Letras disponíveis */}
       <Letras
         letras={letras}
         onAdicionarLetra={adicionarLetra}
         desabilitado={tempoEsgotado || faseCompleta}
       />
+
+      {/* 📝 Palavra tentativa */}
       <PalavraTentativa
         tentativa={tentativa}
         onEnviar={enviarPalavra}
         desabilitado={tempoEsgotado || faseCompleta}
       />
+
+      {/* 📜 Palavras descobertas */}
       <PalavrasDescobertas
         descobertas={descobertas}
         palavrasValidas={palavrasValidas}

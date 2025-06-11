@@ -1,13 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
-function Cronometro({ tempoInicial = 30, onTempoEsgotado, reiniciarTrigger }) {
+function Cronometro({ tempoInicial = 30, onTempoEsgotado, reiniciarTrigger, somAtivo }) {
   const [tempo, setTempo] = useState(tempoInicial);
   const [ativo, setAtivo] = useState(true);
 
   const tickSoundRef = useRef(null);
-  const timesUpSoundRef = useRef(null);
 
-  // Reinicia o cronômetro quando o reiniciarTrigger mudar
   useEffect(() => {
     setTempo(tempoInicial);
     setAtivo(true);
@@ -22,16 +20,16 @@ function Cronometro({ tempoInicial = 30, onTempoEsgotado, reiniciarTrigger }) {
           clearInterval(intervalo);
           setAtivo(false);
 
-          if (timesUpSoundRef.current) {
-            timesUpSoundRef.current.currentTime = 0;
-            timesUpSoundRef.current.play();
+          if (somAtivo && tickSoundRef.current) {
+            tickSoundRef.current.currentTime = 0;
+            tickSoundRef.current.play();
           }
 
           onTempoEsgotado();
           return 0;
         }
 
-        if (tickSoundRef.current) {
+        if (somAtivo && tickSoundRef.current) {
           tickSoundRef.current.currentTime = 0;
           tickSoundRef.current.play();
         }
@@ -41,13 +39,11 @@ function Cronometro({ tempoInicial = 30, onTempoEsgotado, reiniciarTrigger }) {
     }, 1000);
 
     return () => clearInterval(intervalo);
-  }, [ativo, onTempoEsgotado]);
+  }, [ativo, somAtivo, onTempoEsgotado]);
 
   return (
     <div>
       <audio ref={tickSoundRef} src="src/assets/Sons/contagem.wav" preload="auto" />
-      <audio ref={timesUpSoundRef} src="src/assets/Sons/contagem.wav" preload="auto" />
-
       <h3>Tempo: {tempo}s</h3>
     </div>
   );

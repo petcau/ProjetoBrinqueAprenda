@@ -197,15 +197,24 @@
   right: 20px;
   z-index: 1000;
   padding: 8px 12px;
-  background-color: #6b07ddcc;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 14px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  transition: background-color 0.2s;
+  font-weight: bold;
+  color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .botao-som:hover {
-  background-color: #b10909;
+  transform: scale(1.05);
+}
+
+.som-ligado {
+  background-color: #28a745; /* Verde para som ativo */
+}
+
+.som-desligado {
+  background-color: #9c27b0; /* Roxo para som desligado */
 }

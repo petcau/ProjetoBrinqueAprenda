@@ -1,3 +1,4 @@
+// src/hooks/useAnagrama.js
 import { useState, useCallback } from "react";
 import PalavrasData from "./Palavras.json";
 
@@ -18,38 +19,26 @@ export function useAnagrama() {
     }
   };
 
-  const resetarTentativa = () => {
-    setTentativa("");
-  };
+  const resetarTentativa = () => setTentativa("");
 
   const enviarPalavra = () => {
     if (tempoEsgotado) return;
-
     const palavra = tentativa.toUpperCase();
 
     if (palavrasValidas.includes(palavra) && !descobertas.includes(palavra)) {
       const novas = [...descobertas, palavra];
       setDescobertas(novas);
-
-      // Som de palavra correta
-      const audioCorreta = new Audio('src/assets/Sons/respCorreta.mp3');
-      audioCorreta.play().catch(() => {});
+      new Audio("src/assets/Sons/respCorreta.mp3").play().catch(() => {});
     } else {
-      // Som de palavra errada
-      const audioErrada = new Audio('src/assets/Sons/respErrada.mp3');
-      audioErrada.play().catch(() => {});
+      new Audio("src/assets/Sons/respErrada.mp3").play().catch(() => {});
     }
 
     resetarTentativa();
   };
 
-  const limparDescobertas = () => {
-    setDescobertas([]);
-  };
+  const limparDescobertas = () => setDescobertas([]);
 
-  const lidarComTempoEsgotado = () => {
-    setTempoEsgotado(true);
-  };
+  const lidarComTempoEsgotado = () => setTempoEsgotado(true);
 
   const reiniciarTempo = () => {
     setTempoEsgotado(false);
@@ -60,8 +49,8 @@ export function useAnagrama() {
   const proximoNivel = useCallback(() => {
     if (nivelAtual < PalavrasData.anagramas.length - 1) {
       setNivelAtual((n) => n + 1);
-      setTentativa("");
-      setDescobertas([]);
+      resetarTentativa();
+      limparDescobertas();
     }
   }, [nivelAtual]);
 
@@ -78,7 +67,6 @@ export function useAnagrama() {
     proximoNivel,
     tempoEsgotado,
     lidarComTempoEsgotado,
-    reiniciarTempo
+    reiniciarTempo,
   };
 }
-
