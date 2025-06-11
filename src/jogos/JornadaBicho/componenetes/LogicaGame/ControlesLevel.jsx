@@ -36,9 +36,14 @@ const Controls = ({
           );
         }
         return (
+          <>
+          <button className="NAnterior" onClick={onPrevious} disabled={isFirst}>
+              Nível Anterior
+            </button>
           <button className="botton_proximo_nivel" onClick={onNext}>
             Próximo Nível
           </button>
+          </>
         );
 
       // Caso o jogador tenha perdido

@@ -4,21 +4,8 @@
   justify-content: center;
 }
 
-.Controles_jornada {
-  font-size: 12px;
-  top: 0px;
-  left: 10px;
-  box-shadow: #00000069 0px 6px 3px;
-  background-color: #05c24e;
-  color: #ffffff;
-  width: 100px;
-  height: 55px;
-  border-color: #05c24d00;
-}
-
 .Controles_JornadaPA {
   display: flex;
-  width: 105%;
   justify-content: space-around;
   font-size: 12px;
 }
@@ -28,12 +15,32 @@
   box-shadow: #00000069 0px 6px 3px;
   background-color: #05c24e;
   color: #ffffff;
-  width: 13%;
-  height: 5%;
+  width: auto;
+  height: 4%;
   border-color: #05c24d00;
-  display: flex;
-  justify-content: center;
   
+}
+
+.botton_proximo_nivel {
+  font-size: 14px;
+  box-shadow: #00000069 0px 6px 3px;
+  background-color: #05c24e;
+  color: #ffffff;
+  width: auto;
+  height: 4%;
+  border-color: #05c24d00;
+
+}
+
+.botton_tentar_novamente {
+  font-size: 14px;
+  box-shadow: #00000069 0px 6px 3px;
+  background-color: #05c24e;
+  color: #ffffff;
+  width: auto;
+  height: 4%;
+  border-color: #05c24d00;
+
 }
 
 .level_jornada {
@@ -189,19 +196,6 @@
   font-size: 20px;
 }
 
-.botton_proximo_nivel {
-  font-size: 14px;
-  font-weight: bold;
-  margin-top: 2px;
-  box-shadow: #00000069 0px 6px 3px;
-  background-color: #05c24e;
-  color: #ffffff;
-  width: auto;
-  height: 4%;
-  border-color: #05c24d00;
-  
-}
-
 .game_over_jornada {
   display: flow-root;
   margin-bottom: -1px;
@@ -212,16 +206,4 @@
   font-weight: bold;
   margin-top: -6px;
   font-size: 20px;
-}
-
-.botton_tentar_novamente {
-  font-size: 14px;
-  font-weight: bold;
-  margin-top: 2px;
-  box-shadow: #00000069 0px 6px 3px;
-  background-color: #05c24e;
-  color: #ffffff;
-  width: auto;
-  height: 4%;
-  border-color: #05c24d00;
 }
