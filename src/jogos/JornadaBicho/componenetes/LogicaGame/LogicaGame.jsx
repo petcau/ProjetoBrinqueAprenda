@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { levels } from "../../game_assets/Levels-Itens.json";
 import Header from "./Header";
 import Controls from "./ControlesLevel";
@@ -63,6 +63,7 @@ function GameLogic() {
 
   const zones = currentLevel.zones;
   const acertosNecessarios = levels[levelIndex].acertosNecessarios;
+  const errosMaximos = levels[levelIndex].errosMaximos;
 
    // Pega a URL do background do nível atual
   const backgroundUrl = currentLevel.background;
@@ -86,7 +87,6 @@ function GameLogic() {
     if (!item) return;
 
     const isCorrect = item.correctZone === zone;
-
 
     if (isCorrect) {
 
@@ -112,7 +112,7 @@ function GameLogic() {
     } else {
       setErrorCount((prev) => {
         const newCount = prev + 1;
-        if (newCount >= 3) {
+        if (newCount >= errosMaximos) {
           setGameStatus("Perdeu");
         }
         return newCount;
@@ -177,11 +177,11 @@ function GameLogic() {
       />
       
       <ZonesList 
-      zones={zones} 
-      onDrop={handleDrop} 
-      backgroundUrl={backgroundUrl}
-      allObjects={objects}
-      droppedItems={dropped}
+        zones={zones} 
+        onDrop={handleDrop} 
+        backgroundUrl={backgroundUrl}
+        allObjects={objects}
+        droppedItems={dropped}
       />
       
       <p className="dica_jornada">{currentLevel.dica}</p>
@@ -190,7 +190,7 @@ function GameLogic() {
         <p>
           Acertos: {acertos} / {acertosNecessarios}
         </p>
-        <p>Erros: {errorCount} / 3</p>
+        <p>Erros: {errorCount} / {errosMaximos}</p>
       </div>
       
       {gameStatus === "Ganhou" && (
@@ -198,21 +198,11 @@ function GameLogic() {
           <p className="texto_venceu_jornada">
             Parabéns! Vocês venceu este nível!
           </p>
-          {levelIndex < levels.length - 1 ? (
-            <button className="botton_proximo_nivel" onClick={nextLevel}>
-              Próximo Nível
-            </button>
-          ) : (
-            <p>Você completou todos os níveis!</p>
-          )}
         </div>
       )}
       {gameStatus === "Perdeu" && (
         <div className="game_over_jornada">
           <p className="texto_perdeu">Você perdeu! Muitos erros.</p>
-          <button className="botton_tentar_novamente" onClick={resetLevel}>
-            Tentar Novamente
-          </button>
         </div>
       )}
 
@@ -222,6 +212,8 @@ function GameLogic() {
         onPrevious={previousLevel}
         levelIndex={levelIndex}
         totalLevels={levels.length}
+        gameStatus={gameStatus}
+        onReset={resetLevel}
       />
 
       <ItemsList objects={unplacedItems} />
