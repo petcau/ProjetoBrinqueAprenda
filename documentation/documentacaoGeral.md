@@ -11,68 +11,68 @@
 
 
 
-## **Projeto brinque  aprenda.**
+  ## **Projeto brinque  aprenda.**
 
 
-## Equipe 0
+## **_Equipe 0_**
 
-- Neemias – Função - programador 
-- Marco Antonio – Função - designer 
-- Gustavo D'Sa – Função - programador 
-- Cesar Nogueira - Função - programador
-- Matheus Santos- Função - gestor
+  - Neemias de Melo Vasconcelos – Programador geral
+  - Marco Antonio Bomfim Cardoso Dantas – Designer geral
+  - Gustavo de Sá Teles Mendes – Programador geral
+  - Cesar Nogueira - Programador geral
+  - Matheus Oliveira Santos - Gestor geral 
 
-## Equipe 1
+## **_Equipe 1_**
 
-- Everton Oliveira – Programador
-- Pablo de Souza – Programador
-- Joedson Nascimento – Design
-- Maria Núbia Avelino – Design
-- Hernandes Pereira – Gestão
+  - Everton Oliveira – Programador
+  - Pablo de Souza – Programador
+  - Joedson Nascimento – Design
+  - Maria Núbia Avelino – Design
+  - Hernandes Pereira – Gestão
 
-## Equipe 2
+## **_Equipe 2_**
 
-- Daniel Joaquim – Gestor
-- Augusto Rabelo – Programador
-- Gabriel Bispo – Programador
-- Eduardo de Jesus – Programador
-- Gustavo Henrique – Designer
+  - Daniel Joaquim – Gestor
+  - Gabriel Bispo – Programador
+  - Eduardo de Jesus – Programador
+  - Gustavo Henrique – Designer
 
-## Equipe 3 
+## **_Equipe 3_**
 
-- Emanuel Vítor – Função - Designer
-- Vítor Thadeu – Função - Programador
-- Thiago Sampaio – Função - Programador
-- Gustavo Ramon – Função - Gestor
-- Rafael – Função - Designer
+  - Emanuel Vítor Ramos dos Santos Gonzaga – Designer
+  - Vítor Thadeu Martins da Silva Gonzaga – Programador
+  - Thiago Sampaio Santiago Pereira – Programador
+  - Gustavo Ramon Ribeiro Oliveira Santos  – Gestor
+  - Rafael da Conceição Cunha – Designer
 
-## Equipe 4
 
-- Jadson Rodrigo – Gestão
-- Emanuel Gomes – Programador
-- Silas Pereira – designer
-- Joabe Borges – Gestão
-- Felipe Dantas – designer
+## **_Equipe 4_**
 
-## Descrição.
+  - Jadson Rodrigo Santos Pereira – Gestão
+  - Emanuel Gomes Bispo – Programador
+  - Silas Pereira de Souza Dantas – designer
+  - Joabe Borges da Silva – Gestão
+  - Felipe Dantas Ferreira – designer
+
+## **Descrição.**
 
 Brinque Aprenda é um projeto educacional interativo voltado para crianças em idade pré-escolar e nos primeiros anos do ensino fundamental. A plataforma combina jogos educativos, atividades lúdicas e conteúdos pedagógicos com o objetivo de tornar o aprendizado mais divertido, envolvente e eficaz.
 
 
-## Objetivo.
+## **Objetivo.**
 
 O objetivo do projeto Brinque Aprenda é desenvolver uma plataforma digital interativa que auxilie no processo de ensino-aprendizagem de crianças, utilizando jogos e atividades lúdicas como ferramentas pedagógicas.
 
 
-## Público Alvo.
+## **Público Alvo.**
 
 O projeto é voltado a crianças do ensino fundamental.
 
 
-## Imagens geral dos jogos.
+## **Imagens geral dos jogos.**
 
 
-## Manual do Jogo **_Ábacomania_**
+## **Manual do Jogo** _Ábacomania_
 
 1. O jogo será iniciado ao clicar no botao " JOGAR ".
 2. Uma tela de níveis será disponibilizada para seleção, com uma dificuldade pré definida.
@@ -83,7 +83,7 @@ O projeto é voltado a crianças do ensino fundamental.
     - A letra C representa centenas. conta-se de 100 em 100.
 5. Após o número atingir o resultado pedido, um botão acenderá para ser clicado e passar para a próxima fase com um novo número, cada vez mais difícil.
 
-## Manual do jogo **_Anagrama_** 
+## **Manual do jogo** _Anagrama_
 
 1. Para acessar o jogo "Anagrama" clique no primeiro jogo do menu de jogos da pagina inicial do site conforme indica a imagem a seguir:
 <img src="../src/jogos/Anagrama/documentation/imgs/imgmenu.PNG" width="800" height="500">
@@ -106,7 +106,7 @@ O projeto é voltado a crianças do ensino fundamental.
    - Representação das letras selecionadas;
    - Palavra encontrada - ao acertar uma das palavras escondidas, a palavra ficará armazenada neste campo; 
 
-## Manual do jogo **_Digirance._**
+## **Manual do jogo** _Digirance._
 
 1. Acesse o jogo por meio do navegador
 2. Clique em Digirance para Iniciar.
@@ -121,11 +121,11 @@ O projeto é voltado a crianças do ensino fundamental.
 6. Ao final do tempo, é exibido um resumo com pontuação, acertos e erros.
 7. O jogador pode reiniciar o jogo e tentar melhorar seu desempenho.
 
-## Manual do jogo **_Jornada dos bichos._**
+## **Manual do jogo** _Jornada dos bichos._
 
 1. 
 
-## Micro Atividades.
+## **Micro Atividades.**
 
 - Anagrama
 - Jornada dos bichos

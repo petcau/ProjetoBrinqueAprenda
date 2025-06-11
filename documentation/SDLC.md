@@ -9,61 +9,102 @@
   </tr>
 </table>
 
+## Ciclo de vida de desenvolvimento de software
+
 <img src="../src/assets/SDLC.png" width="500" height="500">
 
-## 1 Planejamento
+## **1. Planejamento**
 
-1. Apresentação do projeto Brinque & Aprenda
+1. Apresentação do projeto Brinque & Aprenda.
 
-2. Quadro de competências e habilidades
+2. Quadro de competências e habilidades.
 
 - <img src="../src/assets/iamgem_quadro_1.png" width="800" height="500">
 
-3. Divisão de equipes e definição de papéis
+3. Divisão de equipes e definição de papéis.
 
-4. Definição dos documentos do projeto (atas, documento do projeto, documento do jogo)
+- **_Equipe 0_**
 
-5. Utilização do Git para versionamento do código e do GitHub para publicação (projeto open source)
+  - Neemias de Melo Vasconcelos – Programador geral
+  - Marco Antonio Bomfim Cardoso Dantas – Designer geral
+  - Gustavo de Sá Teles Mendes – Programador geral
+  - Cesar Nogueira - Programador geral
+  - Matheus Santos - Gestor geral 
 
-6. Utilização do Kanban com o Trello
+- **_Equipe 1_**
 
-7. Elaboração do cronograma
+  - Everton Oliveira – Programador
+  - Pablo de Souza – Programador
+  - Joedson Nascimento – Design
+  - Maria Núbia Avelino – Design
+  - Hernandes Pereira – Gestão
 
-## 2 Análise
+- **_Equipe 2_**
 
-1. Compreensão do projeto
+  - Daniel Joaquim – Gestor
+  - Gabriel Bispo – Programador
+  - Eduardo de Jesus – Programador
+  - Gustavo Henrique – Designer
 
-2. Pesquisa de 5 jogos possíveis por cada equipe
+- **_Equipe 3_** 
 
-3. Escolha dos jogos a serem desenvolvidos (imagem)
-- Abacomania
+  - Emanuel Vítor Ramos dos Santos Gonzaga – Designer
+  - Vítor Thadeu Martins da Silva Gonzaga – Programador
+  - Thiago Sampaio Santiago Pereira – Programador
+  - Gustavo Ramon Ribeiro Oliveira Santos  – Gestor
+  - Rafael da Conceição Cunha – Designer
 
- <img src="../src/assets/abaco-capa.png" width="500" height="500">
+- **_Equipe 4_**
 
- - Anagrama.
+  - Jadson Rodrigo Santos Pereira – Gestão
+  - Emanuel Gomes Bispo – Programador
+  - Silas Pereira de Souza Dantas – designer
+  - Joabe Borges da Silva – Gestão
+  - Felipe Dantas Ferreira – designer
 
-<img src="../src/assets/anagramacapa4.png" width="500" height="500">
+4. Definição dos documentos do projeto (atas, documento do projeto, documento do jogo).
 
-- Digirance 
+5. Utilização do Git para versionamento do código e do GitHub para publicação (projeto open source).
 
-<img src="../src/assets/CAPADIGITAÇÃO.png" width="500" height="500">
+6. Utilização do Kanban com o Trello.
 
-- jornada dos brichos 
+7. Elaboração do cronograma.
 
-<img src="../src/assets/card-jornada-bicho.png" width="500" height="500">
+## **2. Análise**
+
+1. Compreensão do projeto.
+
+2. Pesquisa de 5 jogos possíveis por cada equipe.
+
+3. Escolha dos jogos a serem desenvolvidos.
+- *Abacomania é um jogo educativo voltado principalmente para desenvolver habilidades matemáticas básicas, como adição, subtração, multiplicação e divisão, de forma lúdica e interativa.*
+
+  <img src="../src/assets/abaco-capa.png" width="500" height="500">
+
+ - *Anagrama é um jogo de palavras que tem como objetivo formar novas palavras rearranjando as letras de uma palavra original.*
+
+    <img src="../src/assets/anagramacapa4.png" width="500" height="500">
+
+- *Digirance é um jogo educativo que trabalha o reconhecimento de letras e o desenvolvimento da escrita. Seu objetivo principal é ajudar na alfabetização, principalmente de crianças.*
+
+  <img src="../src/assets/CAPADIGITAÇÃO.png" width="500" height="500">
+
+- *Jornada dos brichos é um jogo educativo que tem como foco principal ensinar sobre meio ambiente, biodiversidade e preservação da natureza, geralmente por meio da interação com personagens de animais.*
+
+  <img src="../src/assets/card-jornada-bicho.png" width="500" height="500">
 
 
-## 3 Design
+## **3. Design**
 
 1. Criação das telas no Figma (imagem do Figma)
 
-2. Definição dos backgrounds
+2. Definição dos backgrounds.
 
-3. Definição dos assets
+3. Definição dos assets.
 
-4. Criação de todas as imagens com IA
+4. Criação de todas as imagens com IA.
 
-## 4 Desenvolvimento
+## **4. Desenvolvimento**
 
 1. Organização do GitHub e configuração do Git
 
@@ -73,7 +114,7 @@
 
 4. Desenvolvimento completo dos jogos
 
-## 5 Testes
+## **5. Testes**
 
 1. Criação do formulário de teste (explicação do formulário de teste)
 
@@ -83,10 +124,10 @@
 
 4. Análise do feedback (print dos gráficos)
 
-## 5 Entrega
+## **5. Entrega**
 
 
-1. Registro do domínio www.brinqueaprenda.com.br
+1. Registro do domínio [www.brinqueaprenda.com.br](www.brinqueaprenda.com.br)
 
 2. Publicação do projeto no domínio
 
