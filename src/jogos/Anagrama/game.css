@@ -19,7 +19,7 @@
 }
 
 .game-container-anagrama {
-   max-width: 1200px;
+  max-width: 1200px;
   height: 900px;     
   width: 80%;     
   margin: 0 auto;
@@ -202,9 +202,9 @@
 }
 
 .tela-inicial-box {
-  width: 70%;
-  max-width: 1000px;
-  height: 750px;
+  max-width: 1200px;
+  height: 900px;     
+  width: 80%;     
   background-image: url("game_assets/anagrama-img.png");
   background-size: contain;
   background-repeat: no-repeat;
