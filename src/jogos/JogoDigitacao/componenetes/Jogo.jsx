@@ -127,7 +127,7 @@ export default function Jogo({ onVoltar }) {
   const novaPalavra = () => {
     const palavrasDisponiveis = palavras.filter(p => !palavrasUsadas.includes(p));
     const nova = palavrasDisponiveis[Math.floor(Math.random() * palavrasDisponiveis.length)];
-    setPalavra(nova);
+    setPalavra(nova.trim());
     setInput('');
     console.log(palavrasUsadas);
     setPalavrasUsadas(prev => [...prev, nova]);
@@ -167,12 +167,25 @@ export default function Jogo({ onVoltar }) {
       playSomSecundario(respErradaSound);
     }
   };
+  const renderPalavraInterativa = () => {
+  return (
+    <h1 className={`textoMDT ${palavra.length > 10 ? 'textoMDTgrande' : ''}`}>
+      {palavra.split('').map((letra, index) => {
+        const correto = input[index] && input[index].toLowerCase() === letra.toLowerCase();
+        return (
+          <span key={index} style={{ color: correto ? 'limegreen' : 'white' }}>
+            {letra}
+          </span>
+        );
+      })}
+    </h1>
+  );
+};
 
   // Renderização
   return (
     <div>
       {semaforoAtivo && <Semaforo onComplete={() => setSemaforoAtivo(false)} />}
-      
       {fim ? (
         <>
           <div>
@@ -195,7 +208,7 @@ export default function Jogo({ onVoltar }) {
         <>
           <h1 className="textoMDfase">Fase {fase.fase}</h1>
           <div className="linhaPalavra">
-            <h1 className="textoMDT">{palavra}</h1>
+            {renderPalavraInterativa()}
             {!semaforoAtivo && <h2 className="textoMD">{count}s</h2>}
             {fase.fase > 7 && fase.autor && (
               <span style={{ marginLeft: '10px', fontSize: '0.8em', color: 'gray', fontFamily: "Fredericka the great"}}>

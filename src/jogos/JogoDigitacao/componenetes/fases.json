@@ -1,7 +1,7 @@
 {
   "fases": [
     {
-      "fase": 1,
+      "fase": 10,
       "quantidadePalavras": 10,
       "tempoLimite": 30,
       "palavras": ["Amigo", "Bola", "Canto", "Dente", "Ecoa", "Feliz", "Gente", "Hora", "Igreja", "Jogo", "Luz", "Mente", "Nuvem", "Olho", "Pato", "Quente", "Rato", "Sapo", "Tempo", "Urso", "Vento", "Xadrez", "Zebra", "Arco", "Bico", "Café", "Dado", "Eixo", "Foca", "Gato", "Hino", "Igreja", "Jogo", "Lago", "Mato", "Neto", "Ovo", "Pato", 
