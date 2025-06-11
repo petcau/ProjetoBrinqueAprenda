@@ -2,49 +2,49 @@
   "fases": [
     {
       "fase": 1,
-      "quantidadePalavras": 1,
+      "quantidadePalavras": 10,
       "tempoLimite": 30,
       "palavras": ["Amigo", "Bola", "Canto", "Dente", "Ecoa", "Feliz", "Gente", "Hora", "Igreja", "Jogo", "Luz", "Mente", "Nuvem", "Olho", "Pato", "Quente", "Rato", "Sapo", "Tempo", "Urso", "Vento", "Xadrez", "Zebra", "Arco", "Bico", "Café", "Dado", "Eixo", "Foca", "Gato", "Hino", "Igreja", "Jogo", "Lago", "Mato", "Neto", "Ovo", "Pato", 
       "Quarto", "Rato", "Sapo", "Teto", "Uva", "Vaca", "Xale", "Zelo"]
     },
     {
       "fase": 2,
-      "quantidadePalavras": 1,
+      "quantidadePalavras": 10,
       "tempoLimite": 45,
       "palavras": ["Amigo", "Bola", "Café", "Dado", "Ecoa", "Fogo", "Gato", "Hino", "Igreja", "Jogo", "Luz", "Mato", "Nuvem", "Ouro", "Pato", "Quase", "Rato", "Sapo", "Teto", "Uva", "Vela", "Wok", "Xarope", "Yeti", "Zebra", "Água", "Bola", "Cima", "Dado", "Eixo", "Fato", "Gelo", 
       "Hera", "Íris", "Jogo", "Lago", "Mato", "Nuvem", "Ouro", "Pato", "Quase", "Rato", "Sapo"]
     },
     {
       "fase": 3,
-      "quantidadePalavras": 1,
+      "quantidadePalavras": 10,
       "tempoLimite": 45,
       "palavras": ["Amigo", "Balde", "Cacho", "Dardo", "Ética", "Fazer", "Gosto", "Hiena", "Ícone", "Jovem", "Karma", "Lento", "Moral", "Navio", "Ouvir", "Prato", "Quase", "Resto", "Susto", "Troca", "Unido", "Vento", "Xingo", "Yacht", "Zebra", "Anzol", "Besta", "Cesta", "Dessa", "Expor", "Fugir", "Globo", "Herói", "Ítens", "Jaula", "Kebab", "Lapis", "Misto", "Nobre", "Olhar", "Pular", "Queda", "Rampa", "Senso", "Tenso", "Usura"
 ]
     },
     {
       "fase": 4,
-      "quantidadePalavras": 1,
+      "quantidadePalavras": 10,
       "tempoLimite": 45,
       "palavras": ["Abajur", "Agenda", "Agulha", "Alarme", "Aljava", "Âncora", "Anilha", "Antena", "Balaio", "Barril", "Bastão", "Batina", "Batuta", "Bazuca", "Bíblia", "Bicama", "Biombo", "Biruta", "Bolero", "Boneca", "Bornal", "Botina", "Brinco", "Broche", "Buzina", "Cabide", "Caixão", "Cajado", "Cálice", "Calota", "Camisa", "Caneca", "Caneta", "Cantil", "Canudo", "Capelo", "Cartão", "Casaco", "Caxixi", "Chapéu", "Cinzel", "Coador", "Colcha", 
       "Coldre", "Colete", "Colher", "Cômoda", "Concha", "Crachá", "Cutelo"]
     },
     {
       "fase": 5,
-      "quantidadePalavras": 1,
+      "quantidadePalavras": 10,
       "tempoLimite": 45,
       "palavras": ["Amizade", "Cultura", "Família", "Caráter", "Sucesso", "Estigma", "Virtude", "Estável", "Aspecto", "Alegria", "Cordial", "Análogo", "Genuíno", "Sublime", "Inferir", "Apático", "Sucinto", "Acepção", "Redimir", "Prolixo", "Estória", "Empatia", "Aurélio", "Cônjuge", "Embuste", "Exceção", "Verbete", "Idílico", "Análogo", "Família", "Genuíno", "Sublime", "Estória", "Inferir", "Pêsames", "Apático", "Sucinto", "Acepção", "Redimir", 
       "Cultura", "Pródigo", "Astúcia", "Estigma", "Audácia", "Recesso", "Virtude"]
     },
     {
       "fase": 6,
-      "quantidadePalavras": 1,
+      "quantidadePalavras": 10,
       "tempoLimite": 35,
       "palavras": ["Amizade", "Caráter", "Cultura", "Família", "Genuíno", "Estigma", "Estória", "Inferir", "Apático", "Sucinto", "Acepção", "Redimir", "Prolixo", "Astúcia", "Recesso", "Virtude", "Icônico", "Soberba", "Refutar", "Mitigar", "Exortar", "Cinismo", "Mórbido", "Trivial", "Estável", "Aspecto", "Sucesso", "Síntese", "Luxúria", "Alegria", "Cordial", "Anátema", "Imputar", "Emergir", "Ademais", "Bolacha", "Orgulho", "Excerto", "Candura", 
       "Deboche", "Saudade", "Coragem", "Frívolo", "Garrafa", "Salutar"]
     },
     {
       "fase": 7,
-      "quantidadePalavras": 1,
+      "quantidadePalavras": 10,
       "tempoLimite": 30,
       "palavras": ["Inerente", "Respeito", "Peculiar", "Florista", "Elefante", "Anuência", "Equidade", "Deferido", "Prudente", "Essência", "Iminente", "Pandemia", "Caminhar", "Alfinete", "Eminente", "Premissa", "Invasivo", "Abstrato", "Alienado", "Extensão", "Empírico", "Desenhar", "Conceito", "Ardiloso", "Algodão", "Ascensão", "Reiterar", "Devaneio", "Lascívia", "Prodígio", "Relativo", "Inefável", "Passível", "Conserto", "Gratidão", "Destarte", "Analogia", "Inserção", "Remissão", "Modéstia", "Fomentar", "Apologia", "Despeito", "Ativista", "Inóspito",
        "Medíocre", "Retórica", "Monótono", "História", "Alicerce", "Concerne"]
@@ -74,7 +74,7 @@
       "A religião é o ópio do povo"]
     },
     {
-      "fase": 1,
+      "fase": 10,
       "quantidadePalavras": 5,
       "tempoLimite": 90,
       "autor" : "Paulo Freire",
