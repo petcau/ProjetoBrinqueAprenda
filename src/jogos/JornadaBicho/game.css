@@ -28,15 +28,16 @@
   box-shadow: #00000069 0px 6px 3px;
   background-color: #05c24e;
   color: #ffffff;
-   width: 14%;
-  height: 4.5%;
+   width: 12%;
+  height: 5%;
   border-color: #05c24d00;
   display: flex;
   margin-right: 85%;
   margin-top: -4%;
   justify-content: center;
-  position: fixed;
-  top: 72%;
+  position: absolute;
+  top: 91%;
+  left: 17%;
 }
 
 .level_jornada {
@@ -188,7 +189,6 @@
 
 .texto_venceu_jornada {
   font-weight: bold;
-  margin-top: -6px;
   font-size: 20px;
 }
 
@@ -199,13 +199,13 @@
   box-shadow: #00000069 0px 6px 3px;
   background-color: #05c24e;
   color: #ffffff;
-  width: 14%;
-  height: 4.5%;
+  width: 12%;
+  height: 5%;
   border-color: #05c24d00;
-  position : fixed;
-  right: 10px;
-  top: 67%;
-
+  position: absolute;
+  top: 83%;
+  right: 17%;
+  
 }
 
 .game_over_jornada {
