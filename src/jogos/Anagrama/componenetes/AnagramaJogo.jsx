@@ -70,12 +70,7 @@ const handleTempoEsgotado = () => {
         preload="auto"
       />
 
-<button
-  className={`botao-som ${somAtivo ? "som-ligado" : "som-desligado"}`}
-  onClick={() => setSomAtivo((prev) => !prev)}
->
-  Som: {somAtivo ? "🔊 Ligado" : "🔇 Desligado"}
-</button>
+
 
 
       {/* ⏱️ Cronômetro */}
