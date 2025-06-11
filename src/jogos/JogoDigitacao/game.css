@@ -15,6 +15,12 @@
 .textoMDTgrande {
   font-family: 'Fredericka the great';
   font-size: 15px;
+  max-width: 90%;        /* ou um valor fixo como 600px */
+  word-break: break-word;
+  white-space: normal;   /* permite múltiplas linhas */
+  overflow-wrap: break-word;
+  margin: 0 auto;
+  text-align: left;
 }
 .textoMDTP{
   font-family: 'Fredericka the great';
