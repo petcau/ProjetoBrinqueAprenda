@@ -24,18 +24,18 @@
 
 ## **_Equipe 1_**
 
-  - Everton Oliveira – Programador
-  - Pablo de Souza – Programador
-  - Joedson Nascimento – Design
-  - Maria Núbia Avelino – Design
-  - Hernandes Pereira – Gestão
+  - Everton Anunciação Oliveira – Programador
+  - Pablo Santana de Souza – Programador
+  - Joedson Nascimento Pimentel Junior – Design
+  - Maria Núbia Santana Avelino – Design
+  - Hernandes Santos Pereira – Gestão
 
 ## **_Equipe 2_**
 
-  - Daniel Joaquim – Gestor
-  - Gabriel Bispo – Programador
-  - Eduardo de Jesus – Programador
-  - Gustavo Henrique – Designer
+  - Daniel Joaquim Batista dos Santos – Gestor
+  - Gabriel Bispo Tolentino – Programador
+  - Eduardo de Jesus Barbosa Santos – Programador
+  - Gustavo Henrique Vila Nova Matos – Designer
 
 ## **_Equipe 3_**
 
@@ -70,6 +70,40 @@ O projeto é voltado a crianças do ensino fundamental.
 
 
 ## **Imagens geral dos jogos.**
+
+_Abacomania_
+
+<img src="../src/assets/abaco-capa.png" width="500" height="500">
+
+<img src="../src/jogos/AbacoMania/game_assets/imagemAbaco.png" width="500" height="500">
+
+<img src="../src/jogos/AbacoMania/game_assets/nomeAbaco.png" width="800" height="500">
+
+_Ánagrama_
+
+<img src="../src/assets/anagramacapa4.png" width="500" height="500">
+
+<img src="../src/jogos/Anagrama/game_assets/desk.png" width="500" heigth="500">
+
+_Digirance_
+
+<img src="../src/assets/CAPADIGITAÇÃO.png" width="500" height="500">
+
+<img src="../src/jogos/JogoDigitacao/game_assets/FUNDOD.png" width="800" height="500">
+
+<img src="../src/jogos/JogoDigitacao/game_assets/EMOJIVITORIAD.png" width="500" height="500">
+
+<imh src="../src/jogos/JogoDigitacao/game_assets/GAMEOVER.png" width="500" height="500">
+
+_Joirnada do Bicho_
+
+<img src="../src/jogos/JornadaBicho/game_assets/imagens/titulo-jornada.png" width="800" height="500">
+
+<img src="../src/jogos/JornadaBicho/game_assets/imagens/Amazonia.png" width="800" height="500">
+
+<img src="../src/jogos/JornadaBicho/game_assets/imagens/Background.png" width="800" height="500">
+
+<img src="../src/jogos/JornadaBicho/game_assets/imagens/Catinga.png" width="800" height="500" >
 
 
 ## **Manual do Jogo** _Ábacomania_
