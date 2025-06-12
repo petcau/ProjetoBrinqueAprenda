@@ -69,5 +69,6 @@
 | Estilização I          |  20/05/2025           | Finalizado   |
 | Apresentação II        |  21/05/2025           | Finalizado   |
 | Estilização II         |  29/05/2025           | Finalizado   |
-| Apresentação III       |  05/06/2025           | em andamento |
+| Apresentação III       |  05/06/2025           | Finalizado   |
+| Apresentação Final     |  12/06/2025           |    
 

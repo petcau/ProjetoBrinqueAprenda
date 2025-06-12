@@ -1,7 +1,10 @@
 import levels from "./fases.json"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef} from 'react';
 import './game.css';
+import somVitoriaSound from '../../assets/Sons/somVitoria.mp3';
+import somDerrotaSound from '../../assets/Sons/somDerrota.mp3';
 
+    //funções do ábaco, a parte que faz os arquivos se conectarem
 function Abaco() {
     const [valor, setValor] = useState(0);
     const [contas, setContas] = useState([0, 0, 0, 0, 0]);
@@ -11,8 +14,11 @@ function Abaco() {
     const [mostrarAlvo, setMostrarAlvo] = useState(true);
     const [acertou, setAcertou] = useState(false);
 
+    const audioEvento = useRef(null);
+
     const linhasValores = [1, 5, 10, 50, 100];
 
+    //Passar o numero do nivel acima do ábaco
     const atualizarAlvo = () => {
         const fase = levels.levels.find(level => level.id === faseAtual);
         if (fase){
@@ -23,32 +29,42 @@ function Abaco() {
         atualizarAlvo();
     }, [faseAtual]);
 
-    function gerarNumeroAleatorio() {
-        return Math.floor(Math.random() * 500) + 1;
-    }
+    //Parte do código anterior mas básicamente gerava um numero aleatorio ao invés de usar um arquivo Json
+    // function gerarNumeroAleatorio() {
+    //     return Math.floor(Math.random() * 500) + 1;
+    // }
 
+    //Função para checar se o valor está correto, de acordo com as marcações dos botões e setar os sons com o [Audio(somVitoriaSound)]
     const verificarAcerto = () => {
         if (valor === alvo) {
             setMensagem('Parabéns! Você acertou! 🥳 ');
             setAcertou(true);
+            audioEvento.current = new Audio(somVitoriaSound);
+            audioEvento.current.play();
         } else if (valor < alvo) {
             setMensagem(`Faltam ${alvo - valor}. Tente novamente! 🤔`);
             setAcertou(false);
+            audioEvento.current = new Audio(somDerrotaSound);
+            audioEvento.current.play();
         } else {
             setMensagem(`Passou ${valor - alvo}. Tente novamente! 🤔`);
             setAcertou(false);
+            audioEvento.current = new Audio(somDerrotaSound);
+            audioEvento.current.play();
         }
     };
 
-    const gerarNovoAlvo = () => {
-        setAlvo(gerarNumeroAleatorio());
-        setMensagem('');
-        resetarAbaco();
-    };
+    //Faz parte do código anterior, está aqui para relembrar algumas coisas se necessario utilizar novamente
+    // const gerarNovoAlvo = () => {
+    //     setAlvo(gerarNumeroAleatorio());
+    //     setMensagem('');
+    //     resetarAbaco();
+    // };
 
+    //Aqui é o que faz as contas funcionarem. Quando marca uma bolinha ela aumenta a quantidade do valor que será somado e comparado na função de comparação acima
     const moverConta = (linhaIndex, direcao) => {
         const novasContas = [...contas];
-        if (direcao === 'cima' && novasContas[linhaIndex] < 4) {
+        if (direcao === 'cima' && novasContas[linhaIndex] < 9) {
             novasContas[linhaIndex] += 1;
         } else if (direcao === 'baixo' && novasContas[linhaIndex] > 0) {
             novasContas[linhaIndex] -= 1;
@@ -58,7 +74,7 @@ function Abaco() {
         calcularTotal(novasContas);
         setMensagem('');
     };
-
+    //Aqui calcula a quantidade de bolinhas e multiplica pelo valor da linha escolhida, como 100 ou 50 ou 10
     const calcularTotal = (contasAtuais) => {
         const total = contasAtuais.reduce((acc, qtd, index) => {
             return acc + (qtd * linhasValores[index]);
@@ -66,13 +82,14 @@ function Abaco() {
         setValor(total);
     };
 
+    //Resetar as informações quando passa de nivel
     const resetarAbaco = () => {
         setContas([0, 0, 0, 0, 0]);
         setValor(0);
         setMensagem('');
         setAcertou(false);
     };
-
+    //Passa para a proxima fase e reseta as informações
     const proximaFase = () => {
         if (faseAtual < levels.levels.length){
             setFaseAtual(faseAtual + 1);
@@ -83,6 +100,7 @@ function Abaco() {
         }
     };
 
+    //Parte principal do html que mostra as informações e chama algumas das funções como, [alvo] e [faseAtual]
     return (
         <main className="container">
             <div className="game-container-V">
@@ -115,6 +133,7 @@ function Abaco() {
                         />
                     ))}
                 </div>
+                {/* Os botões que fazem as coisas funcionarem do código*/}
                 <div className="botoesContainer">
                         {/* <button onClick={() => setMostrarAlvo(!mostrarAlvo)}>
                             {mostrarAlvo ? ' Esconder' : ' Mostrar'}
@@ -144,12 +163,13 @@ function Abaco() {
     );
 }
 
+//Aqui faz as bolinhas contarem como numeros, chamando uma função que calcula a quantidade que cada uma vale
 function LinhaAbaco({ valorLinha, qtdContas, onClick }) {
     return (
         <div className="linha-abaco">
             <div className="valor-linha">{valorLinha}</div>
             <div className="contas">
-                {[...Array(4)].map((_, i) => (
+                {[...Array(9)].map((_, i) => (
                     <div 
                         key={i} 
                         className={`conta ${i < qtdContas ? 'ativo' : ''}`}

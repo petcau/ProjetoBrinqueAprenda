@@ -19,9 +19,9 @@
 }
 
 .game-container-anagrama {
-  max-width: 1000px;
-  height: 750px;
-  width: 70%;
+  max-width: 1200px;
+  height: 900px;     
+  width: 80%;     
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -41,7 +41,7 @@
    font-size: 3.5rem;
   color: white;
   text-shadow: 3px 3px 0 #000, 5px 5px 5px rgba(0, 0, 0, 0.3);
-  font-family: 'Luckiest Guy', cursive; /* ou algo estilo cartoon/divertido */
+  font-family: 'Luckiest Guy', cursive; 
 }
 
 
@@ -125,7 +125,7 @@
  .botao_voltar_menu {
   position: absolute;
   top: 35px;
-  left: 130px;
+  left: 160px;
   padding: 8px 12px;
   background-color: #4CAF50;
   color: white;
@@ -191,21 +191,50 @@
 }
 
 
-.botao-som {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 1000;
-  padding: 8px 12px;
-  background-color: #6b07ddcc;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  transition: background-color 0.2s;
+
+.tela-inicial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
 }
 
-.botao-som:hover {
-  background-color: #b10909;
+.tela-inicial-box {
+  max-width: 1200px;
+  height: 900px;     
+  width: 80%;     
+  background-image: url("game_assets/anagrama-img.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center top;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+
+.botao-iniciar {
+  margin-top: 15rem;
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.botao-iniciar:hover {
+  background-color: #059669;
+  transform: scale(1.05);
 }
