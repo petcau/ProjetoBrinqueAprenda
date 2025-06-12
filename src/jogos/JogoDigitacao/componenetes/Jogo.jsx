@@ -24,7 +24,7 @@ export default function Jogo({ onVoltar }) {
   const [palavrasUsadas, setPalavrasUsadas] = useState([]);
   const [Perdeu, setPerdeu] = useState(true);
   const [semaforoAtivo, setSemaforoAtivo] = useState(true);
-
+  const[mudançafase, setMudançafase] = useState(false)
   // Referências de áudio
   const audioPrincipal = useRef(null);     // Semáforo e relógio
   const audioSecundario = useRef(null);   // Efeitos momentâneos
@@ -91,13 +91,13 @@ export default function Jogo({ onVoltar }) {
 
   // Efeito de reinício de fase
   useEffect(() => {
-    novaPalavra();
     setCount(fase.tempoLimite);
     setAcertos(0);
     setFim(false);
     setMensagem('');
     setPalavrasUsadas([]);
-    setSemaforoAtivo(true)
+    setSemaforoAtivo(true);
+    setMudançafase(false);
     // Limpa áudios ao mudar de fase
     if (audioPrincipal.current) audioPrincipal.current.pause();
     if (audioSecundario.current) audioSecundario.current.pause();
@@ -105,29 +105,36 @@ export default function Jogo({ onVoltar }) {
   // Efeito do cronômetro
   useEffect(() => {
     if (fim || semaforoAtivo) return;
-
-    timeoutID.current = setTimeout(() => {
-      if (count === 0) {
-        setFim(true);
-        setMensagem('Tempo esgotado!');
-        // Toca som de derrota
-        if (audioPrincipal.current) audioPrincipal.current.pause();
-        audioEvento.current = new Audio(somDerrotaSound);
-        audioEvento.current.play();
-        return;
-      }
-      setCount(prev => prev - 1);
-    }, 1000);
-
+    if (mudançafase == false) {
+      timeoutID.current = setTimeout(() => {
+        if (count === 0) {
+          setFim(true);
+          setMensagem('Tempo esgotado!');
+          // Toca som de derrota
+          if (audioPrincipal.current) audioPrincipal.current.pause();
+          audioEvento.current = new Audio(somDerrotaSound);
+          audioEvento.current.play();
+          return;
+        }
+        setCount(prev => prev - 1);
+      }, 1000);
+    }
     return () => clearTimeout(timeoutID.current);
   }, [count, fim, semaforoAtivo, fase.tempoLimite]);
+  
+  useEffect(() => {
+  if (palavrasUsadas.length === 0 && !fim) {
+    novaPalavra();
+  }
+}, [palavrasUsadas]);
 
   // Funções do jogo
   const novaPalavra = () => {
     const palavrasDisponiveis = palavras.filter(p => !palavrasUsadas.includes(p));
     const nova = palavrasDisponiveis[Math.floor(Math.random() * palavrasDisponiveis.length)];
-    setPalavra(nova);
+    setPalavra(nova.trim());
     setInput('');
+    console.log(palavrasUsadas);
     setPalavrasUsadas(prev => [...prev, nova]);
   };
 
@@ -146,6 +153,7 @@ export default function Jogo({ onVoltar }) {
       if (acertos + 1 >= fase.quantidadePalavras) {
         if (faseAtual + 1 < fasesData.fases.length) {
           setMensagem('Parabéns! Indo para a próxima fase.');
+          setMudançafase(true);
           setTimeout(() => setFaseAtual(prev => prev + 1), 2000);
         } else {
           setFim(true);
@@ -164,12 +172,25 @@ export default function Jogo({ onVoltar }) {
       playSomSecundario(respErradaSound);
     }
   };
+  const renderPalavraInterativa = () => {
+  return (
+    <h1 className={`textoMDT ${palavra.length > 10 ? 'textoMDTgrande' : ''}`}>
+      {palavra.split('').map((letra, index) => {
+        const correto = input[index] && input[index].toLowerCase() === letra.toLowerCase();
+        return (
+          <span key={index} style={{ color: correto ? 'limegreen' : 'white' }}>
+            {letra}
+          </span>
+        );
+      })}
+    </h1>
+  );
+};
 
   // Renderização
   return (
     <div>
       {semaforoAtivo && <Semaforo onComplete={() => setSemaforoAtivo(false)} />}
-      
       {fim ? (
         <>
           <div>
@@ -192,7 +213,7 @@ export default function Jogo({ onVoltar }) {
         <>
           <h1 className="textoMDfase">Fase {fase.fase}</h1>
           <div className="linhaPalavra">
-            <h1 className="textoMDT">{palavra}</h1>
+            {renderPalavraInterativa()}
             {!semaforoAtivo && <h2 className="textoMD">{count}s</h2>}
             {fase.fase > 7 && fase.autor && (
               <span style={{ marginLeft: '10px', fontSize: '0.8em', color: 'gray', fontFamily: "Fredericka the great"}}>
@@ -209,7 +230,7 @@ export default function Jogo({ onVoltar }) {
             placeholder="Digite a palavra"
             onKeyDown={(e) => e.key === 'Enter' && comparar()}
             onPaste={(e) => e.preventDefault()}
-            disabled={semaforoAtivo}
+            disabled={semaforoAtivo || mudançafase}
           />
           <p className="textoMD">{mensagem}</p>
           <p className="textoMD">Acertos: {acertos} / {fase.quantidadePalavras}</p>

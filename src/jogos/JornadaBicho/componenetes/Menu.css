@@ -21,4 +21,17 @@
    width: 820px;
    margin-top: 3%;
    align-items: center;
+
+   animation: pulsar 1.5s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+@keyframes pulsar {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 0.8;            
+  }
 }

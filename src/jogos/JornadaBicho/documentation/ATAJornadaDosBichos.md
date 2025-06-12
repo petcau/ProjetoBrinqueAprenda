@@ -1,11 +1,12 @@
 git clone https://github.com/petcau/ProjetoBrinqueAprenda
 <table style="width: 100%;">
+<table style="width: 100%;">
   <tr>
     <td style="vertical-align: middle; padding-right: 10px;">
-      <h1 style="margin: 0;">ATA do Projeto – Jogo da Digitação</h1>
+      <h1 style="margin: 0;">Documento do Projeto</h1>
     </td>
     <td style="vertical-align: middle; text-align: right;">
-      <img src="imagens/logo.png" alt="Logo do Projeto" width="80">
+      <img  src="../../Anagrama/documentation/imgs/UNEB-logo.png" width="200">
     </td>
   </tr>
 </table>
@@ -51,6 +52,10 @@ Foi finalizada a implementação da tela de resultados com o resumo de pontuaç�
 ### 22/05 – Início da Fase de Melhorias Visuais  
 Durante a aula, a equipe começou a modificar o design dos botões e caixas de texto, adicionando novos elementos gráficos como molduras, cores e ícones. Também foi iniciada a implementação do menu e da seleção de modos de dificuldade (fácil, médio, difícil).
 
+---
+
+### 05/06 – Finalização do design do jogo
+Ao decorrer da aula foram apresentadas as modificações no codigo do jogo, além de continuarmos fazendo as devidas modificações no projeto durante o tempo de aula.  
 ---
 
 ## Continuação (próximas etapas previstas)

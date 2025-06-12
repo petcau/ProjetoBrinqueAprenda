@@ -19,7 +19,7 @@ function Sobre() {
         GRUPO 00:
           <li id="listcredito">Matheus Oliveira Santos - Gestor chefe</li>
           <li id="listcredito">Cezar Nogueira - Programador chefe</li>
-          <li id="listcredito">Gustavo de Sá Mendes - Programador chefe</li>
+          <li id="listcredito">Gustavo de Sá Teles Mendes - Programador chefe</li>
           <li id="listcredito">Neemias de Melo Vasconcelos - Programador chefe</li>
           <li id="listcredito">Marco Antonio Bomfim Cardoso Dantas - Designer chefe</li>
           

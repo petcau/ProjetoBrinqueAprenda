@@ -1,20 +1,26 @@
 import ZonaColocar from "./ZonaColocar";
 
 /**
- * Componente que renderiza uma lista de zonas de drop.
+ * Renderiza uma lista de zonas de soltura para um jogo.
  *
- * Renderiza um elemento div com a classe "zones" e
- * um componente ZonaColocar para cada zona passada
- * como propriedade.
- *
- * @param {string[]} zones - Uma lista de nomes de zonas.
- * @param {function} onDrop - Fun o chamada quando um item   colocado em uma zona.
- * @returns {JSX.Element} O JSX do componente.
+ * @componente
+ * @param {Object} props
+ * @param {string[]} props.zones - Array com os nomes das zonas a serem exibidas.
+ * @param {function} props.onDrop - Função chamada quando um item é solto em uma zona.
+ * @param {string} props.backgroundUrl - URL da imagem de fundo para cada zona.
+ * @returns {JSX.Element} A lista renderizada de zonas.
  */
-const ZonesList = ({ zones, onDrop }) => (
+const ZonesList = ({ zones, onDrop, backgroundUrl, allObjects, droppedItems}) => (
   <div className="zones">
     {zones.map((zone) => (
-      <ZonaColocar key={zone} zoneName={zone} onDrop={onDrop} />
+      <ZonaColocar 
+        key={zone} 
+        zoneName={zone} 
+        onDrop={onDrop}
+        backgroundUrl={backgroundUrl}
+        allObjects={allObjects}
+        droppedItems={droppedItems}
+      />
     ))}
   </div>
 );

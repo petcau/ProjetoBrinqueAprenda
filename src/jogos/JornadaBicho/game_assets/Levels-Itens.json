@@ -14,7 +14,9 @@
         { "name": "Garça", "correctZone": "Errado", "image": "garça.png" }
       ],
       "acertosNecessarios": 3,
-      "dica": "Vivem em casas com pessoas"
+      "errosMaximos": 3,
+      "dica": "Vivem em casas com pessoas",
+      "background": "public/JornadaBicho/ZonasJornadaBicho/casa.png"
     },
     {
       "id": 2,
@@ -30,11 +32,13 @@
         { "name": "Leão", "correctZone": "Errado", "image": "leao.png" }
       ],
       "acertosNecessarios": 3,
-      "dica": "Vivem em fazendas e ajudam com alimentos"
+      "errosMaximos": 3,
+      "dica": "Vivem em fazendas e ajudam com alimentos",
+      "background": "public/JornadaBicho/ZonasJornadaBicho/fazenda.png"
     },
     {
       "id": 3,
-      "description": "Selva africana (intermediário)",
+      "description": "Savana africana (intermediário)",
       "zones": ["Correto"],
       "items": [
         { "name": "Leão", "correctZone": "Correto", "image": "leao.png" },
@@ -46,7 +50,9 @@
         { "name": "Coelho", "correctZone": "Errado", "image": "coelho.png" }
       ],
       "acertosNecessarios": 3,
-      "dica": "Vivem na savana africana"
+      "errosMaximos": 3,
+      "dica": "Vivem na savana africana",
+      "background": "public/JornadaBicho/ZonasJornadaBicho/selva_africana.png"
     },
     {
       "id": 4,
@@ -62,7 +68,9 @@
         { "name": "Cachorro", "correctZone": "Errado", "image": "cachorro.png" }
       ],
       "acertosNecessarios": 3,
-      "dica": "Ativos à noite"
+      "errosMaximos": 3,
+      "dica": "Ativos à noite",
+      "background": "public/JornadaBicho/ZonasJornadaBicho/noite.png"
     },
     {
       "id": 5,
@@ -78,7 +86,9 @@
         { "name": "Leão", "correctZone": "Errado", "image": "leao.png" }
       ],
       "acertosNecessarios": 3,
-      "dica": "Vivem no oceano"
+      "errosMaximos": 3,
+      "dica": "Vivem no oceano",
+      "background": "public/JornadaBicho/ZonasJornadaBicho/oceano.png"
     },
     {
       "id": 6,
@@ -94,7 +104,9 @@
         { "name": "Vaca", "correctZone": "Errado", "image": "vaca.png" }
       ],
       "acertosNecessarios": 3,
-      "dica": "Têm sangue frio"
+      "errosMaximos": 3,
+      "dica": "Têm sangue frio",
+      "background": "public/JornadaBicho/ZonasJornadaBicho/pantano.png"
     },
     {
       "id": 7,
@@ -110,7 +122,9 @@
         { "name": "Cervo", "correctZone": "Errado", "image": "cervo.png" }
       ],
       "acertosNecessarios": 3,
-      "dica": "Pássaros com penas coloridas"
+      "errosMaximos": 3,
+      "dica": "Pássaros com penas coloridas",
+      "background": "public/JornadaBicho/ZonasJornadaBicho/flores.png"
     },
     {
       "id": 8,
@@ -126,7 +140,9 @@
         { "name": "Cobra", "correctZone": "Errado", "image": "cobra.png" }
       ],
       "acertosNecessarios": 3,
-      "dica": "Vivem em regiões geladas"
+      "errosMaximos": 3,
+      "dica": "Vivem em regiões geladas",
+      "background": "public/JornadaBicho/ZonasJornadaBicho/floresta_polar.png"
     },
     {
       "id": 9,
@@ -142,7 +158,9 @@
         { "name": "Gato", "correctZone": "Errado", "image": "gato.png" }
       ],
       "acertosNecessarios": 3,
-      "dica": "Pequenos com muitas patas"
+      "errosMaximos": 3,
+      "dica": "Pequenos com muitas patas",
+      "background": "public/JornadaBicho/ZonasJornadaBicho/folha.png"
     },
     {
       "id": 10,
@@ -158,7 +176,9 @@
         { "name": "Vaca", "correctZone": "Errado", "image": "vaca.png" }
       ],
       "acertosNecessarios": 3,
-      "dica": "Animais raros protegidos"
+      "errosMaximos": 3,
+      "dica": "Animais raros protegidos",
+      "background": "public/JornadaBicho/ZonasJornadaBicho/reserva_ambiental.png"
     }
   ]
 }

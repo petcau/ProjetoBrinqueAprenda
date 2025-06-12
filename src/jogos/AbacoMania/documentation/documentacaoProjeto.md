@@ -7,21 +7,20 @@
       <h1 style="margin: 0;">Documento do Projeto</h1>
     </td>
     <td style="vertical-align: middle; text-align: right;">
-      <img src="imagens/logo.png" alt="Logo do Projeto" width="80">
+      <img src="../../../assets/UNEB-logo.png" width="200">
     </td>
   </tr>
 </table>
-
 
 ## Projeto brinque e aprenda.
 
 ## Equipe 
 
-- Emanuel Vítor – Função - Designer
-- Vítor Thadeu – Função - Programador
-- Thiago Sampaio – Função - Programador
-- Gustavo Ramon – Função - Gestor
-- Rafael  – Função - Designer
+- Emanuel Vítor Ramos dos Santos Gonzaga – Função - Designer
+- Vítor Thadeu Martins da Silva Gonzaga – Função - Programador
+- Thiago Sampaio Santiago Pereira – Função - Programador
+- Gustavo Ramon Ribeiro Oliveira Santos – Função - Gestor
+- Rafael da Conceição Cunha – Função - Designer
 
 ## Descrição
 
@@ -47,19 +46,13 @@ Crianças de todas as idades entre 7 a 12 anos.
    - A letra C representa centenas. conta-se de 100 em 100.
 5. Após o número atingir o resultado pedido, um botão acenderá para ser clicado e passar para a próxima fase com um novo número, cada vez mais difícil.
 
-IMG--
-
 ## Micro Atividades
 
 - Desenvolvimento da capa - design
-- Desenvolvimento da tela de início - design
-- Desenvolvimento tela de níveis - design
-- Desenvolvimento tela de manual - design
 - Desenvolvimento da documentação - gestão
 - Atualização do trello - gestão
 - Desenvolvimento da lógica do jogo - programação
 - Desenvolvimento da validação de acerto - programação
-- Desenvolvimento da mecãnica de arrastar item - programação
 - Desenvolvimento das telas internas do jogo CSS - design
 - Desenvolvimento dos botões de interação -programação
 
@@ -79,9 +72,6 @@ IMG--
 
 ## Funcionalidades do jogo
 
-1. Botão de jogar para iniciar o jogo.
-2. Botão do manual de como jogar.
-3. Botão de início pra retornar a tela principal.
-4. Botão de níveis que está numerado em ordem crescente.
-5. Botão pra próximo nível.
-6. Botão de regulagem do volume dos sons(opcional).
+1. Botão pra próximo nível.
+2. Botão de adição ou subtração de bolinhas do ábaco.
+3. Sons de acerto/erro com mensagem de identificação.

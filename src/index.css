@@ -128,11 +128,12 @@ img {
 }
 
 .game-container-D {
-  max-width: 1440px;
-  max-height: 800px;
-  width: 55vw; /* Ocupa 95% da largura da tela */
+  max-width: 1800px;
+  max-height: 1000px;
+  background-image: url('./jogos/JogoDigitacao/game_assets/blackboard-clipart.svg');
+  width: 970px; 
   min-width: 320px;
-  height: 50vh; /* Ocupa 90% da altura da tela */
+  height: 650px; /* Ocupa 90% da altura da tela */
   min-height: 600px;
   margin: 0 auto;
   display: flex;
@@ -140,8 +141,6 @@ img {
   align-items: center;
   gap: 1.5 rem;
   background-color: #0b3d0b; /* Verde escuro tipo lousa */
-  border: 20px solid #352523; /* Borda marrom de madeira */
-  border-radius: 16px;
   padding: 20px;
   padding-bottom: 100px;
   border-radius: 15px;
@@ -151,6 +150,9 @@ img {
   top: 50%;
   transform: translate(-50%, -50%);
   box-sizing: border-box;
+   background-repeat: no-repeat;      /* para não repetir */
+  background-size: cover;            /* para cobrir o container */
+  background-position: center;
   
 }
 
