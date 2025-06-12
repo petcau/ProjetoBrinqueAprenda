@@ -29,24 +29,24 @@ Durante a aula presencial, a equipe definiu o jogo “Jornada dos Bichos” como
 
 ---
 
-### 09/05 – Organização Inicial  
+### 10/04 – Organização Inicial  
 A equipe realizou a divisão de funções e iniciou a criação do repositório GitHub, além de definir a estrutura de pastas e arquivos. Também foram discutidos os requisitos iniciais do jogo.
 
 ---
 
-### 13/05 – Início da Programação e Design  
+### 17/04 – Início da Programação e Design  
 Foi criada a estrutura CSS básica com a tela inicial do jogo, botão de iniciar e layout das seções principais. O design dos menus e da interface começou a ser definido com base na proposta de simplicidade e funcionalidade.
 
 ---
 
-### 16/05 – Implementação de Funcionalidades  
-Foi programada a lógica para exibição aleatória das palavras, o sistema de timer regressivo e o campo de digitação com verificação das respostas. Também foram adicionadas mensagens de feedback como “Correto!” e “Errou”.
+### 08/05 – Primeira apresentação 
+Fizemos a primeira apresentaça do trabalho primeira
+---
 
 ---
 
-### 20/05 – Tela de Resultado e Reinício  
-Foi finalizada a implementação da tela de resultados com o resumo de pontuação, acertos e erros. Adicionada também a opção de reiniciar o jogo. Iniciaram os testes iniciais em navegadores.
-
+### 15/05 – Primeira códigp
+Código do jogo "pronto" e será apenas ajustado
 ---
 
 ### 22/05 – Início da Fase de Melhorias Visuais  
@@ -58,7 +58,8 @@ Durante a aula, a equipe começou a modificar o design dos botões e caixas de t
 Ao decorrer da aula foram apresentadas as modificações no codigo do jogo, além de continuarmos fazendo as devidas modificações no projeto durante o tempo de aula.  
 ---
 
-## Continuação (próximas etapas previstas)
+### 11/06 - Jogo Pronto
+O jogo está finalizado e será apresentado no dia seguinte
 
 
 
