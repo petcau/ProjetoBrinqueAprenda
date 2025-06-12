@@ -1,11 +1,11 @@
 {
   "anagramas": [
     {
-      "palavraEmbaralhada": "SAPO",
+      "palavraEmbaralhada": "OASP",
       "palavrasValidas": ["SAPO", "SOPA"]
     },
     {
-      "palavraEmbaralhada": "CASA",
+      "palavraEmbaralhada": "SCAA",
       "palavrasValidas": ["CASA", "SACA"]
     },
      {
@@ -13,11 +13,11 @@
       "palavrasValidas": ["BOLO", "LOBO"]
     },
     {
-      "palavraEmbaralhada": "LATA",
+      "palavraEmbaralhada": "TAAL",
       "palavrasValidas": ["LATA", "TALA", "ALTA"]
     },
     {
-      "palavraEmbaralhada": "RATO",
+      "palavraEmbaralhada": "TARO",
       "palavrasValidas": ["RATO", "TORA", "ROTA", "ATOR"]
     },
     {
