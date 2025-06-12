@@ -28,11 +28,9 @@
       "palavraEmbaralhada": "OARTP",
       "palavrasValidas": ["PORTA", "TROPA", "PARTO", "RAPTO"]
     },
-   {
-  "anagramas": [
     {
       "palavraEmbaralhada": "RETCO",
-      "palavrasValidas": ["CETRO", "CORTE", "TORCE", "TERÇO"]
+      "palavrasValidas": ["CETRO", "CORTE", "TORCE", "TERCO"]
     },
     {
       "palavraEmbaralhada": "OARGL",
@@ -44,5 +42,4 @@
     }
   ]
 }
-  ]
-}
+

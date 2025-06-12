@@ -1,3 +1,4 @@
+// Importa hooks do React e componentes do jogo
 import { useRef, useState, useEffect } from "react";
 import Letras from "./Letras";
 import PalavraTentativa from "./PalavraTentativa";
@@ -5,6 +6,7 @@ import PalavrasDescobertas from "./PalavrasDescobertas";
 import Cronometro from "./Cronometro";
 import PalavrasData from "./Palavras.json";
 
+// Componente principal do jogo de anagrama
 function AnagramaJogo({
   letras,
   tentativa,
@@ -17,46 +19,63 @@ function AnagramaJogo({
   proximoNivel,
   nivelAtual,
 }) {
+  // Estado para controlar se o som está ativado
   const [somAtivo, setSomAtivo] = useState(true);
+
+  // Referência para o som de tempo esgotado
   const timesUpSoundRef = useRef(null);
+
+  // Estado para controlar se o tempo acabou
   const [tempoEsgotado, setTempoEsgotado] = useState(false);
+
+  // Estado para saber se o jogador completou a fase
   const [faseCompleta, setFaseCompleta] = useState(false);
+
+  // Trigger para reiniciar o cronômetro
   const [reiniciarTrigger, setReiniciarTrigger] = useState(0);
+
+  // Estado de carregamento ao passar para próxima fase
   const [carregandoProximaFase, setCarregandoProximaFase] = useState(false);
 
+  // Verifica se é a última fase do jogo
   const ultimaFase = nivelAtual === PalavrasData.anagramas.length - 1;
 
+  // Verifica automaticamente se todas as palavras já foram descobertas
   useEffect(() => {
     if (
       palavrasValidas.length > 0 &&
       descobertas.length === palavrasValidas.length
     ) {
-      setFaseCompleta(true);
+      setFaseCompleta(true); // Marca a fase como completa
     }
   }, [descobertas, palavrasValidas]);
 
-const handleTempoEsgotado = () => {
-  setTempoEsgotado(true);
-  if (somAtivo && timesUpSoundRef.current) {
-    timesUpSoundRef.current.currentTime = 0;
-    timesUpSoundRef.current.play();
-  }
-};
+  // Função chamada quando o tempo acaba
+  const handleTempoEsgotado = () => {
+    setTempoEsgotado(true);
 
+    // Toca som de tempo esgotado, se estiver ativado
+    if (somAtivo && timesUpSoundRef.current) {
+      timesUpSoundRef.current.currentTime = 0;
+      timesUpSoundRef.current.play();
+    }
+  };
 
+  // Reinicia a fase atual
   const handleReiniciar = () => {
     setTempoEsgotado(false);
     resetarTentativa();
     limparDescobertas();
-    setReiniciarTrigger((t) => t + 1);
+    setReiniciarTrigger((t) => t + 1); // Atualiza o trigger para reiniciar o cronômetro
   };
 
+  // Vai para a próxima fase
   const handleProximaFase = () => {
-    setCarregandoProximaFase(true);
+    setCarregandoProximaFase(true); // Mostra "carregando..."
     setTimeout(() => {
-      handleReiniciar();
+      handleReiniciar(); // Limpa dados da fase anterior
       setFaseCompleta(false);
-      proximoNivel();
+      proximoNivel(); // Avança para a próxima fase
       setCarregandoProximaFase(false);
     }, 1000);
   };
@@ -70,20 +89,17 @@ const handleTempoEsgotado = () => {
         preload="auto"
       />
 
-
-
-
-      {/* ⏱️ Cronômetro */}
+      {/* ⏱️ Cronômetro visível apenas durante a fase ativa */}
       {!faseCompleta && !tempoEsgotado && (
         <Cronometro
-          tempoInicial={30}
+          tempoInicial={30} // Tempo de 30 segundos
           onTempoEsgotado={handleTempoEsgotado}
           reiniciarTrigger={reiniciarTrigger}
           somAtivo={somAtivo}
         />
       )}
 
-      {/* ❌ Tela de derrota */}
+      {/* ❌ Tela exibida quando o tempo acaba */}
       {tempoEsgotado && (
         <div>
           <h3 className="finish">Tempo Esgotado!</h3>
@@ -93,7 +109,7 @@ const handleTempoEsgotado = () => {
         </div>
       )}
 
-      {/* ✅ Tela de vitória ou final */}
+      {/* ✅ Tela exibida quando o jogador completa a fase */}
       {faseCompleta && (
         <div>
           <h3 className="finish">
@@ -101,6 +117,7 @@ const handleTempoEsgotado = () => {
               ? "Parabéns! Você completou todas as fases!"
               : "Você Venceu!"}
           </h3>
+          {/* Botão para ir para a próxima fase (se ainda houver fases) */}
           {!ultimaFase && (
             <button
               className="botoes"
@@ -113,21 +130,21 @@ const handleTempoEsgotado = () => {
         </div>
       )}
 
-      {/* 🔤 Letras disponíveis */}
+      {/* 🔤 Letras disponíveis para formar palavras */}
       <Letras
         letras={letras}
         onAdicionarLetra={adicionarLetra}
         desabilitado={tempoEsgotado || faseCompleta}
       />
 
-      {/* 📝 Palavra tentativa */}
+      {/* 📝 Área onde aparece a tentativa atual do jogador */}
       <PalavraTentativa
         tentativa={tentativa}
         onEnviar={enviarPalavra}
         desabilitado={tempoEsgotado || faseCompleta}
       />
 
-      {/* 📜 Palavras descobertas */}
+      {/* 📜 Lista de palavras que já foram descobertas */}
       <PalavrasDescobertas
         descobertas={descobertas}
         palavrasValidas={palavrasValidas}
@@ -136,4 +153,5 @@ const handleTempoEsgotado = () => {
   );
 }
 
+// Exporta o componente principal do jogo
 export default AnagramaJogo;
