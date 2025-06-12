@@ -4,8 +4,7 @@
       <h1 style="margin: 0;">Documento do Projeto</h1>
     </td>
     <td style="vertical-align: middle; text-align: right;">
-      <img src="![Uploading image.png…]()
-">
+      <img  src="../../Anagrama/documentation/imgs/UNEB-logo.png" width="200">
     </td>
   </tr>
 </table>
