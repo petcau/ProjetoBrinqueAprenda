@@ -10,7 +10,7 @@ import Sobre from './pages/Sobre.jsx'
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/ProjetoBrinqueAprenda/">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/jogos" element={<Games />} />
