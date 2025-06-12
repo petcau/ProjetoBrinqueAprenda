@@ -4,7 +4,8 @@ import Header from "./Header";
 import Controls from "./ControlesLevel";
 import ItemsList from "./ListaItens";
 import ZonesList from "./ListaZonas";
-
+import somVitoriaSound from "../../../../assets/Sons/somVitoria.mp3";
+import somDerrotaSound from "../../../../assets/Sons/somDerrota.mp3";
 /**
  * GameLogic é um componente React que gerencia a lógica central de um jogo educativo de arrastar e soltar.
  * Ele controla o estado do jogo, incluindo o nível atual, acertos, erros e status do jogo.
@@ -108,6 +109,8 @@ function GameLogic() {
         const newCount = prev + 1;
         if (newCount >= acertosNecessarios) {
           setGameStatus("Ganhou");
+          SoundRef.current = new Audio(somVitoriaSound);
+          SoundRef.current.play();
         }
         return newCount;
       });
@@ -116,6 +119,8 @@ function GameLogic() {
         const newCount = prev + 1;
         if (newCount >= errosMaximos) {
           setGameStatus("Perdeu");
+          SoundRef.current = new Audio(somDerrotaSound);
+          SoundRef.current.play();
         }
         return newCount;
       });

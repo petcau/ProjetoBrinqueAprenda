@@ -101,6 +101,8 @@
   gap: 20px;
   background-color: #e1e970;
   border-radius: 10px;
+  border: 2px solid #ffc13a;
+  box-shadow: #00000069 0px 6px 3px;
 }
 .drag-item {
   cursor: grab;
@@ -162,14 +164,17 @@
   margin-right: 90%;
   margin-bottom: -8%;
   color: rgb(255, 255, 255);
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.521);
 }
 
 .desc-jornada {
   color: #ffffff;
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bold;
   margin-left: -40%;
   margin-right: 0%;
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.521);
+ 
 }
 
 .dica_jornada {
@@ -179,6 +184,7 @@
   margin-bottom: 5px;
   margin-top: -15px;
   font-weight: bold;
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.521);
 }
 
 .acertos_jornada {
@@ -189,6 +195,7 @@
   font-size: 20px;
   color: rgb(255, 255, 255);
   justify-items: center;
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.521);
 }
 .acertos_jornada p {
   margin-left: 10px;
@@ -208,6 +215,7 @@
   font-weight: bold;
   margin-top: -6px;
   font-size: 20px;
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.521);
 }
 
 .game_over_jornada {
@@ -220,4 +228,5 @@
   font-weight: bold;
   margin-top: -6px;
   font-size: 20px;
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.521);
 }
