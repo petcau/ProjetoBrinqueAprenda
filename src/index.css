@@ -131,9 +131,9 @@ img {
   max-width: 1800px;
   max-height: 1000px;
   background-image: url('./jogos/JogoDigitacao/game_assets/blackboard-clipart.svg');
-  width: 900px; 
+  width: 970px; 
   min-width: 320px;
-  height: 600px; /* Ocupa 90% da altura da tela */
+  height: 650px; /* Ocupa 90% da altura da tela */
   min-height: 600px;
   margin: 0 auto;
   display: flex;
