@@ -4,7 +4,7 @@
       <h1 style="margin: 0;">Documento do Jogo</h1>
     </td>
     <td style="vertical-align: middle; text-align: right;">
-      <img src="imagens/logo.png" alt="Logo do Projeto" width="80">
+      <img src="../../../assets/UNEB-logo.png" width="200">
     </td>
   </tr>
 </table>
@@ -72,15 +72,15 @@
 
 
 ## Componentes ( React )
-Adição de funções basicas como as de modificação do painel de controle ".painel-de-controle" ou com os botões no geral, mudando a formatação de acordo com a necessidade que pede
-o design. A cor de back grond completa e dividindo ela em 2 partes para que tenhoa um degradê de cores só pela beleza mesmo.
+Adição de funções básicas como as de modificação do painel de controle ".painel-de-controle" ou com os botões no geral, mudando a formatação de acordo com a necessidade que se pede.
+Sobre o design, a cor de background completa e divide ela em 2 partes para que tenhoa um degradê de cores somente por formato estético.
 
-## Design imagens (prompt)
+## Design imagens
 
-- Foi utilidado a seguinte ordem para o ChatGPT : " Bom dia chatgpt, crie para mim um abaco animado em 2D"
-- Próximo comando foi : " Transforme em PNG "
+Ábaco quando tem seu resultado certo:
 
+<img src="../game_assets/AbacoAcerto.png" width="500" height="400">
 
+Ábaco quando tem seu resultado errado:
 
-  ## Sons
-  em progresso de busca...
+<img src="../game_assets/AbacoErro.png" width="500" height="400">
