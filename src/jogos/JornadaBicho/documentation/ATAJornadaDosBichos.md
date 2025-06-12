@@ -1,11 +1,12 @@
 git clone https://github.com/petcau/ProjetoBrinqueAprenda
 <table style="width: 100%;">
+<table style="width: 100%;">
   <tr>
     <td style="vertical-align: middle; padding-right: 10px;">
-      <h1 style="margin: 0;">ATA do Projeto – Jogo da Digitação</h1>
+      <h1 style="margin: 0;">Documento do Projeto</h1>
     </td>
     <td style="vertical-align: middle; text-align: right;">
-      <img src="imagens/logo.png" alt="Logo do Projeto" width="80">
+      <img  src="../../Anagrama/documentation/imgs/UNEB-logo.png" width="200">
     </td>
   </tr>
 </table>
