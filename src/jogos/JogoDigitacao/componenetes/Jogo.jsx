@@ -91,7 +91,6 @@ export default function Jogo({ onVoltar }) {
 
   // Efeito de reinício de fase
   useEffect(() => {
-    novaPalavra();
     setCount(fase.tempoLimite);
     setAcertos(0);
     setFim(false);
@@ -122,6 +121,12 @@ export default function Jogo({ onVoltar }) {
     }
     return () => clearTimeout(timeoutID.current);
   }, [count, fim, semaforoAtivo, fase.tempoLimite]);
+  
+  useEffect(() => {
+  if (palavrasUsadas.length === 0 && !fim) {
+    novaPalavra();
+  }
+}, [palavrasUsadas]);
 
   // Funções do jogo
   const novaPalavra = () => {
