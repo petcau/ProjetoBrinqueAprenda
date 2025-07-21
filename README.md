@@ -13,49 +13,6 @@
 
   ## **Projeto brinque  aprenda.**
 
-
-## **_Equipe 0_**
-
-  - Neemias de Melo Vasconcelos – Programador geral
-  - Marco Antonio Bomfim Cardoso Dantas – Designer geral
-  - Gustavo de Sá Teles Mendes – Programador geral
-  - Cesar Nogueira - Programador geral
-  - Matheus Oliveira Santos - Gestor geral 
-
-## **_Equipe 1_**
-
-  - Everton Anunciação Oliveira – Programador
-  - Pablo Santana de Souza – Programador
-  - Joedson Nascimento Pimentel Junior – Design
-  - Maria Núbia Santana Avelino – Design
-  - Hernandes Santos Pereira – Gestão
-
-## **_Equipe 2_**
-
-  - Daniel Joaquim Batista dos Santos – Gestor
-  - Gabriel Bispo Tolentino – Programador
-  - Eduardo de Jesus Barbosa Santos – Programador
-  - Gustavo Henrique Vila Nova Matos – Designer
-
-## **_Equipe 3_**
-
-  - Emanuel Vítor Ramos dos Santos Gonzaga – Designer
-  - Vítor Thadeu Martins da Silva Gonzaga – Programador
-  - Thiago Sampaio Santiago Pereira – Programador
-  - Gustavo Ramon Ribeiro Oliveira Santos  – Gestor
-  - Rafael da Conceição Cunha – Designer
-
-
-## **_Equipe 4_**
-
-  - Jadson Rodrigo Santos Pereira – Gestão
-  - Emanuel Gomes Bispo – Programador
-  - Silas Pereira de Souza Dantas – designer
-  - Joabe Borges da Silva – Gestão
-  - Felipe Dantas Ferreira – designer
-
-## **Descrição.**
-
 Brinque Aprenda é um projeto educacional interativo voltado para crianças em idade pré-escolar e nos primeiros anos do ensino fundamental. A plataforma combina jogos educativos, atividades lúdicas e conteúdos pedagógicos com o objetivo de tornar o aprendizado mais divertido, envolvente e eficaz.
 
 
