@@ -4,7 +4,7 @@
       <h1 style="margin: 0;">Documento do Projeto</h1>
     </td>
     <td style="vertical-align: middle; text-align: right;">
-      <img src="../src/assets/UNEB-logo.png" width="200">
+      <img src="src/assets/UNEB-logo.png" width="200">
     </td>
   </tr>
 </table>
@@ -30,37 +30,37 @@ O projeto é voltado a crianças do ensino fundamental.
 
 _Abacomania_
 
-<img src="../src/assets/abaco-capa.png" width="500" height="500">
+<img src="src/assets/abaco-capa.png" width="500" height="500">
 
-<img src="../src/jogos/AbacoMania/game_assets/imagemAbaco.png" width="500" height="500">
+<img src="src/jogos/AbacoMania/game_assets/imagemAbaco.png" width="500" height="500">
 
-<img src="../src/jogos/AbacoMania/game_assets/nomeAbaco.png" width="800" height="500">
+<img src="src/jogos/AbacoMania/game_assets/nomeAbaco.png" width="800" height="500">
 
 _Ánagrama_
 
-<img src="../src/assets/anagramacapa4.png" width="500" height="500">
+<img src="src/assets/anagramacapa4.png" width="500" height="500">
 
-<img src="../src/jogos/Anagrama/game_assets/desk.png" width="500" heigth="500">
+<img src="src/jogos/Anagrama/game_assets/desk.png" width="500" heigth="500">
 
 _Digirance_
 
-<img src="../src/assets/CAPADIGITAÇÃO.png" width="500" height="500">
+<img src="src/assets/CAPADIGITAÇÃO.png" width="500" height="500">
 
-<img src="../src/jogos/JogoDigitacao/game_assets/FUNDOD.png" width="800" height="500">
+<img src="src/jogos/JogoDigitacao/game_assets/FUNDOD.png" width="800" height="500">
 
-<img src="../src/jogos/JogoDigitacao/game_assets/EMOJIVITORIAD.png" width="500" height="500">
+<img src="src/jogos/JogoDigitacao/game_assets/EMOJIVITORIAD.png" width="500" height="500">
 
-<imh src="../src/jogos/JogoDigitacao/game_assets/GAMEOVER.png" width="500" height="500">
+<imh src="src/jogos/JogoDigitacao/game_assets/GAMEOVER.png" width="500" height="500">
 
 _Joirnada do Bicho_
 
-<img src="../src/jogos/JornadaBicho/game_assets/imagens/titulo-jornada.png" width="800" height="500">
+<img src="src/jogos/JornadaBicho/game_assets/imagens/titulo-jornada.png" width="800" height="500">
 
-<img src="../src/jogos/JornadaBicho/game_assets/imagens/Amazonia.png" width="800" height="500">
+<img src="src/jogos/JornadaBicho/game_assets/imagens/Amazonia.png" width="800" height="500">
 
-<img src="../src/jogos/JornadaBicho/game_assets/imagens/Background.png" width="800" height="500">
+<img src="src/jogos/JornadaBicho/game_assets/imagens/Background.png" width="800" height="500">
 
-<img src="../src/jogos/JornadaBicho/game_assets/imagens/Catinga.png" width="800" height="500" >
+<img src="src/jogos/JornadaBicho/game_assets/imagens/Catinga.png" width="800" height="500" >
 
 
 ## **Manual do Jogo** _Ábacomania_
@@ -77,9 +77,9 @@ _Joirnada do Bicho_
 ## **Manual do jogo** _Anagrama_
 
 1. Para acessar o jogo "Anagrama" clique no primeiro jogo do menu de jogos da pagina inicial do site conforme indica a imagem a seguir:
-<img src="../src/jogos/Anagrama/documentation/imgs/imgmenu.PNG" width="800" height="500">
+<img src="src/jogos/Anagrama/documentation/imgs/imgmenu.PNG" width="800" height="500">
 2. Esta é a tela principal do jogo onde os elementos circulados são descritos da seguinte forma:
-<img src="../src/jogos/Anagrama/documentation/imgs/imginicial.PNG" width="500" height="400">
+<img src="src/jogos/Anagrama/documentation/imgs/imginicial.PNG" width="500" height="400">
 
     - Retorno ao menu de jogos - Botão para retornar para o menu de jogos na pagina inicial;
     - Nível do jogo - Indica em que nivel o jogador se encontra;
@@ -90,7 +90,7 @@ _Joirnada do Bicho_
     - Campo de palavras - As palavras escondidas encontradas ficarão armazenadas neste campo;
 3. Alguns eventos do jogo:
 
-<img src="../src/jogos/Anagrama/documentation/imgs/imgacoes.PNG" width="500" height="400">
+<img src="src/jogos/Anagrama/documentation/imgs/imgacoes.PNG" width="500" height="400">
 
 
    - Cronometro zerado - Após o tempo se esgotar a mensagem: "Tempo esgotado!" e o botão "Tentar novamente";
@@ -114,19 +114,3 @@ _Joirnada do Bicho_
 
 ## **Manual do jogo** _Jornada dos bichos._
 
-1. 
-
-## **Micro Atividades.**
-
-- Anagrama
-- Jornada dos bichos
-- Ábacomania
-- Digirance
-
-## Cronograma.
-
-| Etapa                 | Período                   | Status       |
-|-----------------------|---------------------------|------------  |
-| Desenvolvimento       | Durante um semestre       | Em andamento |
-| do Software           |                           |              |
-|                       |                           |              |
