@@ -30,9 +30,9 @@ function Abaco() {
     }, [faseAtual]);
 
     //Parte do código anterior mas básicamente gerava um numero aleatorio ao invés de usar um arquivo Json
-    // function gerarNumeroAleatorio() {
-    //     return Math.floor(Math.random() * 500) + 1;
-    // }
+    function gerarNumeroAleatorio() {
+         return Math.floor(Math.random() * 500) + 1;
+    }
 
     //Função para checar se o valor está correto, de acordo com as marcações dos botões e setar os sons com o [Audio(somVitoriaSound)]
     const verificarAcerto = () => {
