@@ -16,7 +16,7 @@
       "acertosNecessarios": 3,
       "errosMaximos": 3,
       "dica": "Vivem em casas com pessoas",
-      "background": "public/JornadaBicho/ZonasJornadaBicho/casa.png"
+      "background": "JornadaBicho/ZonasJornadaBicho/casa.png"
     },
     {
       "id": 2,
@@ -34,7 +34,7 @@
       "acertosNecessarios": 3,
       "errosMaximos": 3,
       "dica": "Vivem em fazendas e ajudam com alimentos",
-      "background": "public/JornadaBicho/ZonasJornadaBicho/fazenda.png"
+      "background": "JornadaBicho/ZonasJornadaBicho/fazenda.png"
     },
     {
       "id": 3,
@@ -52,7 +52,7 @@
       "acertosNecessarios": 3,
       "errosMaximos": 3,
       "dica": "Vivem na savana africana",
-      "background": "public/JornadaBicho/ZonasJornadaBicho/selva_africana.png"
+      "background": "JornadaBicho/ZonasJornadaBicho/selva_africana.png"
     },
     {
       "id": 4,
@@ -70,7 +70,7 @@
       "acertosNecessarios": 3,
       "errosMaximos": 3,
       "dica": "Ativos à noite",
-      "background": "public/JornadaBicho/ZonasJornadaBicho/noite.png"
+      "background": "JornadaBicho/ZonasJornadaBicho/noite.png"
     },
     {
       "id": 5,
@@ -88,7 +88,7 @@
       "acertosNecessarios": 3,
       "errosMaximos": 3,
       "dica": "Vivem no oceano",
-      "background": "public/JornadaBicho/ZonasJornadaBicho/oceano.png"
+      "background": "JornadaBicho/ZonasJornadaBicho/oceano.png"
     },
     {
       "id": 6,
@@ -106,7 +106,7 @@
       "acertosNecessarios": 3,
       "errosMaximos": 3,
       "dica": "Têm sangue frio",
-      "background": "public/JornadaBicho/ZonasJornadaBicho/pantano.png"
+      "background": "JornadaBicho/ZonasJornadaBicho/pantano.png"
     },
     {
       "id": 7,
@@ -124,7 +124,7 @@
       "acertosNecessarios": 3,
       "errosMaximos": 3,
       "dica": "Pássaros com penas coloridas",
-      "background": "public/JornadaBicho/ZonasJornadaBicho/flores.png"
+      "background": "JornadaBicho/ZonasJornadaBicho/flores.png"
     },
     {
       "id": 8,
@@ -142,7 +142,7 @@
       "acertosNecessarios": 3,
       "errosMaximos": 3,
       "dica": "Vivem em regiões geladas",
-      "background": "public/JornadaBicho/ZonasJornadaBicho/floresta_polar.png"
+      "background": "JornadaBicho/ZonasJornadaBicho/floresta_polar.png"
     },
     {
       "id": 9,
@@ -160,7 +160,7 @@
       "acertosNecessarios": 3,
       "errosMaximos": 3,
       "dica": "Pequenos com muitas patas",
-      "background": "public/JornadaBicho/ZonasJornadaBicho/folha.png"
+      "background": "JornadaBicho/ZonasJornadaBicho/folha.png"
     },
     {
       "id": 10,
@@ -178,7 +178,7 @@
       "acertosNecessarios": 3,
       "errosMaximos": 3,
       "dica": "Animais raros protegidos",
-      "background": "public/JornadaBicho/ZonasJornadaBicho/reserva_ambiental.png"
+      "background": "JornadaBicho/ZonasJornadaBicho/reserva_ambiental.png"
     }
   ]
 }
