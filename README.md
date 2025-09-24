@@ -54,13 +54,13 @@ _Digirance_
 
 _Joirnada do Bicho_
 
-<img src="src/jogos/JornadaBicho/game_assets/imagens/titulo-jornada.png" width="800" height="500">
+<img src="./public/JornadaBicho/titulo-jornada.png" width="800" height="500">
 
-<img src="src/jogos/JornadaBicho/game_assets/imagens/Amazonia.png" width="800" height="500">
+<img src="./public/JornadaBicho/Amazonia.png" width="800" height="500">
 
-<img src="src/jogos/JornadaBicho/game_assets/imagens/Background.png" width="800" height="500">
+<img src="./public/JornadaBicho/Background.png" width="800" height="500">
 
-<img src="src/jogos/JornadaBicho/game_assets/imagens/Catinga.png" width="800" height="500" >
+<img src="./public/JornadaBicho/Catinga.png" width="800" height="500" >
 
 
 ## **Manual do Jogo** _Ábacomania_
