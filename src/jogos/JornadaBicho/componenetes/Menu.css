@@ -5,7 +5,7 @@
     display: flex;
     width: 1440px;
     height: 800px;
-    background-image: url(src/jogos/JornadaBicho/game_assets/imagens/Background.png);
+    background-image: url(/JornadaBicho/Background.png);
     background-size: cover;
     justify-content: center;
     flex-direction: column;
