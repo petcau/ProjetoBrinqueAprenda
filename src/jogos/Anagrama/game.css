@@ -27,7 +27,7 @@
   flex-direction: column;
   align-items: center;
   gap: 6.5rem;
-  background-image: url('game_assets/desk.png');
+  background-image: url('game_assets/desk.svg');
   background-size: contain; 
   background-repeat: no-repeat;
   background-position: center top; 
@@ -205,7 +205,7 @@
   max-width: 1200px;
   height: 900px;     
   width: 80%;     
-  background-image: url("game_assets/anagrama-img.png");
+  background-image: url("game_assets/anagrama-img.svg");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center top;
