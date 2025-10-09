@@ -109,8 +109,8 @@ function GameLogic() {
         const newCount = prev + 1;
         if (newCount >= acertosNecessarios) {
           setGameStatus("Ganhou");
-          SoundRef.current = new Audio(somVitoriaSound);
-          SoundRef.current.play();
+          new Audio(somVitoriaSound).play();
+
         }
         return newCount;
       });
@@ -119,8 +119,7 @@ function GameLogic() {
         const newCount = prev + 1;
         if (newCount >= errosMaximos) {
           setGameStatus("Perdeu");
-          SoundRef.current = new Audio(somDerrotaSound);
-          SoundRef.current.play();
+          new Audio(somDerrotaSound).play();          
         }
         return newCount;
       });
@@ -188,7 +187,7 @@ function GameLogic() {
     <div className="game_container_jornada">
       <audio
         ref={SoundRef}
-        src="src/jogos/JornadaBicho/game_assets/sons_para_iplementar/Mr-jornada.mp3"
+        src="/JornadaBicho/sons_para_iplementar//Mr-jornada.mp3"
         autoPlay
         loop
         preload="auto"
