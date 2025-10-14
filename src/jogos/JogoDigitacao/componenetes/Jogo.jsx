@@ -197,13 +197,13 @@ export default function Jogo({ onVoltar }) {
             {Perdeu ? (
               <div className="imagemcontainerd">
                 <p className="textoMD texto-piscando">GAME OVER</p>
-                <img src={'./src/jogos/JogoDigitacao/game_assets/GAMEOVER.png'} alt="Game Over" className="containerimgD"/>
+                <img src={'/JornadaBicho/digitacao/GAMEOVER.png'} alt="Game Over" className="containerimgD"/>
                 <p className="mensagem-derrota">{mensagem}</p>
               </div>
             ) : (
               <div className="imagemcontainerd">
                 <p className="textoMD texto-piscando">Vitória</p>
-                <img src={'./src/jogos/JogoDigitacao/game_assets/EMOJIVITORIAD.png'} alt="Vitória" className="containerimgD"/>
+                <img src={'/JornadaBicho/digitacao/EMOJIVITORIAD.png'} alt="Vitória" className="containerimgD"/>
                 <p className="mensagem-derrota">{mensagem}</p>
               </div>
             )}
