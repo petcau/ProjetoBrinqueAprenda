@@ -1,0 +1,31 @@
+1 MathRace
+CertUtil -hashfile "1 MathRace.zip" SHA512 | find /i /v "sha512" | find /i /v "certutil" > resumo_hash.txt
+
+530357e5c46e508e9e5403b597d62454d2e96eec82ad72563f7997c3ae87f893fe83be952c6eb9c84022de69e0fd7a5188ebd384087fe60a4ede73876de3336a
+
+
+2 Matemagica
+CertUtil -hashfile "2 matemagica.zip" SHA512 | find /i /v "sha512" | find /i /v "certutil" > resumo_hash.txt
+
+824f91523be74e0910b679f2d9a209657b8fa581bd77719603969844b9cc50d01d9679bf1ff6c46f030ea96f2535973b5c030b3a4c300df506229562cc15afad
+
+3 Tesouro-a-Vista
+CertUtil -hashfile "3 Tesouro-a-Vista.zip" SHA512 | find /i /v "sha512" | find /i /v "certutil" > resumo_hash.txt
+
+4b13991e8b3aaffe9e24e91ff0fa6446afbea847189e10e32ef60f879828a84bffdd4cec99278ff5af1ea967e8a5c629e00a586bfa45e6517c86848f51aa41e5
+
+4 tabuad4on
+CertUtil -hashfile "4 tabuad4on.zip" SHA512 | find /i /v "sha512" | find /i /v "certutil" > resumo_hash.txt
+
+651c7861c393f3e7fcd28307a7275c26666a771b686ed51306dd049f026f3e0f9cc5d0ee4afdb9113de4179dcb007365770c7a541426082be803d0ad9692809d
+
+5 reciclakids
+CertUtil -hashfile "5 reciclakids.zip" SHA512 | find /i /v "sha512" | find /i /v "certutil" > resumo_hash.txt
+
+04d344a060eea57ff8b5091e5fde8bded4c37c93a2a85d76c7e70ccc92fee28bed82b1dffe4b0c02d833291fdcc22e450b3db8186be984f7c0578c298479e297
+
+
+
+
+
+

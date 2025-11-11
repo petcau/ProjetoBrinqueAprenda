@@ -1,0 +1,24 @@
+1 AbacoMania
+CertUtil -hashfile "1 AbacoMania.zip" SHA512 | find /i /v "sha512" | find /i /v "certutil" > resumo_hash.txt
+
+337a8232bb13757a55d952bfbb003c56db1a06dd41bf0b923927b90c309b591b3fd7aa2bbd177597219c95de430d76860439a22f95f8e99ca8e8c63020ff3a14
+
+
+2 Anagrama
+CertUtil -hashfile "2 Anagrama.zip" SHA512 | find /i /v "sha512" | find /i /v "certutil" > resumo_hash.txt
+
+23dd24da74408791f5e54152cd3ba4f5f5cb63ae35ff93a749a44be9bc8abbaf14bf652b0120aeaaa43a438ebbb6771e199d67c1adeccb6b80b86f3e390bb94f
+
+
+3 JogoDigitacao
+CertUtil -hashfile "3 JogoDigitacao.zip" SHA512 | find /i /v "sha512" | find /i /v "certutil" > resumo_hash.txt
+
+d3a4159952efe805e4f94138c0ed91b87cf02b92b8b55cd08a6a523d8b12a9914ebe07093d0bb8e4c0125160443415cdc19be8e44d5053c95061640740e4d0a9
+
+4 JornadaBicho
+CertUtil -hashfile "4 JornadaBicho.zip" SHA512 | find /i /v "sha512" | find /i /v "certutil" > resumo_hash.txt
+
+b3cdccb724c9e9760779492cfd59bc567e39d92e4791ad4c2dad62fc39d816ae2ac28bdbe008ff8371eaa3607ed33d858b8ae8846d79aa47afa1bd5c69f13e16
+
+
+
