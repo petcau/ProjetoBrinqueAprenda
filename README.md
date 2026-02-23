@@ -11,7 +11,7 @@
 
 
 
-  ## **Projeto Brinque e Aprenda.**
+  ## ** --- Projeto Brinque e Aprenda. ---**
 
 Brinque Aprenda é um projeto educacional interativo voltado para crianças em idade pré-escolar e nos primeiros anos do ensino fundamental. A plataforma combina jogos educativos, atividades lúdicas e conteúdos pedagógicos com o objetivo de tornar o aprendizado mais divertido, envolvente e eficaz.
 
