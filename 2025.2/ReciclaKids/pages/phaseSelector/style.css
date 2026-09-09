@@ -1,0 +1,50 @@
+
+
+.container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.levels {
+    display: flex;
+    gap: 40px;
+}
+
+.level {
+    width: 220px;
+    height: 220px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 4px solid #654321;
+    cursor: pointer;
+    transition: 0.2s;
+    position: relative;
+}
+
+.level:hover {
+    transform: scale(1.1);
+}
+
+.level img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+
+.label {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 5px 0;
+    font-size: 20px;
+}

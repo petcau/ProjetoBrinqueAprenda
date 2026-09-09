@@ -1,0 +1,102 @@
+
+
+
+/* CONTAINER PRINCIPAL */
+main{
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 1rem; /* espaço entre o tabuleiro e o texto */
+  padding: 3rem;
+}
+
+.left, .center, .right{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+/* TABULEIRO */
+
+.left img {
+  width: 250px;
+  object-fit: cover;
+  border: 6px solid #6d3e1f;
+  border-radius: 12px;
+  background: #9ae77d;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+}
+
+/* CENTRO */
+.center {
+  text-align: center;
+  gap: 1rem;
+}
+
+
+.character-image {
+  width: 300px; 
+  object-fit: cover;
+  transform: rotate(-16deg);
+}
+
+/* BANNER */
+.banner {
+  background: #b5f26b;
+  color: #145100;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 15px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  margin-bottom: 25px;
+}
+
+/* TROFÉU */
+.trophy img {
+  width: 180px;
+  height: auto;
+  margin: 10px 0 20px 0;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+/* PONTUAÇÃO */
+.score {
+  background: #b5f26b;
+  border-radius: 12px;
+  padding: 15px 50px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  margin-bottom: 25px;
+}
+
+.label {
+  font-size: 20px;
+  font-weight: bold;
+  color: #135c17;
+}
+
+.value {
+  font-size: 46px;
+  font-weight: bold;
+  color: #0a420d;
+}
+
+/* BOTÃO CONTINUAR */
+.continue {
+  background: #21cd26;
+  color: #042d01;
+  font-weight: bold;
+  padding: 15px 60px;
+  border-radius: 35px;
+  font-size: 22px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+  transition: all 0.2s ease;
+}
+
+.continue:hover {
+  transform: scale(1.05);
+  background: #2ef333;
+}
+
+

@@ -1,0 +1,11 @@
+{
+    "fases":[
+        {
+            "background":"url('../../game_assets/background/bgs1.webp')",
+            "tableHeight":5,
+            "tableWidth":7,
+            "trashTypes":[0, 1, 2],
+            "trashCount":5
+        }
+    ]
+}

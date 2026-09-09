@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tesouro à Vista</title>
+    <link rel="icon" href="game_assets/index/favicon.webp" type="image/webp">
+    <link rel="stylesheet" href="components/styles/index.css">
+    <link rel="stylesheet" href="components/styles/creditos.css">
+    <link rel="stylesheet" href="components/styles/jogar.css">
+    <link rel="stylesheet" href="components/styles/opcoes.css">
+    <link rel="stylesheet" href="components/styles/quiz.css">
+    <link rel="stylesheet" href="components/styles/tabuleiro.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script src="components/scripts/index.js" defer></script>
+</head>
+
+<body>
+    <div id="aviso-orientacao">
+        <img src="game_assets/aviso.webp" alt="Vire o celular">
+    </div>
+
+    <audio id="musica_fundo" src="game_assets/index/tesouro à vista!.mp3" loop></audio>
+    <audio id="som_clique" src="game_assets/tabuleiro/clique.mp3" preload="auto"></audio>
+    <audio id="som_pergunta" src="game_assets/tabuleiro/abrirPergunta.mp3" preload="auto"></audio>
+    <audio id="som_vitoria" src="game_assets/vitoria_e_derrota/vitoria.mp3" preload="auto"></audio>
+    <audio id="som_derrota" src="game_assets/vitoria_e_derrota/derrota.mp3" preload="auto"></audio>
+    <audio id="som_moeda" src="game_assets/tabuleiro/moedasSom.mp3" preload="auto"></audio>
+    <audio id="som_vida" src="game_assets/tabuleiro/perderVidas.mp3" preload="auto"></audio>
+
+    <main>
+        <div class="esconder" id="tabuleiro">
+            <div id="quiz" class="escondido">
+                <div class="quiz_conteudo">
+                    <div id="quiz_conteudo_moedas" class="quiz_conteudo_escondido">
+                        <img src="game_assets/quiz/fundoopcao.webp">
+                        <img src="game_assets/quiz/acerto.webp" class="quiz_conteudo_escondido_texto">
+                    </div>
+                    <div id="quiz_conteudo_vidas" class="quiz_conteudo_escondido">
+                    </div>
+                    <div class="quiz_conteudo_organizacao" id="monstro">
+                        <section id="texto_quiz" class="quiz_conteudo_organizacao_quiz">
+                            <div class="quiz_conteudo_organizacao_quiz_pergunta">
+                                <div class="quiz_conteudo_organizacao_quiz_pergunta_imagem">
+                                    <img id="imagem_pergunta" src="">
+                                    <div class="quiz_conteudo_organizacao_quiz_pergunta_texto">
+                                        <p id="pergunta"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <section id="opcoes" class="quiz_conteudo_organizacao_quiz_opcoes">
+                            </section>
+                        </section>
+                        <div class="quiz_conteudo_organizacao_imagem">
+                            <img src="" id="imagem_do_monstro">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <section class="tabuleiro_conteudo">
+
+                <section class="tabuleiro_conteudo_espacamento">
+                    <div class="tabuleiro_conteudo_espacamento_cabecalho">
+                        <button onclick="tocarSomClique(); fecharAba('tabuleiro'); mostrarAba('aba_mapas')">
+                            <div class="tabuleiro_conteudo_espacamento_cabecalho_imagem">
+                                <img src="game_assets/opcoes/placa2.webp">
+                                <div class="tabuleiro_conteudo_espacamento_cabecalho_imagem_texto">
+                                    <p>Voltar</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="tabuleiro_conteudo_espacamento_pontuacao">
+                        <div class="tabuleiro_pontuacao">
+                            <div class="tabuleiro_pontuacao_placa">
+                                <img src="game_assets/tabuleiro/iconebarra.webp">
+                                <div class="tabuleiro_pontuacao_placa_texto">
+                                    <div class="tabuleiro_pontuacao_placa_texto_info" id="valor_vida"></div>
+                                    <div class="tabuleiro_pontuacao_placa_texto_info" id="valor_moeda"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="mapa_proporcional">
+
+                    <img src="" id="protagonista">
+
+                    <button onclick="tocarSomClique()" class="ponto_clicavel" data-casa="1"></button>
+                    <button onclick="tocarSomClique()" class="ponto_clicavel" data-casa="2"></button>
+                    <button onclick="tocarSomClique()" class="ponto_clicavel" data-casa="3"></button>
+                    <button onclick="tocarSomClique()" class="ponto_clicavel" data-casa="4"></button>
+                    <button onclick="tocarSomClique()" class="ponto_clicavel" data-casa="5"></button>
+                    <button onclick="tocarSomClique()" class="ponto_clicavel" data-casa="6"></button>
+                    <button onclick="tocarSomClique()" class="ponto_clicavel" data-casa="7"></button>
+                    <button onclick="tocarSomClique()" class="ponto_clicavel" data-casa="8"></button>
+                    <button onclick="tocarSomClique()" class="ponto_clicavel" data-casa="9"></button>
+                    <button onclick="tocarSomClique()" class="ponto_clicavel" data-casa="10"></button>
+                    <button onclick="tocarSomClique()" class="ponto_clicavel" data-casa="11"></button>
+                    <button onclick="tocarSomClique()" class="ponto_clicavel" data-casa="12"></button>
+                </div>
+
+            </section>
+
+            <div id="tela_vidas" class="loja escondido">
+                <p class="loja_texto">Parece que suas vidas acabaram...<br>Quer comprar mais?</p>
+                <div class="loja_imagem">
+                    <img src="game_assets/loja/loja_vidas.webp">
+                    <div class="loja_opcoes">
+                        <img class="loja_opcoes_valores" src="game_assets/loja/opcoes.webp">
+                        <section class="loja_opcoes_botoes">
+                            <button onclick="comprarVida(1)" class="loja_opcoes_botoes_botao">
+                                <img src="game_assets/loja/botao1.webp">
+                            </button>
+                            <button onclick="comprarVida(2)" class="loja_opcoes_botoes_botao">
+                                <img src="game_assets/loja/botao2.webp">
+                            </button>
+                            <button onclick="comprarVida(3)" class="loja_opcoes_botoes_botao">
+                                <img src="game_assets/loja/botao3.webp">
+                            </button>
+                        </section>
+                    </div>
+                </div>
+                <button onclick="tocarSomDerrota(); esconderTelaVidas(); mostrarTelaDerrota(); tocarSomClique();" class="loja_desistir_jogo"
+                    id="reiniciar_jogo_derrota">
+                    <div class="loja_desistir_imagem">
+                        <img src="game_assets/tabuleiro/iconebarra2.webp">
+                        <div class="loja_desistir_imagem_texto">
+                            Desistir
+                        </div>
+                    </div>
+                </button>
+            </div>
+
+            <div id="tela_final">
+                <div id="tela_vitoria_container" class="tela_final_imagem escondido">
+                    <div class="fundo_wrapper">
+                        <img src="game_assets/vitoria_e_derrota/Fundo_vitoria.webp" class="fundo_vitoria">
+                        <div class="vitoria_conteudo">
+                            <div id="moedas_vitoria" class="moedas_final"></div>
+
+                            <button
+                                onclick="tocarSomClique(); fecharAba('tabuleiro'); fecharAba('aba_mapas'); esconderTelaVitoria(); reiniciarJogo()"
+                                class="reiniciar_jogo" id="reiniciar_jogo_vitoria">
+                                <div class="reiniciar_imagem">
+                                    <img src="game_assets/tabuleiro/iconebarra.webp">
+                                    <div class="menu_imagem_texto">
+                                        Voltar ao Menu
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tela_derrota_container" class="tela_final_imagem escondido">
+                    <div class="fundo_wrapper">
+                        <img class="fundo_derrota" src="game_assets/vitoria_e_derrota/Fundo_derrota.webp">
+                        <div class="derrota_conteudo">
+                            <div id="moedas_derrota" class="moedas_final"></div>
+
+                            <button onclick="esconderTelaDerrota(); tocarSomClique(); reiniciarJogo();"
+                                class="reiniciar_jogo" id="reiniciar_jogo_derrota">
+                                <div class="reiniciar_imagem">
+                                    <img src="game_assets/tabuleiro/iconebarra.webp">
+                                    <div class="reiniciar_imagem_texto">
+                                        Reiniciar
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="esconder" id="aba_mapas">
+            <section class="jogar_conteudo">
+                <section class="jogar_conteudo_espacamento">
+                    <div class="jogar_conteudo_espacamento_cabecalho">
+                        <button onclick="tocarSomClique(); fecharAba('aba_mapas')">
+                            <div class="jogar_conteudo_espacamento_cabecalho_imagem">
+                                <img src="game_assets/opcoes/placa2.webp">
+                                <div class="jogar_conteudo_espacamento_cabecalho_imagem_texto">
+                                    <p>Voltar</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </section>
+                <section class="jogar_conteudo_cabecalho">
+                    <h1>Escolha o Mapa</h1>
+                </section>
+                <section class="jogar_conteudo_mapas">
+
+                    <div class="jogar_conteudo_mapas_ilha">
+                        <h2 class="jogar_conteudo_mapas_ordem_texto">Ilha dos Números</h2>
+                        <div class="mapa-wrapper-relativo">
+                            <button onclick="tocarSomClique(); carregarMapa('ilha')"
+                                class="jogar_conteudo_mapas_ordem_imagem">
+                                <img class="jogar_conteudo_mapas_ordem_imagem_ilha" src="game_assets/jogar/Ilha.webp">
+                            </button>
+
+                            <div id="overlay-ilha" class="overlay-vitoria escondido">
+                                <div class="overlay-itens">
+                                    <div class="pergaminho-container">
+                                        <img src="game_assets/jogar/pergaminho_fundo.png" class="pergaminho-bg">
+
+                                        <div class="medalhas-wrapper">
+                                            <img id="bronze-ilha" src="game_assets/jogar/bronze.png"
+                                                class="medalha medalha-bronze escondido">
+                                            <img id="prata-ilha" src="game_assets/jogar/prata.png"
+                                                class="medalha medalha-prata escondido">
+                                            <img id="ouro-ilha" src="game_assets/jogar/ouro.png"
+                                                class="medalha medalha-ouro escondido">
+                                        </div>
+
+                                        <button onclick="tocarSomClique(); carregarMapa('ilha')"
+                                            class="btn-reiniciar-icone">
+                                            <img src="game_assets/jogar/reiniciar_botao.png" alt="Reiniciar">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="jogar_conteudo_mapas_caverna">
+                        <h2 class="jogar_conteudo_mapas_ordem_texto">Gruta da Geografia</h2>
+                        <div class="mapa-wrapper-relativo">
+                            <button onclick="tocarSomClique(); carregarMapa('caverna')"
+                                class="jogar_conteudo_mapas_ordem_imagem">
+                                <img class="jogar_conteudo_mapas_ordem_imagem_caverna"
+                                    src="game_assets/jogar/caverna.webp">
+                            </button>
+                            <div id="overlay-caverna" class="overlay-vitoria escondido">
+                                <div class="overlay-itens">
+                                    <div class="pergaminho-container">
+                                        <img src="game_assets/jogar/pergaminho_fundo.png" class="pergaminho-bg">
+                                        <div class="medalhas-wrapper">
+                                            <img id="bronze-caverna" src="game_assets/jogar/bronze.png"
+                                                class="medalha medalha-bronze escondido">
+                                            <img id="prata-caverna" src="game_assets/jogar/prata.png"
+                                                class="medalha medalha-prata escondido">
+                                            <img id="ouro-caverna" src="game_assets/jogar/ouro.png"
+                                                class="medalha medalha-ouro escondido">
+                                        </div>
+                                        <button onclick="tocarSomClique(); carregarMapa('caverna')"
+                                            class="btn-reiniciar-icone">
+                                            <img src="game_assets/jogar/reiniciar_botao.png" alt="Reiniciar">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="jogar_conteudo_mapas_deserto">
+                        <h2 class="jogar_conteudo_mapas_ordem_texto">Deserto dos Fatos</h2>
+                        <div class="mapa-wrapper-relativo">
+                            <button onclick="tocarSomClique(); carregarMapa('deserto')"
+                                class="jogar_conteudo_mapas_ordem_imagem">
+                                <img class="jogar_conteudo_mapas_ordem_imagem_deserto"
+                                    src="game_assets/jogar/deserto.webp">
+                            </button>
+                            <div id="overlay-deserto" class="overlay-vitoria escondido">
+                                <div class="overlay-itens">
+                                    <div class="pergaminho-container">
+                                        <img src="game_assets/jogar/pergaminho_fundo.png" class="pergaminho-bg">
+                                        <div class="medalhas-wrapper">
+                                            <img id="bronze-deserto" src="game_assets/jogar/bronze.png"
+                                                class="medalha medalha-bronze escondido">
+                                            <img id="prata-deserto" src="game_assets/jogar/prata.png"
+                                                class="medalha medalha-prata escondido">
+                                            <img id="ouro-deserto" src="game_assets/jogar/ouro.png"
+                                                class="medalha medalha-ouro escondido">
+                                        </div>
+                                        <button onclick="tocarSomClique(); carregarMapa('deserto')"
+                                            class="btn-reiniciar-icone">
+                                            <img src="game_assets/jogar/reiniciar_botao.png" alt="Reiniciar">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="jogar_conteudo_mapas_oceano">
+                        <h2 class="jogar_conteudo_mapas_ordem_texto">Oceano da Ciência</h2>
+                        <div class="mapa-wrapper-relativo">
+                            <button onclick="tocarSomClique(); carregarMapa('oceano')"
+                                class="jogar_conteudo_mapas_ordem_imagem">
+                                <img class="jogar_conteudo_mapas_ordem_imagem_oceano"
+                                    src="game_assets/jogar/oceano.webp">
+                            </button>
+                            <div id="overlay-oceano" class="overlay-vitoria escondido">
+                                <div class="overlay-itens">
+                                    <div class="pergaminho-container">
+                                        <img src="game_assets/jogar/pergaminho_fundo.png" class="pergaminho-bg">
+                                        <div class="medalhas-wrapper">
+                                            <img id="bronze-oceano" src="game_assets/jogar/bronze.png"
+                                                class="medalha medalha-bronze escondido">
+                                            <img id="prata-oceano" src="game_assets/jogar/prata.png"
+                                                class="medalha medalha-prata escondido">
+                                            <img id="ouro-oceano" src="game_assets/jogar/ouro.png"
+                                                class="medalha medalha-ouro escondido">
+                                        </div>
+                                        <button onclick="tocarSomClique(); carregarMapa('oceano')"
+                                            class="btn-reiniciar-icone">
+                                            <img src="game_assets/jogar/reiniciar_botao.png" alt="Reiniciar">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="jogar_conteudo_mapas_floresta">
+                        <h2 class="jogar_conteudo_mapas_ordem_texto">Floresta das Letras</h2>
+                        <div class="mapa-wrapper-relativo">
+                            <button onclick="tocarSomClique(); carregarMapa('floresta')"
+                                class="jogar_conteudo_mapas_ordem_imagem">
+                                <img class="jogar_conteudo_mapas_ordem_imagem_floresta"
+                                    src="game_assets/jogar/floresta.webp">
+                            </button>
+                            <div id="overlay-floresta" class="overlay-vitoria escondido">
+                                <div class="overlay-itens">
+                                    <div class="pergaminho-container">
+                                        <img src="game_assets/jogar/pergaminho_fundo.png" class="pergaminho-bg">
+                                        <div class="medalhas-wrapper">
+                                            <img id="bronze-floresta" src="game_assets/jogar/bronze.png"
+                                                class="medalha medalha-bronze escondido">
+                                            <img id="prata-floresta" src="game_assets/jogar/prata.png"
+                                                class="medalha medalha-prata escondido">
+                                            <img id="ouro-floresta" src="game_assets/jogar/ouro.png"
+                                                class="medalha medalha-ouro escondido">
+                                        </div>
+                                        <button onclick="tocarSomClique(); carregarMapa('floresta')"
+                                            class="btn-reiniciar-icone">
+                                            <img src="game_assets/jogar/reiniciar_botao.png" alt="Reiniciar">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+            </section>
+        </div>
+
+        <div class="esconder" id="aba_opcoes">
+            <section class="opcoes_conteudo">
+                <section class="opcoes_conteudo_espacamento">
+                    <div class="opcoes_conteudo_espacamento_cabecalho">
+                        <button onclick="tocarSomClique(); fecharAba('aba_opcoes')">
+                            <div class="opcoes_conteudo_espacamento_cabecalho_imagem">
+                                <img src="game_assets/opcoes/placa2.webp">
+                                <div class="opcoes_conteudo_espacamento_cabecalho_imagem_texto">
+                                    <p>Voltar</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </section>
+                <section class="opcoes_conteudo_cabecalho">
+                    <h1>Opções</h1>
+                </section>
+                <div class="opcoes_conteudo_principal">
+                    <ul class="opcoes_conteudo_principal_texto">
+                        <li>
+                            <span>Música</span>
+                            <button onclick="tocarSomClique(); manipularMusica(this)"><img
+                                    class="opcoes_conteudo_principal_texto_imagem"
+                                    src="game_assets/opcoes/musica.webp"></button>
+                        </li>
+                        <li>
+                            <span>Som</span>
+                            <button onclick="manipularSomClique(this)"><img
+                                    class="opcoes_conteudo_principal_texto_imagem"
+                                    src="game_assets/opcoes/som.webp"></button>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="esconder" id="aba_creditos">
+            <section class="creditos_conteudo">
+                <section class="creditos_conteudo_espacamento">
+                    <div class="creditos_conteudo_espacamento_cabecalho">
+                        <button class="botao_voltar" onclick="tocarSomClique(); fecharAba('aba_creditos')">
+                            <img src="game_assets/creditos/placa2.webp" alt="Voltar">
+                            <span>Voltar</span>
+                        </button>
+                    </div>
+                </section>
+
+                <div class="creditos_conteudo_principal">
+                    <ul class="creditos_conteudo_principal_texto">
+                        <li>Marta Gisele Barreto - Gestor</li>
+                        <li>Luiza Bittencourt - Designer</li>
+                        <li>Nairana Almeida - Designer</li>
+                        <li>Mateus Santos - Programador</li>
+                        <li>Tiago Bispo - Programador</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="conteudo">
+
+            <div class="conteudo_cabecalho">
+                <img src="game_assets/index/logo.webp" class="conteudo_cabecalho_logo">
+            </div>
+
+            <div class="conteudo_opcoes_container">
+
+                <div class="conteudo_opcao">
+                    <button onclick="tocarSomClique(); mostrarAba('aba_mapas'); verificarProgressoMapas()">
+                        <div class="conteudo_opcao_imagem">
+                            <img src="game_assets/index/placa.webp">
+                            <div class="conteudo_opcao_imagem_texto">
+                                <p>Jogar</p>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="conteudo_opcao">
+                    <button onclick="tocarSomClique(); mostrarAba('aba_opcoes')">
+                        <div class="conteudo_opcao_imagem">
+                            <img src="game_assets/index/placa2.webp">
+                            <div class="conteudo_opcao_imagem_texto">
+                                <p>Opções</p>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="conteudo_opcao">
+                    <button onclick="tocarSomClique(); mostrarAba('aba_creditos')">
+                        <div class="conteudo_opcao_imagem">
+                            <img src="game_assets/index/placa.webp">
+                            <div class="conteudo_opcao_imagem_texto">
+                                <p>Créditos</p>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

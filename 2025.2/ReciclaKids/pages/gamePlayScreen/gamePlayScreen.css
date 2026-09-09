@@ -1,0 +1,104 @@
+@keyframes aparece {
+    0%{
+        opacity: 0;
+        transform: translateY(-200px);
+    }100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-image: url('../../game_assets/background/bgs1.webp');
+}#table{
+    display: grid;
+
+    /*grid-template-columns: repeat(7, 100px);*/
+    gap: 3px;
+
+    position: relative;
+    
+    /* background-color: rgb(38, 83, 0);
+    padding: .5rem;
+    border-radius: 10px; */
+}.block, .bin{
+    background-image: url('../../game_assets/ladrilhos/tijolos.webp');
+    background-size: cover;
+    background-repeat: no-repeat;
+    aspect-ratio: 1;
+}
+article{
+    width: 100px;
+    aspect-ratio: 1;
+    position: absolute;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}article>img{
+    object-fit: cover;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -70%);
+
+}
+
+
+#character{
+    /*background-image: url("../../game_assets/marcio/front.webp");*/
+    z-index: 2;
+    display: flex;
+}#character>img{
+    width: 150%;
+}
+.trash{
+    /* background-image: url('https://cdn.pixabay.com/photo/2013/07/12/14/48/crumpled-148834_640.webp'); */
+
+    z-index: 1;
+    
+}.trash>img{
+    width: 70%;
+}.bin>img{
+    width: 100%;
+}.bin>div{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -110%);
+    background-color: white;
+    border: 1px solid black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 30px;
+    aspect-ratio: 1;
+
+    font-weight: bolder;
+}
+.message_cont > .message{
+    width: 250px;
+    height: fit-content;
+    padding: 1rem;
+
+    animation: aparece 2s 0s forwards;
+    
+}.message_cont{
+    position: absolute;
+    right: 1rem;
+    bottom: 3rem;
+
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    align-items: center;
+
+    gap: .5rem;
+}
