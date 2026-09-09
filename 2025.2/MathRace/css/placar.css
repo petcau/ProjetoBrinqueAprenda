@@ -1,0 +1,180 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial Black', sans-serif;
+    background-image: url("../assets/menu/tela.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.leaderboard {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.leaderboard-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 150px 150px;
+    gap: 15px;
+    padding: 20px;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.leaderboard-row:hover {
+    transform: translateX(10px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    border-color: #2c5aa0;
+}
+
+.position {
+	display: flex;
+	flex-direction: row;
+	gap: 32px;
+
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    color: #2c5aa0;
+	white-space: nowrap;
+}
+
+.medal {
+    width: 80px;
+    height: 80px;
+    display: inline-block;
+}
+
+
+.back-button {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.back-button button {
+    background: #2c5aa0;
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.back-button button:hover {
+    background: #1e3a70;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.back-button button:active {
+    transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+    .leaderboard-row {
+        grid-template-columns: 60px 1fr 100px;
+        gap: 10px;
+        padding: 15px;
+    }
+
+    .time {
+        display: none;
+    }
+
+    .player-name {
+        font-size: 18px;
+    }
+
+    .score {
+        font-size: 20px;
+    }
+
+    .position {
+        font-size: 24px;
+    }
+    
+    .medal {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+/* Estilos para informações do jogador */
+.player-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    padding-left: 20px;
+}
+
+.player-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c5aa0;
+}
+
+.player-scenario {
+    font-size: 16px;
+    color: #666;
+    text-transform: capitalize;
+}
+
+.player-score {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ff6b00;
+}
+
+.player-info.empty {
+    opacity: 0.5;
+}
+
+.player-info.empty .player-name {
+    color: #999;
+}
+
+@media (max-width: 768px) {
+    .player-name {
+        font-size: 18px;
+    }
+    
+    .player-scenario {
+        font-size: 14px;
+    }
+    
+    .player-score {
+        font-size: 18px;
+    }
+}

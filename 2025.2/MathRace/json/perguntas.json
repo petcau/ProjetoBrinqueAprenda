@@ -1,0 +1,34 @@
+{
+	"perguntas": [
+		{
+			"pergunta": "1 + 1",
+			"respostas": [1, 2, 3, 4],
+			"resposta_correta": 2
+		},
+		{
+			"pergunta": "6 + 9",
+			"respostas": [15, 13, 18, 10],
+			"resposta_correta": 15
+		},
+		{
+			"pergunta": "10 + 10",
+			"respostas": [20, 17, 22, 19],
+			"resposta_correta": 20
+		},
+		{
+			"pergunta": "19 - 11",
+			"respostas": [8, 10, 9, 6],
+			"resposta_correta": 8
+		},
+		{
+			"pergunta": "30 - 25",
+			"respostas": [6, 5, 7, 2],
+			"resposta_correta": 5
+		},
+		{
+			"pergunta": "7 * 3",
+			"respostas": [21, 24, 18, 19],
+			"resposta_correta": 21
+		}
+	]
+}

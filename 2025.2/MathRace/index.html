@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathRace</title>
+    <link rel="stylesheet" href="css/estilo.css">
+    <link rel="stylesheet" href="css/menu.css">
+
+	<script type="module" src="scripts/carregar_volume.js"></script>
+</head>
+<body>
+	<audio autoplay loop src="assets/som/musica-menu.mpeg" type="audio/mpeg" id="musica"></audio>
+
+    <img src="assets/menu/tela.png" class="background-image" alt="Fundo do jogo">
+    <img src="assets/menu/titulo.png" class="game-logo" alt="MathRace Logo">
+    <div class="b1">
+    <img src="assets/menu/bike1.png" class="bike1">
+    </div>
+    <div class="b2">
+    <img src="assets/menu/bike2.png" class="bike2">
+    </div>
+    <div class="corredor">
+    <img src="assets/menu/corredor.png" class="correr">
+    </div>
+    <div class="pista">
+    <img src="assets/menu/pista.png" class="pista1">
+    </div>
+    <div class="carro">
+    <img src="assets/menu/carro.png" class="carro1">
+    </div>
+    <div class="agua">
+    <img src="assets/menu/agua.png" class="agua1">
+    </div>
+    <div class="barco">
+    <img src="assets/menu/barco.png" class="barco1">
+    </div>
+    
+        <div class="menu">
+            <div class="menu-item" onclick="window.location.href='jogar.html'"><div class="fonteMenu">Começar</div></div>
+            
+            <div class="menu-item" onclick="window.location.href='como.html'"><div class="fonteMenu">Tutorial</div></div>
+            
+			<div class="menu-item" onclick="window.location.href='placar.html'"><div class="fonteMenu">Placar</div></div>
+
+            <div class="menu-item" onclick="window.location.href='opcoes.html'"><div class="fonteMenu">Opções</div></div>
+            
+        </div>
+        <br>
+        <br>
+    </div>
+
+    <script src="scripts/menu.js"></script>
+</body>
+</html>

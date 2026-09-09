@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>MathRace</title>
+		<link href="css/style_cenario.css" rel="stylesheet"> 
+	</head>
+	<body>
+		<div class="jogo">
+			
+			<div class="topo" id="topo-placeholder"></div>
+
+			<canvas id="canvas-jogo"></canvas>
+
+			<div class="perguntas-holder" id="perguntas-placeholder"></div>
+
+			<div class="menu-de-fim" id="fim-placeholder"></div>
+			<div class="fundo-do-fim" id="fundo-fim"></div>
+		</div>
+
+		<script type="module">
+			const queryString = window.location.search;
+			const urlParams = new URLSearchParams(queryString);
+			const cenario = urlParams.get('cenario'); 
+			async function carregarComponente(url, elementoId) {
+				try {
+					const resposta = await fetch(`componentes/${url}`); 
+					if (!resposta.ok) throw new Error(`Falha ao carregar ${url}`);
+					const html = await resposta.text();
+					document.getElementById(elementoId).innerHTML = html;
+				} catch (erro) {
+					console.error("Erro ao carregar componente:", erro);
+				}
+			}
+			function carregarMainScript() {
+				const script = document.createElement('script');
+				script.id = 'script-main';
+				script.type = 'module';
+				script.src = `./scripts/main.js`;
+				script.dataset.cenario = cenario; 
+				document.body.appendChild(script);
+			}
+			async function carregarTudo() {
+				await Promise.all([
+					carregarComponente("topo.html", "topo-placeholder"),
+					carregarComponente("perguntas.html", "perguntas-placeholder"),
+					carregarComponente("fim.html", "fim-placeholder"),
+				]);
+				carregarMainScript();
+			}
+			carregarTudo();
+		</script>
+	</body>
+</html>

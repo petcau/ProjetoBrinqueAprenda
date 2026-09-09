@@ -1,0 +1,294 @@
+/* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}*/
+:root {
+
+        --btnColorPrimary: #ffdd88;
+        --btnColorTextPrimary: #4f6d7a;
+        --btnColorSecondary: #4f6d7a;
+        --btnColorTextSecondary: #ffdd88;
+}
+
+/* Container do menu */
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+    background-color:  rgba(0, 0, 0, 0.075);
+    border: none;
+    border-radius: 30px;
+    padding: 15px 15px;
+    position: fixed;
+    top: 60%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    
+}
+        
+.menu-item {
+    padding: 20px 90px;
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: var(--btnColorSecondary);
+    color: var(--btnColorTextSecondary);
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 6px 0px rgba(0, 0, 0, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: 'Arial Black', sans-serif;
+    position: relative;
+    width: 300px;
+    height: 60px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 0px rgba(0, 0, 0, 0.4);
+    background: var(--btnColorPrimary);
+    color: var(--btnColorTextPrimary);
+}
+
+.menu-item:active {
+    transform: translateY(3px);
+    box-shadow: 0 3px 0px rgba(0, 0, 0, 0.4);
+}
+
+.game-logo {
+    max-width: 600px;
+    width: 100%;
+    height: auto;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    position: relative;
+    animation: slideFromRight 3.0s ease-out forwards;
+    opacity: 0;
+    filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.3));
+    position: fixed;
+    top: 2%;
+}
+
+@keyframes slideFromRight {
+    0% {
+        transform: translateX(100vw);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}   
+
+.menu-btn {
+    padding: 20px 60px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(135deg, #98D8C8 0%, #98D8C8 100%);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.menu-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(135deg, #98D8C8 0%, #98D8C8 100%);
+}
+
+.menu-btn:active {
+    transform: translateY(-2px);
+}
+
+.screen {
+    display: none;
+    width: 100%;
+    max-width: 800px;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    margin: 50px 20px;
+}
+
+.screen.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+
+
+.screen h2 {
+    color: #667eea;
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+.screen p {
+    color: #333;
+    line-height: 1.8;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+
+.back-btn:hover {
+    background: #764ba2;
+    transform: translateY(-3px);
+}
+
+
+.background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    object-position: center;
+    z-index: -1;
+}
+.b1{
+    position: fixed;
+    top: 55%;
+    left: 3%;
+    object-fit: cover;
+    object-position: center; 
+    
+}
+.bike1{
+    width: 10vw;
+    height: 18vh;
+    
+}
+.b2{
+    position: fixed;
+    top: 68%;
+    left: 11%;
+    object-fit: cover;
+    object-position: center; 
+    
+}
+.bike2{
+    width: 10vw;
+    height: 18vh;
+    
+}
+.corredor{
+    position: fixed;
+    top: 80%;
+    left: 23%;
+    object-fit: cover;
+    object-position: center; 
+    
+}
+.correr{
+    width: 6vw;
+    height: 18vh;
+}
+.pista1{
+    position: fixed;
+    top: 70%;
+    left: 70%;
+    object-fit: cover;
+    object-position: center; 
+    width: 30vw;
+    height: 30vh;
+}
+
+.carro1{
+    width: 80%;
+    height: 80%;
+    
+}
+.carro{
+    top: 75%;
+    left: 85%;
+    object-fit: cover;
+    object-position: center;
+    position: fixed;
+}
+.agua{
+    top: 60%;
+    left: 75%;
+    object-fit: cover;
+    object-position: center;
+    position: fixed;
+}
+.barco{
+    top: 41%;
+    left: 85%;
+    object-fit: cover;
+    object-position: center;
+    position: fixed;
+}
+.barco1{
+    width: 12vw;
+    height: 20vh;
+    
+}
+.agua1{
+    width: 50vw;
+    height: 2vh;
+    
+}
+
+@media (max-width: 768px) {
+
+    .game-logo {
+        width: 80%;
+        margin-top: 20px;
+        top: 5%;
+    }
+
+    .menu {
+        width: 90%;
+        padding: 20px 10px;
+        top: 55%;
+        gap: 15px;
+    }
+
+    .menu-item {
+        width: 100%;
+        height: 50px;
+        padding: 0;
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+    }
+    
+    .b1, .b2, .corredor, .carro, .agua, .barco, .pista {
+        display: none; 
+    }
+
+}
+
+@media (max-height: 500px) {
+    .menu {
+        top: 60%;
+        gap: 10px;
+    }
+    .menu-item {
+        height: 40px;
+        font-size: 1rem;
+    }
+    .game-logo {
+        width: 40%;
+        top: 2%;
+        margin-top: 5px;
+    }
+}

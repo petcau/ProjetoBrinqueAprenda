@@ -1,0 +1,311 @@
+@font-face {
+
+  font-family: 'Raleway ExtraBold'; 
+
+  src:  url('../css/fonts/Raleway-ExtraBold.ttf');
+}
+@font-face {
+
+  font-family: 'Raleway Bold'; 
+
+       src:  url('./css/fonts/Raleway-Bold.ttf');
+}
+@font-face {
+
+  font-family: 'Raleway Regular';
+       src:  url('../css/fonts/Raleway-Regular.ttf');
+}
+
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+body {
+	background-image: url("../assets/background.png");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+}
+
+.jogo {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+
+	height: 100vh;
+}
+
+.topo {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+
+	width: 99%;
+
+	position: relative;
+}
+
+.topo > img {
+	margin-left: 16px;
+
+	position: relative;
+	left: 0;
+}
+
+.timer-holder {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+
+	background-color: rgba(0, 0, 0, 0.5);
+
+	font-size: 1.25rem;
+
+	padding: 16px;
+	border-radius: 8px;
+
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, 0);
+}
+
+#botao-voltar{
+	color: #ffffff;
+	background-color: #0080ff;
+	box-shadow: 0px 4px 6px 0px #0000ff;
+
+	border: none;
+	border-radius: 16px;
+
+	font-size: 2rem;
+
+	width: 5%;
+	min-width: 25px;
+	max-width: 55px;
+
+	height: 75%;
+
+	position: absolute;
+	left: 65%;
+}
+#botao-voltar:hover {
+	box-shadow: 0px 0px 6px 6px #0000ff;
+}
+
+#botao-pausar{
+	color: #ffffff;
+	background-color: #0080ff;
+	box-shadow: 0px 4px 6px 0px #0000ff;
+
+	border: none;
+	border-radius: 16px;
+
+	font-size: 2rem;
+
+	width: 5%;
+	min-width: 25px;
+	max-width: 55px;
+
+	height: 75%;
+
+	position: absolute;
+	left: 72%;
+}
+#botao-pausar:hover {
+	box-shadow: 0px 0px 6px 6px #0000ff;
+}
+
+.pontuacao-holder {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+
+	background-color: rgba(0, 0, 0, 0.5);
+	color: white;
+
+	padding: 16px;
+	margin-right: 16px;
+	border-radius: 16px;
+
+	font-size: 1.1rem;
+
+	position: absolute;
+	right: 0;
+}
+
+#pontuacao {
+	white-space: pre-line;
+}
+
+#canvas-jogo {
+	display: block;
+	margin: 0 auto;
+}
+
+.perguntas-holder {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	flex-direction: row;
+	justify-content: space-between;
+
+	width: 70%;
+
+	background-color: #464545;
+	border-radius: 8px;
+}
+
+#pergunta {
+	font-family: "Raleway Bold";
+	margin: 16px;
+	font-size: 3rem;
+}
+
+.respostas-holder {
+	display: flex;
+	flex-direction: row;
+
+	gap: 32px;
+	margin: 16px;
+}
+
+.resposta {
+	border: none;
+
+	width: 4.5em;
+	height: 4em;
+
+	background-color: #ffffff;
+	border-radius: 8px;
+	font-size: 1rem;
+
+	box-shadow: 0px 6px #aaaaaa;
+
+	transition: background-color 0.5s ease, box-shadow 0.5s ease;
+}
+.resposta.correto {
+    background-color: #4CAF50; /* Um tom de verde */
+    color: white;
+    box-shadow: 0px 6px #388E3C; /* Sombra mais escura */
+}
+
+.resposta.incorreto {
+    background-color: #F44336; /* Um tom de vermelho */
+    color: white;
+    box-shadow: 0px 6px #D32F2F; /* Sombra mais escura */
+}
+.resposta:active {
+	box-shadow: 0px 4px #aaaaaa;
+	transform: translate(0px, 2px);
+}
+/* .resposta:disabled { */
+/*     opacity: 0.7; */
+/*     cursor: not-allowed; */
+/* } */
+.txtGameTitle{
+        font-family: 'Raleway ExtraBold', sans-serif;
+        font-size: 2vw;
+        color: #FFFFFF;
+        text-align: center;
+        text-shadow: 2px 2px 4px #000000;
+}
+.txtGameSubtitle{
+        font-family: 'Raleway Bold', sans-serif;
+        font-size: 2vw;
+        color: #FFFFFF;
+        text-align: center;
+        text-shadow: 1px 1px 2px #000000;
+}
+.txtGameSubtitle2{
+        font-family: 'Raleway Regular', sans-serif;
+        font-size: 2vw;
+        color: #000000;
+        text-align: center;
+        text-shadow: 1px 1px 2px #ffd000;
+}
+.txtGameRegular{
+        font-family: 'Raleway Regular', sans-serif;
+        font-size: 2vw;
+        color: #FFFFFF;
+        text-align: center;
+        text-shadow: 1px 1px 2px #000000;
+}
+
+.txtGameRegular2{
+        font-family: 'Raleway Regular', sans-serif;
+        font-size: 2vw;
+        color: #000000;
+        text-align: center;
+        text-shadow: 1px 1px 2px #ffd000;
+}
+
+.menu-de-fim{
+	visibility: hidden;
+	position: absolute;
+	z-index: 10;
+	display: flex;
+
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 32px;
+
+	width: 66%;
+	height: 66%;
+
+	padding-top: 16px;
+	border-radius: 50px;
+
+	background-color: #0080ff;
+	box-shadow: 0px 0px 6px 6px #0000ff;
+
+	margin-left: auto;
+	margin-right: auto;
+}
+.menu-de-fim > img{
+	max-width: 90%;
+	width: auto;
+	height: 66%;
+}
+.menu-de-fim > div{
+	display: flex;
+
+	justify-content: center;
+	align-items: center;
+
+	gap: 32px;
+	width: 100%;
+	flex-grow: 1;
+}
+.menu-de-fim > div > button{
+	border:none;
+
+	width: 30%;
+	height: 25%;
+
+	font-size: 1rem;
+
+	background-color: #ffff00;
+	box-shadow: 0px 6px #aaaa00;
+}
+.menu-de-fim > div > button:active {
+	box-shadow: 0px 4px #aaaa00;
+	transform: translate(0px, 2px);
+}
+
+.fundo-do-fim {
+	position: absolute;
+	visibility: hidden;
+
+	width: 100vw;
+	height: 100vh;
+
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	background-color: rgba(122, 122, 122, 0.5);
+}

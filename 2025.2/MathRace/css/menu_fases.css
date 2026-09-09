@@ -1,0 +1,169 @@
+.fasebox {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%); 
+    width: 1200px;
+    height: 500px;
+}   
+
+.fasebox .fase1 {
+    position: absolute;
+    top: 15%;
+    left: 0%;
+    width: 430px;
+    height: 500px;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+    clip-path: polygon(0 0, 102% 43%, 50% 100%, 0 100%);
+}
+
+.fasebox .fase2 {
+    position: absolute;
+    top: 15%;
+    left: 0%; 
+    width: 506px;
+    height: 262px;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+    clip-path: polygon(100% 100%, 0 0, 100% 0);
+}
+
+.fasebox .fase3 {   
+    position: absolute;
+    top: 59.5%;
+    left: 17.8%;
+    width: 751px;
+    height: 277px;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+    clip-path: polygon(0 10%, 30% 0, 100% 100%, 0% 100%);
+}
+
+.fasebox .fase4 {
+    position: absolute;
+    top: 15%;
+    right: 0%;
+    width: 695px;
+    height: 367px;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+    clip-path: polygon(0 0, 100% 0, 38% 100%, 0 71%);
+}
+
+.fasebox .fase5 {
+    position: absolute;
+    top: 15%;
+    right: 0%;
+    width: 491px;
+    height: 500px;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+    clip-path: polygon(0 74%, 100% 0, 100% 100%, 50% 100%);
+}
+
+.fasebox img:hover {
+    transform: scale(1.1);
+    z-index: 10;
+}
+
+.grayscale {
+	filter: grayscale(100%);
+}
+
+.disabled {
+	pointer-events:	none;
+	cursor: default;
+}
+
+@media (max-width: 1024px) {
+
+    body {
+        overflow-y: auto !important;
+        height: auto !important;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding-top: 20px;
+    }
+
+    .titulo {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        
+        width: 80% !important;
+        max-width: 400px;
+        height: auto !important; 
+        object-fit: contain;
+        
+        margin-bottom: 20px;
+        display: block;
+    
+    }
+
+    .fasebox {
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        height: auto;
+        
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        padding-top: 10px; 
+        padding-bottom: 50px;
+        gap: 20px;
+    }
+
+    .fasebox a {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        position: relative;
+    }
+
+    .fasebox .fase1,
+    .fasebox .fase2,
+    .fasebox .fase3,
+    .fasebox .fase4,
+    .fasebox .fase5 {
+        position: relative;
+        top: auto; 
+        left: auto; 
+        right: auto; 
+        transform: none;
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        clip-path: none !important;
+        object-fit: contain;
+        border-radius: 15px;
+        border: 3px solid white;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        margin: 0 auto;
+        display: block;
+    }
+
+    .fasebox h1 {
+        font-size: 1.2rem;
+        margin: 0 0 20px 0;
+        text-align: center;
+        width: 100%;
+    }
+
+    .fasebox img:active {
+        transform: scale(0.95);
+    }
+ 
+    .fasebox img:hover {
+        transform: none; 
+        z-index: 1;
+    }
+}
