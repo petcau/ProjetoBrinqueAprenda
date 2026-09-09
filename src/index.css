@@ -81,10 +81,30 @@ img {
   border: 4px solid #ffdc5d;
   border-radius: 10px;
   padding: 40px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Cada turma e uma secao com o semestre no topo e os jogos daquele semestre. */
+.turma-titulo {
+  font-family: "Luckiest Guy", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: #2d4a89;
+  padding-bottom: 10px;
+  margin-bottom: 25px;
+  border-bottom: 3px solid #ffdc5d;
+}
+
+/* auto-fit no lugar de um numero fixo de colunas: a grade se ajusta sozinha
+   conforme os jogos vao entrando, sem precisar mexer nas media queries. */
+.turma-jogos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
 }
 
 .card {
@@ -101,13 +121,26 @@ img {
   margin: 0 auto;
 }
 
+/* width e height vao explicitos aqui de proposito: as regras globais `img` e
+   `img:nth-child(1)` acima valem para o site inteiro e tambem pegam a imagem do
+   card. Sem isso, a capa herda a altura delas e a proporcao fica a cargo do
+   acaso. Os valores reproduzem o tamanho que os cards ja tinham. */
 .card-image {
   flex-grow: 1;
+  width: 90%;
+  height: 90%;
   max-width: 90%;
   max-height: 90%;
   object-fit: cover;
   background-color: #093372;
   display: block;
+}
+
+/* Para capas em faixa, como o logo do MathRace: mostra a imagem inteira sobre o
+   fundo do card em vez de cortar as laterais. */
+.card-image-contain {
+  object-fit: contain;
+  background-color: transparent;
 }
 
 .game-container {
@@ -196,10 +229,19 @@ img {
   
   .cards {
     padding: 20px;
-    gap: 20px;
-    grid-template-columns: 1fr;
+    gap: 30px;
     max-width: none;
     margin: 0 10px;
+  }
+
+  .turma-titulo {
+    font-size: 1.6rem;
+    margin-bottom: 18px;
+  }
+
+  .turma-jogos {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
   
   .card {
@@ -238,8 +280,18 @@ img {
   
   .cards {
     padding: 15px;
-    gap: 15px;
+    gap: 25px;
     border-width: 2px;
+  }
+
+  .turma-titulo {
+    font-size: 1.4rem;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+  }
+
+  .turma-jogos {
+    gap: 15px;
   }
   
   .card {
