@@ -1,15 +1,15 @@
 /*
- * Estilos do wrapper do MathRace.
+ * Moldura dos jogos estaticos servidos em iframe.
  *
- * Todas as classes usam o prefixo `mathrace-` de proposito: o CSS do portal e
+ * As classes usam o prefixo `jogo-embutido-` de proposito: o CSS do portal e
  * global (todos os jogos sao importados em App.jsx, entao todo CSS carrega em
  * todas as paginas), e nomes genericos como `.container` ja colidem entre jogos.
  *
- * O que esta aqui estiliza apenas a moldura. O visual do jogo em si vem do CSS
+ * O que esta aqui estiliza apenas a moldura. O visual de cada jogo vem do CSS
  * proprio dele, isolado dentro do iframe.
  */
 
-.mathrace-container {
+.jogo-embutido {
   position: relative;
   width: 100%;
   height: 100vh;
@@ -17,7 +17,7 @@
   background-color: #0b1b3a;
 }
 
-.mathrace-frame {
+.jogo-embutido-frame {
   width: 100%;
   height: 100%;
   border: 0;
@@ -26,7 +26,7 @@
 
 /* O botao precisa vencer a regra `button {}` do game.css do AbacoMania, que e
    global e carrega junto. Por isso as propriedades vao todas explicitas. */
-.mathrace-voltar {
+.jogo-embutido-voltar {
   position: absolute;
   top: 12px;
   left: 12px;
@@ -46,16 +46,16 @@
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-.mathrace-voltar:hover {
+.jogo-embutido-voltar:hover {
   background-color: #2d4a89;
 }
 
-.mathrace-voltar:active {
+.jogo-embutido-voltar:active {
   transform: translateY(1px);
 }
 
 @media (max-width: 480px) {
-  .mathrace-voltar {
+  .jogo-embutido-voltar {
     top: 8px;
     left: 8px;
     padding: 6px 12px;

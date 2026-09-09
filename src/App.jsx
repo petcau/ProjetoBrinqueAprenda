@@ -6,6 +6,7 @@ import JornadaBicho from "./jogos/2025.1/JornadaBicho/JornadaBicho.jsx";
 import Digitacao from "./jogos/2025.1/JogoDigitacao/Digitacao.jsx";
 import Anagrama from "./jogos/2025.1/Anagrama/Anagrama.jsx";
 import MathRace from "./jogos/2025.2/MathRace/MathRace.jsx";
+import Matemagica from "./jogos/2025.2/Matemagica/Matemagica.jsx";
 import Sobre from './pages/Sobre.jsx'
 
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/digitacao" element={<Digitacao />}/>
         <Route path="/jornadabicho" element={<JornadaBicho />}/>
         <Route path="/mathrace" element={<MathRace />} />
+        <Route path="/matemagica" element={<Matemagica />} />
         <Route path="/sobre" element={<Sobre />} />
       </Routes>
     </BrowserRouter>

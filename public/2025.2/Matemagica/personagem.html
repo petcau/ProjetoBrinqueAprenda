@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escolha seu Personagem - MATEMÁGICA</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="tela-personagem">
+  <div id="game-scale">
+    <!-- 🎵 ÁUDIO DE FUNDO DESTA TELA -->
+    <audio id="bgm" src="musics/Pelas Estradas Mágicas.mp3" loop preload="auto"></audio>
+
+    <div class="container">
+
+      <div class="selecao-jogadores">
+        <label for="numJogadores">Quantos jogadores vão jogar?</label>
+        <select id="numJogadores" onchange="gerarCamposDeNome()">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+
+      <div class="personagens" id="personagensContainer">
+
+        <div class="card-personagem" data-personagem="Fada" onclick="selecionarPersonagem(this, event)">
+          <img src="images/Fada.png" alt="Fada">
+          <p class="nome-base-personagem">Fada</p>
+          <div class="input-nome-wrapper" id="inputWrapper-Fada"></div>
+        </div>
+
+        <div class="card-personagem" data-personagem="Cavaleiro" onclick="selecionarPersonagem(this, event)">
+          <img src="images/cavaleiro.png" alt="Cavaleiro">
+          <p class="nome-base-personagem">Cavaleiro</p>
+          <div class="input-nome-wrapper" id="inputWrapper-Cavaleiro"></div>
+        </div>
+
+        <div class="card-personagem" data-personagem="Mago" onclick="selecionarPersonagem(this, event)">
+          <img src="images/mago.png" alt="Mago">
+          <p class="nome-base-personagem">Mago</p>
+          <div class="input-nome-wrapper" id="inputWrapper-Mago"></div>
+        </div>
+
+        <div class="card-personagem" data-personagem="Princesa" onclick="selecionarPersonagem(this, event)">
+          <img src="images/princesa.png" alt="Princesa">
+          <p class="nome-base-personagem">Princesa</p>
+          <div class="input-nome-wrapper" id="inputWrapper-Princesa"></div>
+        </div>
+      </div>
+
+      <button class="btn-comecar" id="btnComecar" onclick="irParaTabuleiro()" disabled>
+        Começar
+      </button>
+    </div>
+
+    <!-- JS do jogo -->
+    <script src="script.js"></script>
+
+    <!-- 🎵 CONTINUIDADE DA MÚSICA + BRILHO / VOLUME -->
+    <script>
+      (function () {
+        const audio = document.getElementById("bgm");
+        if (!audio) return;
+
+        // Lê preferências de som/brilho salvas (mm_prefs)
+        let prefs = {};
+        try {
+          const stored = localStorage.getItem("mm_prefs");
+          if (stored) prefs = JSON.parse(stored);
+        } catch (e) {
+          prefs = {};
+        }
+
+        const volume = (prefs.som !== undefined) ? prefs.som : 70;        // padrão 70%
+        const brilho = (prefs.brilho !== undefined) ? prefs.brilho : 100; // padrão 100%
+
+        // Aplica brilho na página toda
+        document.documentElement.style.filter = "brightness(" + (brilho / 100) + ")";
+
+        // 🔁 Lê o tempo salvo da música para continuar de onde parou
+        let ultimoTempo = 0;
+        try {
+          const t = localStorage.getItem("musica_tempo");
+          if (t !== null) ultimoTempo = parseFloat(t) || 0;
+        } catch (e) {
+          ultimoTempo = 0;
+        }
+
+        function iniciarAudioContinuo() {
+          // posiciona no ponto salvo e ajusta volume
+          audio.currentTime = ultimoTempo;
+          audio.volume = volume / 100;
+
+          audio.play().catch(err => {
+            console.warn("Autoplay bloqueado nesta tela (personagem):", err);
+          });
+        }
+
+        // Se já tiver metadados, inicia direto; senão espera carregar
+        if (audio.readyState >= 1) {
+          iniciarAudioContinuo();
+        } else {
+          audio.addEventListener("loadedmetadata", iniciarAudioContinuo);
+        }
+
+        // Salva posição atual da música a cada 200ms
+        setInterval(() => {
+          try {
+            localStorage.setItem("musica_tempo", audio.currentTime.toString());
+          } catch (e) { }
+        }, 200);
+      })();
+    </script>
+  </div>
+</body>
+
+</html>

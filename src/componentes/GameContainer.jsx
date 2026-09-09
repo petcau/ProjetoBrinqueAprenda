@@ -3,6 +3,7 @@ import capaJornada from '../assets/card-jornada-bicho.png';
 import capaDigiRace from '../assets/CAPADIGITAÇÃO.png';
 import capaAbaco from '../assets/abaco-capa.png';
 import capaAnagrama from '../assets/anagramacapa4.png';
+import capaMatemagica from '../assets/matemagica-capa.webp';
 
 // O MathRace e um jogo estatico servido de public/, entao a capa dele e uma URL
 // direta e nao um import. Ver src/jogos/2025.2/MathRace/MathRace.jsx.
@@ -17,6 +18,7 @@ const turmas = [
     jogos: [
       // A capa do MathRace e o logo em faixa do proprio jogo, e nao uma arte
       // quadrada como as demais: por isso ela e exibida inteira, sem corte.
+      { rota: '/matemagica', nome: 'Matemágica', capa: capaMatemagica, capaEmFaixa: true },
       { rota: '/mathrace', nome: 'MathRace', capa: capaMathRace, capaEmFaixa: true },
     ],
   },
