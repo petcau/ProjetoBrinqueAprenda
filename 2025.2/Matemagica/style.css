@@ -1,0 +1,612 @@
+/* ====== ESTILO GERAL ====== */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  background-size: cover;
+  color: #fff;
+  overflow: hidden;
+}
+
+.container,
+.container-tabuleiro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.container-tabuleiro {
+  background: url('images/B1.png') no-repeat center center fixed;
+  background-size: 100% 100%;
+}
+
+
+/* ====== TÍTULOS ====== */
+.titulo {
+  font-size: 3rem;
+  text-shadow: 3px 3px 5px #000;
+  margin-bottom: 20px;
+}
+
+
+/* ====== TELA INICIAL ====== */
+.tela-inicial {
+  background-image: url('images/MATEMAGICA.png');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 120px;
+}
+
+/* ====== BOTÃO JOGAR ====== */
+.btn-jogar {
+  background-color: #ffca28;
+  border: none;
+  color: #000;
+  padding: 18px 50px;
+  font-size: 1.6rem;
+  font-weight: bold;
+  border-radius: 15px;
+  cursor: pointer;
+  box-shadow: 0 6px #b388ff;
+  transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+  margin-bottom: -500px;
+}
+
+.btn-jogar:hover {
+  background-color: #fff176;
+  transform: scale(1.08);
+  box-shadow: 0 8px #9c6eff;
+}
+
+
+
+/* ====== TELA DE PERSONAGEM ====== */
+.tela-personagem {
+  background: url('images/B1.png') no-repeat center center fixed;
+  background-size: 100% 100%;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #3b2f1e;
+}
+
+/* ======== FUNDO DUPLO COM MP.png ======== */
+.personagens {
+  position: relative;
+  width: 2300px;
+  height: 1200px;
+  top: -190px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+
+  padding: 30px 0;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  border-radius: 20px;
+  /* removemos o background daqui */
+}
+
+.personagens::before {
+  content: "";
+  position: absolute;
+  inset: 0; /* cobre toda a área do container */
+  background-image: url('images/MP.png');
+  background-repeat: no-repeat;
+  background-size: 1930px 1040px; /* pode trocar para contain ou valores fixos */
+  background-position: center; /* reposiciona a imagem */
+  top: -110px; /* ajusta a posição vertical */
+  border-radius: 20px;
+  z-index: -1; /* fica atrás dos cards */
+}
+
+
+
+/* ====== CARDS DE PERSONAGENS ====== */
+.card-personagem {
+  transform: translateY(-60px); /* sobe o personagem */
+  background: url('images/moldura.png') no-repeat center center;
+  background-size: contain;
+  width: 350px;
+  height: 475px;
+  margin: 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  padding-bottom: 0px;
+  border: 3px solid transparent;
+
+}
+
+.card-personagem:hover {
+  transform: scale(1.00);
+}
+
+.card-personagem.selecionado {
+  border: 3px solid #ffcc00;
+  box-shadow: 0 0 15px rgba(18, 165, 233, 0.8);
+  transform: scale(1.08);
+}
+
+.card-personagem img {
+  width: 520px;
+  height: 390px;
+  position: relative;
+  top: 30px;
+  left: 10px;
+}
+
+/* Nome abaixo do personagem */
+.nome-base-personagem {
+  background: #f3e2b3;
+  border: 2px solid #5c442a;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #3b2f1e;
+}
+
+.card-personagem p {
+  margin: 0;
+}
+
+@keyframes brilho {
+  0% { transform: scale(1) ; }
+  50% {transform: scale(1.2) ;}
+  100% { transform: scale(1); }
+}
+
+/* ====== BOTÃO COMEÇAR ====== */
+.btn-comecar {
+  position: fixed;
+  bottom: 60px;   /* distância do rodapé */
+  left: 44%;
+  transform: translateX(-50%);
+  z-index: 9999;  /* sempre na frente */
+  margin-top: 10px;
+
+  width: 250px;               /* ajuste conforme a imagem */
+  height: 110px;  
+  border: none;
+  outline: none;
+  background-color: transparent;
+
+  background-image: url('images/botao1.png'); /* sua imagem */
+  background-size: cover;      /* cobre todo o botão */
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  display: flex;               /* permite centralizar o texto */
+  align-items: center;
+  justify-content: center;
+
+  font-size: 2rem;             /* tamanho do texto */
+  font-weight: bold;
+  color: #fff;                 /* cor do texto */
+  text-shadow: 2px 2px 4px #000; /* sombra para destacar */
+  border-radius: 20px;
+
+  animation: brilho 2s infinite;
+}
+
+.btn-comecar::before :not(:disabled) {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border-radius: 20px;
+  animation: aura 2s infinite;
+  z-index: -1; /* fica atrás da imagem */
+}
+.btn-comecar:disabled {
+  background-image: url('images/botaopb.png'); /* opcional: outra imagem */
+  color: #ccc;
+  text-shadow: none;
+  cursor: not-allowed;
+}
+
+
+
+/* ====== SELEÇÃO DE JOGADORES ====== */
+.selecao-jogadores {
+  z-index: 9999;
+  position: relative;
+  top: 150px;           
+  left: 0px;
+  margin-bottom: 30px;
+
+  /* ===== CONTROLE VISUAL DO TEXTO ===== */
+  font-size: 40px;            /* 🔥 AJUSTE O TAMANHO DO TEXTO AQUI */
+  font-weight: bold;
+  color: #fff;
+
+  /* 🔥 CONTORNO DO TEXTO */
+  -webkit-text-stroke: 2px #000;   /* ESPESSURA + COR */
+  -webkit-text-stroke: 2px #000;
+
+  /* Sombras opcionais */
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
+}
+
+
+.selecao-jogadores select {
+  padding: 15px 20px;
+  font-size: 1.6rem;
+  border-radius: 4px;
+  border: 2px solid #5c442a;
+  background-color: #f3e2b3;
+  color: #3b2f1e;
+  cursor: pointer;
+
+}
+
+
+/* Campo de nome */
+.input-nome-wrapper {
+  min-height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-nome-jogador {
+  width: 85%;
+  padding: 3px 5px;
+  border-radius: 4px;
+  border: 1px solid #5c442a;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #3b2f1e;
+  background-color: #fff;
+}
+
+/* ====== TABULEIRO ====== */
+.tabuleiro {
+  position: relative;
+  background-image: url('images/MAPA.png');
+  background-size: 100% 100%;
+  height: 1060px;
+  width: 1930px;
+  top: -250px;
+}
+
+/* peão no tabuleiro */
+.jogador {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  transform: translate(-50%, -90%);   /* centraliza na casa */
+  z-index: 10;
+  pointer-events: none;
+}
+
+
+/* ====== CASAS DO TABULEIRO ====== */
+.casa {
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  text-align: center;
+  line-height: 45px;
+  font-weight: bold;
+  color: #000;
+  border: 2px solid #fff;
+}
+
+/* (todas as posições foram mantidas 1:1) */
+
+#casa0 { top: 820px; left: 270px; }
+#casa1 { top: 930px; left: 385px; }
+#casa2 { top: 920px; left: 520px; }
+#casa3 { top: 840px; left: 610px; }
+#casa4 { top: 725px; left: 565px; }
+#casa5 { top: 650px; left: 440px; }
+#casa6 { top: 590px; left: 285px; }
+#casa7 { top: 465px; left: 195px; }
+#casa8 { top: 330px; left: 225px; }
+#casa9 { top: 242px; left: 368px; }
+#casa10 { top: 210px; left: 565px; }
+#casa11 { top: 275px; left: 730px; }
+#casa12 { top: 395px; left: 790px; }
+#casa13 { top: 523px; left: 774px; }
+#casa14 { top: 640px; left: 718px; }
+#casa15 { top: 775px; left: 730px; }
+#casa16 { top: 849px; left: 885px; }
+#casa17 { top: 783px; left: 1020px; }
+#casa18 { top: 655px; left: 905px; }
+#casa19 { top: 553px; left: 980px; }
+#casa20 { top: 590px; left: 1160px; }
+#casa21 { top: 715px; left: 1175px; }
+#casa22 { top: 835px; left: 1205px; }
+#casa23 { top: 900px; left: 1335px; }
+#casa24 { top: 885px; left: 1515px; }
+#casa25 { top: 775px; left: 1640px; }
+#casa26 { top: 645px; left: 1650px; }
+#casa27 { top: 550px; left: 1535px; }
+#casa28 { top: 490px; left: 1375px; }
+#casa29 { top: 440px; left: 1205px; }
+#casa30 { top: 380px; left: 1065px; }
+#casa31 { top: 280px; left: 1015px; }
+#casa32 { top: 170px; left: 1085px; }
+#casa33 { top: 135px; left: 1295px; }
+#casa34 { top: 200px; left: 1435px; }
+#casa35 { top: 335px; left: 1490px; }
+
+
+/* ====== TELA PERGUNTA ====== */
+.tela-pergunta {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.caixa-pergunta {
+  background: #fff8e1;
+  color: #000;
+  border-radius: 20px;
+  padding: 30px;
+  width: 300px;
+}
+
+
+
+/* ====== FEEDBACK ====== */
+.feedback {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.feedback h2 {
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+
+
+/* ====== FINAL ====== */
+.tela-final {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-castelo {
+  width: 600px;
+  margin-top: 20 0px;
+}
+
+/* Personagem vencedor na tela final */
+.vencedor-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0 0 0;
+}
+
+.img-vencedor {
+  width: 220px;           /* tamanho do personagem */
+  height: auto;
+  animation: entrarCastelo 2.5s ease forwards;
+}
+
+/* Animação do personagem entrando */
+@keyframes entrarCastelo {
+  0% {
+    transform: translateY(80px) scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(-10px) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+/* CONFETES NA TELA FINAL */
+.confetes-container {
+  position: absolute;
+  inset: 0;              /* ocupa a tela toda */
+  pointer-events: none;  /* não atrapalha clique */
+  overflow: hidden;
+  z-index: 5;
+}
+
+.confete {
+  position: absolute;
+  width: 10px;
+  height: 18px;
+  border-radius: 3px;
+  opacity: 0.9;
+  animation-name: cairConfete;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes cairConfete {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotateZ(0deg);
+  }
+  100% {
+    transform: translate3d(0, 110vh, 0) rotateZ(360deg);
+  }
+}
+
+
+/* ÍCONE DO PEÃO NO TABULEIRO */
+.icone-personagem {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  pointer-events: none;
+  position: static;   /* sem top/right aqui, o JS já posiciona o peão */
+
+}
+
+/* ÍCONE DO HUD (TOPO) */
+.icone-hud {
+  width: 100px;          /* pode ser maior */
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+  position: relative;
+  top: 20px;             /* se quiser descer um pouquinho */
+  right: 30px;
+}
+
+
+
+
+
+.casa.invisivel {
+  background: none !important;
+  border: none !important;
+  color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* BARRA DE INFORMAÇÕES DO JOGADOR E BOTÃO DO DADO */
+.info-jogador {
+  position: relative;
+  z-index: 10;              /* garante que fica acima do tabuleiro */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: #fff;
+  text-shadow: 2px 2px 4px #000;
+}
+
+.btn-dado {
+  padding: 10px 25px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 12px;
+  border: 3px solid #fdd835;
+  background-color: #ffeb3b;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #b89f00;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+.btn-dado:hover {
+  background-color: #fff59d;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #b89f00;
+}
+
+/* bloco horizontal castelo + personagem */
+.final-content {
+  position: relative;
+  width: 600px;         /* ajuste para caber as duas imagens */
+  height: 350px;        /* ajuste conforme o tamanho */
+  margin-top: 10px;
+
+}
+
+.img-castelo {
+  position: absolute;
+  left: -100px;
+  bottom: -250px;
+  width: 800px;
+  z-index: 1;
+}
+
+.img-vencedor {
+  position: absolute;
+  left: 310px;        /* ajusta para encostar na porta do castelo */
+  bottom: 5px;       /* ajusta altura */
+  width: 120px;       /* tamanho menor */
+  z-index: 2;         /* fica na frente */
+}
+
+
+/* animação de entrada lateral */
+@keyframes entrarLateral {
+  0% {
+    transform: translate(-200px, 30px) scale(0.7);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(0, 30px) scale(1);
+    opacity: 1;
+  }
+
+}
+#tituloFinal {
+  position: absolute;      /* permite mover livremente */
+  left: 50%;               /* move pra esquerda/direita */
+  top: 50px;               /* move pra cima/baixo */
+  transform: translateX(-50%); /* centraliza se quiser */
+  z-index: 5;              /* fica acima do castelo */
+  font-size: 60px;     /* AQUI você muda o tamanho */
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+#textoVencedor {
+  position: absolute;
+  left: 50%;
+  top: 850px;         /* mova como quiser! */
+  transform: translateX(-50%);
+  z-index: 5;
+  font-size: 48px;     /* AQUI você muda o tamanho */
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* ===== ESCALA GLOBAL DO JOGO ===== */
+#game-scale {
+  width: 1920px;
+  height: 1080px;
+  transform-origin: top left;
+}

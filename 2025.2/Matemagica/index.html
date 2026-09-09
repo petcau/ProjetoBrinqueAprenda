@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MATEMÁGICA</title>
+
+  <style>
+    /* ====== ESTILO GERAL ====== */
+    body {
+      background: url('images/B1.png');
+      background-size: 100% 100%;
+      min-height: 100vh;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #3b2f1e;
+    }
+
+    .img-topo {
+      width: 2000px;
+      height: 1020PX;
+      position: absolute;
+      top: 20px;
+      left: -60px;
+
+      background-image: url('images/IN.png') no-repeat center;
+      background-repeat: no-repeat;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+
+      padding: 30px 0;
+      top: -40px;
+      margin-bottom: 20px;
+
+      border-radius: 20px;
+    }
+
+    .container {
+      display: flex;
+      background: transparent !important;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      text-align: center;
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+
+    .tela-inicial {
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    /* BOTÕES */
+    .botoes-iniciais {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: center;
+      background: transparent !important;
+    }
+
+    .btn-jogar,
+    .btn-sec {
+      width: 200px;
+      height: 300px;
+      background-image: url('images/botao1.png');
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      border: none;
+      cursor: pointer;
+      font-size: 2.0rem;
+      font-weight: bold;
+      color: #ffff;
+      text-shadow: 2px 2px 4px #000;
+      transition: transform 0.2s;
+
+      transition: transform 0.3s ease;
+
+
+      animation: flutuar 2s ease-in-out infinite;
+    }
+
+    .btn-jogar,
+    .btn-sec {
+      width: 240px;
+      height: 200px;
+
+      background-image: url('images/botao1.png');
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      background-color: transparent !important;
+      /* REMOVE O FUNDO BRANCO */
+
+      border: none;
+      cursor: pointer;
+      font-size: 2.0rem;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 2px 2px 4px #000;
+      transition: transform 0.3s ease;
+
+
+      animation: flutuar 2s ease-in-out infinite;
+    }
+
+
+    @keyframes flutuar {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-6px);
+      }
+    }
+
+    /* ========== MODAIS ========== */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal .caixa {
+      width: min(650px, 95vw);
+      padding: 60px;
+      background: rgb(255, 251, 185);
+      color: rgb(0, 0, 0);
+      border-radius: 28px;
+      border: 6px solid rgb(6, 72, 129);
+      box-shadow: 0 0 25px rgb(55, 144, 223);
+      font-size: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #modalOpcoes #fecharOpcoes {
+      position: absolute;
+      left: 820px;
+      top: 740px;
+      bottom: 100px;
+      width: 280px;
+      height: 135px;
+      font-size: 28px;
+      padding: 10px;
+      border-radius: 18px;
+      z-index: 10;
+    }
+
+    /* ---- FUNDO DO MODAL DE OPÇÕES COM IMAGEM ---- */
+    #modalOpcoes .caixa {
+      background: url("images/Opcoes.png") center/cover no-repeat !important;
+      background-color: transparent !important;
+
+      width: 1100px;
+      height: 650px;
+
+      border: none !important;
+      box-shadow: none !important;
+
+      padding-top: 180px;
+      padding-left: 80px;
+      padding-right: 80px;
+    }
+
+    /* texto e controles na frente */
+    #modalOpcoes h2,
+    #modalOpcoes .linha,
+    #modalOpcoes button {
+      position: relative;
+      z-index: 5;
+    }
+
+    /* ---- FUNDO DO MODAL DE CRÉDITOS COM IMAGEM MAIOR ---- */
+    #modalCreditos .caixa {
+      background: url("images/Creditos.png") center/cover no-repeat !important;
+      background-color: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+
+      width: 500px;
+      /* Aumenta a largura */
+      height: 630px;
+      /* Aumenta a altura */
+      padding-top: 280px;
+      /* Ajusta o texto para ficar dentro da arte */
+      padding-bottom: 120px;
+    }
+
+
+    /* texto na frente da imagem */
+    #modalCreditos .conteudo-creditos {
+      margin-top: -100px;
+      text-align: center;
+      font-size: 2rem;
+      color: #000;
+      z-index: 5;
+      position: relative;
+    }
+
+    #modalCreditos #fecharCreditos {
+      margin-top: 40px;
+      z-index: 5;
+      position: relative;
+    }
+
+
+
+    .modal h2 {
+      font-size: 3rem;
+      margin-bottom: 25px;
+      text-align: center;
+      font-weight: bold;
+      color: rgb(0, 0, 0);
+      text-shadow: 2px 2px rgb(255, 255, 255);
+    }
+
+    /* BLOCO .linha CONTROLÁVEL EM PIXELS */
+    .linha {
+      position: relative;
+      height: 40px;
+      /* altura da linha */
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+      /* centraliza verticalmente */
+    }
+
+    /* TEXTO (Som / Brilho) */
+    .linha label {
+      position: absolute;
+      left: -500px;
+      /* distância da borda esquerda */
+      top: 200px;
+      transform: translateY(-50%);
+      width: 180px;
+      /* largura da área do texto */
+      font-size: 40px;
+      /* tamanho do texto */
+      font-weight: bold;
+      color: #000;
+    }
+
+    /* SLIDER */
+    .linha input[type="range"] {
+      position: absolute;
+      left: -350px;
+      /* posição do slider */
+      width: 800px;
+      /* largura do slider */
+      height: 22px;
+      /* altura do slider */
+      top: 195px;
+    }
+
+    /* TEXTO DO VALOR (ex: 70%) */
+    .linha span {
+      position: absolute;
+      left: 475px;
+      /* posição do valor */
+      font-size: 26px;
+      /* tamanho do número */
+      font-weight: bold;
+      color: #000;
+      top: 190px;
+    }
+  </style>
+</head>
+
+<body class="tela-inicial">
+  <div id="game-scale">
+
+
+    <img src="images/IN.png" class="img-topo">
+
+    <!-- 🎵 ÁUDIO QUE *DEVE* AUTOPLAY IMEDIATAMENTE -->
+
+
+    <div class="container">
+      <div class="botoes-iniciais">
+        <button class="btn-sec" id="btnOpcoes">Opções</button>
+        <button class="btn-jogar" id="btnJogar">JOGAR</button>
+        <button class="btn-sec" id="btnCreditos">Créditos</button>
+      </div>
+    </div>
+
+    <!-- MODAL OPÇÕES -->
+    <div class="modal" id="modalOpcoes">
+      <div class="caixa">
+
+        <div class="linha">
+          <label>Som</label>
+          <input type="range" id="rangeSom" min="0" max="100" value="70">
+          <span id="valorSom">70%</span>
+        </div>
+
+        <div class="linha">
+          <label>Brilho</label>
+          <input type="range" id="rangeBrilho" min="50" max="150" value="100">
+          <span id="valorBrilho">100%</span>
+        </div>
+
+        <button class="btn-sec" id="fecharOpcoes">Fechar</button>
+      </div>
+    </div>
+
+    <!-- MODAL CRÉDITOS -->
+    <div class="modal" id="modalCreditos">
+      <div class="caixa">
+
+        <div class="conteudo-creditos">
+          <b>
+            <h3>Gestora:</h3>
+          </b>
+          <p>Letícia Veras</p>
+          <p><b>
+              <h3>Design:</h3>
+            </b></p>
+          <p>Larinete Xavier</p>
+          <p><b>
+              <h3>Programadores:</h3>
+            </b></p>
+          <p>Caick Ruan, Pedro Sérgio</p>
+        </div>
+
+        <button class="btn-sec" id="fecharCreditos">Fechar</button>
+
+      </div>
+    </div>
+
+
+    <!-- Controles da página -->
+    <script>
+      const audio = document.getElementById("bgm");
+
+      /* ------------------------------
+         TENTAR AUTOPLAY IMEDIATO
+      --------------------------------*/
+      window.addEventListener("load", () => {
+        const prefs = JSON.parse(localStorage.getItem("mm_prefs") || "{}");
+
+        const volume = (prefs.som !== undefined) ? prefs.som : 70;
+        const brilho = (prefs.brilho !== undefined) ? prefs.brilho : 100;
+
+        document.documentElement.style.filter = 'brightness(' + (brilho / 100) + ')';
+
+        audio.volume = volume / 100;
+
+        audio.play().catch(err => {
+          console.warn("⚠️ Autoplay bloqueado. O navegador exige interação.", err);
+        });
+      });
+
+      // 🔊 Garante que a música começa na PRIMEIRA interação do usuário
+      function iniciarMusicaAoInteragir() {
+        if (!audio) return;
+
+        // tenta tocar só se ainda estiver pausado
+        if (audio.paused) {
+          audio.play().catch(err => {
+            console.warn("Ainda não foi possível tocar o áudio:", err);
+          });
+        }
+
+        // remove os listeners depois da primeira tentativa bem-sucedida
+        window.removeEventListener("click", iniciarMusicaAoInteragir);
+        window.removeEventListener("keydown", iniciarMusicaAoInteragir);
+        window.removeEventListener("touchstart", iniciarMusicaAoInteragir);
+      }
+
+      // qualquer clique, toque ou tecla libera a música
+      window.addEventListener("click", iniciarMusicaAoInteragir);
+      window.addEventListener("keydown", iniciarMusicaAoInteragir);
+      window.addEventListener("touchstart", iniciarMusicaAoInteragir);
+
+
+
+      /* ------------------------------
+         SALVAR PREFERÊNCIAS DE SOM/BRILHO
+      --------------------------------*/
+      const rangeSom = document.getElementById("rangeSom");
+      const rangeBrilho = document.getElementById("rangeBrilho");
+      const valorSom = document.getElementById("valorSom");
+      const valorBrilho = document.getElementById("valorBrilho");
+
+      function salvarPrefs() {
+        const prefs = {
+          som: parseInt(rangeSom.value),
+          brilho: parseInt(rangeBrilho.value)
+        };
+        localStorage.setItem("mm_prefs", JSON.stringify(prefs));
+      }
+
+      rangeSom.oninput = () => {
+        valorSom.textContent = rangeSom.value + "%";
+        audio.volume = rangeSom.value / 100;
+        salvarPrefs();
+      };
+
+      rangeBrilho.oninput = () => {
+        valorBrilho.textContent = rangeBrilho.value + "%";
+        document.documentElement.style.filter = 'brightness(' + (rangeBrilho.value / 100) + ')';
+        salvarPrefs();
+      };
+
+      /* ------------------------------
+         MODAIS
+      --------------------------------*/
+      const modalOpcoes = document.getElementById("modalOpcoes");
+      const modalCreditos = document.getElementById("modalCreditos");
+
+      document.getElementById("btnOpcoes").onclick = () => modalOpcoes.style.display = "flex";
+      document.getElementById("btnCreditos").onclick = () => modalCreditos.style.display = "flex";
+
+      document.getElementById("fecharOpcoes").onclick = () => modalOpcoes.style.display = "none";
+      document.getElementById("fecharCreditos").onclick = () => modalCreditos.style.display = "none";
+
+      document.getElementById("btnJogar").onclick = () => {
+        window.location.href = "personagem.html";
+      };
+
+      (function corrigirAudio() {
+        const audio = document.getElementById("bgm");
+        if (!audio) return;
+
+        function iniciar() {
+          if (audio.paused) {
+            audio.play().catch(() => { });
+          }
+          document.removeEventListener("click", iniciar);
+          document.removeEventListener("keydown", iniciar);
+          document.removeEventListener("touchstart", iniciar);
+        }
+
+        document.addEventListener("click", iniciar, { once: true });
+        document.addEventListener("keydown", iniciar, { once: true });
+        document.addEventListener("touchstart", iniciar, { once: true });
+      })();
+      
+      
+
+
+    </script>
+  </div>
+</body>
+
+</html>
