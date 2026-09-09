@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabuad4ON</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #08062b 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        .question-container {
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .question {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .option {
+            background-color: #e9ecef;
+            border: none;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option:hover {
+            background-color: #d8d8d8;
+            transform: translateY(-3px);
+        }
+        
+        .option.correct {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .option.incorrect {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .option:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        .progress {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #495057;
+        }
+        
+        .score {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2575fc;
+            margin-bottom: 15px;
+        }
+        
+        .feedback {
+            font-size: 18px;
+            margin-top: 15px;
+            min-height: 25px;
+            font-weight: bold;
+        }
+        
+        .feedback.correct {
+            color: #28a745;
+        }
+        
+        .feedback.incorrect {
+            color: #dc3545;
+        }
+        
+        .game-over {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .restart-btn, .score-btn {
+            background-color: #2575fc;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 25px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .restart-btn:hover,
+        .score-btn:hover {
+            background-color: #1a68e8;
+            transform: translateY(-2px);
+        }
+
+        .timer {
+            font-size: 16px;
+            color: #6c757d;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <h1>Tabuad4ON</h1>
+        
+        <div class="progress">
+            <span id="question-count">Questão: 1/5</span>
+        </div>
+        
+        <div class="score">
+            Pontuação: <span id="score-value">0</span>
+        </div>
+        
+        <div class="question-container">
+            <div class="question" id="question-text">5 + 5 = ?</div>
+            
+            <div class="options" id="options-container">
+                <!-- As opções serão geradas dinamicamente -->
+            </div>
+            
+            <div class="feedback" id="feedback"></div>
+        </div>
+    </div>
+
+<script>
+
+    fetch("../arquivo-json/niveis.json")
+        .then(response => response.json())
+        .then(data => {
+            config = data;
+
+            modoSelecionado = config.modos.facil;
+
+            generateQuestions();
+            displayQuestion();
+        })
+        .catch(error => {
+            console.error("Erro ao carregar o JSON:", error);
+        });
+
+    let currentQuestion = 0;
+    let score = 0;
+    let questions = [];
+    let countdownInterval;
+    let wrongAnswers = 0;
+    let difficultyIncrement = 0.05;
+
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
+    const questionCount = document.getElementById('question-count');
+    const scoreValue = document.getElementById('score-value');
+    const feedback = document.getElementById('feedback');
+
+
+    function generateQuestions() {
+
+        const intervalo = modoSelecionado.intervaloNumeros;
+        const operacoes = modoSelecionado.operacoes;
+        const totalPerguntas = modoSelecionado.totalPerguntas;
+
+        questions = [];
+
+        for (let i = 0; i < totalPerguntas; i++) {
+
+            const num1 = Math.floor(Math.random() * (intervalo[1] - intervalo[0] + 1)) + intervalo[0];
+            const num2 = Math.floor(Math.random() * (intervalo[1] - intervalo[0] + 1)) + intervalo[0];
+
+            const operation = operacoes[0];
+            let correctAnswer = num1 + num2;
+
+            const questionTextFormat = `${num1} ${operation} ${num2} = ?`;
+
+            // Gera opções
+            let options = [correctAnswer];
+            while (options.length < 4) {
+                let randomOption = Math.floor(Math.random() * (intervalo[1] - intervalo[0] + 1)) + intervalo[0];
+                if (!options.includes(randomOption)) {
+                    options.push(randomOption);
+                }
+            }
+
+            options = options.sort(() => Math.random() - 0.5);
+
+            questions.push({
+                question: questionTextFormat,
+                options: options,
+                correctAnswer: correctAnswer
+            });
+        }
+    }
+
+
+    // Exibir a pergunta atual
+    function displayQuestion() {
+        const q = questions[currentQuestion];
+        questionText.textContent = q.question;
+        questionCount.textContent = `Questão: ${currentQuestion + 1}`;
+        scoreValue.textContent = score;
+
+        optionsContainer.innerHTML = '';
+        feedback.textContent = '';
+
+        q.options.forEach(option => {
+            const button = document.createElement('button');
+            button.className = 'option';
+            button.textContent = option;
+            button.addEventListener('click', () => checkAnswer(option, button));
+            optionsContainer.appendChild(button);
+        });
+    }
+
+    // Verificar resposta
+    function checkAnswer(selectedOption, button) {
+        feedback.classList.remove('correct', 'incorrect');
+        const q = questions[currentQuestion];
+
+        const optionButtons = document.querySelectorAll('.option');
+        optionButtons.forEach(btn => {
+            btn.disabled = true;
+            if (parseInt(btn.textContent) === q.correctAnswer) {
+                btn.classList.add('correct');
+            }
+        });
+
+        if (selectedOption === q.correctAnswer) {
+            button.classList.add('correct');
+            feedback.textContent = 'Correto!';
+            feedback.classList.add('correct');
+            score++;
+            scoreValue.textContent = score;
+        } else {
+            wrongAnswers++
+            button.classList.add('incorrect');
+            feedback.textContent = `Incorreto! A resposta correta é ${q.correctAnswer}.`;
+            feedback.classList.add('incorrect');
+        }
+
+        startCountdown();
+    }
+
+    // Iniciar contagem regressiva
+    function startCountdown() {
+        let countdown = 2;
+
+        if (countdownInterval) {
+            clearInterval(countdownInterval);
+        }
+
+        countdownInterval = setInterval(() => {
+            countdown--;
+
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                nextQuestion();
+            }
+        }, 1000);
+    }
+
+
+    function nextQuestion() {
+        if (currentQuestion + 1 < questions.length) {
+            currentQuestion++;
+            displayQuestion();
+        } else {
+            endGame();
+        }
+    }
+
+
+    function endGame() {
+        const container = document.querySelector('.container');
+        container.innerHTML = `
+            <div class="game-over">
+                <h1>Fim do Jogo!</h1>
+                <div class="score" style="font-size: 24px; margin: 20px 0;">
+                    Sua pontuação final: ${score}
+                </div>
+                <p>Obrigado por jogar!</p>
+                <div class="button-group">
+                    <button class="restart-btn" id="restart-btn">Voltar</button>
+                    <button class="score-btn" id="score-btn">Pontuação</button>
+                </div>
+            </div>
+        `;
+
+        window.score = score;
+        localStorage.setItem("pontuacao-facil", score);
+
+        document.getElementById('restart-btn').addEventListener('click', sendBack);
+        document.getElementById('score-btn').addEventListener('click', goToScore);
+    }
+
+
+    function sendBack() {
+        window.location.href = "tela-inicial.html";
+    }
+
+    function goToScore() {
+        window.location.href = "tela-de-pontuacao-facil.html";
+    }
+
+</script>
+
+
+    <script src="../arquivos JavaScript/script-musica.js"></script>
+      <script src="../arquivos JavaScript/script-brilho.js"></script>
+
+
+</body>

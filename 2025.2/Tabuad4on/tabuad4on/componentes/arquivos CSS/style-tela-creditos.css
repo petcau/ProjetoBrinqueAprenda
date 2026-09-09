@@ -1,0 +1,128 @@
+/*VARIÁVEIS*/
+:root {
+  --bg-primary: #2E91D6;
+  --bg-container: #fffaf3;
+  --color-title: #143a6d;
+  --color-text: #1a1a1a;
+  --btn-primary: #143a6d;
+  --btn-hover: #1d4e9e;
+
+  --radius-lg: 40px;
+  --radius-md: 30px;
+  --shadow-sm: 0 3px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/*RESET*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/*BODY*/
+body {
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+/* FUNDO ESTRELADO */
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(#ffffff66 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.35;
+}
+
+/*CONTAINER*/
+.container {
+  position: relative;
+  width: 75%;
+  max-width: 900px;
+  min-height: 85%;
+  background-color: var(--bg-container);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 2.5rem 2rem 4rem;
+  text-align: center;
+  z-index: 1;
+}
+
+/*TÍTULO*/
+.titulo {
+  position: absolute;
+  top: -45px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--bg-container);
+  padding: 0.6rem 2.2rem;
+  border-radius: 20px;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-title);
+  letter-spacing: 1px;
+  box-shadow: var(--shadow-sm);
+  white-space: nowrap;
+}
+
+/*TEXTO*/
+.texto {
+  margin-top: 2.5rem;
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--color-text);
+}
+
+/*BOTÃO VOLTAR*/
+.btn-voltar {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--btn-primary);
+  color: var(--bg-container);
+  border: none;
+  padding: 12px 38px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.3s ease,
+              transform 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+/* HOVER & FOCUS */
+.btn-voltar:hover,
+.btn-voltar:focus {
+  background-color: var(--btn-hover);
+  transform: translateX(-50%) scale(1.05);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+  outline: none;
+}
+
+/*RESPONSIVO*/
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .titulo {
+    font-size: 1.6rem;
+    padding: 0.5rem 1.6rem;
+  }
+
+  .texto {
+    font-size: 1.05rem;
+  }
+}

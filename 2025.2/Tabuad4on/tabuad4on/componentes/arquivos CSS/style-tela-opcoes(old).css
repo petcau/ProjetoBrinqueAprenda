@@ -1,0 +1,104 @@
+/* ======== RESET ======== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ======== FUNDO ======== */
+body {
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at center, #0b032d, #12054d);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* ======== CONTAINER ======== */
+.container {
+  background: #b55b17;
+  border-radius: 40px;
+  width: 90%;
+  max-width: 500px;
+  padding: 50px 30px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+/* ======== TÍTULO ======== */
+.titulo {
+  font-size: 2.5rem;
+  margin-bottom: 50px;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* ======== CONTROLES ======== */
+.controle {
+  margin-bottom: 40px;
+}
+
+.rotulo {
+  display: block;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+}
+
+.botao-toggle {
+  font-size: 2rem;
+  background-color: #ec8533;
+  border: none;
+  border-radius: 50%;
+  padding: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.botao-toggle:hover {
+  transform: scale(1.1);
+}
+
+.botao-toggle.ativo {
+  background-color: #f5a64f;
+}
+
+/* ======== BRILHO ======== */
+.controle-range {
+  width: 80%;
+  accent-color: #ec8533;
+}
+
+/* ======== BOTÃO VOLTAR ======== */
+.botao-voltar {
+  background: #ec8533;
+  color: #000;
+  font-size: 1.3rem;
+  border: none;
+  border-radius: 40px;
+  padding: 15px 50px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.botao-voltar:hover {
+  background: #f5a64f;
+  transform: scale(1.05);
+}
+
+/* ======== RESPONSIVO ======== */
+@media (max-width: 600px) {
+  .titulo {
+    font-size: 2rem;
+  }
+
+  .botao-voltar {
+    padding: 12px 35px;
+    font-size: 1rem;
+  }
+
+  .botao-toggle {
+    font-size: 1.8rem;
+  }
+}

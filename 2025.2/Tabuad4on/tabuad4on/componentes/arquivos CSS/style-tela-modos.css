@@ -1,0 +1,104 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* FUNDO */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #12054d;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* CONTAINER PRINCIPAL */
+.container-modos {
+  background-color: #b55b17;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  padding: 40px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+/* TÍTULO */
+.titulo {
+  font-size: 2rem;
+  margin-bottom: 40px;
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* MODOS */
+.modo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ec8533;
+  border-radius: 15px;
+  padding: 20px 25px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+.modo:hover {
+  background-color: #f5a64f;
+  transform: scale(1.02);
+}
+
+/* TEXTO DO MODO */
+.texto-modo {
+  font-size: 1.5rem;
+  text-align: left;
+}
+
+/* CONTAINER DOS ÍCONES (ranking + interrogação) */
+.icones {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px; /* espaço pequeno entre os ícones */
+}
+
+/* ÍCONES INDIVIDUAIS */
+.icone-ranking,
+.icone-interrogacao {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.icone-ranking:hover,
+.icone-interrogacao:hover {
+  transform: scale(1.15);
+  filter: brightness(1.2);
+}
+
+/* BOTÃO VOLTAR */
+.botao-voltar {
+  background-color: #ec8533;
+  color: #000;
+  font-size: 1.3rem;
+  border: none;
+  border-radius: 20px;
+  padding: 15px 50px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+.botao-voltar:hover {
+  background-color: #f5a64f;
+  transform: scale(1.05);
+}

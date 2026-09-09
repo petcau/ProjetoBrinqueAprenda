@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabuad4on — Tela Inicial</title>
+  <link rel="stylesheet" href="../arquivos CSS/style-tela-inicial.css">
+</head>
+<body>
+  
+  <div class="tela-inicial">
+    <!-- Título -->
+    <h1 class="titulo-jogo">TABUAD4ON</h1>
+
+    <!-- Botões principais -->
+    <div class="container-botoes">
+      <button class="botao" onclick="irPara('tela-modos.html')">JOGAR</button>
+      <button class="botao" onclick="irPara('tela-opcoes.html')">OPÇÕES</button>
+      <button class="botao" onclick="irPara('tela-creditos.html')">CRÉDITOS</button>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="rodape">© SYSTECH 2025</footer>
+  </div>
+
+  <!-- Script simples para navegação -->
+  <script>
+    function irPara(pagina) {
+      window.location.href = pagina;
+    }
+  </script>
+  <script src="../arquivos JavaScript/script-musica.js"></script>
+    <script src="../arquivos JavaScript/script-brilho.js"></script>
+
+
+</body>
+</html>
+

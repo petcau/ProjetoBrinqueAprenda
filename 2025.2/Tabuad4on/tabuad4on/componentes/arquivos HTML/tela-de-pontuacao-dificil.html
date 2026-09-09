@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pontuação</title>
+  <link rel="stylesheet" href="../arquivos CSS/style-tela-de-pontuacao(old).css">
+
+  <style>
+    /* Organização dos botões */
+    .botoes-container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 500px;
+      margin-top: 30px;
+    }
+
+    .btn-voltar {
+      background-color: #4a2ed8;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .btn-voltar:hover {
+      background-color: #3218b8;
+      transform: scale(1.05);
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .titulo {
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .texto p {
+      font-size: 20px;
+      margin: 5px 0;
+    }
+
+    #pontuacao-dificil {
+      font-size: 40px;
+      color: #ffcc00;
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="container">
+    <!-- Título principal -->
+    <div class="titulo">PONTUAÇÃO</div>
+
+    <!-- Texto da pontuação -->
+    <div class="texto">
+      <p>Sua pontuação final é:</p>
+      <strong id="pontuacao-dificil">0</strong> <!-- ID usado pelo script -->
+    </div>
+
+    <!-- Botões alinhados -->
+    <div class="botoes-container">
+      <button id="botao-voltarmodos" class="btn-voltar">Voltar para a tela de modos</button>
+      <button id="botao-voltarinicial" class="btn-voltar">Voltar para a tela inicial</button>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    // Botão para voltar à tela de modos
+    document.getElementById("botao-voltarmodos").addEventListener("click", () => {
+      window.location.href = "tela-modos.html";
+    });
+
+    // Botão para voltar à tela inicial
+    document.getElementById("botao-voltarinicial").addEventListener("click", () => {
+      window.location.href = "tela-inicial.html";
+    });
+  </script>
+
+  <!-- Importa o script de pontuação -->
+  <script src="../arquivos JavaScript/script-tela-de-pontuacao-dificil.js"></script> 
+
+  <script src="../arquivos JavaScript/script-musica.js"></script>
+    <script src="../arquivos JavaScript/script-brilho.js"></script>
+
+
+</body>
+</html>
+

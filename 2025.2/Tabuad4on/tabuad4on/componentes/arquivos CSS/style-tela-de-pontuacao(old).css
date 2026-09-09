@@ -1,0 +1,114 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BODY */
+body {
+  font-family: 'Inter', sans-serif;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2E91D6;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ESTRELAS DE FUNDO */
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(#ffffff66 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.4;
+}
+
+/* CONTAINER PRINCIPAL */
+.container {
+  position: relative;
+  background-color: #fffaf3;
+  border-radius: 25px;
+  width: 90%;
+  max-width: 900px;
+  min-width: 320px;
+  height: 60%;
+  max-height: 500px;
+  min-height: 350px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  padding: 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* TÍTULO */
+.titulo {
+  position: absolute;
+  top: -45px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fffaf3;
+  padding: 0.6rem 2rem;
+  border-radius: 20px;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #143a6d;
+  letter-spacing: 1px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+}
+
+/* TEXTO */
+.texto {
+  color: #1a1a1a;
+  font-size: 1.2rem;
+  margin-top: 3rem;
+  line-height: 1.6;
+}
+
+#pontuacao {
+  display: block;
+  font-size: 3rem;
+  color: #143a6d;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+/* BOTÕES */
+.btn-voltar {
+  position: absolute;
+  bottom: 25px;
+  background-color: #143a6d;
+  color: #fffaf3;
+  border: none;
+  padding: 12px 35px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-voltar:hover {
+  background-color: #1d4e9e;
+  transform: scale(1.05);
+}
+
+/* BOTÃO ESQUERDO */
+#botao-voltarmodos {
+  left: 25px;
+}
+
+/* BOTÃO DIREITO */
+#botao-voltarinicial {
+  right: 25px;
+}

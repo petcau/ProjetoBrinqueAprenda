@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TABUAD4ON</title>
+
+  <style>
+    /* RESET */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      background: linear-gradient(135deg, #5a00d2, #00b4ff);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      text-align: center;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .titulo {
+      color: #ffea00;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 30px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #5a00d2;
+      background: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    button:hover {
+      background: #ffea00;
+      color: #000;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="container">
+    <h1>Bem-vindo ao <span class="titulo">TABUAD4ON</span> 🎮</h1>
+    <button id="botaoIniciar">Iniciar</button>
+  </div>
+
+  <script>
+    // Redireciona para a tela inicial que está dentro da pasta:
+    document.addEventListener("DOMContentLoaded", () => {
+      const botao = document.getElementById("botaoIniciar");
+      botao.addEventListener("click", () => {
+        window.location.href = "tabuad4on/componentes/arquivos HTML/tela-inicial.html";
+      });
+    });
+  </script>
+</body>
+</html>
+
