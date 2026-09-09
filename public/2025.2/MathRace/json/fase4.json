@@ -1,0 +1,104 @@
+{
+	"perguntas": [
+		{
+			"pergunta": "6 ÷ 2",
+			"respostas": [2, 3, 4, 5],
+			"resposta_correta": 3
+		},
+		{
+			"pergunta": "8 ÷ 2",
+			"respostas": [3, 4, 5, 6],
+			"resposta_correta": 4
+		},
+		{
+			"pergunta": "9 ÷ 3",
+			"respostas": [2, 3, 4, 5],
+			"resposta_correta": 3
+		},
+		{
+			"pergunta": "10 ÷ 2",
+			"respostas": [4, 5, 6, 7],
+			"resposta_correta": 5
+		},
+		{
+			"pergunta": "12 ÷ 3",
+			"respostas": [3, 4, 5, 6],
+			"resposta_correta": 4
+		},
+		{
+			"pergunta": "14 ÷ 2",
+			"respostas": [6, 7, 8, 9],
+			"resposta_correta": 7
+		},
+		{
+			"pergunta": "15 ÷ 3",
+			"respostas": [4, 5, 6, 7],
+			"resposta_correta": 5
+		},
+		{
+			"pergunta": "16 ÷ 4",
+			"respostas": [3, 4, 5, 6],
+			"resposta_correta": 4
+		},
+		{
+			"pergunta": "18 ÷ 3",
+			"respostas": [5, 6, 7, 8],
+			"resposta_correta": 6
+		},
+		{
+			"pergunta": "20 ÷ 4",
+			"respostas": [4, 5, 6, 7],
+			"resposta_correta": 5
+		},
+		{
+			"pergunta": "21 ÷ 3",
+			"respostas": [6, 7, 8, 9],
+			"resposta_correta": 7
+		},
+		{
+			"pergunta": "24 ÷ 6",
+			"respostas": [3, 4, 5, 6],
+			"resposta_correta": 4
+		},
+		{
+			"pergunta": "25 ÷ 5",
+			"respostas": [4, 5, 6, 7],
+			"resposta_correta": 5
+		},
+		{
+			"pergunta": "27 ÷ 3",
+			"respostas": [8, 9, 10, 11],
+			"resposta_correta": 9
+		},
+		{
+			"pergunta": "28 ÷ 4",
+			"respostas": [6, 7, 8, 9],
+			"resposta_correta": 7
+		},
+		{
+			"pergunta": "30 ÷ 5",
+			"respostas": [5, 6, 7, 8],
+			"resposta_correta": 6
+		},
+		{
+			"pergunta": "32 ÷ 4",
+			"respostas": [6, 7, 8, 9],
+			"resposta_correta": 8
+		},
+		{
+			"pergunta": "35 ÷ 5",
+			"respostas": [6, 7, 8, 9],
+			"resposta_correta": 7
+		},
+		{
+			"pergunta": "36 ÷ 6",
+			"respostas": [5, 6, 7, 8],
+			"resposta_correta": 6
+		},
+		{
+			"pergunta": "40 ÷ 5",
+			"respostas": [7, 8, 9, 10],
+			"resposta_correta": 8
+		}
+	]
+}

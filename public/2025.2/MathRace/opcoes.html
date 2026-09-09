@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Opções</title>
+		<link href="css/opcoes.css" rel="stylesheet">
+		<script type="module" src="scripts/opcoes.js"></script>
+	</head>
+	<body>
+		<audio autoplay loop src="assets/som/musica-menu.mpeg" type="audio/mpeg" id="musica"></audio>
+
+		<div class="background">
+			<div class="opcao">
+				<p class="nome-opcao" id="volume-texto">Volume da Música</p>
+				<input type="range" id="volume" name="Volume" min="0" max="100">
+			</div>
+		</div>
+
+        <div class="back-button">
+            <button id="btnVoltar" onclick="window.location.href='index.html'">VOLTAR AO INICIO</button>
+        </div>
+	</body>
+</html>

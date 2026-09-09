@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placar - MathRace</title>
+    <link rel="stylesheet" href="css/placar.css">
+    <script type="module" src="scripts/placar.js"></script>
+	<script type="module" src="scripts/carregar_volume.js"></script>
+</head>
+<body>
+	<audio autoplay loop src="assets/som/musica-menu.mpeg" type="audio/mpeg" id="musica"></audio>
+
+    <div class="container">
+        <div class="header">
+            <img src="assets/elementos/placar_titulo.png" style="width: 100%; max-width: 600px; margin: 0 auto; display: block;" alt="Placar">
+        </div>
+
+        <div class="leaderboard">
+            <div class="leaderboard-row">
+				<img src="assets/elementos/trofeu1.png" class="medal" alt="1º lugar">
+                <div class="position first">
+					<p id="nome-1"></p>
+					<p id="pontuacao-1"></p>
+					<p id="cenario-1"></p>
+                </div>
+            </div>
+
+            <div class="leaderboard-row">
+				<img src="assets/elementos/trofeu2.png" class="medal" alt="2º lugar">
+                <div class="position second">
+					<p id="nome-2"></p>
+					<p id="pontuacao-2"></p>
+					<p id="cenario-2"></p>
+                </div>
+            </div>
+
+            <div class="leaderboard-row">
+				<img src="assets/elementos/trofeu3.png" class="medal" alt="3º lugar">
+                <div class="position third">
+					<p id="nome-3"></p>
+					<p id="pontuacao-3"></p>
+					<p id="cenario-3"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="back-button">
+            <button id="btnVoltar" onclick="window.location.href='index.html'">VOLTAR AO INICIO</button>
+        </div>
+    </div>
+</body>
+</html>

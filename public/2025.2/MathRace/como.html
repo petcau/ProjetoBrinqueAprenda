@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/estilo.css">
+  <title>Como Jogar</title>
+
+  <script type="module" src="scripts/carregar_volume.js"></script>
+</head>
+<body>
+  <audio autoplay loop src="assets/som/musica-menu.mpeg" type="audio/mpeg" id="musica"></audio>
+
+  <img src="assets/menu/como.png" class="backgroundimage">
+  <img src="assets/menu/quadro.png" class="quadro">
+  <div class="tutorial">
+      <div class="tutorial-conteudo">
+        <h3>1. Tela Inicial</h3>
+        <p>No menu principal, clique no botão “COMEÇAR” para iniciar.</p>
+        <h3>2. Seleção de Mapa</h3>
+        <p>Arraste o mouse até o mapa desejado e clique para escolher a pista em que quer correr.</p>
+        <h3>3. Início da Corrida</h3>
+        <p>Você verá uma sinaleira verde com 3 luzes;<br>
+        Quando as três luzes acenderem e a sinaleira desaparecer, a corrida começa!</p>
+        <h3>4. Resolvendo as equações</h3>
+        <p>No canto inferior aparecerá uma equação matemática;<br>
+        À direita, haverá 4 quadrados com opções de resposta;<br>
+        Clique na opção correta o mais rápido possível para ganhar velocidade e pontos.</p>
+        <h3>5. Vitória ou Derrota</h3>
+        <p>
+          → Clique em “TENTE NOVAMENTE” para jogar de novo.<br>
+          → Clique no “X” para voltar ao menu principal.
+        </p>
+      </div>
+  </div>
+  <div class="fechar">
+  <img src="assets/menu/x.png" class="x" onclick="window.location.href='index.html'">
+  </div>
+  
+</body>
+</html>

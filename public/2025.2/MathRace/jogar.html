@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+<link rel="stylesheet" href="css/estilo.css">
+<link rel="stylesheet" href="css/menu_fases.css">
+<script type="module" src="scripts/fases.js"></script>
+<script type="module" src="scripts/carregar_volume.js"></script>
+</head>
+<body>
+  <audio autoplay loop src="assets/som/musica-menu.mpeg" type="audio/mpeg" id="musica"></audio>
+
+  <img src="assets/menu/tela.png" class="back">
+  <img src="assets/menu/titulo.webp" class="titulo">
+
+  <div class="fasebox">
+    <div align="center">  
+      <h1 class="fonteTitulo">SELECIONE UMA FASE</h1>
+    </div>
+    
+<a href="jogo.html?cenario=corredor">
+  <picture>
+    <source media="(max-width: 1024px)" srcset="assets/menu/card_fase_01.webp">
+    
+    <img src="assets/menu/fase_01.webp " class="fase1 grayscale disabled" alt="Fase 1">
+  </picture>
+</a>
+    <a href="jogo.html?cenario=carro">
+  <picture>
+    <source media="(max-width: 1024px)" srcset="assets/menu/card_fase_02.webp">
+    
+    <img src="assets/menu/fase_02.webp" class="fase2 grayscale disabled" alt="Fase 2">
+  </picture>
+</a>
+    <a href="jogo.html?cenario=bicicleta">
+  <picture>
+    <source media="(max-width: 1024px)" srcset="assets/menu/card_fase_03.webp">
+    
+    <img src="assets/menu/fase_03.webp" class="fase3 grayscale disabled" alt="Fase 3">
+  </picture>
+</a>
+    <a href="jogo.html?cenario=aviao">
+  <picture>
+    <source media="(max-width: 1024px)" srcset="assets/menu/card_fase_04.webp">
+    
+    <img src="assets/menu/fase_04.webp" class="fase4 grayscale disabled" alt="Fase 4">
+  </picture>
+</a>
+    <a href="jogo.html?cenario=barco">
+  <picture>
+    <source media="(max-width: 1024px)" srcset="assets/menu/card_fase_05.webp">
+    
+    <img src="assets/menu/fase_05.webp" class="fase5 grayscale disabled" alt="Fase 5">
+  </picture>
+</a>
+  </div>
+
+</body>
+</html>
