@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reciclakids</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .menu-btn{
+            z-index: 5;
+            position: absolute;
+            bottom: 2rem;
+            left: 1rem;
+            width: fit-content;
+            font-size: 4rem;
+            padding: 0;
+            width: 80px;
+            height: 80px;
+        }
+    </style>
+    
+</head>
+<body>
+    <iframe src="./pages/preload/index.html" frameborder="0"></iframe>
+    <audio src="./game_assets/sounds/ambiente.mp3" loop></audio>
+
+    <button class="menu-btn btn-blue">&#9835;</button>
+
+
+    <script>
+        const btn = document.querySelector(".menu-btn");
+        const audio = document.querySelector("audio")
+
+        btn.addEventListener("click", ()=>{
+
+
+            if(audio.paused){
+
+                audio.play();
+                btn.classList.remove('btn-blue');
+                btn.classList.add("btn-orange");
+            }else{
+
+                audio.pause();
+                btn.classList.remove('btn-orange');
+                btn.classList.add("btn-blue");
+            }
+
+        })
+    </script>
+</body>
+</html>

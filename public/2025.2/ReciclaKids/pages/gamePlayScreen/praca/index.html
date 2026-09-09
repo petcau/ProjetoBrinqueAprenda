@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../../style.css">
+    <link rel="stylesheet" href="../gamePlayScreen.css">
+    <style>
+        body{background-image: url('../../../game_assets/background/praca.webp');}
+        .block, .bin{background-image: url('../../../game_assets/ladrilhos/tijolosBordas.webp');}
+    </style>
+    <title>Reciclakids</title>
+</head>
+<body>
+    <div id="table">
+
+        <article id="character">
+            <img src="../../../game_assets/marcio/front.webp" alt="">
+        </article>
+        
+        
+    </div>
+
+    
+
+    <div id="vitoriaPopup" class="popup">
+        <div class="message">
+            <h2>Parabéns!!</h2>
+            <p>Você limpou todo o terreno.</p>
+            <a href="../../scoreBoard/scoreBoard.html"><button class="menu-btn btn-green">CONTINUAR</button></a>
+        </div>
+    </div>
+
+    <div id="tutorialPopup" class="popup popTutorial">
+        <div class="message">
+            <div class="lixeiras_img">
+                <img src="../../../game_assets/lixeiras/lixeira_metal01.png" alt="">
+                <img src="../../../game_assets/lixeiras/lixeira_papel01.png" alt="">
+                <img src="../../../game_assets/lixeiras/lixeira_plastico01.png" alt="">
+            </div>
+            <button id="popTutorialBtn" class="menu-btn btn-green">CONTINUAR</button>
+        </div>
+    </div>
+
+    <audio id="binSound" src="../../../game_assets/sounds/lixeira.mp3"></audio>
+    <audio id="passos" src="../../../game_assets/sounds/passos.ogg"></audio>
+
+    <div class="message_cont">
+
+    </div>
+
+    <script src="../gamePlayScreen.js"></script>
+    <script src="render.js"></script>
+</body>
+</html>

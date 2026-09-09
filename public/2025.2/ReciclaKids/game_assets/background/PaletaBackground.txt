@@ -1,0 +1,10 @@
+Grama1: #A5C445
+Grama2: #B6CF4D
+Chão1: #F4D889
+Chão2: #FDE4A4
+Arbusto: #93B846
+ÁrvoreTronco1: #995D3A
+ÁrvoreTronco2: #885335
+ÁrvoreCopa: #78A539
+Céu: #A2E7EE
+Núvem: #FFFFFF

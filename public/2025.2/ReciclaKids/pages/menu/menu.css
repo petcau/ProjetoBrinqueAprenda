@@ -1,0 +1,38 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.game-scene {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-content {
+    position: relative;
+}
+
+.game-logo {
+    width: 600px;
+    object-fit: contain;
+}
+
+.character-image {
+    width: 200px; 
+    object-fit: contain;
+
+    position: absolute;
+    top: 47%; 
+    left: 0;
+    transform: rotate(-16deg);
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+

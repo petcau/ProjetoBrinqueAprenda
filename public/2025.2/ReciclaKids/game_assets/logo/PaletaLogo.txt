@@ -1,0 +1,5 @@
+Vermelho: #ED4941
+Amarelo: #F5C52F
+Azul: #09B4F5
+Verde: #91C129
+Marrom: #552D18

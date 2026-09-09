@@ -1,0 +1,113 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Arial Rounded MT Bold', 'Comic Sans MS', sans-serif;
+}
+body{
+    height: 100vh;
+    background-image: url('game_assets/background/background.webp');
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}iframe{
+    height: 100%;
+    width: 100%;
+}
+
+.popup{
+    display: none;/*GARANTE QUE O POPUP ESTEJA OCULTO.*/
+    /*Quando ativo o popup deve ter ***display: flex*** */
+
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+
+    z-index: 5;
+
+    background-color: rgba(0, 0, 0, 0.418);
+
+    
+    justify-content: center;
+    align-items: center;
+    
+}.message{
+    background-color: #E2B875;
+    border: 3px solid #C49B5A;
+    border-radius: 10px;
+    width: 400px;
+    height: 200px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+}.popup h2{
+    font-size: 2rem;
+}.popup .lixeiras_img{
+    display: flex;
+}.popTutorial{
+    display: flex;
+}.popTutorial .message{
+
+    width: fit-content;
+    height: fit-content;
+    padding-bottom: 2rem;
+}
+
+.menu-btn {
+    padding: 20px 36px; 
+    font-size: 1.2em; 
+    font-weight: bold;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    text-shadow: 0 -2px 0 rgba(0, 0, 0, 0.3);
+
+    width: 300px;
+}
+
+.btn-green {
+    background-color: #91C129;
+    box-shadow: 0 8px 0 #789c20;
+}
+
+.btn-blue {
+    background-color: #09B4F5;
+    box-shadow: 0 8px 0 #0087c5;
+}
+
+.btn-yellow {
+    background-color: #F5C52F;
+    box-shadow: 0 8px 0 #d9ac20;
+}
+
+.btn-orange {
+    background-color: #ED4941;
+    box-shadow: 0 8px 0 #a93732;
+}
+
+.menu-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 4px 0;
+}
+
+
+.first_cover{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}.first_cover img{
+    object-fit: contain;
+    width: 50rem;
+}.first_cover p{
+    font-size: 2rem;
+    font-weight: bold;
+    color: #552D18;
+}

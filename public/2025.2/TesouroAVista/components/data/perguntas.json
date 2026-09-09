@@ -1,0 +1,342 @@
+{
+  "ilha": [
+    {
+      "pergunta": "Quanto é 6 + 3?",
+      "opcoes": [
+        "9",
+        "6",
+        "4"
+      ],
+      "resposta": "9"
+    },
+    {
+      "pergunta": "Qual número vem depois do 9?",
+      "opcoes": [
+        "8",
+        "11",
+        "10"
+      ],
+      "resposta": "10"
+    },
+    {
+      "pergunta": "Quanto é 5-2?",
+      "opcoes": [
+        "3",
+        "4",
+        "2"
+      ],
+      "resposta": "3"
+    },
+    {
+      "pergunta": "Mateus tem um cesto com 6 maçãs e 2 bananas. Quantas frutas há no total?",
+      "opcoes": [
+        "10",
+        "7",
+        "8"
+      ],
+      "resposta": "8"
+    },
+    {
+      "pergunta": "Se Nai tem 10 balas e come 3, com quantas balas ela fica?",
+      "opcoes": [
+        "5",
+        "7",
+        "8"
+      ],
+      "resposta": "7"
+    },
+    {
+      "pergunta": "Marta tem 5 cestas, cada uma com 2 maçãs. Quantas maçãs ela tem?",
+      "opcoes": [
+        "7",
+        "12",
+        "10"
+      ],
+      "resposta": "10"
+    },
+    {
+      "pergunta": "Um cachorro tem 4 patas. Quantas patas têm 2 cachorros?",
+      "opcoes": [
+        "4",
+        "8",
+        "10"
+      ],
+      "resposta": "8"
+    },
+    {
+      "pergunta": "Tiago tem 2 caixas com 6 lápis em cada uma. Quantos lápis ele tem no total?",
+      "opcoes": [
+        "10",
+        "12",
+        "8"
+      ],
+      "resposta": "12"
+    },
+    {
+      "pergunta": "O ônibus tem 20 lugares e 12 estão ocupados. Quantos lugares estão livres?",
+      "opcoes": [
+        "7",
+        "9",
+        "8"
+      ],
+      "resposta": "8"
+    },
+    {
+      "pergunta": "Luiza divide 12 balas para 4 amigos. Quantas para cada?",
+      "opcoes": [
+        "3",
+        "4",
+        "6"
+      ],
+      "resposta": "3"
+    }
+  ],
+  "caverna": [
+    {
+      "pergunta": "Qual o nome do lugar onde moramos?",
+      "opcoes": [
+        "Escola",
+        "Casa",
+        "Mercado"
+      ],
+      "resposta": "Casa"
+    },
+    {
+      "pergunta": "Qual é o astro que ilumina e aquece a Terra?",
+      "opcoes": [
+        "Sol",
+        "Lua",
+        "Céu"
+      ],
+      "resposta": "Sol"
+    },
+    {
+      "pergunta": "O que usamos para saber onde fica cada país?",
+      "opcoes": [
+        "Agenda",
+        "Mapa",
+        "Calendário"
+      ],
+      "resposta": "Mapa"
+    },
+    {
+      "pergunta": "O que podemos fazer para ajudar o meio ambiente?",
+      "opcoes": [
+        "Jogar lixo no chão",
+        "Gastar água",
+        "Reciclar"
+      ],
+      "resposta": "Reciclar"
+    },
+    {
+      "pergunta": "Qual dessas ações polui ou prejudica o meio ambiente?",
+      "opcoes": [
+        "Deixar a torneira aberta",
+        "Economizar energia",
+        "Plantar árvores"
+      ],
+      "resposta": "Deixar a torneira aberta"
+    },
+    {
+      "pergunta": "O que a bússola mostra?",
+      "opcoes": [
+        "A hora",
+        "As direções",
+        "O clima"
+      ],
+      "resposta": "As direções"
+    },
+    {
+      "pergunta": "O que é uma floresta?",
+      "opcoes": [
+        "Um lugar com árvores",
+        "Um tipo de escola",
+        "Um rio pequeno"
+      ],
+      "resposta": "Um lugar com árvores"
+    },
+    {
+      "pergunta": "Qual é o nome do planeta onde vivemos?",
+      "opcoes": [
+        "Marte",
+        "Lua",
+        "Terra"
+      ],
+      "resposta": "Terra"
+    },
+    {
+      "pergunta": "Qual é o nome da maior floresta do Brasil?",
+      "opcoes": [
+        "Floresta Amazônica",
+        "Mata Atlântica",
+        "Cerrado"
+      ],
+      "resposta": "Floresta Amazônica"
+    },
+    {
+      "pergunta": "Qual é o nome da capital do Brasil?",
+      "opcoes": [
+        "São Paulo",
+        "Rio de Janeiro",
+        "Brasília"
+      ],
+      "resposta": "Brasília"
+    }
+  ],
+  "deserto": [
+    {
+      "pergunta": "Quem faz parte da nossa família?",
+      "opcoes": ["Árvores", "Pessoas queridas", "Casas"],
+      "resposta": "Pessoas queridas"
+    },
+    {
+      "pergunta": "Qual desses é um brinquedo antigo?",
+      "opcoes": ["Pião", "Videogame", "Tablet"],
+      "resposta": "Pião"
+    },
+    {
+      "pergunta": "Qual é a profissão de quem cuida da nossa saúde?",
+      "opcoes": ["Professor", "Cozinheiro", "Médico"],
+      "resposta": "Médico"
+    },
+    {
+      "pergunta": "O que usamos para saber as horas?",
+      "opcoes": ["Espelho", "Relógio", "Bola"],
+      "resposta": "Relógio"
+    },
+    {
+      "pergunta": "Qual é o nome do país onde vivemos?",
+      "opcoes": ["Argentina", "Portugal", "Brasil"],
+      "resposta": "Brasil"
+    },
+    {
+      "pergunta": "Antes das lâmpadas, o que se usava para iluminar?",
+      "opcoes": ["Vela", "Fósforo", "Lanterna"],
+      "resposta": "Vela"
+    },
+    {
+      "pergunta": "Quem governa a cidade?",
+      "opcoes": ["Prefeito", "Médico", "Juiz"],
+      "resposta": "Prefeito"
+    },
+    {
+      "pergunta": "Quem eram os primeiros habitantes do Brasil?",
+      "opcoes": ["Portugueses", "Povos indígenas", "Africanos"],
+      "resposta": "Povos indígenas"
+    },
+    {
+      "pergunta": "Quem foi o navegador português que chegou ao Brasil?",
+      "opcoes": ["Cristóvão Colombo", "Vasco da Gama", "Pedro Álvares Cabral"],
+      "resposta": "Pedro Álvares Cabral"
+    },
+    {
+      "pergunta": "O que representa a bandeira do Brasil?",
+      "opcoes": ["Frutas", "Riquezas naturais", "Animais"],
+      "resposta": "Riquezas naturais"
+    }
+  ],
+  "oceano": [
+    {
+      "pergunta": "O que todos os seres vivos precisam para viver?",
+      "opcoes": ["Brinquedos", "Água, ar e alimento", "Roupas novas"],
+      "resposta": "Água, ar e alimento"
+    },
+    {
+      "pergunta": "Qual desses é um ser vivo?",
+      "opcoes": ["Pedra", "Árvore", "Bola"],
+      "resposta": "Árvore"
+    },
+    {
+      "pergunta": "O que as plantas precisam para crescer?",
+      "opcoes": ["Água, luz do sol e terra", "Refrigerante e doce", "Som alto"],
+      "resposta": "Água, luz do sol e terra"
+    },
+    {
+      "pergunta": "Qual parte da planta fica debaixo da terra?",
+      "opcoes": ["Folha", "Raiz", "Fruto"],
+      "resposta": "Raiz"
+    },
+    {
+      "pergunta": "Qual desses animais vive na água?",
+      "opcoes": ["Leão", "Passarinho", "Peixe"],
+      "resposta": "Peixe"
+    },
+    {
+      "pergunta": "Qual é o órgão que usamos para respirar?",
+      "opcoes": ["Coração", "Estômago", "Pulmão"],
+      "resposta": "Pulmão"
+    },
+    {
+      "pergunta": "Qual é a função do coração?",
+      "opcoes": ["Fazer a digestão", "Bombear o sangue", "Ajudar a ver"],
+      "resposta": "Bombear o sangue"
+    },
+    {
+      "pergunta": "Qual é o sentido usado para sentir o cheiro das coisas?",
+      "opcoes": ["Visão", "Audição", "Olfato"],
+      "resposta": "Olfato"
+    },
+    {
+      "pergunta": "Como chamamos o conjunto de planetas que giram ao redor do Sol?",
+      "opcoes": ["Sistema Solar", "Universo Estelar", "Via Láctea"],
+      "resposta": "Sistema Solar"
+    },
+    {
+      "pergunta": "Qual é o movimento da Terra que faz o dia e a noite?",
+      "opcoes": ["Rotação", "Translação", "Iluminação"],
+      "resposta": "Rotação"
+    }
+  ],
+  "floresta": [
+    {
+      "pergunta": "Qual é a primeira letra da palavra “cachorro”?",
+      "opcoes": ["a", "c", "j"],
+      "resposta": "c"
+    },
+    {
+      "pergunta": "Qual dessas palavras é um nome de pessoa?",
+      "opcoes": ["bola", "Ana", "casa"],
+      "resposta": "Ana"
+    },
+    {
+      "pergunta": "Quantas sílabas tem a palavra “banana”?",
+      "opcoes": ["4", "5", "3"],
+      "resposta": "3"
+    },
+    {
+      "pergunta": "Qual dessas palavras rima com “pato”?",
+      "opcoes": ["gato", "mesa", "flor"],
+      "resposta": "gato"
+    },
+    {
+      "pergunta": "Qual palavra está escrita corretamente?",
+      "opcoes": ["Caza", "Kaza", "Casa"],
+      "resposta": "Casa"
+    },
+    {
+      "pergunta": "Qual é o antônimo (palavra contrária) de “feliz”?",
+      "opcoes": ["Contente", "Triste", "Alegre"],
+      "resposta": "Triste"
+    },
+    {
+      "pergunta": "Qual é o plural de “flor”?",
+      "opcoes": ["Flores", "Florzes", "Flors"],
+      "resposta": "Flores"
+    },
+    {
+      "pergunta": "Qual é o diminutivo de “casa”?",
+      "opcoes": ["Casinha", "Casão", "Casudo"],
+      "resposta": "Casinha"
+    },
+    {
+      "pergunta": "Qual é o coletivo de “peixe”?",
+      "opcoes": ["Enxame", "Rebanho", "Cardume"],
+      "resposta": "Cardume"
+    },
+    {
+      "pergunta": "Qual dessas palavras é um adjetivo?",
+      "opcoes": ["Pular", "Bonito", "Menino"],
+      "resposta": "Bonito"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+Pele:#FEBE77
+Cabelo:#672D20
+Camisa:#52A714
+CamisaBraço:#86C10F
+CamisaIconBg:#097B2C
+CamisaIcon:#55FF00
+Calça1:#2E64AC		
+Calça2:#1854A0
+Mochila1:#FD8F1D
+Mochila2:#FFB722
+Sapatos:#321B00

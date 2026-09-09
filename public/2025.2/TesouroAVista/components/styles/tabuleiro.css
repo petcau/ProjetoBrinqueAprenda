@@ -1,0 +1,410 @@
+.escondido {
+    display: none;
+}
+
+.tabuleiro_conteudo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 200;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-image: url(../../game_assets/tabuleiro/ilha/mapa.webp);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.mapa_proporcional {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 100vh;
+    max-height: 100dvh;
+    background-image: url(../../game_assets/tabuleiro/ilha/mapa.webp);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    z-index: 1;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8);
+}
+
+.tabuleiro_conteudo_espacamento {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.tabuleiro_conteudo_espacamento button,
+.tabuleiro_conteudo_espacamento_pontuacao {
+    pointer-events: auto;
+}
+
+.tabuleiro_conteudo_espacamento_cabecalho {
+    width: 15%;
+    transition: transform 0.3s ease;
+}
+
+.tabuleiro_conteudo_espacamento_pontuacao {
+    width: 20%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.tabuleiro_conteudo_espacamento_cabecalho:hover {
+    transform: scale(1.1);
+}
+
+.tabuleiro_conteudo_espacamento_cabecalho_imagem {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.tabuleiro_conteudo_espacamento_cabecalho_imagem img {
+    display: block;
+    width: 100%;
+}
+
+.tabuleiro_conteudo_espacamento_cabecalho_imagem_texto {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(1.5rem, 2.6vw, 2.5rem);
+    text-align: center;
+    font-family: var(--font-primaria);
+    text-decoration: none;
+    color: var(--cor-texto);
+    white-space: nowrap;
+}
+
+.tabuleiro_conteudo_espacamento_cabecalho_imagem_texto:hover {
+    color: var(--cor-hover);
+}
+
+.tabuleiro_pontuacao {
+    width: 100%;
+    max-width: 220px;
+}
+
+.tabuleiro_pontuacao_placa {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    width: 110%;
+}
+
+.tabuleiro_pontuacao_placa img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.tabuleiro_pontuacao_placa_texto {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8%;
+    color: var(--cor-texto);
+}
+
+.tabuleiro_pontuacao_placa_texto_info {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.icone-rodape {
+    height: 1.8rem;
+    max-height: 35px;
+    min-height: 15px;
+    width: auto;
+}
+
+.texto_barra {
+    margin: 0;
+    font-family: var(--font-secundaria);
+    font-size: clamp(2.9rem, 6vw, 3.3rem);
+    font-weight: 100;
+}
+
+.hud-texto {
+    font-family: var(--font-primaria);
+    font-size: 2.2rem;
+    font-weight: 300;
+}
+
+#protagonista {
+    position: absolute;
+    width: 9%;
+    height: auto;
+    transform: translate(-50%, -70%);
+    transition: top 0.6s ease-in-out, left 0.6s ease-in-out;
+    z-index: 2;
+}
+
+.ponto_clicavel {
+    position: absolute;
+    width: 4%;
+    aspect-ratio: 1 / 1;
+    pointer-events: none;
+    background-image: url(../../game_assets/tabuleiro/pergunta.webp);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    transition: transform 0.3s ease;
+    border-radius: 50%;
+}
+
+.ponto_clicavel.casa-completa {
+    background-image: url(../../game_assets/tabuleiro/certo.webp);
+}
+
+.ponto_clicavel.proxima-casa {
+    pointer-events: auto;
+    cursor: pointer;
+    background-image: url(../../game_assets/tabuleiro/proxima.webp);
+}
+
+.ponto_clicavel.proxima-casa:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+}
+
+.ponto_clicavel.proxima-casa.ponto-gradiente {
+    box-shadow: 0 0 15px #ff5c5cad, 0 0 20px #ff757586, 0 0 45px #ff9e9ec9, 0 0 85px #ffc2c2ce;
+}
+
+.ponto_clicavel[data-casa="1"] {
+    opacity: 0;
+    width: 7%;
+    pointer-events: none;
+}
+
+.ponto_clicavel[data-casa="12"] {
+    background-image: url(../../game_assets/tabuleiro/ilha/bau.webp);
+    width: 10%;
+}
+
+.tela_final_imagem {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: block !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: scale(0.8);
+}
+
+.tela_final_imagem.escondido {
+    display: block !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.tela_final_imagem.mostrar {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: scale(1);
+    transition: opacity 0.3s ease-out, transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28), visibility 0.3s;
+}
+
+.derrota_conteudo,
+.vitoria_conteudo {
+    opacity: 0;
+    transform: translate(-50%, -50%);
+}
+
+.tela_final_imagem.mostrar .derrota_conteudo,
+.tela_final_imagem.mostrar .vitoria_conteudo {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.4s ease 0.1s, transform 0.4s ease 0.1s;
+}
+
+.tela_final_imagem .fundo_derrota,
+.tela_final_imagem .fundo_vitoria {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.derrota_conteudo,
+.vitoria_conteudo {
+    position: absolute;
+    top: 60%;
+    left: 59%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.2rem, 0.4vh, 0.6rem);
+    z-index: 10;
+    padding: 1rem;
+    text-align: center;
+}
+
+.moedas_final,
+.moedas_final_conteudo {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.3rem, 0.5vw, 1rem);
+}
+
+.moedas_final_conteudo img {
+    width: clamp(3.3rem, 5.3vw, 4.3rem);
+    height: clamp(3.3rem, 5.3vw, 4.3rem);
+    object-fit: contain;
+}
+
+.reiniciar_jogo {
+    width: clamp(120px, 20vw, 300px);
+    max-width: 90%;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    margin-top: clamp(1rem, 2vh, 2rem);
+}
+
+.reiniciar_jogo:hover {
+    transform: scale(1.1);
+}
+
+.reiniciar_imagem {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 1;
+}
+
+.reiniciar_imagem img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.reiniciar_imagem_texto,
+.menu_imagem_texto {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(1.4rem, 3.4vw, 2.0rem);
+    font-family: var(--font-primaria);
+    color: var(--cor-texto);
+    pointer-events: none;
+}
+
+.reiniciar_jogo:hover .reiniciar_imagem_texto,
+.reiniciar_jogo:hover .menu_imagem_texto {
+    color: var(--cor-hover);
+}
+
+@media (max-width: 1024px) and (orientation: landscape) {
+    
+    .tabuleiro_conteudo_espacamento {
+        padding: 0.5rem 1rem;
+    }
+
+    .tabuleiro_conteudo_espacamento_cabecalho {
+        width: 130px !important;
+        max-width: 20vw;
+    }
+
+    .tabuleiro_conteudo_espacamento_cabecalho_imagem_texto {
+        font-size: 1.4rem !important;
+        top: 45%;
+    }
+
+    .tabuleiro_conteudo_espacamento_pontuacao {
+        width: auto;
+        min-width: 130px;
+    }
+
+    .tabuleiro_pontuacao {
+        max-width: 140px !important;
+    }
+
+    .hud-texto {
+        font-size: 1.7rem !important;
+        line-height: 1;
+    }
+
+    .icone-rodape {
+        height: 1.7rem !important;
+        max-height: 60px;
+        width: auto;
+    }
+
+    .tabuleiro_pontuacao_placa_texto {
+        gap: 5%;
+    }
+
+    .tela_final_imagem {
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+    }
+    
+    .tela_final_imagem .fundo_derrota,
+    .tela_final_imagem .fundo_vitoria {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .derrota_conteudo,
+    .vitoria_conteudo {
+        position: absolute;
+        top: 43%;
+        left: 14%;
+        transform: translate(0, 0); 
+        margin: 0; 
+        padding: 0.2rem;
+        width: 90%; 
+        gap: clamp(0.3rem, 1.2vh, 1.2rem);
+        align-items: center; 
+        text-align: center;
+    }
+
+    .tela_final_imagem.mostrar .derrota_conteudo,
+    .tela_final_imagem.mostrar .vitoria_conteudo {
+        transform: translate(0, 0);
+    }
+
+    .vitoria_conteudo {
+        top: 40%;
+        left: 16%;
+    }
+
+    .texto_barra {
+        font-size: clamp(1.1rem, 3.5vw, 1.8rem);
+    }
+}

@@ -1,0 +1,140 @@
+.creditos_conteudo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    background-image: url(../../game_assets/creditos/creditos.webp);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 2vh 0;
+    box-sizing: border-box;
+}
+
+.creditos_conteudo_espacamento {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding: 2vh 3vw;
+    box-sizing: border-box;
+}
+
+.creditos_conteudo_espacamento_cabecalho {
+    width: 50%;
+    position: relative;
+    transition: transform 0.3s ease;
+    transform-origin: left center;
+}
+
+.creditos_conteudo_espacamento_cabecalho:hover {
+    transform: scale(1.05);
+}
+
+button.botao_voltar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 200px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* imagem do botão */
+button.botao_voltar img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* texto dentro da placa */
+button.botao_voltar span {
+    position: absolute;
+    top: 44%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--cor-texto);
+    font-family: var(--font-primaria, sans-serif);
+    font-size: clamp(1.3rem, 3.7vw, 2.5rem);
+    pointer-events: none;
+    text-align: center;
+}
+
+button.botao_voltar:hover span {
+    color: var(--cor-hover);
+}
+
+.creditos_conteudo_principal {
+    width: 100%;
+    max-width: 800px;
+    padding-bottom: 50px;
+    margin-top: 5vh;
+    display: flex;
+    justify-content: center;
+}
+
+.creditos_conteudo_principal_texto {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    padding: 0 20px;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+    word-break: break-word;
+}
+
+.creditos_conteudo_principal_texto li {
+    font-family: var(--font-primaria, sans-serif);
+    font-size: clamp(1.3rem, 2.8vw, 3rem);
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+
+    .creditos_conteudo_espacamento_cabecalho {
+        width: 180px;
+        max-width: 30vw;
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 500;
+        transform-origin: left center;
+    }
+
+    button.botao_voltar {
+        width: 100%;
+        padding: 0;
+        background: none;
+        border: none;
+    }
+
+    button.botao_voltar img {
+        width: 100%;
+        height: auto;
+    }
+
+    button.botao_voltar span {
+        font-size: 1.6rem;
+    }
+
+    .creditos_conteudo_principal {
+        padding-bottom: 8vh;
+        max-height: 82%;
+        overflow-y: auto;
+
+    }
+
+    .creditos_conteudo_principal_texto li {
+        font-size: clamp(0.8rem, 3.2vw, 1.6rem);
+    }
+}

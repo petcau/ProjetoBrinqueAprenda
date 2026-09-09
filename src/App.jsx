@@ -8,6 +8,8 @@ import Anagrama from "./jogos/2025.1/Anagrama/Anagrama.jsx";
 import MathRace from "./jogos/2025.2/MathRace/MathRace.jsx";
 import Matemagica from "./jogos/2025.2/Matemagica/Matemagica.jsx";
 import Tabuad4on from "./jogos/2025.2/Tabuad4on/Tabuad4on.jsx";
+import TesouroAVista from "./jogos/2025.2/TesouroAVista/TesouroAVista.jsx";
+import ReciclaKids from "./jogos/2025.2/ReciclaKids/ReciclaKids.jsx";
 import Sobre from './pages/Sobre.jsx'
 
 
@@ -24,6 +26,8 @@ function App() {
         <Route path="/mathrace" element={<MathRace />} />
         <Route path="/matemagica" element={<Matemagica />} />
         <Route path="/tabuad4on" element={<Tabuad4on />} />
+        <Route path="/tesouroavista" element={<TesouroAVista />} />
+        <Route path="/reciclakids" element={<ReciclaKids />} />
         <Route path="/sobre" element={<Sobre />} />
       </Routes>
     </BrowserRouter>
