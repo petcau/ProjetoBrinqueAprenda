@@ -3,13 +3,13 @@ import fasesData from './fases.json';
 import Semaforo from './Semaforo.jsx';
 
 // Importe os áudios
-import contagemSound from '../../../assets/Sons/contagem.wav';
-import relogioSound from '../../../assets/Sons/relogio.mp3';
-import respCorretaSound from '../../../assets/Sons/respCorreta.mp3';
-import respErradaSound from '../../../assets/Sons/respErrada.mp3';
-import somClickSound from '../../../assets/Sons/somClick.wav';
-import somDerrotaSound from '../../../assets/Sons/somDerrota.mp3';
-import somVitoriaSound from '../../../assets/Sons/somVitoria.mp3';
+import contagemSound from '../../../../assets/Sons/contagem.wav';
+import relogioSound from '../../../../assets/Sons/relogio.mp3';
+import respCorretaSound from '../../../../assets/Sons/respCorreta.mp3';
+import respErradaSound from '../../../../assets/Sons/respErrada.mp3';
+import somClickSound from '../../../../assets/Sons/somClick.wav';
+import somDerrotaSound from '../../../../assets/Sons/somDerrota.mp3';
+import somVitoriaSound from '../../../../assets/Sons/somVitoria.mp3';
 
 
 export default function Jogo({ onVoltar }) {

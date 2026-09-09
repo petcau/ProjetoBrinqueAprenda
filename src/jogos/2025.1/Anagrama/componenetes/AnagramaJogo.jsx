@@ -1,3 +1,4 @@
+import somDerrotaSound from "../../../../assets/Sons/somDerrota.mp3";
 // Importa hooks do React e componentes do jogo
 import { useRef, useState, useEffect } from "react";
 import Letras from "./Letras";
@@ -85,7 +86,7 @@ function AnagramaJogo({
       {/* 🔊 Som de tempo esgotado */}
       <audio
         ref={timesUpSoundRef}
-        src="src/assets/Sons/somDerrota.mp3"
+        src={somDerrotaSound}
         preload="auto"
       />
 

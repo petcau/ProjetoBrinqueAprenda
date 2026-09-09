@@ -1,3 +1,5 @@
+import respCorretaSound from "../../../../assets/Sons/respCorreta.mp3";
+import respErradaSound from "../../../../assets/Sons/respErrada.mp3";
 // src/hooks/useAnagrama.js
 
 // Importa os hooks do React
@@ -43,10 +45,10 @@ export function useAnagrama() {
       const novas = [...descobertas, palavra];
       setDescobertas(novas);
       // Som de resposta correta
-      new Audio("src/assets/Sons/respCorreta.mp3").play().catch(() => {});
+      new Audio(respCorretaSound).play().catch(() => {});
     } else {
       // Som de resposta incorreta
-      new Audio("src/assets/Sons/respErrada.mp3").play().catch(() => {});
+      new Audio(respErradaSound).play().catch(() => {});
     }
 
     resetarTentativa();

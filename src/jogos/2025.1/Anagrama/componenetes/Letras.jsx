@@ -1,3 +1,4 @@
+import somClickSound from "../../../../assets/Sons/somClick.wav";
 // Importa o hook useRef do React
 import { useRef } from "react";
 
@@ -26,7 +27,7 @@ function Letras({ letras, onAdicionarLetra, desabilitado }) {
       {/* Elemento de áudio para som de clique */}
       <audio
         ref={clickSoundRef}
-        src="src/assets/Sons/somClick.wav"
+        src={somClickSound}
         preload="auto"
       />
 

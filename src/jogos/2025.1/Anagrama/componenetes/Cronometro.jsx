@@ -1,3 +1,4 @@
+import contagemSound from "../../../../assets/Sons/contagem.wav";
 // Importa os hooks do React
 import { useEffect, useRef, useState } from "react";
 
@@ -58,7 +59,7 @@ function Cronometro({ tempoInicial = 30, onTempoEsgotado, reiniciarTrigger, somA
   return (
     <div>
       {/* Áudio usado para som de contagem regressiva */}
-      <audio ref={tickSoundRef} src="src/assets/Sons/contagem.wav" preload="auto" />
+      <audio ref={tickSoundRef} src={contagemSound} preload="auto" />
 
       {/* Exibe o tempo restante na tela */}
       <h3>Tempo: {tempo}s</h3>

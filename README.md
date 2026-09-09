@@ -32,25 +32,25 @@ _Abacomania_
 
 <img src="src/assets/abaco-capa.png" width="500" height="500">
 
-<img src="src/jogos/AbacoMania/game_assets/imagemAbaco.png" width="500" height="500">
+<img src="src/jogos/2025.1/AbacoMania/game_assets/imagemAbaco.png" width="500" height="500">
 
-<img src="src/jogos/AbacoMania/game_assets/nomeAbaco.png" width="800" height="500">
+<img src="src/jogos/2025.1/AbacoMania/game_assets/nomeAbaco.png" width="800" height="500">
 
 _Ánagrama_
 
 <img src="src/assets/anagramacapa4.png" width="500" height="500">
 
-<img src="src/jogos/Anagrama/game_assets/desk.png" width="500" heigth="500">
+<img src="src/jogos/2025.1/Anagrama/game_assets/desk.png" width="500" heigth="500">
 
 _Digirance_
 
 <img src="src/assets/CAPADIGITAÇÃO.png" width="500" height="500">
 
-<img src="src/jogos/JogoDigitacao/game_assets/FUNDOD.png" width="800" height="500">
+<img src="src/jogos/2025.1/JogoDigitacao/game_assets/FUNDOD.png" width="800" height="500">
 
-<img src="src/jogos/JogoDigitacao/game_assets/EMOJIVITORIAD.png" width="500" height="500">
+<img src="src/jogos/2025.1/JogoDigitacao/game_assets/EMOJIVITORIAD.png" width="500" height="500">
 
-<imh src="src/jogos/JogoDigitacao/game_assets/GAMEOVER.png" width="500" height="500">
+<imh src="src/jogos/2025.1/JogoDigitacao/game_assets/GAMEOVER.png" width="500" height="500">
 
 _Joirnada do Bicho_
 
@@ -77,9 +77,9 @@ _Joirnada do Bicho_
 ## **Manual do jogo** _Anagrama_
 
 1. Para acessar o jogo "Anagrama" clique no primeiro jogo do menu de jogos da pagina inicial do site conforme indica a imagem a seguir:
-<img src="src/jogos/Anagrama/documentation/imgs/imgmenu.PNG" width="800" height="500">
+<img src="src/jogos/2025.1/Anagrama/documentation/imgs/imgmenu.PNG" width="800" height="500">
 2. Esta é a tela principal do jogo onde os elementos circulados são descritos da seguinte forma:
-<img src="src/jogos/Anagrama/documentation/imgs/imginicial.PNG" width="500" height="400">
+<img src="src/jogos/2025.1/Anagrama/documentation/imgs/imginicial.PNG" width="500" height="400">
 
     - Retorno ao menu de jogos - Botão para retornar para o menu de jogos na pagina inicial;
     - Nível do jogo - Indica em que nivel o jogador se encontra;
@@ -90,7 +90,7 @@ _Joirnada do Bicho_
     - Campo de palavras - As palavras escondidas encontradas ficarão armazenadas neste campo;
 3. Alguns eventos do jogo:
 
-<img src="src/jogos/Anagrama/documentation/imgs/imgacoes.PNG" width="500" height="400">
+<img src="src/jogos/2025.1/Anagrama/documentation/imgs/imgacoes.PNG" width="500" height="400">
 
 
    - Cronometro zerado - Após o tempo se esgotar a mensagem: "Tempo esgotado!" e o botão "Tentar novamente";

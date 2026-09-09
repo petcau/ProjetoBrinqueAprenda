@@ -1,8 +1,8 @@
 import levels from "./fases.json"
 import React, { useEffect, useState, useRef} from 'react';
 import './game.css';
-import somVitoriaSound from '../../assets/Sons/somVitoria.mp3';
-import somDerrotaSound from '../../assets/Sons/somDerrota.mp3';
+import somVitoriaSound from '../../../assets/Sons/somVitoria.mp3';
+import somDerrotaSound from '../../../assets/Sons/somDerrota.mp3';
 
     //funções do ábaco, a parte que faz os arquivos se conectarem
 function Abaco() {
