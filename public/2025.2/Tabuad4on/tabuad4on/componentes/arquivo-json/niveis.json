@@ -1,0 +1,38 @@
+{
+  "modos": {
+    "facil": {
+      "operacoes": ["+"],
+      "intervaloNumeros": [1, 25],
+      "totalPerguntas": 20
+    },
+    "medio": {
+      "operacoes": ["+", "-"],
+      "intervaloNumeros": [1, 40],
+      "totalPerguntas": 35
+    },
+    "dificil": {
+      "tiposQuestoes": [
+        "raiz_quadrada",
+        "raiz_quadrada_aproximada",
+        "raiz_cubica"
+      ],
+      "usaDificuldadeProgressiva": true,
+      "difficultyIncrement": 0.05,
+      "intervalosBase": {
+        "raiz_quadrada": [2, 15],
+        "raiz_quadrada_aproximada": [3, 12],
+        "raiz_cubica": [2, 8]
+      },
+      "variaçãoRadicando": {
+        "chance": 0.7,
+        "valorMaximo": 2
+      },
+      "totalPerguntas": 25
+    },
+    "customizado": {
+      "operacoes": [],
+      "intervaloNumeros": [],
+      "totalPerguntas": null
+    }
+  }
+}

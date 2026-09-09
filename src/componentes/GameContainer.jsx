@@ -4,6 +4,7 @@ import capaDigiRace from '../assets/CAPADIGITAÇÃO.png';
 import capaAbaco from '../assets/abaco-capa.png';
 import capaAnagrama from '../assets/anagramacapa4.png';
 import capaMatemagica from '../assets/matemagica-capa.webp';
+import capaTabuad4on from '../assets/tabuad4on-capa.webp';
 
 // O MathRace e um jogo estatico servido de public/, entao a capa dele e uma URL
 // direta e nao um import. Ver src/jogos/2025.2/MathRace/MathRace.jsx.
@@ -16,8 +17,10 @@ const turmas = [
   {
     semestre: '2025.2',
     jogos: [
-      // A capa do MathRace e o logo em faixa do proprio jogo, e nao uma arte
-      // quadrada como as demais: por isso ela e exibida inteira, sem corte.
+      // As capas de 2025.2 sao largas (logo em faixa ou captura de tela), e nao
+      // artes quadradas como as de 2025.1. `capaEmFaixa` mostra a imagem inteira
+      // no card em vez de cortar as laterais.
+      { rota: '/tabuad4on', nome: 'Tabuad4on', capa: capaTabuad4on, capaEmFaixa: true },
       { rota: '/matemagica', nome: 'Matemágica', capa: capaMatemagica, capaEmFaixa: true },
       { rota: '/mathrace', nome: 'MathRace', capa: capaMathRace, capaEmFaixa: true },
     ],

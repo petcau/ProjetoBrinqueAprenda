@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modos - Tabuad4on</title>
+  <link rel="stylesheet" href="../arquivos CSS/style-tela-modos.css">
+  <style>
+    /* Deixa os ícones clicáveis */
+    .icone-ranking,
+    .icone-interrogacao {
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .icone-ranking:hover,
+    .icone-interrogacao:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  
+
+  <!-- CONTAINER PRINCIPAL -->
+  <div class="container-modos">
+
+    <!-- TÍTULO -->
+    <h1 class="titulo">Escolha um modo</h1>
+
+    <!-- Modo Fácil -->
+    <div class="modo" id="modo-facil">
+      <span class="texto-modo">Fácil</span>
+      <div class="icones">
+        <img src="../arquivos CSS/ranking.png" alt="Ranking" class="icone-ranking" id="ranking-facil">
+        <img src="../arquivos CSS/interrogacao.png" alt="Ajuda" class="icone-interrogacao" id="ajuda-facil">
+      </div>
+    </div>
+
+    <!-- Modo Médio -->
+    <div class="modo" id="modo-medio">
+      <span class="texto-modo">Médio</span>
+      <div class="icones">
+        <img src="../arquivos CSS/ranking.png" alt="Ranking" class="icone-ranking" id="ranking-medio">
+        <img src="../arquivos CSS/interrogacao.png" alt="Ajuda" class="icone-interrogacao" id="ajuda-medio">
+      </div>
+    </div>
+
+    <!-- Modo Difícil -->
+    <div class="modo" id="modo-dificil">
+      <span class="texto-modo">Difícil</span>
+      <div class="icones">
+        <img src="../arquivos CSS/ranking.png" alt="Ranking" class="icone-ranking" id="ranking-dificil">
+        <img src="../arquivos CSS/interrogacao.png" alt="Ajuda" class="icone-interrogacao" id="ajuda-dificil">
+      </div>
+    </div>
+
+    <!-- Botão Voltar -->
+    <button id="botao-voltar" class="botao-voltar">Voltar</button>
+  </div>
+
+  <!-- SCRIPT -->
+<script>
+  // Botão Voltar → leva à tela inicial
+  document.getElementById("botao-voltar").addEventListener("click", () => {
+    window.location.href = "tela-inicial.html";
+  });
+
+  // Modos de jogo
+  document.getElementById("modo-facil").addEventListener("click", () => {
+    window.location.href = "tela-questoes-facil.html";
+  });
+
+  document.getElementById("modo-medio").addEventListener("click", () => {
+    window.location.href = "tela-questoes-medio.html";
+  });
+
+  document.getElementById("modo-dificil").addEventListener("click", () => {
+    window.location.href = "tela-questoes-dificil.html";
+  });
+
+  // Botões de ranking
+  document.getElementById("ranking-facil").addEventListener("click", (event) => {
+    event.stopPropagation();
+    window.location.href = "tela-de-pontuacao-facil.html";
+  });
+
+  document.getElementById("ranking-medio").addEventListener("click", (event) => {
+    event.stopPropagation();
+    window.location.href = "tela-de-pontuacao-medio.html";
+  });
+
+  document.getElementById("ranking-dificil").addEventListener("click", (event) => {
+    event.stopPropagation();
+    window.location.href = "tela-de-pontuacao-dificil.html";
+  });
+
+  // Botões de instrução (interrogação)
+  document.getElementById("ajuda-facil").addEventListener("click", (event) => {
+    event.stopPropagation();
+    window.location.href = "tela-instrucao-facil.html";
+  });
+
+  document.getElementById("ajuda-medio").addEventListener("click", (event) => {
+    event.stopPropagation();
+    window.location.href = "tela-instrucao-medio.html";
+  });
+
+  document.getElementById("ajuda-dificil").addEventListener("click", (event) => {
+    event.stopPropagation();
+    window.location.href = "tela-instrucao-dificil.html";
+  });
+</script>
+
+  <script src="../arquivos JavaScript/script-musica.js"></script>
+    <script src="../arquivos JavaScript/script-brilho.js"></script>
+
+
+
+</body>
+</html>
