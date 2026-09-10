@@ -10,6 +10,7 @@ import Matemagica from "./jogos/2025.2/Matemagica/Matemagica.jsx";
 import Tabuad4on from "./jogos/2025.2/Tabuad4on/Tabuad4on.jsx";
 import TesouroAVista from "./jogos/2025.2/TesouroAVista/TesouroAVista.jsx";
 import ReciclaKids from "./jogos/2025.2/ReciclaKids/ReciclaKids.jsx";
+import PalavrasMagicas from "./jogos/2025.2/PalavrasMagicas/PalavrasMagicas.jsx";
 import Sobre from './pages/Sobre.jsx'
 
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/tabuad4on" element={<Tabuad4on />} />
         <Route path="/tesouroavista" element={<TesouroAVista />} />
         <Route path="/reciclakids" element={<ReciclaKids />} />
+        <Route path="/palavrasmagicas" element={<PalavrasMagicas />} />
         <Route path="/sobre" element={<Sobre />} />
       </Routes>
     </BrowserRouter>

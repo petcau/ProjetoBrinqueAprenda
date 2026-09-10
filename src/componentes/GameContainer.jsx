@@ -7,6 +7,7 @@ import capaMatemagica from '../assets/matemagica-capa.webp';
 import capaTabuad4on from '../assets/tabuad4on-capa.webp';
 import capaTesouro from '../assets/tesouroavista-capa.webp';
 import capaReciclaKids from '../assets/reciclakids-capa.webp';
+import capaPalavras from '../assets/palavrasmagicas-capa.webp';
 
 // O MathRace e um jogo estatico servido de public/, entao a capa dele e uma URL
 // direta e nao um import. Ver src/jogos/2025.2/MathRace/MathRace.jsx.
@@ -22,6 +23,7 @@ const turmas = [
       // As capas de 2025.2 sao largas (logo em faixa ou captura de tela), e nao
       // artes quadradas como as de 2025.1. `capaEmFaixa` mostra a imagem inteira
       // no card em vez de cortar as laterais.
+      { rota: '/palavrasmagicas', nome: 'Palavras Mágicas', capa: capaPalavras, capaEmFaixa: true },
       { rota: '/reciclakids', nome: 'ReciclaKids', capa: capaReciclaKids, capaEmFaixa: true },
       { rota: '/tesouroavista', nome: 'Tesouro à Vista', capa: capaTesouro, capaEmFaixa: true },
       { rota: '/tabuad4on', nome: 'Tabuad4on', capa: capaTabuad4on, capaEmFaixa: true },

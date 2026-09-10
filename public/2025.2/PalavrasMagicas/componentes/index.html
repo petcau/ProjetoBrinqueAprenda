@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Palavras Mágicas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Tela Inicial -->
+        <div id="tela-inicial" class="tela ativa">
+            <img src="../game_assets/images/titulo_novo.webp" alt="Palavras Mágicas" class="titulo-imagem">
+            <img src="../game_assets/images/mago_livro.webp" alt="Mago" class="personagem-inicial">
+            
+            <div class="menu-botoes">
+                <button id="btn-jogar" class="btn-texto-menu">JOGAR</button>
+                <button id="btn-opcoes" class="btn-texto-menu">OPÇÕES</button>
+                <button id="btn-creditos" class="btn-texto-menu">CRÉDITOS</button>
+            </div>
+        </div>
+
+        <!-- Tela do Jogo -->
+        <div id="tela-jogo" class="tela">
+            <div class="info-topo">
+                <button id="btn-voltar-menu" class="btn-voltar-icon"></button>
+                <div id="numero-fase" class="fase-display">FASE 1</div>
+            </div>
+            <div class="centro-jogo">
+                <div class="imagem-palavra-container">
+                    <img id="imagem-fase" src="" alt="Imagem da fase">
+                </div>
+                <!-- Container da Palavra e Botão Backspace -->
+                <div class="area-input-palavra">
+                    <div id="palavra-container"></div>
+                    <button id="btn-backspace" title="Apagar Letra">←</button>
+                </div>
+            </div>
+            <div id="letras-baralho"></div>
+        </div>
+
+        <!-- Tela de Opções -->
+        <div id="tela-opcoes" class="tela">
+            <div class="painel-madeira-popup">
+                <button id="btn-fechar-opcoes" class="btn-fechar-popup">X</button>
+                <h2>OPÇÕES</h2>
+                
+                <div class="opcao-item">
+                    <span>Música</span>
+                    <input type="range" id="slider-musica" min="0" max="1" step="0.1" value="0.5">
+                </div>
+                
+                <div class="opcao-item">
+                    <span>Efeitos</span>
+                    <input type="range" id="slider-sfx" min="0" max="1" step="0.1" value="1.0">
+                </div>
+
+                <!-- Botão de Zoom alterado conforme solicitado -->
+                <button id="btn-zoom" class="btn-zoom">🖥️ RESOLUÇÃO</button>
+                
+                <!-- Dropdown de Zoom (inicialmente escondido) -->
+                <div id="zoom-dropdown" class="zoom-dropdown">
+                    <!-- As opções serão inseridas via JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela de Créditos -->
+        <div id="tela-creditos" class="tela">
+            <div class="painel-madeira-popup">
+                <button id="btn-fechar-creditos" class="btn-fechar-popup">X</button>
+                <h2>CRÉDITOS</h2>
+                <div class="creditos-lista">
+                    <p>Gabriele Natividade: Gestora</p>
+                    <p>Murilo M. Moura: Designer</p>
+                    <p>Luciano Souza: Programador</p>
+                    <p>Jimy Kael Correia: Programador</p>
+                    <p>Gabriel Souza: Programador</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TELA DE FIM DE JOGO -->
+        <div id="tela-fim-jogo" class="tela">
+            <div class="painel-madeira-popup conteudo-fim-jogo">
+                <h2>PARABÉNS!</h2>
+                <img src="../game_assets/images/trophy.webp" alt="Troféu" class="trofeu-img">
+                <p class="texto-vitoria">Você concluiu todas as fases!</p>
+                <button id="btn-voltar-menu-final" class="btn-madeira">VOLTAR AO MENU</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-feedback" class="modal-overlay"></div>
+    
+    <audio id="musica-fundo" src="../game_assets/sounds/background_music.mp3" loop></audio>
+    
+    <script src="script.js"></script>
+</body>
+</html>
