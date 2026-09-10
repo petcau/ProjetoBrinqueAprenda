@@ -1,0 +1,62 @@
+[
+  {
+    "nivel": 1,
+    "palavra": "SOL",
+    "imagem": "../game_assets/images/sol.webp",
+    "letrasEmbaralhadas": ["S", "O", "L", "A", "E"]
+  },
+  {
+    "nivel": 2,
+    "palavra": "GATO",
+    "imagem": "../game_assets/images/gato.webp",
+    "letrasEmbaralhadas": ["G", "A", "T", "O", "B", "C", "D"]
+  },
+  {
+    "nivel": 3,
+    "palavra": "BOLA",
+    "imagem": "../game_assets/images/bola.webp",
+    "letrasEmbaralhadas": ["B", "O", "L", "A", "X", "Y", "Z"]
+  },
+  {
+    "nivel": 4,
+    "palavra": "RUA",
+    "imagem": "../game_assets/images/rua.webp",
+    "letrasEmbaralhadas": ["R", "U", "A", "M", "N", "P"]
+  },
+  {
+    "nivel": 5,
+    "palavra": "ELEFANTE",
+    "imagem": "../game_assets/images/elefante.webp",
+    "letrasEmbaralhadas": ["E", "L", "E", "F", "A", "N", "T", "E", "R", "S"]
+  },
+  {
+    "nivel": 6,
+    "palavra": "LUA",
+    "imagem": "../game_assets/images/lua.webp",
+    "letrasEmbaralhadas": ["L", "U", "A", "F", "O","G"]
+  },
+   {
+    "nivel": 7,
+    "palavra": "CACHORRO",
+    "imagem": "../game_assets/images/cachorro.webp",
+    "letrasEmbaralhadas": ["C", "A","C", "H", "O", "R", "R", "O", "T", "D"]
+  },
+   {
+    "nivel": 8,
+    "palavra": "ABACAXI",
+    "imagem": "../game_assets/images/abacaxi.webp",
+    "letrasEmbaralhadas": ["A", "B", "A", "C", "A", "X", "I", "M", "R", "L"]
+  },
+   {
+    "nivel": 9,
+    "palavra": "BANANA",
+    "imagem": "../game_assets/images/banana.webp",
+    "letrasEmbaralhadas": ["B", "A", "N", "A", "N", "A", "H", "C", "J"]
+  },
+   {
+    "nivel": 10,
+    "palavra": "CARRO",
+    "imagem": "../game_assets/images/carro.webp",
+    "letrasEmbaralhadas": ["C", "A", "R", "R", "O", "P", "V", "S"]
+  }
+]
