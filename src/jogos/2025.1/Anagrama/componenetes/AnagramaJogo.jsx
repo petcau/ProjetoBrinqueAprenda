@@ -20,8 +20,8 @@ function AnagramaJogo({
   proximoNivel,
   nivelAtual,
 }) {
-  // Estado para controlar se o som está ativado
-  const [somAtivo, setSomAtivo] = useState(true);
+  // Configuração de som do jogo
+  const somAtivo = true;
 
   // Referência para o som de tempo esgotado
   const timesUpSoundRef = useRef(null);

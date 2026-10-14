@@ -1,5 +1,5 @@
 import levels from "./fases.json"
-import React, { useEffect, useState, useRef} from 'react';
+import { useState, useRef } from 'react';
 import './game.css';
 import somVitoriaSound from '../../../assets/Sons/somVitoria.mp3';
 import somDerrotaSound from '../../../assets/Sons/somDerrota.mp3';
@@ -9,30 +9,13 @@ function Abaco() {
     const [valor, setValor] = useState(0);
     const [contas, setContas] = useState([0, 0, 0, 0, 0]);
     const [faseAtual, setFaseAtual] = useState(1);
-    const [alvo, setAlvo] = useState(gerarNumeroAleatorio());
     const [mensagem, setMensagem] = useState('');
-    const [mostrarAlvo, setMostrarAlvo] = useState(true);
     const [acertou, setAcertou] = useState(false);
 
     const audioEvento = useRef(null);
 
     const linhasValores = [1, 5, 10, 50, 100];
-
-    //Passar o numero do nivel acima do ábaco
-    const atualizarAlvo = () => {
-        const fase = levels.levels.find(level => level.id === faseAtual);
-        if (fase){
-            setAlvo(fase.alvo);
-        }
-    };
-    useEffect(() => {
-        atualizarAlvo();
-    }, [faseAtual]);
-
-    //Parte do código anterior mas básicamente gerava um numero aleatorio ao invés de usar um arquivo Json
-    function gerarNumeroAleatorio() {
-         return Math.floor(Math.random() * 500) + 1;
-    }
+    const alvo = levels.levels.find((level) => level.id === faseAtual)?.alvo ?? 0;
 
     //Função para checar se o valor está correto, de acordo com as marcações dos botões e setar os sons com o [Audio(somVitoriaSound)]
     const verificarAcerto = () => {
@@ -109,9 +92,7 @@ function Abaco() {
                 <div className="painel-controle">
                     <div className="valores">
                     {/*<div className="valor-atual">Seu valor: <strong>{valor}</strong></div>*/}
-                    {mostrarAlvo && (
-                            <div className="valor-alvo">Valor: <strong>{alvo}</strong></div>
-                        )}
+                        <div className="valor-alvo">Valor: <strong>{alvo}</strong></div>
                         <div className="valor-alvo">Nivel: <strong>{faseAtual}</strong></div>
                     </div>
                     
@@ -135,10 +116,6 @@ function Abaco() {
                 </div>
                 {/* Os botões que fazem as coisas funcionarem do código*/}
                 <div className="botoesContainer">
-                        {/* <button onClick={() => setMostrarAlvo(!mostrarAlvo)}>
-                            {mostrarAlvo ? ' Esconder' : ' Mostrar'}
-                        </button>*/}
-                        
                         <button onClick={verificarAcerto} className="verificar-botoes">
                              Verificar
                         </button>

@@ -524,6 +524,52 @@ button:focus-visible {
   height: 100dvh;
   overflow: hidden;
   background: #11161f;
+  display: flex;
+  flex-direction: column;
+}
+
+.bq-barra-jogo {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-inline: clamp(14px, 2.5vw, 32px);
+  background: #f2f3f5;
+  border-bottom: 1px solid var(--bq-borda);
+  box-shadow: 0 2px 10px rgba(22, 33, 74, 0.12);
+}
+
+.bq-barra-jogo-marca {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.18s ease, transform 0.18s ease;
+}
+
+.bq-barra-jogo-marca:hover {
+  background: var(--bq-azul-nevoa);
+  transform: translateY(-1px);
+}
+
+.bq-barra-jogo-marca img {
+  display: block;
+  width: auto;
+  height: 28px;
+}
+
+.bq-palco-area {
+  position: relative;
+  isolation: isolate;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .bq-palco-quadro {
@@ -539,28 +585,18 @@ button:focus-visible {
   overflow: auto;
 }
 
-.bq-voltar-jogo {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  z-index: 10;
-  margin: 0;
-  padding: 8px 16px;
-  font-family: var(--bq-fonte);
-  font-size: 14.5px;
-  font-weight: 800;
-  line-height: 1.2;
-  color: #fff;
-  background: rgba(17, 22, 31, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: 8px;
-  cursor: pointer;
-  text-decoration: none;
-  backdrop-filter: blur(6px);
-}
+@media (max-width: 680px), (max-height: 600px) {
+  .bq-barra-jogo {
+    flex-basis: 42px;
+  }
 
-.bq-voltar-jogo:hover {
-  background: rgba(17, 22, 31, 0.95);
+  .bq-barra-jogo-marca {
+    padding-block: 4px;
+  }
+
+  .bq-barra-jogo-marca img {
+    height: 24px;
+  }
 }
 
 .bq-carregando {
@@ -677,7 +713,7 @@ button:focus-visible {
 }
 
 .bq-chamada-botao:hover {
-  transform: translate(-50%, calc(-50% - 2px));
+  transform: translate(-50%, -50%);
 }
 
 /* Abaixo disto a letra desenhada na arte ficaria pequena demais: a imagem sai
@@ -1084,7 +1120,7 @@ button:focus-visible {
   flex-shrink: 0;
 }
 
-/* --- Busca e conta (ainda sem função) -------------------------------------- */
+/* --- Ações do cabeçalho ---------------------------------------------------- */
 
 .bq-cabecalho-acoes {
   display: flex;
@@ -1115,6 +1151,10 @@ button:focus-visible {
 
 /* O painel só existe no celular; no desktop o menu vive na própria barra. */
 .bq-menu-celular {
+  display: none;
+}
+
+.bq-menu-celular[hidden] {
   display: none;
 }
 
@@ -1227,6 +1267,18 @@ button:focus-visible {
 
 .bq-botao:hover {
   transform: translateY(-2px);
+}
+
+/* Este botão é posicionado sobre a arte com translate; no hover ele deve
+   permanecer exatamente no mesmo ponto, sem herdar o deslocamento genérico. */
+.bq-botao.bq-chamada-botao:hover {
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 820px) {
+  .bq-botao.bq-chamada-botao:hover {
+    transform: none;
+  }
 }
 
 .bq-botao-principal {
@@ -1354,7 +1406,6 @@ button:focus-visible {
   .bq-conta {
     display: none;
   }
-
 
   .bq-menu-celular {
     display: block;

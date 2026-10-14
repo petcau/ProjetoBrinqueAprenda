@@ -126,7 +126,6 @@
   box-shadow: #00000063 0px 8px 12px;
   width: 965px;
   height: 450px;
-  background-image: url(${background[ZoneName]});
   background-size: cover;
   background-position: center;
   gap: 15px; /* Adiciona um espaço entre os itens */

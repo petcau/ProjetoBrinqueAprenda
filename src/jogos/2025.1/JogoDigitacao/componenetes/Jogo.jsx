@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useCallback, useState, useEffect, useRef } from "react";
 import fasesData from './fases.json';
 import Semaforo from './Semaforo.jsx';
 
@@ -7,7 +7,6 @@ import contagemSound from '../../../../assets/Sons/contagem.wav';
 import relogioSound from '../../../../assets/Sons/relogio.mp3';
 import respCorretaSound from '../../../../assets/Sons/respCorreta.mp3';
 import respErradaSound from '../../../../assets/Sons/respErrada.mp3';
-import somClickSound from '../../../../assets/Sons/somClick.wav';
 import somDerrotaSound from '../../../../assets/Sons/somDerrota.mp3';
 import somVitoriaSound from '../../../../assets/Sons/somVitoria.mp3';
 
@@ -101,7 +100,7 @@ export default function Jogo({ onVoltar }) {
     // Limpa áudios ao mudar de fase
     if (audioPrincipal.current) audioPrincipal.current.pause();
     if (audioSecundario.current) audioSecundario.current.pause();
-  }, [faseAtual]);
+  }, [faseAtual, fase.tempoLimite]);
   // Efeito do cronômetro
   useEffect(() => {
     if (fim || semaforoAtivo) return;
@@ -120,23 +119,23 @@ export default function Jogo({ onVoltar }) {
       }, 1000);
     }
     return () => clearTimeout(timeoutID.current);
-  }, [count, fim, semaforoAtivo, fase.tempoLimite]);
-  
-  useEffect(() => {
-  if (palavrasUsadas.length === 0 && !fim) {
-    novaPalavra();
-  }
-}, [palavrasUsadas]);
+  }, [count, fim, mudançafase, semaforoAtivo]);
 
   // Funções do jogo
-  const novaPalavra = () => {
+  const novaPalavra = useCallback(() => {
     const palavrasDisponiveis = palavras.filter(p => !palavrasUsadas.includes(p));
     const nova = palavrasDisponiveis[Math.floor(Math.random() * palavrasDisponiveis.length)];
     setPalavra(nova.trim());
     setInput('');
     console.log(palavrasUsadas);
     setPalavrasUsadas(prev => [...prev, nova]);
-  };
+  }, [palavras, palavrasUsadas]);
+
+  useEffect(() => {
+    if (palavrasUsadas.length === 0 && !fim) {
+      novaPalavra();
+    }
+  }, [fim, novaPalavra, palavrasUsadas]);
 
   const mudança = (event) => {
     setInput(event.target.value);

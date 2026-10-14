@@ -1,7 +1,8 @@
 import { Suspense, lazy, useMemo } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import NaoEncontrada from './NaoEncontrada';
 import { acharJogo } from '../dados/jogos';
+import logo from '../assets/logo-brinque-aprenda.webp';
 
 /**
  * O jogo ocupando a tela inteira.
@@ -22,6 +23,7 @@ import { acharJogo } from '../dados/jogos';
  */
 function Jogar() {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const jogo = acharJogo(slug);
 
   // lazy() precisa ser criado uma vez só por jogo, senão o componente é
@@ -35,24 +37,34 @@ function Jogar() {
 
   return (
     <div className="bq-palco">
-      <Link className="bq-voltar-jogo" to={`/jogo/${jogo.slug}`}>
-        ← Voltar
-      </Link>
+      <header className="bq-barra-jogo">
+        <button
+          type="button"
+          className="bq-barra-jogo-marca"
+          onClick={() => navigate(-1)}
+          aria-label={`Voltar para a página de ${jogo.titulo} no portal`}
+          title="Voltar para o portal"
+        >
+          <img src={logo} alt="Brinque & Aprenda" width="841" height="120" />
+        </button>
+      </header>
 
-      {jogo.jogo.tipo === 'estatico' ? (
-        <iframe
-          className="bq-palco-quadro"
-          src={jogo.jogo.entrada}
-          title={jogo.titulo}
-          allow="autoplay; fullscreen"
-        />
-      ) : (
-        <div className="bq-palco-react">
-          <Suspense fallback={<p className="bq-carregando">Carregando {jogo.titulo}…</p>}>
-            <Componente />
-          </Suspense>
-        </div>
-      )}
+      <div className="bq-palco-area">
+        {jogo.jogo.tipo === 'estatico' ? (
+          <iframe
+            className="bq-palco-quadro"
+            src={jogo.jogo.entrada}
+            title={jogo.titulo}
+            allow="autoplay; fullscreen"
+          />
+        ) : (
+          <div className="bq-palco-react">
+            <Suspense fallback={<p className="bq-carregando">Carregando {jogo.titulo}…</p>}>
+              <Componente />
+            </Suspense>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

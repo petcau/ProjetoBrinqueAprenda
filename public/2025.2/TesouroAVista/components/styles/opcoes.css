@@ -136,7 +136,7 @@
     width: 90%;
 }
 
-@media (orientation: landscape) and (max-height: 500px) {
+@media (orientation: landscape) and (max-height: 650px) {
     .opcoes_conteudo {
         display: flex;
         flex-direction: column;

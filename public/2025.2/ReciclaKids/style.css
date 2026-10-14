@@ -4,15 +4,25 @@
     box-sizing: border-box;
     font-family: 'Arial Rounded MT Bold', 'Comic Sans MS', sans-serif;
 }
+html {
+    width: 100%;
+    height: 100%;
+}
 body{
-    height: 100vh;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
     background-image: url('game_assets/background/background.webp');
     background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
     overflow: hidden;
 }iframe{
+    display: block;
     height: 100%;
     width: 100%;
+    border: 0;
 }
 
 .popup{
@@ -37,7 +47,7 @@ body{
     background-color: #E2B875;
     border: 3px solid #C49B5A;
     border-radius: 10px;
-    width: 400px;
+    width: min(400px, calc(100vw - 2rem));
     height: 200px;
 
     display: flex;
@@ -69,7 +79,7 @@ body{
     transition: all 0.1s ease;
     text-shadow: 0 -2px 0 rgba(0, 0, 0, 0.3);
 
-    width: 300px;
+    width: min(300px, calc(100vw - 2rem));
 }
 
 .btn-green {
@@ -103,11 +113,33 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    min-height: 100%;
+    padding: clamp(.75rem, 2vh, 1.5rem);
+    text-align: center;
 }.first_cover img{
     object-fit: contain;
-    width: 50rem;
+    width: min(50rem, 90vw, 86vh);
+    height: auto;
 }.first_cover p{
-    font-size: 2rem;
+    font-size: clamp(1.2rem, 4vh, 2rem);
     font-weight: bold;
     color: #552D18;
+}
+
+@media (max-width: 680px) {
+    .first_cover {
+        min-height: 100%;
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .first_cover img {
+        width: min(50rem, 92vw, 82vh);
+        height: auto;
+    }
+
+    .first_cover p {
+        font-size: clamp(1.2rem, 6vw, 2rem);
+    }
 }

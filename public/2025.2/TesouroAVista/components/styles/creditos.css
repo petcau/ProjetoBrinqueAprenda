@@ -99,7 +99,7 @@ button.botao_voltar:hover span {
     font-size: clamp(1.3rem, 2.8vw, 3rem);
 }
 
-@media (orientation: landscape) and (max-height: 500px) {
+@media (orientation: landscape) and (max-height: 650px) {
 
     .creditos_conteudo_espacamento_cabecalho {
         width: 180px;
