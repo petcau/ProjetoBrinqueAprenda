@@ -15,7 +15,24 @@ body{
     align-items: center;
 
     background-image: url('../../game_assets/background/bgs1.webp');
-}#table{
+}
+
+.game-menu-button {
+    position: fixed;
+    top: clamp(.75rem, 2vh, 1.25rem);
+    right: clamp(.75rem, 2vw, 1.25rem);
+    z-index: 6;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 110px;
+    padding: 10px 22px;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+#table{
     display: grid;
 
     /*grid-template-columns: repeat(7, 100px);*/
@@ -106,6 +123,12 @@ article{
 }
 
 @media (max-height: 560px) {
+    .game-menu-button {
+        min-width: 90px;
+        padding: 8px 18px;
+        font-size: .9rem;
+    }
+
     #table {
         --game-scale: .78;
     }

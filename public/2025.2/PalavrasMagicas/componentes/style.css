@@ -871,6 +871,72 @@ input[type=range]::-webkit-slider-runnable-track {
     }
 }
 
+/* Opções e créditos ocupam a área útil do iframe sem depender da proporção
+   original de 16:9, que deixa de existir quando a faixa do portal aparece. */
+#game-container {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    aspect-ratio: auto;
+}
+
+#tela-opcoes .painel-madeira-popup,
+#tela-creditos .painel-madeira-popup {
+    width: min(760px, calc(100vw - 2rem));
+    height: min(520px, 90vh);
+    min-height: 0;
+    max-height: 90vh;
+    padding: clamp(72px, 14vh, 100px) clamp(36px, 7vw, 70px) clamp(68px, 12vh, 90px);
+    justify-content: center;
+    gap: clamp(.65rem, 2vh, 1.25rem);
+    overflow: hidden;
+}
+
+#tela-opcoes .painel-madeira-popup h2,
+#tela-creditos .painel-madeira-popup h2 {
+    top: 26%;
+    font-size: clamp(2rem, 7vh, 3.5rem);
+}
+
+#tela-opcoes .btn-fechar-popup,
+#tela-creditos .btn-fechar-popup {
+    top: 26%;
+    right: 13%;
+}
+
+#tela-opcoes .opcao-item {
+    display: flex;
+    transform: none;
+    width: 78%;
+    margin: 0;
+}
+
+#tela-opcoes .opcao-item span {
+    font-size: clamp(1.4rem, 5vh, 2.6rem);
+}
+
+#tela-opcoes .btn-zoom {
+    right: 13%;
+    bottom: 27%;
+    height: clamp(40px, 8vh, 52px);
+    padding-inline: 16px;
+    font-size: clamp(.9rem, 3vh, 1.25rem);
+}
+
+#tela-opcoes .zoom-dropdown {
+    top: 30%;
+    right: 13%;
+    bottom: auto;
+    max-height: 45%;
+}
+
+#tela-creditos .creditos-lista {
+    margin-top: 0;
+    font-size: clamp(1rem, 3.5vh, 1.75rem);
+    line-height: 1.35;
+}
+
 /* ===== FONTE LOCAL ===== */
 @font-face {
     font-family: 'LilitaOne-Regular';
