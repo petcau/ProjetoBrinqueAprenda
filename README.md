@@ -13,7 +13,7 @@
 
   ## ** --- Projeto Brinque e Aprenda. ---**
 
-Brinque Aprenda é um projeto educacional interativo voltado para crianças em idade pré-escolar e nos primeiros anos do ensino fundamental. A plataforma combina jogos educativos, atividades lúdicas e conteúdos pedagógicos com o objetivo de tornar o aprendizado mais divertido, envolvente e eficaz.
+Brinque Aprenda é um projeto educacional interativo voltado para estudantes dos anos finais do Ensino Fundamental 1 (4º e 5º ano) e do Ensino Fundamental 2 (6º ao 9º ano). A plataforma combina jogos educativos, atividades lúdicas e conteúdos pedagógicos com o objetivo de tornar o aprendizado mais divertido, envolvente e eficaz.
 
 
 ## **Objetivo.**
@@ -23,7 +23,7 @@ O objetivo do projeto Brinque Aprenda é desenvolver uma plataforma digital inte
 
 ## **Público Alvo.**
 
-O projeto é voltado a crianças do ensino fundamental.
+O projeto é voltado a estudantes dos anos finais do Ensino Fundamental 1 (4º e 5º ano) e do Ensino Fundamental 2 (6º ao 9º ano) — faixa etária aproximada de 9 a 14 anos.
 
 
 ## **Imagens geral dos jogos.**

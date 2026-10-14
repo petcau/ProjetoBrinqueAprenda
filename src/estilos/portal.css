@@ -1,0 +1,1939 @@
+/* ============================================================================
+   PORTAL BRINQUE E APRENDA — estilos do portal
+   ============================================================================
+
+   DUAS DECISÕES DE DESIGN QUE EXPLICAM O RESTO:
+
+   1. A interface é quieta de propósito. As capas dos jogos são telas de título,
+      cheias de letreiro colorido — são elas que devem chamar a atenção. Se a
+      moldura também gritar (fonte display, blocos escuros, amarelo forte), o
+      resultado é ruído e nada se lê. Por isso: fundo claro, tipografia sem
+      serifa em caixa normal, cor usada com parcimônia.
+
+   2. Toda classe começa com "bq-". O CSS de um jogo feito em React carrega
+      junto com o do portal, e nomes genéricos (.container, .card, button {})
+      colidem entre portal e jogos, e entre jogos de equipes diferentes.
+
+   Pela mesma razão, não há aqui nenhuma regra em seletor de elemento solto
+   (img {}, button {}, h1 {}) além do reset do topo. Uma regra dessas no CSS do
+   portal já quebrou as capas uma vez.
+
+   ============================================================================ */
+
+/* --- Tokens ---------------------------------------------------------------- */
+
+:root {
+  --bq-papel: #faf9f7;
+  --bq-branco: #ffffff;
+  --bq-tinta: #16214a;
+  --bq-tinta-media: #4b5572;
+  --bq-tinta-clara: #78839a;
+  --bq-borda: #e8e6e1;
+
+  --bq-azul: #5516f5;            /* roxo da logo (#5010ff, um grau mais legivel) */
+  --bq-azul-forte: #3d0bbd;
+  --bq-azul-nevoa: #efe9ff;
+
+  --bq-roxo-escuro: #1f0a52;
+  --bq-laranja: #ffa000;         /* o & da logo */
+  --bq-amarelo: #ffb000;         /* o brilho da logo */
+
+  --bq-coral: #e1613f;
+  --bq-coral-nevoa: #fdeee9;
+  --bq-musgo: #00a090;           /* o verde de "Aprenda" */
+  --bq-musgo-nevoa: #e3f6f3;
+  --bq-sol: #f2a93b;
+
+  --bq-sombra: 0 1px 2px rgba(27, 36, 52, 0.05), 0 6px 18px rgba(27, 36, 52, 0.06);
+  --bq-sombra-alta: 0 4px 10px rgba(27, 36, 52, 0.08), 0 18px 40px rgba(27, 36, 52, 0.12);
+
+  --bq-raio: 12px;
+  --bq-raio-g: 18px;
+  --bq-largura: 1120px;
+
+  --bq-fonte: 'Nunito', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+}
+
+/* --- Reset mínimo ---------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--bq-fonte);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--bq-tinta);
+  background-color: var(--bq-papel);
+  -webkit-font-smoothing: antialiased;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--bq-azul);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* --- Utilitários ----------------------------------------------------------- */
+
+.bq-largura {
+  width: 100%;
+  max-width: var(--bq-largura);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+.bq-pular {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--bq-tinta);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 0 0 var(--bq-raio) 0;
+  text-decoration: none;
+  font-weight: 700;
+}
+.bq-pular:focus {
+  left: 0;
+}
+
+/* --- Seção de turma -------------------------------------------------------- */
+
+.bq-turmas {
+  padding: 52px 0 80px;
+}
+
+.bq-turma {
+  margin-bottom: 64px;
+}
+
+.bq-turma-cabeca {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-bottom: 24px;
+}
+
+.bq-turma-titulo {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--bq-tinta);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Barrinha colorida que identifica a turma de relance. */
+.bq-turma-titulo::before {
+  content: '';
+  width: 10px;
+  height: 26px;
+  border-radius: 3px;
+  background: var(--bq-acento, var(--bq-azul));
+  flex-shrink: 0;
+}
+
+.bq-turma-meta {
+  color: var(--bq-tinta-clara);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.bq-turma-link {
+  margin-left: auto;
+  color: var(--bq-azul);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.bq-turma-link:hover {
+  text-decoration: underline;
+}
+
+/* --- Grade e cards --------------------------------------------------------- */
+
+.bq-grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  gap: 24px;
+}
+
+.bq-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bq-branco);
+  border: 1px solid var(--bq-borda);
+  border-radius: var(--bq-raio-g);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--bq-sombra);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.bq-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--bq-sombra-alta);
+}
+
+/* As capas são sempre 1200x675. O height: auto é proposital e obrigatório:
+   deixa a proporção natural do arquivo mandar, e com isso nenhuma regra solta
+   de altura em "img" — do portal ou de um jogo — consegue esticar a capa. */
+.bq-card-capa {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  background: var(--bq-azul-nevoa);
+  border-bottom: 1px solid var(--bq-borda);
+}
+
+.bq-card-corpo {
+  padding: 16px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 7px;
+}
+
+.bq-card-titulo {
+  overflow-wrap: anywhere;
+  font-size: 1.08rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--bq-tinta);
+  margin: 0;
+}
+
+.bq-card-sinopse {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--bq-tinta-media);
+  flex: 1;
+}
+
+.bq-card-rodape {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+/* --- Selos ----------------------------------------------------------------- */
+
+.bq-selo {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  background: #f1efea;
+  color: var(--bq-tinta-media);
+  white-space: nowrap;
+}
+
+.bq-selo-turma {
+  background: var(--bq-azul-nevoa);
+  color: var(--bq-azul);
+}
+
+/* --- Migalhas -------------------------------------------------------------- */
+
+.bq-migalhas {
+  padding: 22px 0 0;
+  font-size: 0.9rem;
+  color: var(--bq-tinta-clara);
+}
+
+.bq-migalhas a {
+  color: var(--bq-tinta-media);
+  font-weight: 700;
+  text-decoration: none;
+}
+.bq-migalhas a:hover {
+  color: var(--bq-azul);
+  text-decoration: underline;
+}
+
+/* --- Ficha do jogo --------------------------------------------------------- */
+
+.bq-ficha {
+  padding: 14px 0 80px;
+}
+
+.bq-ficha-topo {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+  margin-bottom: 52px;
+}
+
+.bq-ficha-capa {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--bq-raio-g);
+  border: 1px solid var(--bq-borda);
+  box-shadow: var(--bq-sombra-alta);
+  display: block;
+}
+
+.bq-ficha-titulo {
+  overflow-wrap: anywhere;
+  font-size: clamp(1.8rem, 3.6vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  color: var(--bq-tinta);
+  margin: 0 0 10px;
+}
+
+.bq-ficha-subtitulo {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--bq-tinta-media);
+  margin: 0 0 26px;
+}
+
+.bq-jogar {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--bq-coral);
+  color: #fff;
+  font-family: var(--bq-fonte);
+  font-weight: 800;
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  padding: 14px 34px;
+  border: 0;
+  border-radius: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(225, 97, 63, 0.3);
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.bq-jogar:hover {
+  background: #cf5233;
+  transform: translateY(-1px);
+}
+
+.bq-jogar:active {
+  transform: translateY(1px);
+}
+
+.bq-ficha-dados {
+  margin: 30px 0 0;
+  padding: 22px 0 0;
+  border-top: 1px solid var(--bq-borda);
+  display: grid;
+  gap: 14px;
+}
+
+.bq-ficha-dados > div {
+  display: grid;
+  grid-template-columns: 116px 1fr;
+  gap: 14px;
+  align-items: baseline;
+}
+
+.bq-ficha-dados dt {
+  font-weight: 800;
+  color: var(--bq-tinta-clara);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.bq-ficha-dados dd {
+  margin: 0;
+  color: var(--bq-tinta);
+  font-size: 0.96rem;
+  font-weight: 600;
+}
+
+.bq-ficha-dados a {
+  color: var(--bq-azul);
+  font-weight: 700;
+}
+
+/* --- Blocos de conteúdo ---------------------------------------------------- */
+
+.bq-bloco {
+  margin-bottom: 46px;
+}
+
+.bq-bloco h2 {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--bq-tinta-clara);
+  margin: 0 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--bq-borda);
+}
+
+.bq-texto {
+  max-width: 68ch;
+  margin: 0 0 16px;
+  color: var(--bq-tinta-media);
+}
+
+.bq-chamada {
+  max-width: 68ch;
+  margin: 0;
+  padding: 18px 22px;
+  background: var(--bq-musgo-nevoa);
+  border-radius: var(--bq-raio);
+  font-weight: 700;
+  color: #1d5e4f;
+}
+
+.bq-habilidades {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.bq-habilidade {
+  background: var(--bq-branco);
+  border: 1px solid var(--bq-borda);
+  border-radius: 8px;
+  padding: 9px 15px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--bq-tinta);
+}
+
+.bq-caracteristicas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.bq-caracteristica {
+  background: var(--bq-branco);
+  border: 1px solid var(--bq-borda);
+  border-radius: var(--bq-raio);
+  padding: 20px;
+}
+
+.bq-caracteristica-icone {
+  font-size: 1.6rem;
+  line-height: 1;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.bq-caracteristica h3 {
+  margin: 0 0 5px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--bq-tinta);
+}
+
+.bq-caracteristica p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--bq-tinta-media);
+}
+
+/* --- Equipe ---------------------------------------------------------------- */
+
+.bq-equipe {
+  background: var(--bq-branco);
+  border: 1px solid var(--bq-borda);
+  border-radius: var(--bq-raio);
+  padding: 22px 24px;
+}
+
+.bq-equipe-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  padding: 0;
+  margin: 0 0 14px;
+  list-style: none;
+}
+
+.bq-equipe-lista li {
+  overflow-wrap: anywhere;
+  font-weight: 700;
+  color: var(--bq-tinta);
+}
+
+.bq-equipe-origem {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--bq-tinta-clara);
+}
+
+/* --- Página da turma ------------------------------------------------------- */
+
+.bq-turma-abertura {
+  padding: 48px 0 40px;
+  border-bottom: 1px solid var(--bq-borda);
+  background: radial-gradient(52rem 20rem at 20% -20%, var(--bq-azul-nevoa), transparent 70%);
+}
+
+.bq-turma-abertura h1 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin: 0 0 10px;
+  color: var(--bq-tinta);
+}
+
+.bq-turma-abertura p {
+  margin: 0;
+  color: var(--bq-tinta-media);
+  max-width: 60ch;
+}
+
+/* --- Tela de jogo ---------------------------------------------------------- */
+
+.bq-palco {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #11161f;
+}
+
+.bq-palco-quadro {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.bq-palco-react {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.bq-voltar-jogo {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 10;
+  margin: 0;
+  padding: 8px 16px;
+  font-family: var(--bq-fonte);
+  font-size: 14.5px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #fff;
+  background: rgba(17, 22, 31, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  backdrop-filter: blur(6px);
+}
+
+.bq-voltar-jogo:hover {
+  background: rgba(17, 22, 31, 0.95);
+}
+
+.bq-carregando {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* --- Página Sobre ---------------------------------------------------------- */
+
+.bq-sobre {
+  padding: 44px 0 80px;
+}
+
+.bq-sobre h1 {
+  font-size: clamp(1.9rem, 4vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--bq-tinta);
+  margin: 0 0 26px;
+}
+
+.bq-turma-creditos {
+  background: var(--bq-branco);
+  border: 1px solid var(--bq-borda);
+  border-radius: var(--bq-raio);
+  padding: 22px 24px;
+  margin-bottom: 16px;
+}
+
+.bq-turma-creditos h3 {
+  margin: 0 0 2px;
+  font-size: 1.08rem;
+  font-weight: 800;
+}
+
+.bq-turma-creditos h3 a {
+  color: var(--bq-tinta);
+  text-decoration: none;
+}
+.bq-turma-creditos h3 a:hover {
+  color: var(--bq-azul);
+}
+
+.bq-jogo-creditos {
+  margin: 16px 0 0;
+  font-size: 0.94rem;
+}
+
+.bq-jogo-creditos a {
+  color: var(--bq-azul);
+  text-decoration: none;
+}
+.bq-jogo-creditos a:hover {
+  text-decoration: underline;
+}
+
+.bq-jogo-creditos span {
+  color: var(--bq-tinta-media);
+}
+
+/* ============================================================================
+   RODAPÉ
+   ============================================================================
+
+   Duas partes: uma faixa clara de chamada, e o rodapé escuro com os links.
+
+   Tudo que aparece aqui leva a uma página que existe. As categorias e as
+   turmas são montadas a partir do catálogo, então crescem sozinhas.
+   ============================================================================ */
+
+/* --- Faixa de chamada ------------------------------------------------------ */
+
+.bq-chamada-final {
+  background: var(--bq-branco);
+  border-top: 1px solid var(--bq-borda);
+  padding: 40px 0;
+}
+
+.bq-chamada-interna {
+  position: relative;
+}
+
+.bq-chamada-arte {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--bq-raio-g);
+}
+
+/* Em tela larga quem mostra o texto é a arte; este bloco continua no HTML só
+   para o leitor de tela, que não lê letra desenhada dentro de imagem. */
+.bq-chamada-texto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* O vão vazio da arte, entre o garoto e a garota. Como a posição é em
+   porcentagem, ela acompanha a imagem quando a tela encolhe. */
+.bq-chamada-botao {
+  position: absolute;
+  left: 62%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.bq-chamada-botao:hover {
+  transform: translate(-50%, calc(-50% - 2px));
+}
+
+/* Abaixo disto a letra desenhada na arte ficaria pequena demais: a imagem sai
+   e o texto de verdade assume. */
+@media (max-width: 820px) {
+  .bq-chamada-arte {
+    display: none;
+  }
+
+  .bq-chamada-texto {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0 0 20px;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+  }
+
+  .bq-chamada-texto h2 {
+    margin: 0 0 6px;
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    color: var(--bq-tinta);
+  }
+
+  .bq-chamada-texto h2 em {
+    font-style: normal;
+    color: var(--bq-azul);
+  }
+
+  .bq-chamada-texto p {
+    margin: 0;
+    color: var(--bq-tinta-media);
+  }
+
+  .bq-chamada-botao,
+  .bq-chamada-botao:hover {
+    position: static;
+    transform: none;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* --- Rodapé escuro --------------------------------------------------------- */
+
+.bq-rodape-escuro {
+  background: #141c33;
+  color: #aab4ca;
+  padding: 48px 0 0;
+}
+
+.bq-rodape-colunas {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1.2fr 1fr;
+  gap: 36px;
+  padding-bottom: 40px;
+}
+
+/* A marca no rodapé é texto, não imagem: sobre o fundo escuro o roxo da arte
+   perde contraste. Os tons aqui são as cores da logo clareadas para o escuro. */
+.bq-rodape-nome {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.bq-rodape-nome span:nth-child(1) {
+  color: #ffffff;
+}
+
+.bq-rodape-nome span:nth-child(2) {
+  color: var(--bq-laranja);
+  font-size: 1.3rem;
+}
+
+.bq-rodape-nome span:nth-child(3) {
+  color: #35d6bd;
+}
+
+.bq-rodape-marca p {
+  margin: 16px 0 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  max-width: 34ch;
+}
+
+.bq-rodape-coluna {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.bq-rodape-coluna h3 {
+  margin: 0 0 12px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #8390ab;
+}
+
+.bq-rodape-coluna a {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 0;
+  color: #d4dbe9;
+  text-decoration: none;
+  font-size: 0.94rem;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.bq-rodape-coluna a:hover {
+  color: #fff;
+}
+
+/* O ícone herda a cor da área; o nome só acende ao passar o mouse. */
+.bq-rodape-coluna a .bq-icone {
+  color: var(--cat-cor, #8390ab);
+  flex-shrink: 0;
+}
+
+.bq-rodape-coluna a small {
+  margin-left: auto;
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #76829c;
+}
+
+.bq-rodape-nota {
+  margin: 14px 0 0;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: #76829c;
+}
+
+/* --- Lema e realização ----------------------------------------------------- */
+
+.bq-rodape-realizacao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  padding: 32px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.bq-realizacao h3 {
+  text-align: center;
+  margin: 0 0 12px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #8390ab;
+}
+
+.bq-realizacao > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.bq-realizacao img {
+  height: 74px;
+  width: auto;
+  background: var(--bq-branco);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+.bq-realizacao span {
+  display: flex;
+  flex-direction: column;
+  font-weight: 700;
+  color: #e6ebf5;
+  font-size: 1.02rem;
+  line-height: 1.35;
+}
+
+.bq-realizacao small {
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: #8390ab;
+}
+
+/* --- Linha final ----------------------------------------------------------- */
+
+.bq-rodape-base {
+  display: flex;
+  justify-content: center;
+  gap: 10px 28px;
+  flex-wrap: wrap;
+  text-align: center;
+  padding: 18px 0 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  font-size: 0.86rem;
+  color: #76829c;
+}
+
+.bq-rodape-base p {
+  margin: 0;
+}
+
+.bq-rodape-base a {
+  color: #b9c4d8;
+  font-weight: 700;
+}
+
+/* --- Responsivo ------------------------------------------------------------ */
+
+@media (max-width: 900px) {
+  .bq-rodape-colunas {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+
+  .bq-rodape-marca {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .bq-chamada-final {
+    padding: 30px 0;
+  }
+
+  .bq-rodape-colunas {
+    grid-template-columns: 1fr;
+    gap: 26px;
+    padding-bottom: 30px;
+  }
+
+  .bq-rodape-realizacao {
+    gap: 20px;
+  }
+}
+
+/* --- Página não encontrada ------------------------------------------------- */
+
+.bq-vazio {
+  padding: 90px 0;
+  text-align: center;
+}
+
+.bq-vazio h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--bq-tinta);
+  margin: 0 0 12px;
+}
+
+.bq-vazio .bq-texto {
+  margin: 0 auto 26px;
+}
+
+/* --- Estrutura ------------------------------------------------------------- */
+
+.bq-pagina {
+  overflow-x: clip;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.bq-conteudo {
+  flex: 1;
+}
+
+/* --- Responsivo ------------------------------------------------------------ */
+
+@media (max-width: 900px) {
+  .bq-ficha-topo {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+}
+
+@media (max-width: 680px) {
+  body {
+    font-size: 16px;
+  }
+
+  .bq-largura {
+    padding: 0 18px;
+  }
+
+  .bq-grade {
+    grid-template-columns: 1fr;
+  }
+
+  .bq-turma-link {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .bq-ficha-dados > div {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .bq-jogar {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bq-card,
+  .bq-jogar {
+    transition: none;
+  }
+  .bq-card:hover,
+  .bq-jogar:hover {
+    transform: none;
+  }
+}
+
+/* ============================================================================
+   CABEÇALHO
+   ============================================================================ */
+
+.bq-cabecalho {
+  background: var(--bq-branco);
+  border-bottom: 1px solid var(--bq-borda);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.bq-cabecalho-interno {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 64px;
+}
+
+/* --- Marca ----------------------------------------------------------------- */
+
+.bq-marca {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+/* height: auto é obrigatório — deixa a proporção do arquivo mandar e impede
+   que qualquer regra solta de altura em img estique a logo. */
+.bq-marca img {
+  height: 34px;
+  width: auto;
+  display: block;
+}
+
+/* --- Menu ------------------------------------------------------------------ */
+
+.bq-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.bq-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border-radius: 9px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  white-space: nowrap;
+  color: var(--bq-tinta-media);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.bq-nav a:hover {
+  background: var(--bq-azul-nevoa);
+  color: var(--bq-azul);
+}
+
+.bq-nav a[aria-current='page'] {
+  background: var(--bq-azul-nevoa);
+  color: var(--bq-azul);
+}
+
+.bq-icone {
+  flex-shrink: 0;
+}
+
+/* --- Busca e conta (ainda sem função) -------------------------------------- */
+
+.bq-cabecalho-acoes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 14px;
+  flex-shrink: 0;
+}
+
+.bq-sanduiche {
+  display: none;   /* só aparece quando o menu sai da barra */
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid var(--bq-borda);
+  border-radius: 10px;
+  background: var(--bq-branco);
+  color: var(--bq-tinta);
+  cursor: pointer;
+}
+
+.bq-sanduiche:hover {
+  background: var(--bq-azul-nevoa);
+  color: var(--bq-azul);
+}
+
+/* O painel só existe no celular; no desktop o menu vive na própria barra. */
+.bq-menu-celular {
+  display: none;
+}
+
+.bq-conta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: var(--bq-azul);
+  color: #fff;
+  font-weight: 800;
+  font-size: 14.5px;
+  white-space: nowrap;
+}
+
+/* ============================================================================
+   ABERTURA DA HOME
+   ============================================================================ */
+
+.bq-hero {
+  position: relative;
+  overflow: hidden;
+  /* Degradê de base, nas cores da própria arte: aparece se o arquivo sumir e
+     continua por baixo dela, garantindo contraste para o texto. */
+  background: linear-gradient(110deg, #1b2b4d 0%, #2d4a72 45%, #417abe 100%);
+}
+
+/* A arte fica numa camada própria para poder ser escurecida só do lado do
+   texto. O banner é 4.25:1 — bem largo e baixo — e a altura do hero segue essa
+   proporção para que quase nada seja cortado. Ver src/assets/LEIA-ME-BANNER.md */
+.bq-hero-arte {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      100deg,
+      rgba(12, 18, 38, 0.93) 0%,
+      rgba(12, 18, 38, 0.88) 26%,
+      rgba(12, 18, 38, 0.55) 44%,
+      rgba(12, 18, 38, 0.12) 60%,
+      rgba(12, 18, 38, 0) 72%
+    ),
+    url('../assets/banner.webp');
+  background-size: cover, cover;
+  background-position: center, center right;
+  background-repeat: no-repeat, no-repeat;
+}
+
+.bq-hero-interno {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  /* Acompanha a largura da tela para manter a proporção do banner: a 1920px
+     dá 442px de altura (4.3:1, praticamente o recorte inteiro da arte). */
+  min-height: clamp(360px, 23vw, 460px);
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.bq-hero-texto {
+  max-width: 33rem;
+  color: #fff;
+}
+
+.bq-hero h1 {
+  margin: 0 0 14px;
+  font-size: clamp(2rem, 4.2vw, 2.9rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: #fff;
+  text-shadow: 0 2px 20px rgba(8, 12, 28, 0.6);
+}
+
+.bq-hero h1 em {
+  font-style: normal;
+  color: var(--bq-amarelo);
+}
+
+.bq-hero-linha {
+  margin: 0 0 26px;
+  max-width: 31rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #dbe6f5;
+  text-shadow: 0 1px 10px rgba(8, 12, 28, 0.5);
+}
+
+.bq-hero-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.bq-botao {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 13px 26px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+  transition: transform 0.12s ease, background-color 0.15s ease;
+}
+
+.bq-botao:hover {
+  transform: translateY(-2px);
+}
+
+.bq-botao-principal {
+  background: var(--bq-azul);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(85, 22, 245, 0.5);
+}
+.bq-botao-principal:hover {
+  background: #6a35ff;
+}
+
+/* --- Placas da lateral ------------------------------------------------------
+
+   Ancoradas na base para o poste encostar na borda do hero: lê-se como placa
+   fincada no chão, e não como adesivo flutuando. A altura acompanha a do hero
+   para a proporção se manter em qualquer tela.
+*/
+
+.bq-hero-placas {
+  z-index: 1;
+  position: absolute;
+  right: clamp(12px, 4.5vw, 86px);
+  bottom: 0;
+  height: clamp(190px, 76%, 340px);
+  width: auto;
+  display: block;
+  filter: drop-shadow(0 10px 22px rgba(8, 12, 28, 0.45));
+  pointer-events: none;
+}
+
+@media (max-width: 680px) {
+  .bq-hero-botoes .bq-botao {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* ============================================================================
+   O HERO EM TELAS ESTREITAS
+   ============================================================================
+
+   O banner é 4.25:1. Num celular de 380px isso daria uma faixa de 89px, onde
+   não se vê nada. Então abaixo de 860px o leiaute deixa de ser sobreposto: a
+   arte vira uma faixa própria no topo, recortada na altura dos personagens, e
+   o texto vem abaixo dela sobre o degradê. Ninguém precisa ler por cima da
+   ilustração, e a arte aparece inteira em vez de cortada.
+   ============================================================================ */
+
+@media (max-width: 900px) {
+  /* No leiaute empilhado as placas colidiriam com o texto. */
+  .bq-hero-placas {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .bq-hero {
+    display: block;
+  }
+
+  .bq-hero-arte {
+    position: static;
+    width: 100%;
+    /* Recorte na área dos personagens: robô, as três crianças e os ícones. */
+    aspect-ratio: 2 / 1;
+    background-image: url('../assets/banner.webp');
+    background-size: cover;
+    background-position: 64% center;
+  }
+
+  .bq-hero-interno {
+    display: block;
+    min-height: 0;
+    padding-top: 30px;
+    padding-bottom: 34px;
+  }
+
+  .bq-hero-texto {
+    max-width: none;
+  }
+
+  .bq-hero h1 {
+    text-shadow: none;
+  }
+
+  .bq-hero-linha {
+    text-shadow: none;
+    max-width: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .bq-hero-arte {
+    aspect-ratio: 3 / 2;
+    background-position: 68% center;
+  }
+
+  .bq-hero-botoes .bq-botao {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* ============================================================================
+   O MENU EM TELAS ESTREITAS
+   ============================================================================
+
+   Até 900px o menu sai da barra e vira um painel que desce ao toque do botão
+   sanduíche. A tentativa anterior — deixar o menu quebrar para uma segunda
+   linha — funcionava em largura, mas ficava desajeitada e não aguentaria os
+   itens que ainda vão entrar (Desafios, Professores).
+   ============================================================================ */
+
+@media (max-width: 900px) {
+  .bq-nav {
+    display: none;
+  }
+
+  .bq-sanduiche {
+    display: inline-flex;
+  }
+
+  /* O botão de conta ainda não faz nada. Ao lado de um sanduíche que faz,
+     vira ruído — no celular ele sai. */
+  .bq-conta {
+    display: none;
+  }
+
+
+  .bq-menu-celular {
+    display: block;
+    border-top: 1px solid var(--bq-borda);
+    background: var(--bq-branco);
+    padding: 6px 0 10px;
+    box-shadow: 0 14px 26px rgba(22, 33, 74, 0.1);
+  }
+
+  .bq-menu-celular > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .bq-menu-celular a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 12px;
+    min-height: 46px; /* alvo de toque confortável */
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--bq-tinta-media);
+  }
+
+  .bq-menu-celular a:hover,
+  .bq-menu-celular a[aria-current='page'] {
+    background: var(--bq-azul-nevoa);
+    color: var(--bq-azul);
+  }
+
+}
+
+@media (max-width: 680px) {
+  .bq-cabecalho-interno {
+    min-height: 58px;
+    gap: 10px;
+  }
+
+  .bq-marca img {
+    height: 26px;
+  }
+
+  .bq-cabecalho-acoes {
+    margin-left: auto;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 380px) {
+  .bq-marca img {
+    height: 23px;
+  }
+}
+
+/* ============================================================================
+   BARRA DE CATEGORIAS — carrossel de uma linha
+   ============================================================================
+
+   Fica logo abaixo da abertura. Em grade, sete áreas quebravam em duas linhas
+   e os cartões ficavam estreitos demais para o texto. Numa linha que desliza,
+   cada cartão tem largura fixa e confortável, e a lista cresce sem mexer no
+   leiaute quando uma área nova entrar.
+
+   As cores vêm do catálogo por variável — o CSS não conhece nenhuma área pelo
+   nome, então acrescentar uma é só mexer nos dados.
+   ============================================================================ */
+
+.bq-categorias-faixa {
+  background: var(--bq-branco);
+  border-bottom: 1px solid var(--bq-borda);
+  padding: 18px 0;
+}
+
+.bq-carrossel {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.bq-categorias {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-padding-left: 2px;
+  /* Espaço para a sombra dos cartões não ser cortada pelo overflow. */
+  padding: 4px 2px;
+  margin: -4px -2px;
+  /* A rolagem é por toque ou pelas setas; a barra em si só suja o visual. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.bq-categorias::-webkit-scrollbar {
+  display: none;
+}
+
+.bq-categoria {
+  flex: 0 0 auto;
+  width: 236px;
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 15px;
+  border-radius: 14px;
+  background: var(--cat-fundo);
+  text-decoration: none;
+  color: var(--bq-tinta);
+  border: 1px solid transparent;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.bq-categoria:hover {
+  transform: translateY(-2px);
+  border-color: var(--cat-cor);
+}
+
+.bq-categoria-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--cat-cor);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.bq-categoria-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+/* Nome e contagem na mesma linha: sobra largura para a descrição respirar. */
+.bq-categoria-texto strong {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--cat-cor);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.bq-categoria-conta {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* Duas linhas no máximo: com sete áreas, uma descrição de quatro linhas
+   desalinhava a altura de todos os cartões. */
+.bq-categoria-texto small {
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--bq-tinta-media);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* --- Setas ------------------------------------------------------------------
+
+   Só aparecem quando há para onde rolar naquele sentido. No celular ficam
+   escondidas: lá o dedo já resolve, e elas tapariam os cartões.
+*/
+
+.bq-carrossel-seta {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid var(--bq-borda);
+  border-radius: 50%;
+  background: var(--bq-branco);
+  color: var(--bq-tinta);
+  cursor: pointer;
+  box-shadow: 0 3px 12px rgba(22, 33, 74, 0.16);
+}
+
+.bq-carrossel-seta[hidden] {
+  display: none;
+}
+
+.bq-carrossel-seta:hover {
+  background: var(--bq-azul-nevoa);
+  color: var(--bq-azul);
+}
+
+.bq-carrossel-seta.anterior {
+  left: 4px;
+}
+
+.bq-carrossel-seta.anterior .bq-icone {
+  transform: rotate(180deg);
+}
+
+.bq-carrossel-seta.proxima {
+  right: 4px;
+}
+
+/* --- Filtro ativo na página de jogos --------------------------------------- */
+
+.bq-filtro {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 26px;
+}
+
+.bq-filtro-selo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px 7px 14px;
+  border-radius: 999px;
+  background: var(--cat-fundo, var(--bq-azul-nevoa));
+  color: var(--cat-cor, var(--bq-azul));
+  font-weight: 800;
+  font-size: 0.92rem;
+}
+
+.bq-filtro-limpar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--cat-cor, var(--bq-azul));
+  color: #fff;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  /* No toque o dedo já rola; as setas só tapariam os cartões. */
+  .bq-carrossel-seta {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .bq-categorias-faixa {
+    padding: 14px 0;
+  }
+
+  .bq-categoria {
+    width: 232px;
+    padding: 11px 13px;
+    gap: 10px;
+  }
+
+  .bq-categoria-icone {
+    width: 38px;
+    height: 38px;
+  }
+
+  /* O carrossel sangra até a borda da tela: mostra que há mais para o lado. */
+  .bq-carrossel {
+    margin-left: -18px;
+    margin-right: -18px;
+  }
+
+  .bq-categorias {
+    padding-left: 18px;
+    padding-right: 18px;
+    scroll-padding-left: 18px;
+  }
+}
+
+/* A área que está filtrando no momento, na página /jogos. Clicar nela de novo
+   limpa o filtro — por isso a seta vira um X. */
+.bq-categoria.ativa {
+  border-color: var(--cat-cor);
+  box-shadow: inset 0 0 0 1px var(--cat-cor);
+}
+
+.bq-categoria.ativa .bq-categoria-conta .bq-icone {
+  transform: rotate(45deg);
+}
+
+/* ============================================================================
+   JOGO DO DIA — destaque da home
+   ============================================================================ */
+
+.bq-destaque {
+  padding: 44px 0 10px;
+}
+
+.bq-destaque-etiqueta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  margin: 0 0 16px;
+}
+
+.bq-destaque-etiqueta > span {
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--bq-tinta-clara);
+}
+
+.bq-destaque-etiqueta a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--bq-azul);
+  font-weight: 800;
+  font-size: 0.93rem;
+  text-decoration: none;
+}
+
+.bq-destaque-etiqueta a:hover {
+  text-decoration: underline;
+}
+
+.bq-destaque-cartao {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: center;
+  background: var(--bq-branco);
+  border: 1px solid var(--bq-borda);
+  border-radius: var(--bq-raio-g);
+  padding: 22px;
+  box-shadow: var(--bq-sombra);
+}
+
+.bq-destaque-capa {
+  display: block;
+  border-radius: var(--bq-raio);
+  overflow: hidden;
+  line-height: 0;
+}
+
+.bq-destaque-capa img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+.bq-destaque-areas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 12px;
+}
+
+.bq-destaque-areas span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 7px;
+  background: var(--cat-fundo);
+  color: var(--cat-cor);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.bq-destaque-texto h2 {
+  margin: 0 0 6px;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+}
+
+.bq-destaque-texto h2 a {
+  color: var(--bq-tinta);
+  text-decoration: none;
+}
+
+.bq-destaque-texto h2 a:hover {
+  color: var(--bq-azul);
+}
+
+.bq-destaque-subtitulo {
+  margin: 0 0 10px;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--bq-tinta-media);
+}
+
+.bq-destaque-sinopse {
+  margin: 0 0 16px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--bq-tinta-media);
+}
+
+.bq-destaque-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 20px;
+}
+
+.bq-destaque-meta span {
+  padding: 4px 10px;
+  border-radius: 7px;
+  background: #f1efea;
+  color: var(--bq-tinta-media);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.bq-destaque-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.bq-botao-claro {
+  background: var(--bq-branco);
+  color: var(--bq-tinta);
+  border: 1px solid var(--bq-borda);
+}
+
+.bq-botao-claro:hover {
+  background: var(--bq-azul-nevoa);
+  color: var(--bq-azul);
+}
+
+/* ============================================================================
+   FAIXA DE TURMAS — só os nomes, não os jogos
+   ============================================================================ */
+
+.bq-faixa-turmas {
+  padding: 48px 0 72px;
+}
+
+.bq-faixa-arte {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--bq-raio-g);
+  margin-bottom: 22px;
+}
+
+/* Em tela larga quem mostra o texto é a arte; este bloco fica para o leitor
+   de tela, que não lê letra desenhada dentro de imagem. */
+.bq-faixa-texto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.bq-turmas-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.bq-turmas-lista a {
+  display: flex;
+  align-items: center;
+  gap: 4px 14px;
+  flex-wrap: wrap;
+  padding: 16px 18px;
+  border-radius: var(--bq-raio);
+  background: var(--bq-branco);
+  border: 1px solid var(--bq-borda);
+  text-decoration: none;
+  color: var(--bq-tinta);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.bq-turmas-lista a:hover {
+  transform: translateY(-2px);
+  border-color: var(--bq-azul);
+}
+
+.bq-turmas-lista strong {
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.bq-turmas-lista small {
+  width: 100%;
+  font-size: 0.84rem;
+  color: var(--bq-tinta-clara);
+  font-weight: 600;
+}
+
+.bq-turmas-lista .bq-icone {
+  margin-left: auto;
+  color: var(--bq-azul);
+}
+
+@media (max-width: 820px) {
+  .bq-destaque-cartao {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 560px) {
+  .bq-destaque {
+    padding-top: 32px;
+  }
+
+  .bq-destaque-cartao {
+    padding: 14px;
+  }
+
+  .bq-destaque-botoes .bq-botao {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .bq-faixa-turmas {
+    padding: 36px 0 52px;
+  }
+}
+
+/* Abaixo disto a letra desenhada na arte da faixa de turmas ficaria pequena
+   demais: a imagem sai e o texto de verdade assume. Mesmo critério da faixa
+   de chamada do rodapé. */
+@media (max-width: 820px) {
+  .bq-faixa-arte {
+    display: none;
+  }
+
+  .bq-faixa-texto {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0 0 20px;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+  }
+
+  .bq-faixa-texto h2 {
+    margin: 0 0 6px;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.18;
+    color: var(--bq-tinta);
+  }
+
+  .bq-faixa-texto p {
+    margin: 0;
+    max-width: 62ch;
+    color: var(--bq-tinta-media);
+  }
+}
