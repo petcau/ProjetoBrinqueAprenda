@@ -1,7 +1,9 @@
-import { Suspense, lazy, useMemo } from 'react';
+import { Suspense, lazy, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import NaoEncontrada from './NaoEncontrada';
 import { acharJogo } from '../dados/jogos';
+import { registrarAbertura } from '../dados/perfil';
+import { instalarApi, removerApi } from '../dados/api-jogo.js';
 import logo from '../assets/logo-brinque-aprenda.webp';
 
 /**
@@ -32,6 +34,18 @@ function Jogar() {
     () => (jogo?.jogo.tipo === 'react' ? lazy(jogo.jogo.carregar) : null),
     [jogo],
   );
+
+  // Conta a partida para o perfil ativo. É o único progresso que o portal
+  // consegue registrar nos jogos que não guardam nada por conta própria.
+  useEffect(() => {
+    if (!jogo) return;
+    registrarAbertura(jogo.slug);
+
+    // Deixa a API disponível para o jogo que está abrindo, e tira ao sair:
+    // assim um jogo nunca consegue gravar progresso no lugar de outro.
+    instalarApi(jogo.slug);
+    return removerApi;
+  }, [jogo]);
 
   if (!jogo) return <NaoEncontrada />;
 

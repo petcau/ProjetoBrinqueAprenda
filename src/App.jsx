@@ -5,6 +5,7 @@ import Jogos from './paginas/Jogos';
 import Turma from './paginas/Turma';
 import Jogo from './paginas/Jogo';
 import Jogar from './paginas/Jogar';
+import MeuEspaco from './paginas/MeuEspaco';
 import Sobre from './paginas/Sobre';
 import NaoEncontrada from './paginas/NaoEncontrada';
 
@@ -27,6 +28,7 @@ export function Rotas() {
       <Route path="/turma/:semestre" element={<Turma />} />
       <Route path="/jogo/:slug" element={<Jogo />} />
       <Route path="/jogar/:slug" element={<Jogar />} />
+      <Route path="/meu-espaco" element={<MeuEspaco />} />
       <Route path="/sobre" element={<Sobre />} />
       <Route path="*" element={<NaoEncontrada />} />
     </Routes>

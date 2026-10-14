@@ -1988,3 +1988,363 @@ button:focus-visible {
     color: var(--bq-tinta-media);
   }
 }
+
+/* ============================================================================
+   MEU ESPAÇO — perfis locais e progresso
+   ============================================================================ */
+
+.bq-espaco {
+  padding: 40px 0 72px;
+}
+
+.bq-so-leitor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --- Lista de perfis -------------------------------------------------------- */
+
+.bq-perfis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.bq-perfil {
+  position: relative;
+}
+
+.bq-perfil > button:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 124px;
+  padding: 16px 12px 14px;
+  border: 2px solid var(--bq-borda);
+  border-radius: var(--bq-raio-g);
+  background: var(--bq-branco);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.bq-perfil > button:first-child:hover {
+  border-color: var(--bq-azul);
+  transform: translateY(-2px);
+}
+
+.bq-perfil.ativo > button:first-child {
+  border-color: var(--bq-azul);
+  background: var(--bq-azul-nevoa);
+}
+
+.bq-perfil-avatar {
+  font-size: 2.3rem;
+  line-height: 1.1;
+}
+
+.bq-perfil-nome {
+  font-weight: 800;
+  font-size: 0.98rem;
+  color: var(--bq-tinta);
+  overflow-wrap: anywhere;
+}
+
+.bq-perfil small {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--bq-azul);
+}
+
+.bq-perfil-apagar {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--bq-borda);
+  border-radius: 50%;
+  background: var(--bq-branco);
+  color: var(--bq-tinta-clara);
+  cursor: pointer;
+}
+
+.bq-perfil-apagar:hover {
+  background: var(--bq-coral);
+  border-color: var(--bq-coral);
+  color: #fff;
+}
+
+.bq-perfil-novo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 124px;
+  min-height: 104px;
+  border: 2px dashed var(--bq-borda);
+  border-radius: var(--bq-raio-g);
+  background: transparent;
+  color: var(--bq-tinta-media);
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.bq-perfil-novo span {
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--bq-azul);
+}
+
+.bq-perfil-novo:hover {
+  border-color: var(--bq-azul);
+  color: var(--bq-azul);
+}
+
+/* --- Formulário de novo perfil ---------------------------------------------- */
+
+.bq-novo-perfil {
+  margin-top: 20px;
+  padding: 22px;
+  border: 1px solid var(--bq-borda);
+  border-radius: var(--bq-raio-g);
+  background: var(--bq-branco);
+}
+
+.bq-novo-perfil fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0 0 18px;
+}
+
+.bq-novo-perfil legend,
+.bq-campo > span {
+  padding: 0;
+  font-weight: 800;
+  font-size: 0.86rem;
+  color: var(--bq-tinta);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.bq-avatares {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bq-avatares label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  font-size: 1.7rem;
+  border: 2px solid var(--bq-borda);
+  border-radius: 12px;
+  cursor: pointer;
+  background: var(--bq-papel);
+}
+
+.bq-avatares label.escolhido {
+  border-color: var(--bq-azul);
+  background: var(--bq-azul-nevoa);
+}
+
+.bq-avatares input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.bq-avatares label:focus-within {
+  outline: 3px solid var(--bq-azul);
+  outline-offset: 2px;
+}
+
+.bq-campo input {
+  width: 100%;
+  max-width: 340px;
+  padding: 11px 14px;
+  font-family: inherit;
+  font-size: 1rem;
+  border: 2px solid var(--bq-borda);
+  border-radius: 10px;
+  background: var(--bq-papel);
+  color: var(--bq-tinta);
+}
+
+.bq-campo input:focus {
+  outline: none;
+  border-color: var(--bq-azul);
+}
+
+.bq-campo small {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.82rem;
+  color: var(--bq-tinta-clara);
+}
+
+.bq-novo-perfil-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* --- Fichas de progresso ---------------------------------------------------- */
+
+.bq-fichas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 18px;
+}
+
+.bq-ficha-jogo {
+  display: flex;
+  flex-direction: column;
+  background: var(--bq-branco);
+  border: 1px solid var(--bq-borda);
+  border-radius: var(--bq-raio-g);
+  overflow: hidden;
+  box-shadow: var(--bq-sombra);
+}
+
+.bq-ficha-jogo > img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  border-bottom: 1px solid var(--bq-borda);
+}
+
+.bq-ficha-jogo-corpo {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 7px;
+}
+
+.bq-ficha-jogo h3 {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.bq-ficha-jogo h3 a {
+  color: var(--bq-tinta);
+  text-decoration: none;
+}
+
+.bq-ficha-jogo h3 a:hover {
+  color: var(--bq-azul);
+}
+
+.bq-ficha-jogo-uso {
+  margin: 0;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--bq-tinta-media);
+}
+
+.bq-ficha-jogo-vazio {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--bq-tinta-clara);
+  flex: 1;
+}
+
+.bq-ficha-jogo-dados {
+  margin: 2px 0 0;
+  display: grid;
+  gap: 4px;
+  flex: 1;
+}
+
+.bq-ficha-jogo-dados > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px 9px;
+  border-radius: 7px;
+  background: var(--bq-azul-nevoa);
+}
+
+.bq-ficha-jogo-dados dt {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--bq-tinta-media);
+}
+
+.bq-ficha-jogo-dados dd {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--bq-azul);
+}
+
+.bq-ficha-jogo-nota {
+  margin: 0;
+  font-size: 0.76rem;
+  color: var(--bq-tinta-clara);
+  flex: 1;
+}
+
+.bq-ficha-jogo-jogar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 9px 14px;
+  border-radius: 9px;
+  background: var(--bq-azul-nevoa);
+  color: var(--bq-azul);
+  font-weight: 800;
+  font-size: 0.88rem;
+  text-decoration: none;
+}
+
+.bq-ficha-jogo-jogar:hover {
+  background: var(--bq-azul);
+  color: #fff;
+}
+
+/* --- Aviso de privacidade --------------------------------------------------- */
+
+.bq-aviso-privacidade {
+  margin: 36px 0 0;
+  padding: 18px 20px;
+  border-radius: var(--bq-raio);
+  background: var(--bq-musgo-nevoa);
+  color: #1d5e4f;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  max-width: 78ch;
+}
+
+/* --- O avatar no cabeçalho --------------------------------------------------- */
+
+.bq-conta-avatar {
+  font-size: 1.15rem;
+  line-height: 1;
+}

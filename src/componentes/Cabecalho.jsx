@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import Icone from './Icone';
+import { lerPerfilAtivo } from '../dados/perfil';
 // Versão recortada e comprimida de src/assets/logo.png, do tamanho que o
 // cabeçalho usa. O original de 2172x724 e 455 KB continua lá, para reexportar.
 import logo from '../assets/logo-brinque-aprenda.webp';
@@ -19,10 +20,16 @@ const MENU = [
 
 function Cabecalho() {
   const [aberto, setAberto] = useState(false);
+  // Lido depois da montagem: o localStorage não existe na renderização fora do
+  // navegador, e o cabeçalho é comum a todas as páginas.
+  const [perfil, setPerfil] = useState(null);
   const { pathname } = useLocation();
 
   // Fecha ao navegar: sem isso o painel fica aberto por cima da página nova.
   useEffect(() => setAberto(false), [pathname]);
+
+  // Reavalia a cada navegação para refletir troca de perfil em Meu espaço.
+  useEffect(() => setPerfil(lerPerfilAtivo()), [pathname]);
 
   // Esc fecha, que é o que todo mundo tenta.
   useEffect(() => {
@@ -52,13 +59,14 @@ function Cabecalho() {
         </nav>
 
         <div className="bq-cabecalho-acoes">
-          {/* A conta ainda não existe: está aqui só para o leiaute. Por isso
-              é <span>, e não <button> — nada que pareça clicável e não faça
-              nada, e nada que o leitor de tela anuncie como ação. */}
-          <span className="bq-conta" aria-hidden="true">
-            <Icone nome="conta" tamanho={18} />
-            <span className="bq-conta-rotulo">Meu espaço</span>
-          </span>
+          <NavLink className="bq-conta" to="/meu-espaco">
+            {perfil ? (
+              <span className="bq-conta-avatar" aria-hidden="true">{perfil.avatar}</span>
+            ) : (
+              <Icone nome="conta" tamanho={18} />
+            )}
+            <span className="bq-conta-rotulo">{perfil ? perfil.apelido : 'Meu espaço'}</span>
+          </NavLink>
 
           <button
             type="button"

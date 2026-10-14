@@ -92,6 +92,20 @@ export const TURMAS = [
       },
       {
         slug: "tesouro-a-vista",
+        // Este grava uma chave por mapa (estrelas_ilha, estrelas_caverna...),
+        // entao o adaptador trabalha por prefixo em vez de lista fixa.
+        progresso: {
+          prefixos: ['estrelas_'],
+          resumir: (v) => {
+            const mapas = Object.entries(v).filter(([, n]) => n != null && n !== '');
+            if (!mapas.length) return [];
+            const total = mapas.reduce((s, [, n]) => s + (Number(n) || 0), 0);
+            return [
+              { rotulo: 'Estrelas', valor: total },
+              { rotulo: 'Ilhas visitadas', valor: mapas.length },
+            ];
+          },
+        },
         categorias: ['matematica', 'ciencias', 'historia-geografia', 'portugues'],
         titulo: "Tesouro à Vista",
         subtitulo: "Navegue por mundos desconhecidos e desvende os mistérios do conhecimento!",
@@ -123,6 +137,16 @@ export const TURMAS = [
       },
       {
         slug: "tabuad4on",
+progresso: {
+          chaves: ['pontuacao-facil', 'pontuacao-medio', 'pontuacao-dificil'],
+          resumir: (v) => [
+            ['Fácil', v['pontuacao-facil']],
+            ['Médio', v['pontuacao-medio']],
+            ['Difícil', v['pontuacao-dificil']],
+          ]
+            .filter(([, p]) => p != null && p !== '')
+            .map(([nome, p]) => ({ rotulo: nome, valor: p })),
+        },
         categorias: ['matematica'],
         titulo: "Tabuad4on",
         subtitulo: "Seja rápido nos cálculos e domine a tabuada!",
@@ -154,6 +178,14 @@ export const TURMAS = [
       },
       {
         slug: "matemagica",
+progresso: {
+          chaves: ['jogadoresMatemagica'],
+          resumir: (v) => {
+            const js = JSON.parse(v.jogadoresMatemagica || '[]');
+            if (!js.length) return [];
+            return [{ rotulo: 'Última partida', valor: js.length + (js.length === 1 ? ' jogador' : ' jogadores') }];
+          },
+        },
         categorias: ['matematica'],
         titulo: "Matemágica",
         subtitulo: "Trilhe o caminho do tabuleiro e use a magia dos números para chegar ao castelo!",
@@ -184,6 +216,20 @@ export const TURMAS = [
       },
       {
         slug: "mathrace",
+// O jogo grava em chaves proprias, criadas antes dos perfis existirem.
+        // O adaptador so traduz o que ja esta la; nada no jogo foi alterado.
+        progresso: {
+          chaves: ['Placar', 'MapasDesbloqueados', 'Nome'],
+          resumir: (v) => {
+            const placar = JSON.parse(v.Placar || '[]');
+            const mapas = JSON.parse(v.MapasDesbloqueados || '{}');
+            const abertos = Object.values(mapas).filter(Boolean).length;
+            return [
+              placar[0] && { rotulo: 'Melhor pontuação', valor: placar[0].pontuacao },
+              abertos > 1 && { rotulo: 'Pistas liberadas', valor: abertos + ' de ' + Object.keys(mapas).length },
+            ].filter(Boolean);
+          },
+        },
         categorias: ['matematica', 'logica'],
         titulo: "MathRace",
         subtitulo: "Acelere com a matemática e vença essa corrida eletrizante!",

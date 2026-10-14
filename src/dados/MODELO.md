@@ -165,6 +165,91 @@ E dentro de `jogos`, a entrada do seu jogo. Copie este modelo:
 
 ---
 
+## Guardar o progresso do jogador
+
+O portal tem a página **Meu espaço**, onde a criança escolhe um perfil (um bicho
+e um apelido) e vê o que já jogou. Se o seu jogo avisar o portal quando algo
+acontece, isso aparece lá sozinho — sem você mexer em nada do portal.
+
+### Como avisar
+
+Uma linha, no momento em que o jogador termina uma partida ou passa de fase:
+
+```js
+window.brinqueAprenda?.salvar({ pontuacao: 1250, fase: 3, totalFases: 5 });
+```
+
+**Se o seu jogo for estático** (roda dentro de um iframe), ele precisa falar com
+a janela de fora. Use esta forma, que funciona nos dois casos:
+
+```js
+const portal = window.brinqueAprenda || window.parent?.brinqueAprenda;
+portal?.salvar({ pontuacao: 1250, fase: 3, totalFases: 5 });
+```
+
+O `?.` é importante: quando você abre o jogo direto pelo **Live Server**, o
+portal não existe e a chamada simplesmente não faz nada. O jogo continua
+funcionando normal, sem erro no console.
+
+### O que dá para mandar
+
+Todos os campos são opcionais — mande só os que fizerem sentido no seu jogo.
+
+| Campo | Tipo | O que é |
+|---|---|---|
+| `pontuacao` | número | Pontos da partida. O portal guarda **o maior**, nunca o último. |
+| `fase` | número | Em que fase chegou. Também só sobe. |
+| `totalFases` | número | Quantas fases o jogo tem, para aparecer "3 de 5". |
+| `concluido` | booleano | `true` quando terminou o jogo inteiro. |
+| `detalhe` | texto curto | Algo livre, até 40 letras: `"Nível difícil"`, `"3 estrelas"`. |
+
+Qualquer outro campo é descartado. Não mande nome, idade ou nada que
+identifique a criança — o portal não guarda dado pessoal, e esse é um
+compromisso do projeto.
+
+### Quando chamar
+
+Chame **quando algo é conquistado**, não a cada segundo:
+
+```js
+// ✅ ao fim da partida
+function fimDeJogo(pontos) {
+  mostrarTelaFinal(pontos);
+  const portal = window.brinqueAprenda || window.parent?.brinqueAprenda;
+  portal?.salvar({ pontuacao: pontos });
+}
+
+// ✅ ao passar de fase
+function proximaFase(n) {
+  const portal = window.brinqueAprenda || window.parent?.brinqueAprenda;
+  portal?.salvar({ fase: n, totalFases: 5 });
+}
+
+// ❌ dentro do laço do jogo — grava centenas de vezes por segundo à toa
+function atualizar() {
+  portal?.salvar({ pontuacao: pontosAtuais });
+}
+```
+
+### Como testar
+
+1. `npm run dev`, abra o portal e vá em **Meu espaço**
+2. Crie um perfil
+3. Abra o seu jogo pelo portal — não pelo Live Server, senão a API não existe
+4. Jogue até disparar o `salvar`
+5. Volte em **Meu espaço**: a ficha do seu jogo deve mostrar o que você mandou
+
+Se nada aparecer, veja no console (F12) se `window.parent.brinqueAprenda`
+existe. Se estiver `undefined`, provavelmente o jogo foi aberto fora do portal.
+
+### E se eu não usar isso?
+
+O jogo funciona igual, e a ficha dele em Meu espaço mostra só quantas vezes foi
+jogado e quando — que é o que o portal consegue ver sozinho. Mas é uma pena:
+são três linhas de código para a criança ver o recorde dela.
+
+---
+
 ## Testando antes de entregar
 
 ```bash
