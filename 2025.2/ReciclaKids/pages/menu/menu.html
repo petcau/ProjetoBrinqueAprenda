@@ -18,10 +18,10 @@
         </div>
 
         <div class="menu-buttons">
-            <a href="../phaseSelector/index.html"><button class="menu-btn btn-green">JOGAR</button></a>
-            <a href="../tutorial/tutorial.html"><button class="menu-btn btn-blue">TUTORIAL</button></a>
+            <a href="../phaseSelector/index.html" onclick="event.preventDefault(); window.location.replace(this.href)"><button class="menu-btn btn-green">JOGAR</button></a>
+            <a href="../tutorial/tutorial.html" onclick="event.preventDefault(); window.location.replace(this.href)"><button class="menu-btn btn-blue">TUTORIAL</button></a>
             <!-- <button class="menu-btn btn-yellow">AJUSTES</button> -->
-            <a href="../preload/index.html"><button class="menu-btn btn-orange">SAIR</button></a>
+            <a href="/jogo/recicla-kids" target="_top" onclick="event.preventDefault(); window.top.history.back()"><button class="menu-btn btn-orange">SAIR</button></a>
         </div>
     </div>
 </body>

@@ -315,7 +315,7 @@ html, body {
     }
 }
 
-@media (orientation: landscape) and (max-height: 500px) {
+@media (orientation: landscape) and (max-height: 650px) {
     .jogar_conteudo_espacamento {
         padding: 5vh 2vw;
     }

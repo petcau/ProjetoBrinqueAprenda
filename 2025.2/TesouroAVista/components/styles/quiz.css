@@ -423,7 +423,7 @@
     }
 }
 
-@media (max-height: 500px) and (orientation: landscape) {
+@media (max-height: 650px) and (orientation: landscape) {
     .quiz_conteudo_organizacao {
         flex-direction: row !important;
         align-items: center;

@@ -22,6 +22,8 @@ body{
     gap: 3px;
 
     position: relative;
+    transform: scale(var(--game-scale, 1));
+    transform-origin: center;
     
     /* background-color: rgb(38, 83, 0);
     padding: .5rem;
@@ -101,4 +103,54 @@ article{
     align-items: center;
 
     gap: .5rem;
+}
+
+@media (max-height: 560px) {
+    #table {
+        --game-scale: .78;
+    }
+}
+
+@media (max-width: 900px) {
+    #table {
+        --game-scale: .85;
+    }
+}
+
+@media (max-width: 760px) {
+    #table {
+        --game-scale: .7;
+    }
+
+    .message_cont {
+        right: .5rem;
+        bottom: .5rem;
+    }
+}
+
+@media (max-width: 620px) {
+    #table {
+        --game-scale: .55;
+    }
+
+    .popTutorial .message {
+        max-width: calc(100vw - 1rem);
+        padding: 1rem .5rem;
+    }
+
+    .popup .lixeiras_img img {
+        width: 32%;
+        height: auto;
+        object-fit: contain;
+    }
+}
+
+@media (max-width: 480px) {
+    #table {
+        --game-scale: .42;
+    }
+
+    .message_cont > .message {
+        width: min(220px, calc(100vw - 1rem));
+    }
 }

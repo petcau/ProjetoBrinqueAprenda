@@ -125,9 +125,9 @@ body {
     color: var(--cor-secundaria); 
 }
 
-#btn-jogar { font-size: 8vw; }
-#btn-opcoes { font-size: 5vw; }
-#btn-creditos { font-size: 4vw; }
+#btn-jogar { font-size: clamp(3rem, 8vw, 7rem); }
+#btn-opcoes { font-size: clamp(2.25rem, 5vw, 4.5rem); }
+#btn-creditos { font-size: clamp(2rem, 4vw, 3.5rem); }
 
 /* ===== TELA DE JOGO ===== */
 #tela-jogo { 
@@ -148,20 +148,28 @@ body {
     padding: 0.5vh 2vw; 
     border-radius: 20px; 
     border: 3px solid var(--cor-texto); 
-    font-size: 3.5vw; 
+    font-size: clamp(1.25rem, 3.5vw, 3rem);
     text-shadow: 2px 2px 4px #000;
 }
 
 .btn-voltar-icon { 
     width: 8vh; 
     height: 8vh; 
-    background-image: url('../game_assets/images/btn_voltar_icon.webp'); 
-    background-size: contain; 
-    background-repeat: no-repeat; 
-    border: none; 
-    background-color: transparent; 
+    background-color: rgba(92, 61, 46, 0.9);
+    border: 3px solid var(--cor-secundaria);
+    border-radius: 50%;
+    color: var(--cor-texto);
     cursor: pointer; 
     transition: transform 0.2s;
+}
+
+.btn-voltar-icon::before {
+    content: '←';
+    display: block;
+    font-family: Arial, sans-serif;
+    font-size: clamp(1.75rem, 5vh, 3rem);
+    font-weight: bold;
+    line-height: 1;
 }
 
 .btn-voltar-icon:hover { 
@@ -306,6 +314,8 @@ body {
     color: var(--cor-texto); 
     text-shadow: 2px 2px 2px var(--cor-primaria);
     position: relative;
+    max-height: 96vh;
+    overflow-y: auto;
 }
 
 .painel-madeira-popup h2 {
@@ -313,7 +323,7 @@ body {
     top: 5%;
     left: 50%; 
     transform: translateX(-50%);
-    font-size: 6vw; 
+    font-size: clamp(2rem, 6vw, 4.5rem);
     color: var(--cor-secundaria); 
     -webkit-text-stroke: 2px var(--cor-primaria);
     margin: 0;
@@ -322,7 +332,7 @@ body {
 }
 
 .creditos-lista { 
-    font-size: 2.5vw; 
+    font-size: clamp(1rem, 2.5vw, 2rem);
     line-height: 1.5; 
     text-align: center; 
     color: var(--cor-texto); 
@@ -348,7 +358,7 @@ body {
 }
 
 .opcao-item span { 
-    font-size: 5vw; 
+    font-size: clamp(1.5rem, 5vw, 3.5rem);
     color: var(--cor-texto); 
     text-shadow: 2px 2px 0 #000; 
 }
@@ -540,7 +550,7 @@ input[type=range]::-webkit-slider-runnable-track {
 
 .feedback-modal-content h1 {
     transform: translate(0%, -50%);
-    font-size: 4.8vw; 
+    font-size: clamp(2rem, 4.8vw, 3.75rem);
     color: var(--cor-secundaria);
     text-shadow: 3px 3px 5px #000; 
     -webkit-text-stroke: 1.5px var(--cor-primaria);
@@ -555,7 +565,7 @@ input[type=range]::-webkit-slider-runnable-track {
     transform: translate(0%, -50%);
     border-radius: 15px;
     font-family: 'LilitaOne-Regular', cursive; 
-    font-size: 5vw;
+    font-size: clamp(1.75rem, 5vw, 3.5rem);
     color: var(--cor-texto); 
     padding: 10px 30px;
     cursor: pointer; 
@@ -575,12 +585,9 @@ input[type=range]::-webkit-slider-runnable-track {
     transform: translate(0%, -140%);
     font-family: 'LilitaOne-Regular'; 
     color: var(--cor-texto); 
-    background-color: transparent;
-    background-image: url('../game_assets/images/btn_voltar.webp'); 
-    background-repeat: no-repeat; 
-    background-size: 100% 100%; 
-    background-position: center; 
-    border: none;
+    background-color: rgba(92, 61, 46, 0.92);
+    border: 4px solid var(--cor-secundaria);
+    border-radius: 16px;
     cursor: pointer; 
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
     transition: transform 0.2s ease-out;
@@ -589,7 +596,7 @@ input[type=range]::-webkit-slider-runnable-track {
     height: 15vw; 
     max-height: 100px; 
     min-height: 60px;
-    font-size: 3.5vw;
+    font-size: clamp(1.25rem, 3.5vw, 2.5rem);
     display: flex; 
     align-items: center; 
     justify-content: center; 
@@ -611,7 +618,7 @@ input[type=range]::-webkit-slider-runnable-track {
     }
     
     .painel-madeira-popup h2 { 
-        font-size: 10vw; 
+        font-size: clamp(2rem, 10vw, 4rem);
         top: 12%; 
     }
     
@@ -624,11 +631,11 @@ input[type=range]::-webkit-slider-runnable-track {
     }
     
     .opcao-item span { 
-        font-size: 7vw; 
+        font-size: clamp(1.5rem, 7vw, 3rem);
     }
     
     .creditos-lista { 
-        font-size: 4.5vw; 
+        font-size: clamp(1rem, 4.5vw, 1.75rem);
     }
     
     .feedback-modal-content { 
@@ -637,11 +644,11 @@ input[type=range]::-webkit-slider-runnable-track {
     }
     
     .feedback-modal-content h1 { 
-        font-size: 9vw; 
+        font-size: clamp(2rem, 9vw, 3.5rem);
     }
     
     .btn-feedback-modal { 
-        font-size: 7vw; 
+        font-size: clamp(1.5rem, 7vw, 3rem);
     }
 
     /* Ajustes específicos Fim de Jogo Mobile */
@@ -660,7 +667,7 @@ input[type=range]::-webkit-slider-runnable-track {
     .btn-madeira { 
         width: 70vw; 
         height: 18vw; 
-        font-size: 6vw; 
+        font-size: clamp(1.25rem, 6vw, 2.5rem);
     }
 
     #imagem-fase { 
@@ -684,15 +691,15 @@ input[type=range]::-webkit-slider-runnable-track {
     }
     
     #btn-jogar { 
-        font-size: 12vw; 
+        font-size: clamp(3rem, 12vw, 6rem);
     }
     
     #btn-opcoes { 
-        font-size: 9vw; 
+        font-size: clamp(2.25rem, 9vw, 4rem);
     }
     
     #btn-creditos { 
-        font-size: 7vw; 
+        font-size: clamp(1.75rem, 7vw, 3rem);
     }
     
     .letra-placeholder { 
@@ -732,6 +739,135 @@ input[type=range]::-webkit-slider-runnable-track {
     .zoom-option {
         font-size: 1.5rem;
         padding: 8px;
+    }
+}
+
+@media (max-height: 620px) and (orientation: landscape) {
+    #tela-inicial .titulo-imagem {
+        width: min(52vw, 560px);
+        max-height: 34vh;
+    }
+
+    #tela-inicial .personagem-inicial {
+        width: min(26vw, 300px);
+        max-height: 48vh;
+    }
+
+    .menu-botoes {
+        padding-top: 4vh;
+    }
+
+    #btn-jogar {
+        font-size: clamp(3rem, 13vh, 6rem);
+    }
+
+    #btn-opcoes {
+        font-size: clamp(2.25rem, 9vh, 4rem);
+    }
+
+    #btn-creditos {
+        font-size: clamp(1.75rem, 7vh, 3rem);
+    }
+
+    #imagem-fase {
+        height: 44vh;
+    }
+
+    .letra-placeholder,
+    .letra-balao {
+        max-width: 14vh;
+        max-height: 14vh;
+    }
+
+    #btn-backspace {
+        max-width: 13vh;
+        max-height: 13vh;
+    }
+
+    .painel-madeira-popup {
+        width: min(680px, 92vw);
+        min-height: 92vh;
+        padding: 15vh 6vw 6vh;
+        gap: 0.5rem;
+    }
+
+    .painel-madeira-popup h2 {
+        top: 4%;
+        font-size: clamp(2rem, 7vh, 3rem);
+    }
+
+    .btn-fechar-popup {
+        top: 5%;
+        right: 7%;
+        width: 38px;
+        height: 38px;
+        font-size: 1.4rem;
+    }
+
+    .creditos-lista {
+        margin-top: 0;
+        font-size: clamp(0.95rem, 3.5vh, 1.35rem);
+        line-height: 1.3;
+    }
+
+    .opcao-item {
+        transform: none;
+        margin-block: 0;
+    }
+
+    .opcao-item span {
+        font-size: clamp(1.25rem, 5vh, 2rem);
+    }
+
+    .btn-zoom {
+        height: 44px;
+        bottom: 4%;
+        font-size: 1rem;
+    }
+
+    .feedback-modal-content {
+        width: min(600px, 78vw);
+        min-height: 72vh;
+        padding: 12vh 5vw 7vh;
+        gap: 1vh;
+    }
+
+    .feedback-modal-content h1,
+    .btn-feedback-modal,
+    #btn-tentar-novamente-modal {
+        transform: none;
+    }
+
+    .btn-feedback-modal {
+        margin-top: 1vh;
+        padding: 7px 24px;
+    }
+
+    .conteudo-fim-jogo {
+        padding-top: 4vh;
+        gap: .5vh;
+    }
+
+    .trofeu-img {
+        height: 28vh;
+        transform: none;
+        margin: 0;
+    }
+
+    .texto-vitoria,
+    .btn-madeira {
+        transform: none;
+    }
+
+    .texto-vitoria {
+        font-size: clamp(1.5rem, 5vh, 2.5rem);
+        margin: 0;
+    }
+
+    .btn-madeira {
+        height: 11vh;
+        min-height: 48px;
+        margin-top: .5vh;
     }
 }
 

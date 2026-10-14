@@ -3,15 +3,29 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+    padding: clamp(.5rem, 2vh, 1.5rem) 1rem;
 }
 
 .game-scene {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: clamp(.5rem, 2vh, 20px);
+}
+
+.game-scene > div:not(.menu-buttons) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .row {
@@ -21,12 +35,25 @@ body {
 }
 
 .bin, .keys {
-    width: 250px; 
+    width: clamp(105px, 27vw, 250px);
+    max-height: 34vh;
     object-fit: contain;
+}
+
+.keys {
+    width: clamp(150px, 36vw, 250px);
+    max-height: 28vh;
 }
 
 .menu-buttons {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: .5rem;
+}
+
+@media (max-height: 650px) and (orientation: landscape) {
+    .menu-btn {
+        padding: 10px 28px;
+        font-size: 1rem;
+    }
 }
