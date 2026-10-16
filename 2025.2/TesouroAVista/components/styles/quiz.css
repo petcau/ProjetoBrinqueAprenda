@@ -151,9 +151,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: auto;
+    width: clamp(110px, 10vw, 180px);
     cursor: pointer;
     transition: transform 0.2s ease;
+}
+
+.quiz_botao_opcao {
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
 }
 
 .quiz_conteudo_organizacao_quiz_opcoes_resposta.desativado {
@@ -171,8 +178,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem 1.5rem;
-    width: auto;
+    padding: 1rem 1.25rem;
+    width: 100%;
+    min-height: clamp(68px, 8vh, 100px);
     height: auto;
 }
 
@@ -189,12 +197,25 @@
 .quiz_conteudo_organizacao_quiz_opcoes_resposta_texto {
     position: relative;
     z-index: 1;
-    font-size: clamp(1.2rem, 2vw, 2rem);
+    width: 100%;
+    font-size: clamp(1.8rem, 3vw, 2.7rem);
     font-family: var(--font-primaria, sans-serif);
     color: var(--cor-texto-secundario);
     font-weight: normal;
     white-space: nowrap;
     text-align: center;
+}
+
+/* Os quatro mapas posteriores usam palavras e frases. As placas ganham mais
+   largura, enquanto o texto pode quebrar sem reduzir a area de toque. */
+.quiz_tamanho_opcao .quiz_conteudo_organizacao_quiz_opcoes_resposta {
+    width: clamp(155px, 15vw, 240px);
+}
+
+.quiz_tamanho_opcao .quiz_conteudo_organizacao_quiz_opcoes_resposta_texto {
+    font-size: clamp(1.1rem, 1.55vw, 1.6rem);
+    line-height: 1.1;
+    white-space: normal;
 }
 
 .quiz_tema_branco,
@@ -432,7 +453,9 @@
     }
 
     .quiz_conteudo_organizacao_imagem {
-        width: 55%;  
+        flex: 0 1 36%;
+        width: 36%;
+        max-width: 36%;
         height: 95vh;
         
         display: flex;
@@ -455,7 +478,9 @@
     }
 
     .quiz_conteudo_organizacao_quiz {
-        max-width: 60%;
+        flex: 0 1 64%;
+        width: 64%;
+        max-width: 64%;
         height: 95vh;
         order: 1;
         justify-content: center;
@@ -465,8 +490,8 @@
 
     .quiz_conteudo_organizacao_quiz_pergunta {
         margin-bottom: 0;
-        width: 70%;
-        max-width: 500px;
+        width: 88%;
+        max-width: 560px;
     }
 
     .quiz_conteudo_organizacao_quiz_pergunta_imagem {
@@ -482,14 +507,15 @@
     .quiz_conteudo_organizacao_quiz_opcoes {
         margin-top: 5px;
         flex-wrap: nowrap;
-        gap: clamp(10px, 1.8vw, 16px);
-        width: 96%;
+        gap: clamp(8px, 1.5vw, 14px);
+        width: 100%;
     }
 
     .quiz_conteudo_organizacao_quiz_opcoes_resposta {
-        flex: 1 1 0;
-        min-width: 0;
-        max-width: 110px;
+        flex: 0 1 clamp(105px, 16vw, 150px);
+        width: clamp(105px, 16vw, 150px);
+        min-width: 90px;
+        max-width: none;
     }
 
     .quiz_botao_opcao {
@@ -501,13 +527,13 @@
 
     .quiz_conteudo_organizacao_quiz_opcoes_resposta_imagem {
         width: 100%;
-        min-height: 58px;
-        padding: 0.5rem 0.65rem;
+        min-height: clamp(70px, 19vh, 88px);
+        padding: 0.65rem 0.8rem;
     }
 
     .quiz_conteudo_organizacao_quiz_opcoes_resposta_texto {
         width: 100%;
-        font-size: clamp(1.6rem, 6vh, 2rem);
+        font-size: clamp(2rem, 8vh, 3rem);
         line-height: 1;
         white-space: normal;
     }
@@ -523,12 +549,15 @@
     }
 
     .quiz_tamanho_opcao .quiz_conteudo_organizacao_quiz_opcoes_resposta {
-        max-width: 130px;
+        flex-basis: clamp(115px, 18vw, 170px);
+        width: clamp(115px, 18vw, 170px);
+        min-width: 100px;
+        max-width: none;
     }
 
     .quiz_tamanho_opcao .quiz_conteudo_organizacao_quiz_opcoes_resposta_texto {
-        font-size: clamp(0.85rem, 3.5vh, 1.1rem);
-        line-height: 1.05;
+        font-size: clamp(1rem, 4.5vh, 1.35rem);
+        line-height: 1.08;
     }
 
     .loja {

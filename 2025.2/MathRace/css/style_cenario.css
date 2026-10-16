@@ -320,3 +320,142 @@ body {
   min-height: 100vh;
   min-height: 100dvh;   /* acompanha a area visivel no celular */
 }
+
+/* A corrida precisa dividir a altura com o cabecalho do portal no celular.
+   Mantemos o canvas logico original e ajustamos apenas sua exibicao. */
+@media (max-width: 700px), (max-height: 600px) {
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .jogo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 64px minmax(0, 1fr) 108px;
+    justify-items: center;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .topo {
+    width: 100%;
+    height: 64px;
+  }
+
+  .topo > img {
+    width: min(42vw, 205px);
+    max-height: 58px;
+    margin-left: 8px;
+    object-fit: contain;
+  }
+
+  .timer-holder {
+    left: 50%;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: .75rem;
+    line-height: 1;
+  }
+
+  #botao-voltar,
+  #botao-pausar {
+    top: 7px;
+    width: 42px;
+    min-width: 42px;
+    height: 48px;
+    border-radius: 12px;
+    font-size: 1.6rem;
+  }
+
+  #botao-voltar {
+    left: auto;
+    right: 145px;
+  }
+
+  #botao-pausar {
+    left: auto;
+    right: 96px;
+  }
+
+  .pontuacao-holder {
+    right: 6px;
+    width: 78px;
+    margin-right: 0;
+    padding: 8px 4px;
+    border-radius: 12px;
+    font-size: .7rem;
+  }
+
+  .topo .txtGameTitle,
+  .topo .txtGameSubtitle {
+    font-size: .72rem;
+  }
+
+  #canvas-jogo {
+    align-self: center;
+    width: 100%;
+    height: 100%;
+    max-height: 300px;
+    min-height: 0;
+  }
+
+  .perguntas-holder {
+    box-sizing: border-box;
+    align-self: center;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    gap: 7px;
+    width: min(92%, 520px);
+    height: 100px;
+    padding: 8px 12px 10px;
+    border-radius: 10px;
+  }
+
+  .perguntas-holder > .txtGameTitle {
+    width: 100%;
+  }
+
+  #pergunta {
+    margin: 0;
+    font-size: clamp(1.65rem, 8vw, 2.35rem);
+    line-height: 1;
+  }
+
+  .respostas-holder {
+    justify-content: center;
+    width: 100%;
+    gap: clamp(10px, 5vw, 28px);
+    margin: 0;
+  }
+
+  .resposta {
+    width: clamp(52px, 14vw, 70px);
+    height: 42px;
+    font-size: clamp(.9rem, 3.8vw, 1.15rem);
+  }
+}
+
+@media (max-width: 410px) {
+  .topo > img {
+    width: 36vw;
+  }
+
+  #botao-voltar {
+    right: 137px;
+  }
+
+  #botao-pausar {
+    right: 91px;
+  }
+
+  .pontuacao-holder {
+    width: 74px;
+  }
+}
