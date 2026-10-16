@@ -1158,17 +1158,31 @@ button:focus-visible {
   display: none;
 }
 
+/* Sem fundo de propósito: o avatar é um emoji colorido e, sobre o roxo cheio,
+   as cores dele se perdiam. No branco do cabeçalho o bicho aparece de verdade.
+   É link (NavLink), por isso o text-decoration: none. */
 .bq-conta {
+  text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 9px 16px;
-  border-radius: 999px;
-  background: var(--bq-azul);
-  color: #fff;
+  gap: 9px;
+  padding: 4px 12px;
+  border-radius: 10px;
+  color: var(--bq-tinta);
   font-weight: 800;
   font-size: 14.5px;
   white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.bq-conta:hover {
+  background: var(--bq-azul-nevoa);
+  color: var(--bq-azul);
+}
+
+.bq-conta[aria-current='page'] {
+  background: var(--bq-azul-nevoa);
+  color: var(--bq-azul);
 }
 
 /* ============================================================================
@@ -2006,113 +2020,49 @@ button:focus-visible {
   white-space: nowrap;
 }
 
-/* --- Lista de perfis -------------------------------------------------------- */
+/* --- O cartão do perfil ----------------------------------------------------
 
-.bq-perfis {
+   Perfil único, criado sozinho na primeira visita. A criança só troca o bicho
+   e o nome — não existe criar, escolher nem apagar.
+*/
+
+.bq-cartao-perfil {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.bq-perfil {
-  position: relative;
-}
-
-.bq-perfil > button:first-child {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 4px;
-  width: 124px;
-  padding: 16px 12px 14px;
-  border: 2px solid var(--bq-borda);
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 18px 22px;
+  border: 1px solid var(--bq-borda);
   border-radius: var(--bq-raio-g);
   background: var(--bq-branco);
-  cursor: pointer;
-  font-family: inherit;
-  transition: border-color 0.15s ease, transform 0.15s ease;
+  box-shadow: var(--bq-sombra);
 }
 
-.bq-perfil > button:first-child:hover {
-  border-color: var(--bq-azul);
-  transform: translateY(-2px);
+.bq-cartao-perfil-avatar {
+  font-size: 3rem;
+  line-height: 1;
 }
 
-.bq-perfil.ativo > button:first-child {
-  border-color: var(--bq-azul);
-  background: var(--bq-azul-nevoa);
-}
-
-.bq-perfil-avatar {
-  font-size: 2.3rem;
-  line-height: 1.1;
-}
-
-.bq-perfil-nome {
+.bq-cartao-perfil-nome {
+  font-size: 1.35rem;
   font-weight: 800;
-  font-size: 0.98rem;
+  letter-spacing: -0.015em;
   color: var(--bq-tinta);
   overflow-wrap: anywhere;
 }
 
-.bq-perfil small {
-  font-size: 0.7rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--bq-azul);
+.bq-cartao-perfil .bq-botao {
+  margin-left: auto;
+  font-size: 0.92rem;
+  padding: 10px 18px;
 }
 
-.bq-perfil-apagar {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  width: 26px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: 1px solid var(--bq-borda);
-  border-radius: 50%;
-  background: var(--bq-branco);
-  color: var(--bq-tinta-clara);
-  cursor: pointer;
-}
-
-.bq-perfil-apagar:hover {
-  background: var(--bq-coral);
-  border-color: var(--bq-coral);
-  color: #fff;
-}
-
-.bq-perfil-novo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: 124px;
-  min-height: 104px;
-  border: 2px dashed var(--bq-borda);
-  border-radius: var(--bq-raio-g);
-  background: transparent;
-  color: var(--bq-tinta-media);
-  font-family: inherit;
-  font-weight: 800;
-  font-size: 0.9rem;
-  cursor: pointer;
-}
-
-.bq-perfil-novo span {
-  font-size: 1.6rem;
-  line-height: 1;
-  color: var(--bq-azul);
-}
-
-.bq-perfil-novo:hover {
-  border-color: var(--bq-azul);
-  color: var(--bq-azul);
+@media (max-width: 520px) {
+  .bq-cartao-perfil .bq-botao {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* --- Formulário de novo perfil ---------------------------------------------- */
@@ -2144,16 +2094,17 @@ button:focus-visible {
 .bq-avatares {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
 .bq-avatares label {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
-  font-size: 1.7rem;
+  width: 72px;
+  height: 72px;
+  font-size: 2.6rem;
+  line-height: 1;
   border: 2px solid var(--bq-borda);
   border-radius: 12px;
   cursor: pointer;
@@ -2266,13 +2217,6 @@ button:focus-visible {
   color: var(--bq-tinta-media);
 }
 
-.bq-ficha-jogo-vazio {
-  margin: 0;
-  font-size: 0.88rem;
-  color: var(--bq-tinta-clara);
-  flex: 1;
-}
-
 .bq-ficha-jogo-dados {
   margin: 2px 0 0;
   display: grid;
@@ -2344,7 +2288,36 @@ button:focus-visible {
 
 /* --- O avatar no cabeçalho --------------------------------------------------- */
 
+/* O cabeçalho tem 64px de altura, então o bicho cabe bem neste tamanho. */
 .bq-conta-avatar {
-  font-size: 1.15rem;
+  font-size: 2rem;
   line-height: 1;
 }
+
+/* Quando a criança ainda não abriu nenhum jogo. Antes a página mostrava os dez
+   marcados como "ainda não jogou", o que enterrava o que ela de fato fez assim
+   que jogasse o primeiro. */
+.bq-espaco-vazio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 28px 30px;
+  border: 1px dashed var(--bq-borda);
+  border-radius: var(--bq-raio-g);
+  background: var(--bq-branco);
+}
+
+.bq-espaco-vazio p {
+  margin: 0;
+  max-width: 54ch;
+  color: var(--bq-tinta-media);
+}
+
+@media (max-width: 520px) {
+  .bq-espaco-vazio .bq-botao {
+    width: 100%;
+    justify-content: center;
+  }
+}
+

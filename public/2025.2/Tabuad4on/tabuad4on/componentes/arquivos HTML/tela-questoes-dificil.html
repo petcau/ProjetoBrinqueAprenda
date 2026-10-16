@@ -214,8 +214,35 @@
             vertical-align: super;
         }
     </style>
+
+    <!-- Ajuste para caber em tela baixa. Nada acima foi alterado: só reduz
+         espacamento quando a altura aperta. Fontes e cores continuam as mesmas. -->
+    <style>
+        @media (max-height: 700px) {
+            body { padding: 12px; }
+            .container { padding: 20px; }
+            h1 { margin-bottom: 18px; }
+            .question-container { padding: 18px; margin-bottom: 18px; }
+        }
+
+        .menu-jogo-btn {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            z-index: 100;
+            padding: 10px 18px;
+            background-color: #2575fc;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
+    <button class="menu-jogo-btn" type="button" onclick="window.location.replace('tela-inicial.html')">Menu</button>
     
     <div class="container">
         <h1>Tabuad4ON - Radiciação</h1>

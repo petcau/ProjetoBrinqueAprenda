@@ -57,12 +57,12 @@ function Cronometro({ tempoInicial = 30, onTempoEsgotado, reiniciarTrigger, somA
   }, [ativo, somAtivo, onTempoEsgotado]);
 
   return (
-    <div>
+    <div className="cronometro-anagrama">
       {/* Áudio usado para som de contagem regressiva */}
       <audio ref={tickSoundRef} src={contagemSound} preload="auto" />
 
-      {/* Exibe o tempo restante na tela */}
-      <h3>Tempo: {tempo}s</h3>
+      {/* Exibe o tempo restante na tela, só o número */}
+      <h3>{tempo}</h3>
     </div>
   );
 }

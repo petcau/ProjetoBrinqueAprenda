@@ -35,3 +35,36 @@
     opacity: 0.8;            
   }
 }
+
+/* Ajuste para caber na tela. Nada acima foi alterado.
+
+   O quadro foi desenhado em 1440x800 com overflow: hidden, e o conteudo tem
+   medidas fixas: o titulo tem 820px de largura e cada zona de soltura, 965px.
+   Encolher a caixa por CSS nao encolhe nada disso — a tentativa anterior
+   (max-width: 100%) nem chegava a valer, porque o pai tambem nao tinha largura
+   definida. De 1366px para baixo o jogo saia da tela nos dois sentidos.
+
+   Agora o quadro fica no tamanho de projeto e e reduzido inteiro. O fator vem
+   do hook usarEscalaParaCaber (src/jogos/_comum), que mede o que o quadro
+   realmente ocupa antes de calcular.
+
+   As margens negativas existem porque transform e so pintura: sem elas o
+   elemento continuaria ocupando o tamanho original no layout e sobraria um
+   vazio do tamanho do que foi encolhido — que vira barra de rolagem.
+
+   Em monitor grande a escala da 1 e nada muda. */
+.conteiner_Menu_Jornada {
+  transform: translate(var(--bq-escala-x, 0px), var(--bq-escala-y, 0px))
+             scale(var(--bq-escala, 1));
+  transform-origin: top left;
+  margin-left: var(--bq-escala-mx, 0px);
+  margin-right: var(--bq-escala-mx, 0px);
+  margin-bottom: var(--bq-escala-mb, 0px);
+}
+
+/* Quase sem vao entre a barra do portal e o quadro, a pedido. O original tinha
+   50px em cima e embaixo. Esta regra precisa morar aqui, e nao no game.css: o
+   Menu.css e importado depois no bundle, entao e ele que vence. */
+.conteiner_Menu_Jornada {
+  margin-top: 5px;
+}

@@ -24,6 +24,15 @@ export default function Jogo({ onVoltar }) {
   const [Perdeu, setPerdeu] = useState(true);
   const [semaforoAtivo, setSemaforoAtivo] = useState(true);
   const[mudançafase, setMudançafase] = useState(false)
+
+  // Deixa o cursor no campo assim que o semaforo libera e a cada palavra nova,
+  // para a crianca sair digitando sem precisar clicar. So depois que o input
+  // deixa de estar disabled, senao o foco nao pega.
+  const campoRef = useRef(null);
+  useEffect(() => {
+    if (semaforoAtivo || mudançafase || fim) return;
+    campoRef.current?.focus();
+  }, [semaforoAtivo, mudançafase, fim, palavra]);
   // Referências de áudio
   const audioPrincipal = useRef(null);     // Semáforo e relógio
   const audioSecundario = useRef(null);   // Efeitos momentâneos
@@ -210,10 +219,12 @@ export default function Jogo({ onVoltar }) {
         </>
       ) : (
         <>
-          <h1 className="textoMDfase">Fase {fase.fase}</h1>
+          <div className="barra-info-d">
+            <h2 className={`textoMD tempo-d ${count <= 10 ? "tempo-baixo" : ""}`}>{!semaforoAtivo ? `${count}s` : ''}</h2>
+            <h1 className="textoMDfase">Fase {fase.fase}</h1>
+          </div>
           <div className="linhaPalavra">
             {renderPalavraInterativa()}
-            {!semaforoAtivo && <h2 className="textoMD">{count}s</h2>}
             {fase.fase > 7 && fase.autor && (
               <span style={{ marginLeft: '10px', fontSize: '0.8em', color: 'gray', fontFamily: "Fredericka the great"}}>
                 {fase.autor}
@@ -222,6 +233,7 @@ export default function Jogo({ onVoltar }) {
           </div>
           <p className="textoMD">Digite a palavra escrita acima:</p>
           <input
+            ref={campoRef}
             className="inputD"
             type="text"
             value={input}

@@ -1,14 +1,14 @@
 // Componente que exibe o cabeçalho do jogo Anagrama
-function AnagramaHeader({ nivel }) {
+function AnagramaHeader({ nivel, aoVoltar }) {
   return (
     // Container principal do cabeçalho
     <div className="Anagrama-header">
 
       <button
         className="botao_voltar_menu"
-        onClick={() => (window.location.href = "/")} // Redireciona para a página inicial
+        onClick={aoVoltar} // Volta para a tela inicial do Anagrama
       >
-        Voltar para o menu
+        Menu
       </button>
 
       <h1 className="title">ANAGRAMA</h1>

@@ -292,3 +292,28 @@
         margin-top: 5px;
     }
 }
+
+/* Ajuste para caber em tela baixa. Nada acima foi alterado.
+   Só a arte de fundo, para cobrir a area visivel no celular. */
+.background-image {
+  height: 100dvh;
+}
+
+/* Mantem os quatro botoes inteiros quando o jogo ocupa a area abaixo da
+   faixa do portal. Apenas o respiro vertical e reduzido. */
+@media (min-width: 769px) and (max-height: 700px) {
+  .menu {
+    top: 60%;
+    gap: 8px;
+    padding-block: 10px;
+  }
+
+  .menu-item {
+    padding-block: 6px;
+  }
+
+  .game-logo {
+    top: 0;
+    margin-top: 5px;
+  }
+}

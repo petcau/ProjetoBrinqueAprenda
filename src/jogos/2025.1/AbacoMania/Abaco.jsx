@@ -1,5 +1,7 @@
 import levels from "./fases.json"
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { usarEscalaParaCaber } from '../../_comum/usarEscalaParaCaber';
 import './game.css';
 import somVitoriaSound from '../../../assets/Sons/somVitoria.mp3';
 import somDerrotaSound from '../../../assets/Sons/somDerrota.mp3';
@@ -13,6 +15,26 @@ function Abaco() {
     const [acertou, setAcertou] = useState(false);
 
     const audioEvento = useRef(null);
+    const navegar = useNavigate();
+
+    // A mensagem aparece como janela por 3 segundos. O selo existe porque, ao
+    // errar duas vezes com o mesmo texto, o estado nao muda e o React nao
+    // re-renderiza — a janela nunca reapareceria.
+    const [selo, setSelo] = useState(0);
+    const avisar = (texto) => {
+        setMensagem(texto);
+        setSelo((s) => s + 1);
+    };
+
+    useEffect(() => {
+        if (!mensagem) return undefined;
+        const tempo = setTimeout(() => setMensagem(''), 3000);
+        return () => clearTimeout(tempo);
+    }, [mensagem, selo]);
+
+    // Reduz o quadro de 1200x900 ate caber, sem mudar a composicao da equipe.
+    const quadro = useRef(null);
+    usarEscalaParaCaber(quadro, true);
 
     const linhasValores = [1, 5, 10, 50, 100];
     const alvo = levels.levels.find((level) => level.id === faseAtual)?.alvo ?? 0;
@@ -20,17 +42,17 @@ function Abaco() {
     //Função para checar se o valor está correto, de acordo com as marcações dos botões e setar os sons com o [Audio(somVitoriaSound)]
     const verificarAcerto = () => {
         if (valor === alvo) {
-            setMensagem('Parabéns! Você acertou! 🥳 ');
+            avisar('Parabéns! Você acertou! 🥳 ');
             setAcertou(true);
             audioEvento.current = new Audio(somVitoriaSound);
             audioEvento.current.play();
         } else if (valor < alvo) {
-            setMensagem(`Faltam ${alvo - valor}. Tente novamente! 🤔`);
+            avisar(`Faltam ${alvo - valor}. Tente novamente! 🤔`);
             setAcertou(false);
             audioEvento.current = new Audio(somDerrotaSound);
             audioEvento.current.play();
         } else {
-            setMensagem(`Passou ${valor - alvo}. Tente novamente! 🤔`);
+            avisar(`Passou ${valor - alvo}. Tente novamente! 🤔`);
             setAcertou(false);
             audioEvento.current = new Audio(somDerrotaSound);
             audioEvento.current.play();
@@ -79,25 +101,31 @@ function Abaco() {
             setAcertou(false);
             resetarAbaco();
         } else {
-            setMensagem("Parabéns! Você terminou todas as fases! 🤩 ");
+            avisar("Parabéns! Você terminou todas as fases! 🤩 ");
         }
     };
 
     //Parte principal do html que mostra as informações e chama algumas das funções como, [alvo] e [faseAtual]
     return (
         <main className="container">
-            <div className="game-container-V">
+            <div className="game-container-V" ref={quadro}>
+                <button
+                    className="botao-menu-abaco"
+                    onClick={() => navegar("/jogo/abacomania")}
+                >
+                    Menu
+                </button>
+
+                <div className="valores">
+                {/*<div className="valor-atual">Seu valor: <strong>{valor}</strong></div>*/}
+                    <div className="valor-alvo">Nivel: <strong>{faseAtual}</strong></div>
+                    <div className="valor-alvo valor-alvo-destaque">Valor: <strong>{alvo}</strong></div>
+                </div>
+
                 <h1 className="titulo">🎮 Ábacomania 🧠</h1>
-                
+
                 <div className="painel-controle">
-                    <div className="valores">
-                    {/*<div className="valor-atual">Seu valor: <strong>{valor}</strong></div>*/}
-                        <div className="valor-alvo">Valor: <strong>{alvo}</strong></div>
-                        <div className="valor-alvo">Nivel: <strong>{faseAtual}</strong></div>
-                    </div>
-                    
-                    
-                
+
                 {mensagem && (
                     <div className={`feedback ${valor === alvo ? 'acerto' : 'erro'}`}>
                         {mensagem}

@@ -229,3 +229,66 @@
   font-size: 20px;
   text-shadow: 2px 2px rgba(0, 0, 0, 0.521);
 }
+
+/* Ajuste para caber em tela baixa. Nada acima foi alterado.
+
+   Cada zona de soltura tem 965px de largura fixa e elas ficam lado a lado,
+   entao duas zonas pediam mais de 1950px e o jogo saia da tela. Agora cada
+   zona encolhe ate caber e, se nao couberem na mesma linha, passam para a
+   linha seguinte — na mesma ordem. As pecas continuam sendo soltas onde a
+   crianca largar, porque a posicao e medida dentro da propria zona. */
+.drop-zone {
+  max-width: 100%;
+}
+
+.zones {
+  flex-wrap: wrap;
+}
+
+.objects {
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .zones { gap: 10px; margin-bottom: 16px; }
+  .objects { gap: 10px; }
+  .drop-zone { padding: 10px; }
+}
+
+@media (max-height: 760px) {
+  .zones { margin-bottom: 14px; }
+}
+
+/* O quadro e reduzido pela escala (ver componenetes/Menu.css). O pai precisa
+   acompanhar a largura disponivel, porque e dele que o hook tira a medida — se
+   ficasse travado no tamanho do conteudo (1440px), a conta nunca encolheria. */
+.container_jornada {
+  align-items: center;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+
+/* Botoes maiores, a pedido. Dentro do quadro reduzido pela escala eles
+   chegavam na tela bem menores que o tamanho declarado. */
+.Botao_jogar_Jornada_bicho {
+  font-size: 38px;
+  width: 300px;
+  height: 84px;
+}
+
+.Butao_Voltar_Ao_Menu {
+  font-size: 28px;
+  width: 260px;
+  height: 62px;
+}
+
+/* Quase sem vao entre a barra do portal e o quadro, a pedido. Vinham de duas
+   fontes somadas: o margin-top de 50px do proprio quadro e a centralizacao
+   vertical que eu tinha posto aqui. Encostar no topo ainda rende escala maior,
+   porque sobra mais altura para o jogo ocupar. */
+.container_jornada {
+  align-items: flex-start;
+}
+
+/* a margem do quadro e ajustada no Menu.css, que vem depois deste no bundle */

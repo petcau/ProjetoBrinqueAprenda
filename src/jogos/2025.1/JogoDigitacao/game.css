@@ -145,3 +145,586 @@
   from { transform: scale(1); }
   to { transform: scale(1.05); }
 }
+/* Ajuste da tela inicial, a pedido. Nada acima foi alterado.
+
+   Tres coisas estavam soltas:
+
+   1. .digitacao-container e .game-container-D sao usados no JSX mas nao tinham
+      nenhuma regra, entao o conteudo nascia encostado no canto superior
+      esquerdo, sem largura nenhuma.
+   2. .textoMDTtitulo nao define color nem text-align: o titulo herdava a cor
+      do portal e ficava azul-escuro sobre o fundo escuro do palco, quase
+      ilegivel, e alinhado a esquerda.
+   3. .MenuD e flex em coluna sem align-items, e o padrao e stretch — era isso
+      que esticava "Comecar" e "Voltar" de ponta a ponta da tela. */
+.digitacao-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.game-container-D {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 560px;
+  text-align: center;
+}
+
+.textoMDTtitulo {
+  margin: 0 0 24px;
+  font-size: 56px;
+  text-align: center;
+  color: #f5c518;
+  text-shadow: 3px 3px 0 #000;
+  text-decoration-color: #f5c518;
+}
+
+.MenuD {
+  width: 100%;
+  align-items: center;
+}
+
+.start-button {
+  width: 100%;
+  max-width: 320px;
+  color: #1a1206;
+}
+
+.start-button:hover {
+  background-color: #d4a318;
+}
+
+.carro-img {
+  margin-top: 28px;
+  max-width: 190px;
+}
+
+/* Contraste da tela de jogo, a pedido. Nada acima foi alterado.
+
+   Nenhuma das classes de texto define color — todas herdavam, e sobre o fundo
+   escuro do palco o resultado era azul-escuro sobre quase-preto: "Fase 1", o
+   cronometro, "Digite a palavra escrita acima:" e "Acertos" ficavam ilegiveis.
+   A palavra a digitar aparecia branca so por acaso, por ser um h1.
+
+   Cor clara para o texto corrido, dourado (o mesmo do titulo e dos botoes) nos
+   numeros que a crianca acompanha. */
+.textoMD,
+.textoMDT,
+.textoMDTgrande,
+.textoMDTP {
+  color: #f1f3f6;
+}
+
+.textoMDfase {
+  color: #f5c518;
+  font-size: 28px;
+  margin-bottom: 4px;
+}
+
+/* a palavra a ser digitada e o alvo da tela: maior e com destaque */
+.linhaPalavra .textoMDT {
+  font-size: 40px;
+  color: #ffffff;
+}
+
+.linhaPalavra .textoMD {
+  color: #f5c518;
+  font-size: 26px;
+}
+
+.linhaPalavra {
+  justify-content: center;
+  gap: 18px;
+}
+
+.buttonDD {
+  color: #1a1206;
+  font-size: 20px;
+  margin-top: 8px;
+}
+
+.buttonDD:hover,
+.start-button:hover {
+  background-color: #d4a318;
+}
+
+.inputD {
+  max-width: 360px;
+  font-size: 20px;
+}
+
+/* Painel para o jogo ficar dentro, a pedido.
+
+   Antes o conteudo flutuava direto sobre o fundo escuro do portal, sem moldura
+   nenhuma — nao dava para saber onde o jogo comecava e terminava. O painel usa
+   o dourado que ja e dos botoes e do titulo. O espacamento foi compactado
+   junto, porque com a moldura o conteudo passava da altura do palco e criava
+   barra de rolagem. */
+.game-container-D {
+  max-width: 620px;
+  padding: 26px 32px 30px;
+  background: linear-gradient(180deg, #1c2533 0%, #141a24 100%);
+  border: 4px solid #b88b12;
+  border-radius: 24px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
+}
+
+.textoMDTtitulo {
+  margin: 0 0 14px;
+  font-size: 44px;
+}
+
+.MenuD {
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.game-container-D .textoMD {
+  margin: 6px 0;
+}
+
+.textoMDfase {
+  margin-top: 0;
+}
+
+.carro-img {
+  margin-top: 16px;
+  max-width: 140px;
+}
+
+@media (max-height: 700px) {
+  .digitacao-container { padding: 12px; }
+  .game-container-D { padding: 16px 22px 20px; }
+  .textoMDTtitulo { font-size: 34px; margin-bottom: 8px; }
+  .linhaPalavra .textoMDT { font-size: 32px; }
+  .carro-img { margin-top: 10px; max-width: 104px; }
+  .MenuD { gap: 10px; margin-top: 8px; }
+}
+
+/* Barra do titulo, a pedido.
+
+   O titulo passa a ocupar uma faixa dourada no topo do painel, da borda a
+   borda. O respiro do painel virou variavel para as margens negativas do
+   titulo acompanharem sozinhas quando ele muda na tela baixa — senao a barra
+   sobraria para fora ou deixaria um vao. O sublinhado tracejado sai: a propria
+   barra ja separa o titulo do jogo. */
+.game-container-D {
+  --painel-x: 32px;
+  --painel-y: 26px;
+  padding: var(--painel-y) var(--painel-x) 30px;
+  overflow: hidden;
+}
+
+.textoMDTtitulo {
+  margin: calc(var(--painel-y) * -1) calc(var(--painel-x) * -1) 18px;
+  padding: 12px 20px;
+  background: linear-gradient(180deg, #d9a81a 0%, #b88b12 100%);
+  color: #1a1206;
+  border-bottom: 4px solid #8a6a0e;
+  text-decoration: none;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+@media (max-height: 700px) {
+  .game-container-D {
+    --painel-x: 22px;
+    --painel-y: 16px;
+    padding: var(--painel-y) var(--painel-x) 20px;
+  }
+  .textoMDTtitulo {
+    margin: calc(var(--painel-y) * -1) calc(var(--painel-x) * -1) 10px;
+    padding: 8px 16px;
+  }
+}
+
+/* Campo de digitacao branco com texto azul, a pedido. Era verde-escuro com
+   texto branco. A borda dourada acompanha a moldura do painel; sem ela a
+   caixa branca fica solta sobre o fundo escuro. */
+.inputD {
+  background-color: #ffffff;
+  color: #10357f;
+  border: 3px solid #b88b12;
+  font-weight: bold;
+}
+
+.inputD::placeholder {
+  color: #8c9bbd;
+  font-weight: normal;
+}
+
+.inputD:focus {
+  outline: 3px solid #d9a81a;
+  outline-offset: 2px;
+}
+
+/* Tela bem baixa: o painel ainda passava do palco por pouco (4px em 600px de
+   altura) e por bastante em 550px. Corta respiro e reduz a arte. */
+@media (max-height: 620px) {
+  .game-container-D {
+    --painel-x: 18px;
+    --painel-y: 12px;
+    padding: var(--painel-y) var(--painel-x) 14px;
+  }
+  .textoMDTtitulo {
+    margin: calc(var(--painel-y) * -1) calc(var(--painel-x) * -1) 8px;
+    padding: 6px 14px;
+    font-size: 28px;
+  }
+  .textoMDfase { font-size: 22px; }
+  .linhaPalavra .textoMDT { font-size: 26px; }
+  .linhaPalavra .textoMD { font-size: 20px; }
+  .game-container-D .textoMD { margin: 3px 0; }
+  .inputD { margin: 4px 0; padding: 8px 14px; }
+  .MenuD { gap: 8px; margin-top: 6px; }
+  .carro-img { margin-top: 6px; max-width: 76px; }
+}
+
+/* Barra do titulo de ponta a ponta.
+
+   O painel e flex em coluna com align-items: center, entao o titulo nascia do
+   tamanho do texto e as margens negativas nao chegavam nas bordas — a faixa
+   dourada ficava uma ilha no meio. align-self: stretch resolve. */
+.textoMDTtitulo {
+  align-self: stretch;
+}
+
+/* Tempo a esquerda, fase a direita, a pedido. */
+.barra-info-d {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+
+.barra-info-d .tempo-d {
+  margin: 0;
+  min-width: 3.5rem;
+  text-align: left;
+  color: #f5c518;
+  font-size: 26px;
+}
+
+.barra-info-d .textoMDfase {
+  margin: 0;
+  text-align: right;
+}
+
+/* Semaforo em janela no centro do jogo, a pedido. Era fixo no canto superior
+   direito da janela do navegador, fora do painel. O painel precisa de
+   position: relative para a janela se ancorar nele. */
+.game-container-D {
+  position: relative;
+}
+
+.semaforo-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  transform: translate(-50%, -50%);
+  padding: 24px 30px 18px;
+  background: linear-gradient(180deg, #1c2533 0%, #141a24 100%);
+  border: 4px solid #b88b12;
+  border-radius: 20px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-height: 620px) {
+  .semaforo-container { padding: 14px 20px 10px; }
+  .semaforo-body { width: 60px; height: 150px; }
+  .luz-container { width: 38px; height: 38px; margin: 3px 0; }
+  .luz { width: 30px; height: 30px; }
+}
+
+/* Fase a esquerda e tempo a direita, dentro da barra do titulo, a pedido.
+
+   O titulo esta no Digitacao.jsx e a fase/tempo no Jogo.jsx — componentes
+   diferentes, entao nao da para serem irmaos na mesma barra sem reescrever a
+   estrutura da equipe. A barra de informacao e sobreposta a do titulo, as duas
+   com a mesma altura (--barra-h), o que da o mesmo resultado visual.
+
+   Cor escura porque agora estao sobre o dourado. */
+.game-container-D {
+  --barra-h: 72px;
+}
+
+.textoMDTtitulo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--barra-h);
+  box-sizing: border-box;
+}
+
+.barra-info-d {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--barra-h);
+  margin: 0;
+  padding: 0 22px;
+  box-sizing: border-box;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.barra-info-d .textoMDfase,
+.barra-info-d .tempo-d {
+  color: #1a1206;
+  font-size: 24px;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.barra-info-d .textoMDfase {
+  order: 1;
+  text-align: left;
+}
+
+.barra-info-d .tempo-d {
+  order: 2;
+  text-align: right;
+}
+
+/* Imagem de derrota/vitoria menor, a pedido: ocupava a altura toda do painel. */
+.containerimgD {
+  max-width: 170px;
+}
+
+.mensagem-derrota {
+  font-size: 22px;
+  margin: 10px 0 0;
+}
+
+@media (max-height: 700px) {
+  .game-container-D { --barra-h: 54px; }
+  .barra-info-d .textoMDfase,
+  .barra-info-d .tempo-d { font-size: 20px; }
+  .containerimgD { max-width: 120px; }
+}
+
+@media (max-height: 620px) {
+  .game-container-D { --barra-h: 44px; }
+  .barra-info-d { padding: 0 16px; }
+  .barra-info-d .textoMDfase,
+  .barra-info-d .tempo-d { font-size: 17px; }
+  .containerimgD { max-width: 92px; }
+  .mensagem-derrota { font-size: 17px; }
+}
+
+/* Semaforo encostado na direita, dentro do painel, a pedido. Centralizado ele
+   tapava o campo de digitacao justamente enquanto a crianca espera para
+   comecar. */
+.semaforo-container {
+  top: 50%;
+  left: auto;
+  right: 16px;
+  transform: translateY(-50%);
+  padding: 16px 18px 12px;
+}
+
+.semaforo-container .semaforo-body {
+  width: 62px;
+  height: 156px;
+}
+
+.semaforo-container .luz-container {
+  width: 40px;
+  height: 40px;
+  margin: 3px 0;
+}
+
+.semaforo-container .luz {
+  width: 32px;
+  height: 32px;
+}
+
+.semaforo-container .contagem-texto {
+  margin-top: 8px;
+  font-size: 17px;
+}
+
+@media (max-width: 560px) {
+  .semaforo-container { right: 8px; padding: 10px 12px 8px; }
+  .semaforo-container .semaforo-body { width: 46px; height: 116px; }
+  .semaforo-container .luz-container { width: 30px; height: 30px; }
+  .semaforo-container .luz { width: 24px; height: 24px; }
+}
+
+/* Cor da mensagem de fim, a pedido. .mensagem-derrota nao definia color, entao
+   herdava e saia azul-escura sobre o painel escuro — "Tempo esgotado!" ficava
+   invisivel. */
+.mensagem-derrota {
+  color: #f5c518;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* Fase e tempo maiores na barra, a pedido. */
+.barra-info-d .textoMDfase,
+.barra-info-d .tempo-d {
+  font-size: 32px;
+}
+
+@media (max-height: 700px) {
+  .barra-info-d .textoMDfase,
+  .barra-info-d .tempo-d { font-size: 26px; }
+}
+
+@media (max-height: 620px) {
+  .barra-info-d .textoMDfase,
+  .barra-info-d .tempo-d { font-size: 21px; }
+}
+
+/* Botao Voltar no canto inferior direito do painel, a pedido. */
+.buttonDD {
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  margin: 0;
+  z-index: 6;
+}
+
+/* Fase e tempo ainda maiores, a pedido. A altura da barra acompanha, senao o
+   texto encosta nas bordas dela. */
+.game-container-D {
+  --barra-h: 84px;
+}
+
+.barra-info-d .textoMDfase,
+.barra-info-d .tempo-d {
+  font-size: 40px;
+}
+
+@media (max-height: 700px) {
+  .game-container-D { --barra-h: 62px; }
+  .barra-info-d .textoMDfase,
+  .barra-info-d .tempo-d { font-size: 30px; }
+}
+
+@media (max-height: 620px) {
+  .game-container-D { --barra-h: 50px; }
+  .barra-info-d .textoMDfase,
+  .barra-info-d .tempo-d { font-size: 24px; }
+}
+
+/* Em painel estreito o semaforo centralizado na vertical cobria o campo de
+   digitacao. Sobe para o canto, onde nao atrapalha. */
+@media (max-width: 620px) {
+  .semaforo-container {
+    top: auto;
+    bottom: 14px;
+    right: 10px;
+    transform: none;
+  }
+}
+
+/* Mais respiro entre o campo e a linha de acertos, a pedido. Entre os dois
+   existe ainda um <p> da mensagem, vazio na maior parte do tempo, entao o
+   espaco vem do proprio campo. Reduz junto em tela baixa para nao voltar a
+   criar rolagem. */
+.inputD {
+  margin-bottom: 28px;
+}
+
+@media (max-height: 700px) {
+  .inputD { margin-bottom: 18px; }
+}
+
+@media (max-height: 620px) {
+  .inputD { margin-bottom: 12px; }
+}
+
+/* Mais respiro ainda, e imagem de fim maior, a pedido. */
+.inputD {
+  margin-bottom: 46px;
+}
+
+.containerimgD {
+  max-width: 240px;
+}
+
+@media (max-height: 700px) {
+  .inputD { margin-bottom: 28px; }
+  .containerimgD { max-width: 170px; }
+}
+
+@media (max-height: 620px) {
+  .inputD { margin-bottom: 18px; }
+  .containerimgD { max-width: 128px; }
+}
+
+/* Tempo maior e em destaque, a pedido. Era da mesma cor e tamanho da fase, e
+   as duas se confundiam. O vermelho escuro contrasta com o dourado da barra e
+   da a leitura de urgencia que o cronometro pede. A barra cresce junto para o
+   numero nao encostar nas bordas. */
+.game-container-D {
+  --barra-h: 96px;
+}
+
+.barra-info-d .tempo-d {
+  font-size: 54px;
+  color: #9c1f08;
+  text-shadow: 1px 1px 0 rgba(255, 240, 200, 0.55);
+}
+
+@media (max-height: 700px) {
+  .game-container-D { --barra-h: 70px; }
+  .barra-info-d .tempo-d { font-size: 40px; }
+}
+
+@media (max-height: 620px) {
+  .game-container-D { --barra-h: 56px; }
+  .barra-info-d .tempo-d { font-size: 31px; }
+}
+
+/* Tempo em branco, a pedido. Branco sobre o dourado da barra tem pouco
+   contraste sozinho (cerca de 2,5:1), entao vai com contorno escuro — assim
+   fica legivel e continua se destacando da fase, que e marrom. */
+.barra-info-d .tempo-d {
+  color: #ffffff;
+  text-shadow:
+    -2px -2px 0 #4a3505,
+    2px -2px 0 #4a3505,
+    -2px 2px 0 #4a3505,
+    2px 2px 0 #4a3505,
+    0 3px 6px rgba(0, 0, 0, 0.45);
+}
+
+/* Tempo ainda maior, e vermelho nos ultimos 10 segundos, a pedido.
+   A classe tempo-baixo entra pelo Jogo.jsx quando count <= 10. A pulsacao e
+   discreta: chama atencao sem atrapalhar quem esta digitando. */
+.game-container-D {
+  --barra-h: 112px;
+}
+
+.barra-info-d .tempo-d {
+  font-size: 68px;
+  line-height: 1;
+}
+
+.barra-info-d .tempo-d.tempo-baixo {
+  color: #ff2f2f;
+  animation: bq-tempo-baixo 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes bq-tempo-baixo {
+  from { transform: scale(1); }
+  to { transform: scale(1.09); }
+}
+
+@media (max-height: 700px) {
+  .game-container-D { --barra-h: 82px; }
+  .barra-info-d .tempo-d { font-size: 50px; }
+}
+
+@media (max-height: 620px) {
+  .game-container-D { --barra-h: 62px; }
+  .barra-info-d .tempo-d { font-size: 36px; }
+}

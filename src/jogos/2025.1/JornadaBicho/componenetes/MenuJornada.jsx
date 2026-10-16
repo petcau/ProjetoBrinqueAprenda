@@ -1,4 +1,6 @@
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { usarEscalaParaCaber } from "../../../_comum/usarEscalaParaCaber";
 import GameLogic from "./LogicaGame/LogicaGame";
 import "./Menu.css";
 
@@ -20,6 +22,11 @@ import "./Menu.css";
  */
 function MenuJornada({ estado, setEstado }) {
   const navigate = useNavigate();
+
+  // Reduz o quadro de 1440x800 ate caber, sem mudar a composicao da equipe.
+  const quadro = useRef(null);
+  // respiro 10: o quadro nao tem respiro proprio, entao sobram 5px de cada lado
+  usarEscalaParaCaber(quadro, estado, 10);
   const irParaJogo = () => {
     setEstado(false);
   };
@@ -46,9 +53,9 @@ function MenuJornada({ estado, setEstado }) {
   }
 
   return (
-    <div className="conteiner_Menu_Jornada">      
+    <div className="conteiner_Menu_Jornada" ref={quadro}>      
       <button className="Butao_Voltar_Ao_Menu" onClick={getBack}>
-        Voltar para o menu
+        Sair
       </button>
 
       {estado ? (

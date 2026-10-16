@@ -102,3 +102,22 @@ body {
   background-color: #f5a64f;
   transform: scale(1.05);
 }
+
+/* Ajuste para caber em tela baixa. Nada acima foi alterado.
+
+   A tela usava altura fixa (height: 100vh), que corta o que nao couber em vez
+   de deixar rolar. Vira min-height, mantendo todo o resto. */
+body {
+  height: auto;
+  min-height: 100vh;
+  min-height: 100dvh;   /* acompanha a area visivel no celular */
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+@media (max-height: 640px) {
+  body { align-items: flex-start; }
+  .container-modos { padding: 1.5rem 1rem; }
+  .titulo { margin-bottom: 1.5rem; }
+  .modo { margin-bottom: 0.75rem; }
+}

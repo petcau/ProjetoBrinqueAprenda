@@ -184,3 +184,163 @@ button:hover {
   font-weight: bold;
   font-family: var(--fonte-texto);
 }
+
+/* Ajuste para caber na tela. Nada acima foi alterado.
+
+   O quadro foi desenhado em 1200x900 e o conteudo dentro dele tem tamanho
+   fixo: titulo de 72px, as contas do abaco, os botoes. Encolher a caixa por
+   CSS nao encolhe nada disso — so espreme o leiaute e empurra o resto para
+   fora. Foi o que a minha primeira tentativa fez: abaixo de 1024px a caixa
+   caia para 1000, 796, 483px e o conteudo crescia de 910 para 1228px de
+   altura, com rolagem nos dois sentidos.
+
+   Agora o quadro fica no tamanho de projeto e e reduzido inteiro. Tudo encolhe
+   junto, entao a composicao continua identica — so menor. O fator vem do hook
+   usarEscalaParaCaber (src/jogos/_comum), que mede o que o quadro realmente
+   ocupa (910px, nao os 900 declarados) antes de calcular.
+
+   As margens negativas existem porque transform e so pintura: sem elas o
+   elemento continuaria ocupando o tamanho original no layout e sobraria um
+   vazio do tamanho do que foi encolhido — que vira barra de rolagem.
+
+   Em monitor grande a escala da 1 e nada muda. */
+.game-container-V {
+  width: 1200px;
+  /* O conteudo mede 910px, 10 a mais que os 900 declarados, e a linha de
+     instrucao sobrava para fora da area bege. A altura passa a seguir o
+     conteudo, com os 900 originais como minimo. */
+  height: auto;
+  min-height: 900px;
+  /* .container e flex: sem isto o item encolhe sozinho antes da escala agir */
+  flex-shrink: 0;
+  transform: translate(var(--bq-escala-x, 0px), var(--bq-escala-y, 0px))
+             scale(var(--bq-escala, 1));
+  transform-origin: top left;
+  margin-left: var(--bq-escala-mx, 0px);
+  margin-right: var(--bq-escala-mx, 0px);
+  margin-bottom: var(--bq-escala-mb, 0px);
+}
+
+@media (max-width: 768px) {
+  .container { padding: 10px; }
+}
+
+/* Centraliza o quadro no espaco disponivel. Em tela estreita a escala e
+   limitada pela largura (1200px de projeto), entao sobra altura: sem isto o
+   jogo ficava colado no topo com a tela toda vazia embaixo. */
+.container {
+  align-items: center;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+/* Botoes maiores e botao Menu, a pedido.
+
+   Os botoes tinham 20px de fonte e, com o quadro reduzido pela escala, chegavam
+   na tela bem menores que isso. O Menu fica no canto do quadro, como no
+   Anagrama, e leva de volta para a pagina do jogo no portal. */
+.game-container-V {
+  position: relative;
+}
+
+.botao-menu-abaco {
+  position: absolute;
+  top: 26px;
+  left: 30px;
+  z-index: 10;
+  padding: 12px 26px;
+  font-family: var(--fonte-texto);
+  font-size: 26px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.botao-menu-abaco:hover {
+  background-color: #43a047;
+}
+
+.verificar-botoes,
+.proxima-fase-botoes {
+  font-size: 30px;
+  padding: 14px 34px;
+  border-radius: 10px;
+}
+
+.botoesContainer {
+  gap: 28px;
+  margin-top: 18px;
+}
+
+/* As placas "Valor" e "Nivel" sobem para a faixa de cima do quadro, na mesma
+   linha do Menu, a pedido. Saem de dentro do painel branco no JSX; aqui so
+   deixam de empurrar o conteudo e passam a ficar ancoradas no topo direito. */
+.valores {
+  position: absolute;
+  top: 26px;
+  right: 30px;
+  gap: 18px;
+  margin-bottom: 0;
+  z-index: 10;
+}
+
+/* Destaque das placas, a pedido. Elas usavam --cor-primaria (#803e02), o mesmo
+   marrom do titulo e vizinho do bege do fundo, entao se perdiam na faixa de
+   cima. Passam para --cor-conta-ativa (#e72e00), que ja e da paleta do jogo —
+   e a cor das contas marcadas no abaco — com um contorno claro para destacar
+   do fundo. */
+.valores {
+  align-items: center;
+}
+
+.valores .valor-alvo {
+  background-color: var(--cor-conta-ativa);
+  border: 3px solid #fff5ec;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* Nivel em cima, Valor embaixo e maior, a pedido. O Valor e o numero que a
+   crianca persegue a cada rodada, entao ganha a fonte maior da faixa. */
+.valores {
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.valores .valor-alvo-destaque {
+  font-size: 40px;
+  padding: 12px 26px;
+}
+
+/* A mensagem vira janela sobre o jogo, a pedido.
+
+   Antes era uma faixa dentro do painel branco: empurrava o abaco para baixo
+   toda vez que aparecia e sumia, fazendo a tela pular. Agora fica fora do
+   fluxo e centralizada no quadro, entao nada se mexe. Some sozinha em 3
+   segundos (o temporizador esta no Abaco.jsx) e nao intercepta clique, para a
+   crianca poder continuar mexendo no abaco enquanto ela esta na tela.
+
+   As cores de acerto e erro continuam as da equipe. */
+.feedback {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 70;
+  margin: 0;
+  max-width: 76%;
+  padding: 2rem 3rem;
+  font-size: 34px;
+  border: 6px solid #ffffff;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  animation: bq-aviso-entra 0.18s ease-out;
+}
+
+@keyframes bq-aviso-entra {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}

@@ -55,7 +55,7 @@ function Jogar() {
         <button
           type="button"
           className="bq-barra-jogo-marca"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate(`/jogo/${jogo.slug}`, { replace: true })}
           aria-label={`Voltar para a página de ${jogo.titulo} no portal`}
           title="Voltar para o portal"
         >
@@ -65,7 +65,7 @@ function Jogar() {
 
       <div className="bq-palco-area">
         {jogo.jogo.tipo === 'estatico' ? (
-          <iframe
+<iframe
             className="bq-palco-quadro"
             src={jogo.jogo.entrada}
             title={jogo.titulo}

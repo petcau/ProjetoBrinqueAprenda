@@ -67,3 +67,8 @@ body {
 .back-button button:active {
     transform: translateY(-1px);
 }
+
+/* Ajuste para caber em tela baixa. Nada acima foi alterado. */
+body {
+  min-height: 100dvh;   /* acompanha a area visivel no celular */
+}

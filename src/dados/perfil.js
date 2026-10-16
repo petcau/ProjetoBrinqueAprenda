@@ -22,9 +22,29 @@ import { JOGOS } from './jogos.js';
 const CHAVE_PERFIS = 'ba:perfis';
 const CHAVE_ATIVO = 'ba:perfilAtivo';
 
+/**
+ * Os bichos que a crianca pode escolher.
+ *
+ * O nome serve para duas coisas: sugerir o apelido ao escolher o bicho, e ser
+ * o que o leitor de tela anuncia — emoji sozinho e lido de forma inconsistente
+ * entre sistemas.
+ *
+ * No perfil fica guardado so o emoji, entao perfis criados antes desta lista
+ * ganhar nomes continuam funcionando.
+ */
 export const AVATARES = [
-  '🦊', '🐢', '🦉', '🐙', '🦋', '🐧',
-  '🦁', '🐼', '🦄', '🐝', '🐬', '🦖',
+  { emoji: '🦊', nome: 'Raposa' },
+  { emoji: '🐢', nome: 'Tartaruga' },
+  { emoji: '🦉', nome: 'Coruja' },
+  { emoji: '🐙', nome: 'Polvo' },
+  { emoji: '🦋', nome: 'Borboleta' },
+  { emoji: '🐧', nome: 'Pinguim' },
+  { emoji: '🦁', nome: 'Leão' },
+  { emoji: '🐼', nome: 'Panda' },
+  { emoji: '🦄', nome: 'Unicórnio' },
+  { emoji: '🐝', nome: 'Abelha' },
+  { emoji: '🐬', nome: 'Golfinho' },
+  { emoji: '🦖', nome: 'Dinossauro' },
 ];
 
 // O portal e renderizado tambem fora do navegador nos testes, onde nao existe
@@ -59,6 +79,20 @@ function gravar(chave, valor) {
   }
 }
 
+// --- Aviso de mudanca -------------------------------------------------------
+//
+// O cabecalho mostra o apelido e o bicho, e precisa reagir no instante em que
+// a crianca troca um dos dois — nao so quando ela muda de pagina. Um evento no
+// window resolve isso sem obrigar todo o portal a carregar um contexto de
+// React so para isso.
+
+export const EVENTO_PERFIL = 'bq:perfil';
+
+function avisarMudanca() {
+  if (typeof window === 'undefined') return;
+  window.dispatchEvent(new Event(EVENTO_PERFIL));
+}
+
 // --- Perfis ----------------------------------------------------------------
 
 export const lerPerfis = () => ler(CHAVE_PERFIS, []);
@@ -66,6 +100,43 @@ export const lerPerfis = () => ler(CHAVE_PERFIS, []);
 export function lerPerfilAtivo() {
   const id = ler(CHAVE_ATIVO, null);
   return lerPerfis().find((p) => p.id === id) ?? null;
+}
+
+/**
+ * Garante que exista um perfil, criando um na primeira visita.
+ *
+ * A crianca nao passa por tela de cadastro: ja chega com um bicho sorteado e o
+ * nome dele, e muda se quiser. Chamado ao abrir a pagina de perfil e tambem ao
+ * abrir um jogo, para quem for direto jogar tambem ter onde guardar progresso.
+ */
+export function garantirPerfil() {
+  const existente = lerPerfilAtivo();
+  if (existente) return existente;
+
+  const jaCriados = lerPerfis();
+  if (jaCriados.length) {
+    trocarPerfil(jaCriados[0].id);
+    return jaCriados[0];
+  }
+
+  const bicho = AVATARES[Math.floor(Math.random() * AVATARES.length)];
+  return criarPerfil(bicho.nome, bicho.emoji);
+}
+
+/** Troca o bicho e o apelido. E a unica edicao que existe. */
+export function atualizarPerfil(id, { apelido, avatar }) {
+  const perfis = lerPerfis().map((p) =>
+    p.id === id
+      ? {
+          ...p,
+          apelido: (apelido ?? p.apelido).trim().slice(0, 18) || p.apelido,
+          avatar: avatar ?? p.avatar,
+        }
+      : p,
+  );
+  gravar(CHAVE_PERFIS, perfis);
+  avisarMudanca();
+  return perfis.find((p) => p.id === id) ?? null;
 }
 
 export function criarPerfil(apelido, avatar) {
@@ -78,6 +149,7 @@ export function criarPerfil(apelido, avatar) {
   };
   gravar(CHAVE_PERFIS, [...perfis, perfil]);
   trocarPerfil(perfil.id);
+  avisarMudanca();
   return perfil;
 }
 
@@ -89,6 +161,7 @@ export function apagarPerfil(id) {
     if (chave.startsWith(`ba:${id}:`)) window.localStorage.removeItem(chave);
   }
   if (ler(CHAVE_ATIVO, null) === id) gravar(CHAVE_ATIVO, null);
+  avisarMudanca();
 }
 
 // --- Troca de perfil: a parte delicada --------------------------------------
@@ -157,6 +230,7 @@ export function trocarPerfil(id) {
   if (anterior) guardarBruto(anterior);
   gravar(CHAVE_ATIVO, id);
   if (id) restaurarBruto(id);
+  avisarMudanca();
 }
 
 /** Salva o estado atual dos jogos no perfil ativo, sem trocar de perfil. */
@@ -173,7 +247,7 @@ export function sincronizarPerfilAtivo() {
 const chaveUso = (id) => `ba:${id}:uso`;
 
 export function registrarAbertura(slug) {
-  const perfil = lerPerfilAtivo();
+  const perfil = garantirPerfil();
   if (!perfil) return;
   const uso = ler(chaveUso(perfil.id), {});
   const atual = uso[slug] ?? { aberturas: 0, ultimaVez: null };

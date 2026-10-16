@@ -238,3 +238,296 @@
   background-color: #059669;
   transform: scale(1.05);
 }
+
+/* Ajuste para caber na tela. Nada acima foi alterado.
+
+   TABULEIRO — e reduzido inteiro, nao reorganizado. O "Voltar para o menu"
+   (left: 160px) e o "NIVEL" (right: 10rem) sao posicionados em absolute com
+   medidas calibradas para a caixa de 1200px, e as letras e botoes tem
+   tamanho fixo. Encolher a caixa por CSS desalinha tudo; escalar o conjunto
+   mantem a composicao da equipe identica, so menor.
+
+   O fator e o tamanho medido vem do hook usarEscalaParaCaber
+   (src/jogos/_comum). Repare que as margens usam --bq-largura e --bq-altura
+   (--bq-escala-largura / --bq-escala-altura) e NAO 1200px e 900px: o conteudo do tabuleiro passa dos 900px declarados e
+   transborda a caixa, entao a conta tem que usar o que ele realmente ocupa.
+   Usar os 900px declarados deixa de fora justamente o pedaco que sobra, que
+   foi o que manteve o botao "Montar" cortado na tentativa anterior.
+
+   As margens negativas existem porque transform e so pintura: sem elas o
+   elemento continuaria ocupando o tamanho original no layout e sobraria um
+   vazio do tamanho do que foi encolhido — que e a barra de rolagem.
+
+   TELA INICIAL — essa pode encolher mesmo, porque so tem titulo e botao
+   centralizados. A largura passa a ser limitada pela altura que sobra,
+   mantendo o 4/3 original (1200x900).
+
+   Em monitor grande a escala da 1 e nada muda em nenhuma das duas. */
+.game-container-anagrama {
+  transform: translate(var(--bq-escala-x, 0px), var(--bq-escala-y, 0px))
+             scale(var(--bq-escala, 1));
+  transform-origin: top left;
+  margin-left: var(--bq-escala-mx, 0px);
+  margin-right: var(--bq-escala-mx, 0px);
+  margin-bottom: var(--bq-escala-mb, 0px);
+}
+
+.tela-inicial {
+  height: auto;
+  min-height: 100%;
+}
+
+.tela-inicial-box {
+  height: auto;
+  aspect-ratio: 4 / 3;
+  width: min(80%, calc((100dvh - 7.5rem) * 4 / 3));
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0.75rem; }
+  .tela-inicial-box { width: min(96%, calc((100dvh - 5rem) * 4 / 3)); }
+}
+/* A caixa fica no tamanho de projeto para a composicao bater exatamente — quem
+   faz caber e a escala, nao o encolhimento. Abaixo de 768px vale o layout de
+   celular que a equipe escreveu, que e mais legivel que o original reduzido. */
+@media (min-width: 769px) {
+  .game-container-anagrama {
+    width: 1200px;
+    /* .container e flex: sem isto o item encolhe sozinho antes da escala agir,
+       e encolher e justamente o que desalinha o cabecalho. */
+    flex-shrink: 0;
+  }
+}
+
+/* Em tela estreita vale o layout de celular da equipe (largura 100%). O que
+   forcava a barra de rolagem era a altura fixa de 900px: numa caixa estreita o
+   conteudo ocupa bem menos que isso, e sobrava tampo vazio empurrando tudo para
+   fora da tela. Com a altura seguindo o conteudo quase sempre ja cabe — e a
+   escala continua ligada para cobrir o que faltar. */
+@media (max-width: 768px) {
+  .game-container-anagrama {
+    height: auto;
+    min-height: 0;
+  }
+}
+
+/* Botao do menu maior, a pedido. O original tinha 12px de fonte e, dentro do
+   tabuleiro reduzido pela escala, chegava na tela com uns 8px — pequeno demais
+   para uma crianca acertar o toque. O texto passou de "Voltar para o menu"
+   para "Menu", entao mesmo maior ele ocupa menos espaco que antes. */
+.botao_voltar_menu {
+  font-size: 26px;
+  padding: 12px 26px;
+  border-radius: 10px;
+}
+
+/* Elementos da mesa mais acima e maiores, a pedido.
+
+   Subir: o espaco entre o cabecalho e a mesa era 6.5rem, o que deixava a parte
+   de cima do tampo vazia e empurrava tudo para baixo. Cai para 2.5rem, e o
+   respiro de baixo da mesa de 4rem para 2rem.
+
+   Aumentar: os 64px liberados pelo espaco menor pagam o aumento, entao a altura
+   total continua dentro dos 900px do tabuleiro. Isso importa porque a escala
+   olha o que o conteudo realmente ocupa: se passasse de 900px, a escala
+   diminuiria na mesma proporcao e o aumento se anularia na tela. */
+.game-container-anagrama {
+  gap: 2.5rem;
+}
+
+.mesa-container {
+  padding-bottom: 2rem;
+  gap: 26px;
+}
+
+.mesa-container h3 {
+  font-size: 2.1rem;
+  margin: 0.4rem 0;
+}
+
+.letras button {
+  font-size: 2.3rem;
+  padding: 0.7rem 1.4rem;
+  margin: 0.4rem;
+}
+
+.tentativa {
+  font-size: 1.9rem;
+}
+
+.real-botoes button {
+  font-size: 1.5rem;
+  padding: 0.8rem 1.9rem;
+}
+
+.botoes {
+  font-size: 1.3rem;
+  padding: 0.6rem 1.5rem;
+}
+
+.palavra-descoberta,
+.palavra-oculta {
+  font-size: 2rem;
+}
+
+.palavra-bloco {
+  padding: 1.1rem 0.9rem;
+}
+
+/* "Tempo Esgotado!" e "Voce Venceu!" viram janela sobre o jogo, a pedido.
+
+   Antes eram texto solto no meio da mesa, empurrando as letras para baixo toda
+   vez que apareciam. Agora sao sobreposicao: ficam fora do fluxo, entao nada se
+   mexe quando surgem, e o tabuleiro atras fica escurecido para a crianca
+   perceber que o jogo parou e que ha uma escolha a fazer.
+
+   O .finish e branco com a fonte Luckiest Guy — por isso a caixa e escura, para
+   o texto continuar legivel sem precisar mudar a cor dele. */
+.aviso-anagrama {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  /* O desk.svg e quadrado (1024x1024) e entra com background-size: contain,
+     entao dentro da caixa de 1200x900 a arte ocupa 900x900 centralizada, com
+     150px sobrando de cada lado. Sem isto o escurecimento vazava para fora do
+     tampo. A proporcao 1 faz a largura acompanhar a altura, sem numero fixo. */
+  aspect-ratio: 1;
+  max-width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 7% 2rem 0;
+  /* O escurecimento se dissolve antes do fim do tampo, para as palavras ja
+     formadas continuarem visiveis embaixo da janela. */
+  background: linear-gradient(
+    to bottom,
+    rgba(24, 12, 2, 0.62) 0%,
+    rgba(24, 12, 2, 0.55) 40%,
+    rgba(24, 12, 2, 0) 70%
+  );
+  border-radius: 20px;
+  z-index: 60;
+  /* so a caixa recebe clique; o resto do tabuleiro segue acessivel */
+  pointer-events: none;
+}
+
+.aviso-anagrama-caixa {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.8rem;
+  max-width: 80%;
+  padding: 2.6rem 3.2rem;
+  background: #5a2d0c;
+  border: 6px solid #df8526;
+  border-radius: 24px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
+}
+
+.aviso-anagrama .finish {
+  margin: 0;
+  font-size: 2.6rem;
+  text-align: center;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.45);
+}
+
+.aviso-anagrama .botoes {
+  font-size: 1.6rem;
+  padding: 0.9rem 2.4rem;
+  background-color: #4a90e2;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.aviso-anagrama .botoes:hover {
+  background-color: #357bd8;
+}
+
+.aviso-anagrama .botoes:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* Cronometro fora da mesa, logo abaixo do Nivel, a pedido.
+
+   Saiu de dentro da .mesa-container no JSX para poder ser posicionado contra o
+   tabuleiro. Alinha pela direita no mesmo 10rem do .fase, entao os dois ficam
+   na mesma coluna. Mostra so o numero. */
+.cronometro-anagrama {
+  position: absolute;
+  top: 5.4rem;
+  right: 10rem;
+  z-index: 10;
+}
+
+.cronometro-anagrama h3 {
+  margin: 0;
+  min-width: 3.4rem;
+  padding: 2px 14px;
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  text-align: center;
+  color: #fff;
+  background-color: rgba(155, 53, 53, 0.85);
+  border-radius: 12px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
+  text-shadow: 1px 1px #000;
+}
+
+/* Tela estreita (abaixo de 768px, onde a escala fica desligada).
+
+   Aqui vale o layout de celular da equipe: o cabecalho vira uma linha flex e a
+   caixa ocupa 100% da largura. O que eu tinha quebrado: os aumentos pedidos
+   para o desktop continuavam valendo sem a escala para compensar, entao tudo
+   ficava grande demais e vazava para o lado. E o cronometro, posicionado em
+   right: 10rem, caia no meio do titulo numa caixa estreita.
+
+   Os tamanhos abaixo sao os da equipe, ou perto deles — o aumento fazia sentido
+   porque a escala encolhia tudo depois; sem escala, nao faz. */
+@media (max-width: 768px) {
+  .game-container-anagrama { gap: 1.5rem; }
+
+  /* o cabecalho da equipe vira flex aqui; sem isto o botao e o nivel esticam
+     ate a altura da linha inteira, virando dois blocos compridos */
+  .Anagrama-header { align-items: center; }
+
+  .cronometro-anagrama {
+    position: static;
+    align-self: center;
+  }
+  .cronometro-anagrama h3 { font-size: 1.3rem; }
+
+  .title { font-size: 2rem; }
+  .fase { font-size: 1.2rem; }
+  .botao_voltar_menu { font-size: 16px; padding: 8px 14px; }
+
+  .mesa-container { padding-bottom: 1rem; gap: 16px; }
+  .mesa-container h3 { font-size: 1.4rem; }
+  .letras button { font-size: 1.5rem; padding: 0.5rem 0.9rem; margin: 0.25rem; }
+  .tentativa { font-size: 1.2rem; }
+  .real-botoes button { font-size: 1.1rem; padding: 0.6rem 1.2rem; }
+  .botoes { font-size: 1rem; padding: 0.5rem 1rem; }
+  .palavra-descoberta,
+  .palavra-oculta { font-size: 1.3rem; }
+  .palavra-bloco { padding: 0.7rem 0.6rem; }
+
+  /* sem escala, a arte entra com background-size: cover e preenche a caixa,
+     entao a sobreposicao volta a ser o retangulo inteiro */
+  .aviso-anagrama {
+    left: 0;
+    right: 0;
+    transform: none;
+    aspect-ratio: auto;
+    padding: 12% 1rem 0;
+  }
+  .aviso-anagrama-caixa { padding: 1.4rem 1.6rem; gap: 1.1rem; max-width: 92%; }
+  .aviso-anagrama .finish { font-size: 1.6rem; }
+  .aviso-anagrama .botoes { font-size: 1.1rem; padding: 0.7rem 1.4rem; }
+}

@@ -151,3 +151,12 @@ body::after {
     width: 150px;
   }
 }
+
+/* Ajuste para caber em tela baixa. Nada acima foi alterado. */
+body {
+  min-height: 100dvh;   /* acompanha a area visivel no celular */
+}
+
+@media (max-height: 640px) {
+  body { overflow-y: auto; }
+}

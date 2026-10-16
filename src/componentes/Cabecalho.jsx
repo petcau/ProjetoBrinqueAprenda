@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import Icone from './Icone';
-import { lerPerfilAtivo } from '../dados/perfil';
+import { EVENTO_PERFIL, lerPerfilAtivo } from '../dados/perfil';
 // Versão recortada e comprimida de src/assets/logo.png, do tamanho que o
 // cabeçalho usa. O original de 2172x724 e 455 KB continua lá, para reexportar.
 import logo from '../assets/logo-brinque-aprenda.webp';
@@ -28,8 +28,16 @@ function Cabecalho() {
   // Fecha ao navegar: sem isso o painel fica aberto por cima da página nova.
   useEffect(() => setAberto(false), [pathname]);
 
-  // Reavalia a cada navegação para refletir troca de perfil em Meu espaço.
+  // Relê ao navegar e também quando o perfil muda em outra tela: trocar o
+  // apelido em Meu espaço tem que aparecer aqui no mesmo instante, sem precisar
+  // sair da página.
   useEffect(() => setPerfil(lerPerfilAtivo()), [pathname]);
+
+  useEffect(() => {
+    const aoMudar = () => setPerfil(lerPerfilAtivo());
+    window.addEventListener(EVENTO_PERFIL, aoMudar);
+    return () => window.removeEventListener(EVENTO_PERFIL, aoMudar);
+  }, []);
 
   // Esc fecha, que é o que todo mundo tenta.
   useEffect(() => {
@@ -65,7 +73,7 @@ function Cabecalho() {
             ) : (
               <Icone nome="conta" tamanho={18} />
             )}
-            <span className="bq-conta-rotulo">{perfil ? perfil.apelido : 'Meu espaço'}</span>
+            <span className="bq-conta-rotulo">{perfil ? perfil.apelido : 'Seu espaço'}</span>
           </NavLink>
 
           <button

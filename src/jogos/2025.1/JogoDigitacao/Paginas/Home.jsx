@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Jogo from "../componenetes/Jogo";
 import '../game.css';
 
 function Home() {
   const [jogoAtivo, setJogoAtivo] = useState(false); // Estado mais descritivo
+  const navegar = useNavigate();
   
   const handleVoltar = () => {
     setJogoAtivo(false); // Isso desmontará o componente Jogo automaticamente
@@ -23,9 +25,9 @@ function Home() {
           </button>
           <button 
             className="start-button" 
-            onClick={() => (window.location.href = "/")}
+            onClick={() => navegar("/jogo/digirace")}
           >
-            Voltar
+            Sair
           </button>
         </>
       ) : (
@@ -36,7 +38,7 @@ function Home() {
             className="buttonDD" 
             onClick={handleVoltar}
           >
-            Voltar
+            Menu
           </button>
           
         </>

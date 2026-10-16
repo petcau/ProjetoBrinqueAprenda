@@ -82,6 +82,18 @@ function AnagramaJogo({
   };
 
   return (
+    <>
+    {/* ⏱️ Cronômetro visível apenas durante a fase ativa. Fica fora da
+        .mesa-container para poder ser posicionado logo abaixo do Nível. */}
+    {!faseCompleta && !tempoEsgotado && (
+      <Cronometro
+        tempoInicial={30} // Tempo de 30 segundos
+        onTempoEsgotado={handleTempoEsgotado}
+        reiniciarTrigger={reiniciarTrigger}
+        somAtivo={somAtivo}
+      />
+    )}
+
     <div className="mesa-container">
       {/* 🔊 Som de tempo esgotado */}
       <audio
@@ -89,47 +101,6 @@ function AnagramaJogo({
         src={somDerrotaSound}
         preload="auto"
       />
-
-      {/* ⏱️ Cronômetro visível apenas durante a fase ativa */}
-      {!faseCompleta && !tempoEsgotado && (
-        <Cronometro
-          tempoInicial={30} // Tempo de 30 segundos
-          onTempoEsgotado={handleTempoEsgotado}
-          reiniciarTrigger={reiniciarTrigger}
-          somAtivo={somAtivo}
-        />
-      )}
-
-      {/* ❌ Tela exibida quando o tempo acaba */}
-      {tempoEsgotado && (
-        <div>
-          <h3 className="finish">Tempo Esgotado!</h3>
-          <button className="botoes" onClick={handleReiniciar}>
-            Tentar novamente
-          </button>
-        </div>
-      )}
-
-      {/* ✅ Tela exibida quando o jogador completa a fase */}
-      {faseCompleta && (
-        <div>
-          <h3 className="finish">
-            {ultimaFase
-              ? "Parabéns! Você completou todas as fases!"
-              : "Você Venceu!"}
-          </h3>
-          {/* Botão para ir para a próxima fase (se ainda houver fases) */}
-          {!ultimaFase && (
-            <button
-              className="botoes"
-              onClick={handleProximaFase}
-              disabled={carregandoProximaFase}
-            >
-              {carregandoProximaFase ? "Carregando..." : "Próxima fase"}
-            </button>
-          )}
-        </div>
-      )}
 
       {/* 🔤 Letras disponíveis para formar palavras */}
       <Letras
@@ -151,6 +122,43 @@ function AnagramaJogo({
         palavrasValidas={palavrasValidas}
       />
     </div>
+
+    {/* ❌ Janela exibida quando o tempo acaba. Fica fora da .mesa-container
+        para cobrir o tabuleiro inteiro, e nao so a coluna do meio. */}
+    {tempoEsgotado && (
+      <div className="aviso-anagrama" role="dialog" aria-modal="true">
+        <div className="aviso-anagrama-caixa">
+          <h3 className="finish">Tempo Esgotado!</h3>
+          <button className="botoes" onClick={handleReiniciar}>
+            Tentar novamente
+          </button>
+        </div>
+      </div>
+    )}
+
+    {/* ✅ Janela exibida quando o jogador completa a fase */}
+    {faseCompleta && (
+      <div className="aviso-anagrama" role="dialog" aria-modal="true">
+        <div className="aviso-anagrama-caixa">
+          <h3 className="finish">
+            {ultimaFase
+              ? "Parabéns! Você completou todas as fases!"
+              : "Você Venceu!"}
+          </h3>
+          {/* Botão para ir para a próxima fase (se ainda houver fases) */}
+          {!ultimaFase && (
+            <button
+              className="botoes"
+              onClick={handleProximaFase}
+              disabled={carregandoProximaFase}
+            >
+              {carregandoProximaFase ? "Carregando..." : "Próxima fase"}
+            </button>
+          )}
+        </div>
+      </div>
+    )}
+    </>
   );
 }
 
