@@ -937,6 +937,179 @@ input[type=range]::-webkit-slider-runnable-track {
     line-height: 1.35;
 }
 
+/* ===== AJUSTES PARA CELULAR EM MODO RETRATO ===== */
+@media (max-width: 620px) and (orientation: portrait) {
+    body,
+    #game-container {
+        height: 100dvh;
+    }
+
+    /* Menu: separa os botoes do personagem e aproveita melhor a altura. */
+    #tela-inicial .titulo-imagem {
+        top: 7%;
+        width: 90vw;
+        max-height: 25vh;
+    }
+
+    #tela-inicial .personagem-inicial {
+        width: 44vw;
+        left: 3%;
+        bottom: 2%;
+    }
+
+    #tela-inicial .menu-botoes {
+        top: 48%;
+        padding-top: 0;
+        gap: 1.2vh;
+    }
+
+    /* Opcoes e creditos: titulo, fechar e conteudo ficam em faixas distintas. */
+    #tela-opcoes .painel-madeira-popup,
+    #tela-creditos .painel-madeira-popup {
+        width: calc(100vw - 12px);
+        height: min(520px, 82dvh);
+        padding-inline: clamp(28px, 9vw, 44px);
+    }
+
+    #tela-opcoes .painel-madeira-popup h2,
+    #tela-creditos .painel-madeira-popup h2 {
+        top: 25%;
+        font-size: clamp(2rem, 11vw, 2.8rem);
+    }
+
+    #tela-opcoes .btn-fechar-popup,
+    #tela-creditos .btn-fechar-popup {
+        top: 16%;
+        right: 11%;
+    }
+
+    #tela-opcoes .opcao-item:first-of-type {
+        margin-top: 36px;
+    }
+
+    #tela-opcoes .btn-zoom {
+        right: 11%;
+        bottom: 14%;
+        height: 46px;
+        font-size: 1rem;
+    }
+
+    #tela-opcoes .zoom-dropdown {
+        top: auto;
+        right: 11%;
+        bottom: 24%;
+        width: 145px;
+        max-height: 42%;
+    }
+
+    #tela-creditos .creditos-lista {
+        width: 84%;
+        font-size: clamp(.9rem, 4vw, 1.05rem);
+        line-height: 1.2;
+    }
+
+    #tela-creditos .creditos-lista p {
+        margin-bottom: 4px;
+    }
+
+    /* Fase: palavras longas permanecem em uma unica linha. */
+    #palavra-container:has(.letra-placeholder:nth-child(7)) {
+        gap: 1vw;
+        flex-wrap: nowrap;
+    }
+
+    .area-input-palavra:has(.letra-placeholder:nth-child(7)) {
+        gap: 1vw;
+    }
+
+    #palavra-container:has(.letra-placeholder:nth-child(7)) .letra-placeholder {
+        width: 9.5vw;
+        height: 9.5vw;
+        min-width: 36px;
+        min-height: 36px;
+        font-size: 6.5vw;
+        border-width: 3px;
+    }
+
+    #letras-baralho {
+        gap: 1.2vw;
+        padding-bottom: max(3vh, env(safe-area-inset-bottom));
+    }
+
+    .letra-balao {
+        width: clamp(48px, 14vw, 58px);
+        height: clamp(48px, 14vw, 58px);
+        font-size: clamp(1.8rem, 8vw, 2.4rem);
+    }
+
+    /* Feedback e conclusao sem deslocamentos que tiravam itens do painel. */
+    .feedback-modal-content {
+        width: calc(100vw - 20px);
+        min-height: min(380px, 54dvh);
+        padding: 90px 24px 54px;
+        gap: 18px;
+    }
+
+    .feedback-modal-content h1,
+    .btn-feedback-modal,
+    #btn-tentar-novamente-modal {
+        transform: none;
+    }
+
+    .btn-feedback-modal,
+    #btn-tentar-novamente-modal {
+        margin-top: 0;
+    }
+
+    .conteudo-fim-jogo {
+        width: calc(100vw - 12px);
+        height: min(520px, 82dvh);
+        min-height: 0;
+        padding: 90px 28px 58px;
+        gap: 10px;
+    }
+
+    .conteudo-fim-jogo .trofeu-img,
+    .conteudo-fim-jogo .texto-vitoria,
+    .conteudo-fim-jogo .btn-madeira {
+        transform: none;
+    }
+
+    .conteudo-fim-jogo .trofeu-img {
+        height: min(150px, 20vh);
+        margin: 0;
+    }
+
+    .conteudo-fim-jogo .texto-vitoria {
+        font-size: clamp(1.25rem, 6vw, 1.8rem);
+        margin: 0;
+    }
+
+    .conteudo-fim-jogo .btn-madeira {
+        width: min(280px, 76vw);
+        height: 60px;
+        min-height: 52px;
+        margin-top: 4px;
+        padding: 8px 14px;
+    }
+}
+
+@media (max-height: 620px) and (orientation: landscape) {
+    #tela-opcoes .painel-madeira-popup h2,
+    #tela-creditos .painel-madeira-popup h2 {
+        top: 18%;
+    }
+
+    #tela-opcoes .btn-fechar-popup,
+    #tela-creditos .btn-fechar-popup {
+        top: 18%;
+    }
+
+    #tela-creditos .creditos-lista {
+        transform: translateY(34px);
+    }
+}
+
 /* ===== FONTE LOCAL ===== */
 @font-face {
     font-family: 'LilitaOne-Regular';
