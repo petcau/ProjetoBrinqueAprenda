@@ -410,3 +410,71 @@ body.tela-tabuleiro {
   outline-offset: 2px;
   border-radius: 12px;
 }
+
+/* Painel da vez (nome do jogador, personagem e Jogar Dado) movido para a
+   parte de baixo da prancheta, a pedido. Estava em top: 100px, cobrindo a
+   area de cima do tabuleiro. A ancoragem passa para a borda inferior; o
+   left/transform continuam valendo, entao ele segue centralizado. */
+.tela-tabuleiro .info-jogador {
+  top: auto;
+  bottom: 24px;
+}
+
+/* Botao Menu sobre o pergaminho, a pedido.
+
+   Ele era position: fixed, ou seja, preso ao canto da JANELA — e como o
+   pergaminho fica centralizado dentro da prancheta, sobrava madeira a
+   esquerda e o botao caia ali. Agora ele vive dentro do #game-scale e e
+   posicionado em coordenadas da prancheta (1920x1080), entao encosta sempre
+   no mesmo ponto da arte, em qualquer tamanho de janela. */
+.tela-tabuleiro .botao-menu-jogo {
+  position: absolute;
+  top: 48px;
+  left: 95px;
+}
+
+/* O botao fica ancorado na prancheta (para acompanhar o pergaminho em
+   qualquer janela) mas NAO encolhe com ela: o scale inverso desfaz a reducao
+   do #game-scale, devolvendo o tamanho original de 126x58. A --escala vem do
+   escala-tela.js. O transform-origin no canto superior esquerdo mantem o
+   ponto de ancoragem exatamente onde o top/left mandam. */
+.tela-tabuleiro .botao-menu-jogo {
+  transform: scale(calc(1 / var(--escala, 1)));
+  transform-origin: top left;
+}
+
+/* Icone de som no canto inferior direito, a pedido.
+
+   Mesmo tratamento do botao Menu: fica ancorado na prancheta (para acompanhar
+   o pergaminho em qualquer janela) e desfaz a escala, para nao encolher junto
+   com o jogo. O transform-origin no canto inferior direito mantem o ponto de
+   ancoragem onde o bottom/right mandam. */
+.tela-tabuleiro .botao-som-jogo {
+  position: absolute;
+  right: 110px;
+  bottom: 48px;
+  z-index: 10000;
+  width: 74px;
+  height: 74px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  line-height: 1;
+  background: #6b4a16;
+  border: 5px solid #d8a43d;
+  border-radius: 50%;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  transform: scale(calc(1 / var(--escala, 1)));
+  transform-origin: bottom right;
+}
+
+.tela-tabuleiro .botao-som-jogo:hover {
+  background: #7d5719;
+}
+
+.tela-tabuleiro .botao-som-jogo:focus-visible {
+  outline: 4px solid #ffcc00;
+  outline-offset: 3px;
+}
