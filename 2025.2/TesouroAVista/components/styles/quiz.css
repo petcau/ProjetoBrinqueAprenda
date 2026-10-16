@@ -481,16 +481,54 @@
 
     .quiz_conteudo_organizacao_quiz_opcoes {
         margin-top: 5px;
-        gap: 50px;
-        width: 90%;
+        flex-wrap: nowrap;
+        gap: clamp(10px, 1.8vw, 16px);
+        width: 96%;
+    }
+
+    .quiz_conteudo_organizacao_quiz_opcoes_resposta {
+        flex: 1 1 0;
+        min-width: 0;
+        max-width: 110px;
+    }
+
+    .quiz_botao_opcao {
+        width: 100%;
+        padding: 0;
+        border: 0;
+        background: transparent;
     }
 
     .quiz_conteudo_organizacao_quiz_opcoes_resposta_imagem {
-        padding: 0.4rem 1rem;
+        width: 100%;
+        min-height: 58px;
+        padding: 0.5rem 0.65rem;
     }
 
     .quiz_conteudo_organizacao_quiz_opcoes_resposta_texto {
-        font-size: 1rem;
+        width: 100%;
+        font-size: clamp(1.6rem, 6vh, 2rem);
+        line-height: 1;
+        white-space: normal;
+    }
+
+    .quiz_conteudo_organizacao_quiz_opcoes_resposta_texto p {
+        margin: 0;
+    }
+
+    /* Os outros mapas usam respostas em palavras ou frases. As placas seguem
+       grandes, mas o texto reduz apenas o necessario para quebrar dentro delas. */
+    .quiz_tamanho_opcao .quiz_conteudo_organizacao_quiz_opcoes {
+        gap: 8px;
+    }
+
+    .quiz_tamanho_opcao .quiz_conteudo_organizacao_quiz_opcoes_resposta {
+        max-width: 130px;
+    }
+
+    .quiz_tamanho_opcao .quiz_conteudo_organizacao_quiz_opcoes_resposta_texto {
+        font-size: clamp(0.85rem, 3.5vh, 1.1rem);
+        line-height: 1.05;
     }
 
     .loja {

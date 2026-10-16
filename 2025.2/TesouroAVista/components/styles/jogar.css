@@ -321,12 +321,16 @@ html, body {
     }
 
     .jogar_conteudo_espacamento_cabecalho {
-        width: 180px;
-        max-width: 30vw;
+        width: 130px;
+        max-width: 22vw;
         position: fixed;
         top: 1vh;
         left: 1vw;
         z-index: 500;
+    }
+
+    .jogar_conteudo_espacamento_cabecalho_imagem {
+        margin-bottom: 0;
     }
 
     .jogar_conteudo_espacamento_cabecalho_imagem_texto {
@@ -340,7 +344,7 @@ html, body {
     }
 
     .jogar_conteudo_espacamento_cabecalho button {
-        padding: 1rem;
+        padding: 0;
     }
 
     .jogar_conteudo_cabecalho {
