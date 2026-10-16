@@ -309,3 +309,14 @@ body {
 
 	background-color: rgba(122, 122, 122, 0.5);
 }
+
+/* Ajuste para caber em tela baixa. Nada acima foi alterado.
+
+   A tela de jogo usava altura fixa (height: 100vh), que corta o que nao
+   couber em vez de deixar rolar. Vira altura minima. Fontes e cores
+   continuam as mesmas. */
+.jogo {
+  height: auto;
+  min-height: 100vh;
+  min-height: 100dvh;   /* acompanha a area visivel no celular */
+}

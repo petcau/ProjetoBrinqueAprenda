@@ -107,3 +107,12 @@ body {
     line-height: 1.6;
     text-align: left;
 }
+
+/* Ajuste para caber em tela baixa. Nada acima foi alterado. */
+body {
+  min-height: 100dvh;   /* acompanha a area visivel no celular */
+}
+
+@media (max-height: 640px) {
+  body { overflow-y: auto; }   /* o original esconde o que transborda */
+}

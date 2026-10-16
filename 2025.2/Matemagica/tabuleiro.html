@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tabuleiro - MATEMÁGICA</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="ajuste-telas.css">
 </head>
 
 <body class="tela-tabuleiro">
@@ -16,7 +17,10 @@
     <div class="container-tabuleiro">
       <div class="info-jogador">
         <p id="nomeJogadorDisplay"></p>
-        <button id="btnJogarDado" class="btn-dado">🎲 Jogar Dado</button>
+        <button id="btnJogarDado" class="btn-dado">
+          <span class="dado-icone" aria-hidden="true">🎲</span>
+          <span>Jogar Dado</span>
+        </button>
         <p id="resultadoDado"></p>
       </div>
 
@@ -24,20 +28,30 @@
 
       <!-- Pergunta -->
       <div class="tela-pergunta" id="telaPergunta" style="display:none;">
-        <div class="caixa-pergunta">
-          <h2 id="textoPergunta"></h2>
-          <input type="text" id="respostaJogador" placeholder="Digite sua resposta">
-          <div class="botoes-pergunta">
-            <button id="btnConfirmarResposta">Responder</button>
+        <div class="resultado-dado-pergunta" aria-live="polite">
+          <div class="face-dado" id="faceDadoPergunta" data-valor="1" role="img" aria-label="Resultado do dado: 1">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
           </div>
+          <div>
+            <span class="rotulo-dado">Resultado do dado</span>
+            <strong id="numeroDadoPergunta">1</strong>
+          </div>
+        </div>
+        <div class="caixa-pergunta">
+          <p id="contextoPergunta" class="contexto-pergunta"></p>
+          <h2 id="textoPergunta"></h2>
+          <p class="instrucao-pergunta">Escolha a resposta correta:</p>
+          <div class="alternativas-pergunta" id="alternativasResposta"></div>
         </div>
       </div>
 
       <!-- Feedback -->
       <div class="feedback" id="feedback" style="display:none;">
-        <h2 id="feedbackTitulo"></h2>
-        <p id="feedbackTexto"></p>
-        <button id="btnContinuar">Continuar</button>
+        <div class="caixa-feedback" id="caixaFeedback">
+          <h2 id="feedbackTitulo"></h2>
+        </div>
       </div>
 
       <!-- Tela Final -->
@@ -116,6 +130,14 @@
         })();
       </script>
     </div>
+  </div>
+
+  <button type="button" class="botao-menu-jogo" onclick="window.location.replace('index.html')">
+    Menu
+  </button>
+
+  <!-- Liga a escala global que o #game-scale ja previa. Ver escala-tela.js -->
+  <script src="escala-tela.js"></script>
 </body>
 
 </html>

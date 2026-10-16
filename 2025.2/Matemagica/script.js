@@ -10,6 +10,7 @@ let jogadorAtualIndex = 0;         // começa no jogador 0
 let perguntas = [];
 let dadoValor = 0;
 let currentQuestion = null;
+let feedbackTimeout = null;
 
 /* =====================
    NAVEGAÇÃO ENTRE TELAS
@@ -19,9 +20,8 @@ function irParaPersonagem() {
 }
 
 function irParaTabuleiro() {
-  // exige todos os nomes preenchidos
-  if (jogadores.length < numJogadores || jogadores.some(j => !j.nome || j.nome.trim() === '')) {
-    alert(`Por favor, selecione e preencha o nome para os ${numJogadores} jogadores.`);
+  if (jogadores.length < numJogadores) {
+    alert(`Por favor, selecione ${numJogadores} personagem(ns).`);
     return;
   }
   localStorage.setItem("jogadoresMatemagica", JSON.stringify(jogadores));
@@ -93,7 +93,7 @@ function selecionarPersonagem(cardElement, event) {
         <input type="text"
                id="nome-${nomePersonagem}"
                class="input-nome-jogador"
-               placeholder="Nome Jogador ${jogadorIndex}"
+               placeholder="Nome opcional"
                oninput="validarSelecao()"
                onclick="event.stopPropagation()">
       `;
@@ -108,18 +108,15 @@ function selecionarPersonagem(cardElement, event) {
 // Valida nomes + monta array de jogadores
 function validarSelecao() {
   jogadores = [];
-  let nomesCompletos = true;
 
   document.querySelectorAll('.card-personagem.selecionado').forEach((card, index) => {
     const nomePersonagem = card.getAttribute('data-personagem');
     const inputNome = document.getElementById(`nome-${nomePersonagem}`);
     const nomeJogador = inputNome ? inputNome.value.trim() : '';
 
-    if (!nomeJogador) nomesCompletos = false;
-
     jogadores.push({
       id: index + 1,
-      nome: nomeJogador || `Jogador ${index + 1}`,
+      nome: nomeJogador || nomePersonagem,
       personagem: nomePersonagem,
       posicaoAtual: 0,
       icone: obterIcone(nomePersonagem)
@@ -127,7 +124,7 @@ function validarSelecao() {
   });
 
   const btn = document.getElementById('btnComecar');
-  if (btn) btn.disabled = !(jogadores.length === numJogadores && nomesCompletos);
+  if (btn) btn.disabled = jogadores.length !== numJogadores;
 }
 
 // Ícones por personagem
@@ -207,8 +204,6 @@ window.addEventListener('load', function () {
     const btnDado = document.getElementById('btnJogarDado');
     if (btnDado) btnDado.addEventListener('click', jogarDado);
 
-    const btnConfirm = document.getElementById('btnConfirmarResposta');
-    if (btnConfirm) btnConfirm.addEventListener('click', verificarResposta);
   }
 });
 
@@ -222,10 +217,13 @@ function atualizarDisplayJogadorAtual() {
 
     if (nomeDisplay) {
     const iconeHud = obterIcone(jogadorAtual.personagem, "hud");
+    const complementoPersonagem = jogadorAtual.nome === jogadorAtual.personagem
+      ? ''
+      : ` (${jogadorAtual.personagem})`;
 
     nomeDisplay.innerHTML = `
       Vez de: <strong>${jogadorAtual.nome}</strong>  
-      (${jogadorAtual.personagem}) 
+      ${complementoPersonagem}
       ${iconeHud}
     `;
   }
@@ -285,7 +283,10 @@ function jogarDado() {
   dadoValor = Math.floor(Math.random() * 6) + 1;
 
   const resultadoDado = document.getElementById('resultadoDado');
-  if (resultadoDado) resultadoDado.textContent = `Você tirou ${dadoValor}!`;
+  if (resultadoDado) {
+    resultadoDado.textContent = '';
+    resultadoDado.setAttribute('aria-label', `Resultado do dado: ${dadoValor}`);
+  }
 
   mostrarPerguntaParaAvanco();
 }
@@ -313,64 +314,122 @@ function mostrarPerguntaParaAvanco() {
   currentQuestion = { target, q: qObj.pergunta, a: qObj.resposta };
   const overlay = document.getElementById('telaPergunta');
   if (overlay) {
-    document.getElementById('textoPergunta').textContent =
-      `${jogadorAtual.nome}, Casa ${target}: ${currentQuestion.q}`;
-    const ansInput = document.getElementById('respostaJogador');
-    if (ansInput) {
-      ansInput.value = '';
-      if (typeof ansInput.focus === 'function') ansInput.focus(); // foco corrigido
+    document.getElementById('contextoPergunta').textContent =
+      `${jogadorAtual.nome} • Casa ${target}`;
+    document.getElementById('textoPergunta').textContent = currentQuestion.q;
+
+    const faceDado = document.getElementById('faceDadoPergunta');
+    const numeroDado = document.getElementById('numeroDadoPergunta');
+    if (faceDado) {
+      faceDado.dataset.valor = String(dadoValor);
+      faceDado.setAttribute('aria-label', `Resultado do dado: ${dadoValor}`);
     }
+    if (numeroDado) numeroDado.textContent = String(dadoValor);
+
+    montarAlternativas(currentQuestion.a);
     overlay.style.display = 'flex';
   }
+}
+
+function embaralhar(lista) {
+  for (let i = lista.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [lista[i], lista[j]] = [lista[j], lista[i]];
+  }
+  return lista;
+}
+
+function montarAlternativas(respostaCorreta) {
+  const container = document.getElementById('alternativasResposta');
+  if (!container) return;
+
+  const correta = Number(respostaCorreta);
+  const valores = new Set([correta]);
+  let distancia = 1;
+
+  while (valores.size < 4) {
+    if (correta - distancia >= 0) valores.add(correta - distancia);
+    if (valores.size < 4) valores.add(correta + distancia);
+    distancia++;
+  }
+
+  container.innerHTML = '';
+  embaralhar(Array.from(valores)).forEach(valor => {
+    const botao = document.createElement('button');
+    botao.type = 'button';
+    botao.className = 'alternativa-resposta';
+    botao.textContent = String(valor);
+    botao.addEventListener('click', () => verificarResposta(valor));
+    container.appendChild(botao);
+  });
 }
 
 /* ============================
    RESPOSTA E FEEDBACK
 ============================ */
-function verificarResposta() {
+function verificarResposta(respostaSelecionada) {
   const jogadorAtual = jogadoresTabuleiro[jogadorAtualIndex];
-  const ansInput = document.getElementById('respostaJogador');
-  const ans = ansInput ? ansInput.value.trim() : '';
 
   if (!currentQuestion) return;
 
   document.getElementById('telaPergunta').style.display = 'none';
-  const correct = (ans === currentQuestion.a) || (Number(ans) === Number(currentQuestion.a));
+  const correct = Number(respostaSelecionada) === Number(currentQuestion.a);
 
   if (correct) {
-    jogadorAtual.posicaoAtual = currentQuestion.target;
-    atualizarPosicao(jogadorAtual);
-    mostrarFeedback(true, currentQuestion.q, currentQuestion.a, jogadorAtual.nome);
-    if (jogadorAtual.posicaoAtual >= 35) {
-      setTimeout(() => mostrarVitoria(jogadorAtual.nome), 700);
-    }
+    const destino = currentQuestion.target;
+    mostrarFeedback(true, jogadorAtual.nome, function () {
+      moverJogadorAte(jogadorAtual, destino, function () {
+        if (jogadorAtual.posicaoAtual >= 35) {
+          mostrarVitoria(jogadorAtual.nome);
+        } else {
+          proximoJogador();
+        }
+      });
+    });
   } else {
-    mostrarFeedback(false, currentQuestion.q, currentQuestion.a, jogadorAtual.nome);
+    mostrarFeedback(false, jogadorAtual.nome, proximoJogador);
   }
 }
 
-function mostrarFeedback(ok, q, ansCorreta, nomeJogador) {
+function mostrarFeedback(ok, nomeJogador, aoFechar) {
   const fb = document.getElementById('feedback');
+  const caixa = document.getElementById('caixaFeedback');
   if (!fb) return;
+
+  if (feedbackTimeout) clearTimeout(feedbackTimeout);
+
   fb.style.display = 'flex';
+  if (caixa) {
+    caixa.classList.toggle('feedback-correto', ok);
+    caixa.classList.toggle('feedback-incorreto', !ok);
+  }
   document.getElementById('feedbackTitulo').textContent =
     ok ? `✅ ${nomeJogador} acertou!` : `❌ ${nomeJogador} errou!`;
-  document.getElementById('feedbackTexto').textContent =
-    ok ? `Pergunta: ${q} = ${ansCorreta}` : `Pergunta: ${q}. A resposta correta era: ${ansCorreta}`;
 
-  // continuar: fecha feedback, reabilita dado e passa a vez
-  document.getElementById('btnContinuar').onclick = function () {
-    continuarJogo();
-    proximoJogador();
-  };
+  feedbackTimeout = setTimeout(function () {
+    fb.style.display = 'none';
+    feedbackTimeout = null;
+
+    // Garante que o painel desapareca antes de iniciar o deslocamento.
+    window.requestAnimationFrame(function () {
+      if (typeof aoFechar === 'function') aoFechar();
+    });
+  }, 2000);
 }
 
-function continuarJogo() {
-  const fb = document.getElementById('feedback');
-  if (fb) fb.style.display = 'none';
+function moverJogadorAte(jogador, destino, aoTerminar) {
+  function avancarUmaCasa() {
+    if (jogador.posicaoAtual >= destino) {
+      if (typeof aoTerminar === 'function') aoTerminar();
+      return;
+    }
 
-  const btnDado = document.getElementById('btnJogarDado');
-  if (btnDado) btnDado.disabled = false;
+    jogador.posicaoAtual += 1;
+    atualizarPosicao(jogador);
+    setTimeout(avancarUmaCasa, 360);
+  }
+
+  avancarUmaCasa();
 }
 
 /* =====================
@@ -384,12 +443,11 @@ function atualizarPosicao(jogador) {
   const casa = document.getElementById(`casa${jogador.posicaoAtual}`);
   if (!casa) return;
 
-  const casaRect = casa.getBoundingClientRect();
-  const boardRect = tabuleiro.getBoundingClientRect();
-
-  // centro da casa
-  const centerX = casaRect.left - boardRect.left + casaRect.width / 2;
-  const centerY = casaRect.top  - boardRect.top  + casaRect.height / 2;
+  // Usa as coordenadas internas do tabuleiro. getBoundingClientRect() devolve
+  // pixels ja reduzidos pela escala responsiva e deslocava o peao novamente
+  // ao aplicar esses valores no palco original.
+  const centerX = casa.offsetLeft + casa.offsetWidth / 2;
+  const centerY = casa.offsetTop + casa.offsetHeight / 2;
 
   // pega todos os jogadores que estão nessa mesma casa
   const mesmos = jogadoresTabuleiro.filter(j => j.posicaoAtual === jogador.posicaoAtual);
@@ -397,7 +455,7 @@ function atualizarPosicao(jogador) {
   const n = mesmos.length;
 
   // distância do centro para espalhar (ajuste conforme o tamanho do ícone)
-  const spread = 15; // pixels – pode aumentar se quiser mais afastado
+  const spread = 55;
 
   let offsetX = 0;
   let offsetY = 0;
@@ -429,8 +487,8 @@ function atualizarPosicao(jogador) {
   }
 
   jogadorEl.style.position = 'absolute';
-  jogadorEl.style.left = (centerX + offsetX - 30) + 'px';
-  jogadorEl.style.top  = (centerY + offsetY - 30) + 'px';
+  jogadorEl.style.left = (centerX + offsetX) + 'px';
+  jogadorEl.style.top  = (centerY + offsetY) + 'px';
 
 }
 

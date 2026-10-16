@@ -174,9 +174,9 @@ body {
 }
 
 @keyframes brilho {
-  0% { transform: scale(1) ; }
-  50% {transform: scale(1.2) ;}
-  100% { transform: scale(1); }
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.2); }
+  100% { transform: translateX(-50%) scale(1); }
 }
 
 /* ====== BOTÃO COMEÇAR ====== */
@@ -296,11 +296,12 @@ body {
 /* peão no tabuleiro */
 .jogador {
   position: absolute;
-  width: 70px;
-  height: 70px;
-  transform: translate(-50%, -90%);   /* centraliza na casa */
+  width: 280px;
+  height: 280px;
+  transform: translate(-50%, -85%);   /* centraliza os pes na casa */
   z-index: 10;
   pointer-events: none;
+  transition: left 0.3s ease, top 0.3s ease;
 }
 
 
@@ -483,8 +484,8 @@ body {
 
 /* ÍCONE DO PEÃO NO TABULEIRO */
 .icone-personagem {
-  width: 150px;
-  height: 150px;
+  width: 280px;
+  height: 280px;
   object-fit: contain;
   pointer-events: none;
   position: static;   /* sem top/right aqui, o JS já posiciona o peão */
@@ -609,4 +610,21 @@ body {
   width: 1920px;
   height: 1080px;
   transform-origin: top left;
+}
+
+
+/* Ajuste para caber na tela. Nada acima foi alterado.
+
+   Quem faz o jogo caber agora e o escala-tela.js, que liga o
+   #game-scale { transform-origin: top left } que a equipe ja tinha preparado
+   e deixado sem o transform. O overflow: hidden original continua valendo e e
+   o certo: com a escala aplicada nao sobra nada para fora.
+
+   Aqui fica so o dvh, que no celular acompanha a area realmente visivel
+   quando a barra de endereco aparece e some. */
+.container,
+.container-tabuleiro,
+.tela-inicial,
+.tela-personagem {
+  min-height: 100dvh;
 }

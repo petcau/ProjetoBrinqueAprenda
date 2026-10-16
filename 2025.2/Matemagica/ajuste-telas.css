@@ -1,0 +1,412 @@
+/*
+ * Ajuste responsivo do Matemagica.
+ *
+ * O jogo foi desenhado em uma prancheta de 1920 x 1080. Mantemos essa
+ * prancheta e suas artes intactas; escala-tela.js apenas a reduz para o
+ * espaco disponivel no portal.
+ */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+#game-scale {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  margin: 0;
+  transform-origin: top left;
+}
+
+/* Tela inicial: arte e botoes passam a usar a mesma prancheta. */
+.tela-inicial .img-topo {
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  margin: 0;
+  padding: 0;
+}
+
+.tela-inicial .container {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  min-height: 0;
+  padding: 0;
+}
+
+.tela-inicial .botoes-iniciais {
+  flex-wrap: nowrap;
+  margin-bottom: 34px;
+}
+
+/* Selecao: o pergaminho, os quatro cards e os controles ficam no mesmo
+   sistema de coordenadas, sem o container de 2300px que afastava a tela. */
+.tela-personagem .container {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  min-height: 0;
+}
+
+.tela-personagem .selecao-jogadores {
+  position: absolute;
+  top: 155px;
+  left: 0;
+  width: 100%;
+  margin: 0;
+}
+
+.tela-personagem .personagens {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  margin: 0;
+  padding: 0;
+  flex-wrap: nowrap;
+}
+
+.tela-personagem .personagens::before {
+  inset: auto;
+  top: 20px;
+  left: 0;
+  width: 1920px;
+  height: 1040px;
+  background-size: 1930px 1040px;
+  background-position: center;
+}
+
+.tela-personagem .btn-comecar {
+  position: absolute;
+  top: 790px;
+  bottom: auto;
+  left: 50%;
+  margin: 0;
+}
+
+/* Tabuleiro: preenche a prancheta e deixa a madeira continuar nas laterais
+   quando a proporcao da janela for mais larga que a do jogo. */
+body.tela-tabuleiro {
+  background: url('images/B1.png') center / cover no-repeat fixed;
+}
+
+.tela-tabuleiro .container-tabuleiro {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  min-height: 0;
+}
+
+.tela-tabuleiro .tabuleiro {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 1930px;
+  height: 1060px;
+  transform: translateX(-50%);
+}
+
+.tela-tabuleiro .info-jogador {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  width: 700px;
+  height: 145px;
+  min-height: 0;
+  margin: 0;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "jogador dado"
+    "resultado resultado";
+  align-items: center;
+  column-gap: 18px;
+  row-gap: 0;
+  border: 6px solid #d8a43d;
+  border-radius: 26px;
+  background: rgba(66, 38, 20, 0.72);
+  box-shadow:
+    0 8px 0 #6f3d1d,
+    0 12px 24px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 3px rgba(255, 233, 169, 0.45);
+}
+
+.tela-tabuleiro #nomeJogadorDisplay {
+  grid-area: jogador;
+  width: 440px;
+  min-width: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 26px;
+  line-height: 1.15;
+  color: #fff7d6;
+  white-space: nowrap;
+}
+
+.tela-tabuleiro #nomeJogadorDisplay strong {
+  color: #ffdc70;
+}
+
+.tela-tabuleiro .icone-hud {
+  position: static;
+  width: 175px;
+  height: 175px;
+  object-fit: contain;
+  transform: translateY(-20px);
+}
+
+.tela-tabuleiro #btnJogarDado {
+  grid-area: dado;
+  position: absolute;
+  top: calc(50% - 18px);
+  right: 20px;
+  transform: translateY(-50%);
+  width: 230px;
+  min-width: 230px;
+  padding: 12px 18px;
+  font-size: 23px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+.tela-tabuleiro #btnJogarDado .dado-icone {
+  font-size: 42px;
+  line-height: 1;
+}
+
+.tela-tabuleiro #resultadoDado {
+  grid-area: resultado;
+  min-height: 0;
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.1;
+  color: #fff7d6;
+}
+
+/* Pergunta em alternativas: o dado sorteado fica ilustrado acima do painel. */
+.tela-tabuleiro .tela-pergunta {
+  z-index: 2000;
+  flex-direction: column;
+  gap: 22px;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.resultado-dado-pergunta {
+  min-width: 330px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  border: 5px solid #d8a43d;
+  border-radius: 24px;
+  background: rgba(66, 38, 20, 0.9);
+  box-shadow: 0 8px 0 #6f3d1d, 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+.resultado-dado-pergunta > div:last-child {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: #fff7d6;
+}
+
+.rotulo-dado {
+  font-size: 23px;
+  font-weight: 700;
+}
+
+#numeroDadoPergunta {
+  color: #ffdc70;
+  font-size: 48px;
+  line-height: 1;
+}
+
+.face-dado {
+  width: 112px;
+  height: 112px;
+  padding: 13px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 8px;
+  border: 5px solid #e1cda8;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #fffdf5, #f1dfb8);
+  box-shadow: inset -6px -7px 0 rgba(130, 90, 35, 0.18), 0 6px 12px rgba(0, 0, 0, 0.35);
+}
+
+.face-dado span {
+  width: 18px;
+  height: 18px;
+  place-self: center;
+  border-radius: 50%;
+  background: #59359a;
+  opacity: 0;
+  box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.35);
+}
+
+.face-dado[data-valor="1"] span:nth-child(5),
+.face-dado[data-valor="2"] span:nth-child(1),
+.face-dado[data-valor="2"] span:nth-child(9),
+.face-dado[data-valor="3"] span:nth-child(1),
+.face-dado[data-valor="3"] span:nth-child(5),
+.face-dado[data-valor="3"] span:nth-child(9),
+.face-dado[data-valor="4"] span:nth-child(1),
+.face-dado[data-valor="4"] span:nth-child(3),
+.face-dado[data-valor="4"] span:nth-child(7),
+.face-dado[data-valor="4"] span:nth-child(9),
+.face-dado[data-valor="5"] span:nth-child(1),
+.face-dado[data-valor="5"] span:nth-child(3),
+.face-dado[data-valor="5"] span:nth-child(5),
+.face-dado[data-valor="5"] span:nth-child(7),
+.face-dado[data-valor="5"] span:nth-child(9),
+.face-dado[data-valor="6"] span:nth-child(1),
+.face-dado[data-valor="6"] span:nth-child(3),
+.face-dado[data-valor="6"] span:nth-child(4),
+.face-dado[data-valor="6"] span:nth-child(6),
+.face-dado[data-valor="6"] span:nth-child(7),
+.face-dado[data-valor="6"] span:nth-child(9) {
+  opacity: 1;
+}
+
+.tela-tabuleiro .caixa-pergunta {
+  width: 700px;
+  padding: 42px 50px 48px;
+  box-sizing: border-box;
+  border: 8px solid #d8a43d;
+  border-radius: 30px;
+  background: linear-gradient(145deg, #fff9df, #f1dfb8);
+  box-shadow: 0 10px 0 #6f3d1d, 0 18px 38px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.contexto-pergunta {
+  margin: 0 0 12px;
+  color: #6f3d1d;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.tela-tabuleiro .caixa-pergunta h2 {
+  margin: 0;
+  color: #27170e;
+  font-size: 42px;
+  line-height: 1.2;
+}
+
+.instrucao-pergunta {
+  margin: 22px 0 16px;
+  color: #62472d;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.alternativas-pergunta {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.alternativa-resposta {
+  min-height: 76px;
+  border: 4px solid #9a6a27;
+  border-radius: 18px;
+  background: #ffdc70;
+  color: #2b1a0f;
+  font: 700 34px "Comic Sans MS", cursive, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 6px 0 #9a6a27;
+}
+
+.alternativa-resposta:hover,
+.alternativa-resposta:focus-visible {
+  background: #fff1a8;
+  border-color: #5c3c17;
+  outline: none;
+}
+
+.alternativa-resposta:active {
+  transform: translateY(3px);
+  box-shadow: 0 3px 0 #9a6a27;
+}
+
+/* Retorno breve da resposta: somente a mensagem. A troca de turno ocorre
+   automaticamente depois de dois segundos. */
+.tela-tabuleiro .feedback {
+  z-index: 2100;
+  background: rgba(0, 0, 0, 0.62);
+}
+
+.caixa-feedback {
+  min-width: 560px;
+  padding: 42px 58px;
+  box-sizing: border-box;
+  border: 7px solid #d8a43d;
+  border-radius: 28px;
+  background: rgba(66, 38, 20, 0.94);
+  box-shadow: 0 9px 0 #6f3d1d, 0 18px 40px rgba(0, 0, 0, 0.55);
+  text-align: center;
+}
+
+.caixa-feedback.feedback-correto {
+  border-color: #66c66e;
+  box-shadow: 0 9px 0 #286b31, 0 18px 40px rgba(0, 0, 0, 0.55);
+}
+
+.caixa-feedback.feedback-incorreto {
+  border-color: #e2665d;
+  box-shadow: 0 9px 0 #842d27, 0 18px 40px rgba(0, 0, 0, 0.55);
+}
+
+.tela-tabuleiro .caixa-feedback h2 {
+  margin: 0;
+  color: #fff7d6;
+  font-size: 44px;
+  line-height: 1.2;
+}
+
+/* Navegacao fora da prancheta escalada para permanecer legivel em qualquer
+   resolucao. Retorna ao menu do jogo sem empilhar o tabuleiro no historico. */
+.botao-menu-jogo {
+  position: fixed;
+  top: 12px;
+  left: 14px;
+  z-index: 10000;
+  width: 126px;
+  height: 58px;
+  border: 0;
+  background: transparent url('images/botao1.png') center / contain no-repeat;
+  color: #fff;
+  font: 700 1.1rem "Comic Sans MS", cursive, sans-serif;
+  text-shadow: 2px 2px 3px #000;
+  cursor: pointer;
+}
+
+.botao-menu-jogo:focus-visible {
+  outline: 4px solid #ffcc00;
+  outline-offset: 2px;
+  border-radius: 12px;
+}

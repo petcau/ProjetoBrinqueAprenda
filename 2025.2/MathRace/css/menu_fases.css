@@ -7,6 +7,36 @@
     height: 500px;
 }   
 
+.botao-menu-fases {
+    position: fixed;
+    top: 14px;
+    left: 16px;
+    z-index: 100;
+    min-width: 112px;
+    padding: 11px 22px;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    border-radius: 12px;
+    background: #546e7a;
+    color: #ffdc86;
+    font: 700 1.1rem Arial, sans-serif;
+    cursor: pointer;
+    box-shadow: 0 4px 0 rgba(45, 64, 72, 0.85);
+}
+
+.botao-menu-fases:hover {
+    background: #455a64;
+}
+
+.botao-menu-fases:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 rgba(45, 64, 72, 0.85);
+}
+
+.botao-menu-fases:focus-visible {
+    outline: 4px solid #ffdc86;
+    outline-offset: 3px;
+}
+
 .fasebox .fase1 {
     position: absolute;
     top: 15%;
@@ -77,6 +107,14 @@
 }
 
 @media (max-width: 1024px) {
+
+    .botao-menu-fases {
+        top: 10px;
+        left: 10px;
+        min-width: 88px;
+        padding: 8px 14px;
+        font-size: 0.95rem;
+    }
 
     body {
         overflow-y: auto !important;
@@ -165,5 +203,19 @@
     .fasebox img:hover {
         transform: none; 
         z-index: 1;
+    }
+}
+
+/* Mantem a composicao original dos cinco mapas, apenas reduzindo o conjunto
+   quando a faixa do portal diminui a altura disponivel. */
+@media (min-width: 1025px) and (max-height: 700px) {
+    body {
+        overflow: hidden;
+    }
+
+    .fasebox {
+        top: 28%;
+        transform: translateX(-50%) scale(0.62);
+        transform-origin: top center;
     }
 }
