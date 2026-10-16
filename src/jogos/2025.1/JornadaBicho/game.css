@@ -292,3 +292,307 @@
 }
 
 /* a margem do quadro e ajustada no Menu.css, que vem depois deste no bundle */
+
+/* O botao usava margin-left: -85% para ir ao canto esquerdo, o que o jogava
+   para FORA da caixa — cerca de 1190px a esquerda dela. Enquanto o jogo nao
+   era reduzido isso passava despercebido, porque o recorte escondia; com a
+   escala, esse vazamento entra na conta e empurra o quadro inteiro para o
+   lado. align-self faz a mesma coisa sem sair da caixa. */
+.Butao_Voltar_Ao_Menu {
+  margin-left: 0;
+  align-self: flex-start;
+}
+
+/* Icone de som e botoes de nivel maiores, a pedido. Dentro do quadro reduzido
+   pela escala eles chegavam na tela bem menores que o tamanho declarado: os
+   botoes tinham 14px de fonte e o icone era um emoji no tamanho padrao. */
+.audio_jornada {
+  font-size: 34px;
+  width: 64px;
+  height: 64px;
+  align-items: center;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.Controles_JornadaPA {
+  font-size: inherit;
+  gap: 24px;
+}
+
+.NAnterior,
+.botton_proximo_nivel,
+.botton_tentar_novamente {
+  font-size: 26px;
+  height: auto;
+  padding: 12px 26px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.NAnterior:disabled,
+.botton_proximo_nivel:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+/* Os dois botoes de nivel vao para os cantos de baixo, ladeando a barra de
+   animais, a pedido. Antes ficavam numa linha propria acima dela, ocupando
+   altura a toa.
+
+   Ficam sobrepostos: a linha dos controles e tirada do fluxo e ancorada no
+   rodape do quadro, e a barra de animais ganha recuo nos dois lados para nao
+   passar por baixo deles. O container precisa de position: relative para a
+   ancoragem valer aqui dentro — ele nao tinha nenhuma regra. */
+.game_container_jornada {
+  position: relative;
+}
+
+.Controles_JornadaPA {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 18px;
+  z-index: 5;
+  /* so os botoes recebem clique; o resto deixa passar para a barra de animais */
+  pointer-events: none;
+}
+
+.Controles_JornadaPA > * {
+  pointer-events: auto;
+}
+
+.objects {
+  margin-left: 230px;
+  margin-right: 230px;
+}
+
+/* O botao de som e trazido para a barra superior. Ele e renderizado la dentro
+   do LogicaGame, entao nao da para ser irmao do titulo sem reescrever a
+   estrutura da equipe; em vez disso e ancorado por cima, descontando a altura
+   da barra. O margin-left de 915px e o margin-top de -40px originais eram o
+   que o jogava para fora do topo do quadro. */
+.audio_jornada {
+  position: absolute;
+  top: calc((var(--barra-jornada-h, 88px) + 14px) * -1);
+  right: 18px;
+  margin: 0;
+  height: var(--barra-jornada-h, 88px);
+  width: 76px;
+  z-index: 25;
+  background-color: transparent;
+  box-shadow: none;
+  font-size: 40px;
+}
+
+/* o Sair/Menu agora vive na barra, entao nao precisa mais se deslocar */
+.barra_jornada .Butao_Voltar_Ao_Menu {
+  align-self: center;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* Botoes de nivel colados nas bordas do painel, a pedido.
+
+   O painel centraliza os filhos (align-items: center), entao o container do
+   jogo so tem a largura do conteudo — o `left: 0` dos controles era a borda do
+   CONTEUDO, nao a do painel, e por isso os botoes ficavam para dentro. Com o
+   container esticado, left/right passam a valer contra o painel; o recuo
+   negativo compensa o respiro de 20px do painel e deixa os botoes a 6px da
+   borda. */
+.game_container_jornada {
+  align-self: stretch;
+  text-align: center;
+}
+
+.Controles_JornadaPA {
+  left: -14px;
+  right: -14px;
+  padding: 0;
+}
+
+/* Botao da barra mais estreito, a pedido. Os 260px vieram de quando o texto
+   era "Voltar para o menu"; com "Menu" sobrava largura a toa. */
+.barra_jornada .Butao_Voltar_Ao_Menu {
+  width: auto;
+  min-width: 0;
+  padding: 10px 30px;
+}
+
+/* Segunda barra: nivel e descricao a esquerda, acertos e erros a direita.
+
+   O .NV usava margin-right: 90% e a .desc-jornada margin-left: -40% para se
+   posicionarem — truques que davam certo enquanto os dois eram os unicos da
+   linha, mas que brigam com a barra. Zerados aqui; quem posiciona agora e o
+   flex. */
+.barra2_jornada {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  margin-bottom: 14px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #c57f22 0%, #a96714 100%);
+  border: 3px solid #ffc13a;
+  border-radius: 12px;
+  box-shadow: #00000045 0px 4px 6px;
+}
+
+.barra2_jornada .Header-Nivel-Jornada {
+  flex: 1;
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 22px;
+  min-width: 0;
+}
+
+.barra2_jornada .NV,
+.barra2_jornada .desc-jornada {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.barra2_jornada .NV {
+  font-size: 34px;
+}
+
+.barra2_jornada .desc-jornada {
+  font-size: 24px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.barra2_jornada .acertos_jornada {
+  flex-shrink: 0;
+  gap: 22px;
+  font-size: 24px;
+}
+
+.barra2_jornada .acertos_jornada p {
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Faixa clara atras da dica e fonte maior, a pedido. O texto era escuro com
+   sombra escura direto sobre a arte laranja, entao se misturava ao fundo —
+   principalmente onde passam os desenhos de bichos. A faixa isola. */
+.dica_jornada {
+  display: inline-block;
+  margin: 14px auto 0;
+  padding: 10px 30px;
+  font-size: 30px;
+  color: #3a2a10;
+  background: #fff8e8;
+  border: 3px solid #ffc13a;
+  border-radius: 999px;
+  box-shadow: #00000045 0px 4px 6px;
+  text-shadow: none;
+}
+
+/* A descricao do nivel sai da barra e vira destaque logo acima da imagem do
+   jogo, a pedido. O Header continua recebendo so o nivel; o <h3> vazio que
+   ele ainda renderiza fica escondido para nao abrir espaco a toa. */
+.barra2_jornada .desc-jornada:empty {
+  display: none;
+}
+
+.destaque_desc_jornada {
+  display: inline-block;
+  margin: 0 auto 14px;
+  padding: 10px 34px;
+  font-size: 32px;
+  font-weight: bold;
+  color: #ffffff;
+  background: linear-gradient(180deg, #2fa84f 0%, #1f8d3d 100%);
+  border: 3px solid #fff3dd;
+  border-radius: 999px;
+  box-shadow: #00000055 0px 5px 8px;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* Nivel menor e barra mais baixa, a pedido. A altura vinha do tamanho do
+   "Nivel 1" mais o respiro de 10px em cima e embaixo. */
+.barra2_jornada {
+  padding: 5px 20px;
+  margin-bottom: 10px;
+}
+
+.barra2_jornada .NV {
+  font-size: 24px;
+}
+
+.barra2_jornada .acertos_jornada {
+  font-size: 21px;
+}
+
+/* Mensagem de fim de nivel vira janela sobre o jogo, a pedido.
+
+   Antes era texto no fluxo, com margens negativas (margin-top: -35px) para se
+   encaixar — aparecia e sumia empurrando o resto da tela. Agora fica fora do
+   fluxo, entao nada se mexe, e some sozinha em 3 segundos (o temporizador esta
+   no LogicaGame.jsx). Nao intercepta clique: a crianca continua podendo mexer
+   no jogo enquanto ela esta na tela. */
+.game_won_jornada,
+.game_over_jornada {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 20px;
+  background: rgba(24, 12, 2, 0.5);
+  border-radius: 12px;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.texto_venceu_jornada,
+.texto_perdeu {
+  margin: 0;
+  max-width: 80%;
+  padding: 26px 44px;
+  font-size: 40px;
+  text-align: center;
+  color: #ffffff;
+  border: 5px solid #fff3dd;
+  border-radius: 22px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  animation: bq-aviso-jornada 0.18s ease-out;
+}
+
+.texto_venceu_jornada {
+  background: linear-gradient(180deg, #2fa84f 0%, #1f8d3d 100%);
+}
+
+.texto_perdeu {
+  background: linear-gradient(180deg, #c0392b 0%, #96271b 100%);
+}
+
+@keyframes bq-aviso-jornada {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* O bicho dobra de tamanho ao entrar no cenario, a pedido: 90px na bandeja
+   viram 180px depois de colocado. O tamanho saiu do estilo em linha do
+   ZonaColocar.jsx e veio para ca — estilo em linha vence folha de estilo, e
+   enquanto estivesse la nao daria para ajustar por CSS. */
+.dropped-item-in-zone {
+  width: 180px;
+  height: 180px;
+}
+
+/* O bicho ja colocado pode ser arrastado de novo para arrumar a cena. */
+.dropped-item-in-zone {
+  cursor: grab;
+}
+
+.dropped-item-in-zone:active {
+  cursor: grabbing;
+}

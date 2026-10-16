@@ -21,15 +21,26 @@ function AreaColocar({ zoneName, onDrop, backgroundUrl, allObjects, droppedItems
     itemId => droppedItems[itemId].zone === zoneName
   );
 
-  const itemsToRender = allObjects.filter(obj => 
+  const itemsToRender = allObjects.filter(obj =>
     itemsInThisZoneIds.includes(obj.id)
   );
-  
+
+  // O Levels-Itens.json guarda o fundo sem a barra inicial
+  // ("JornadaBicho/ZonasJornadaBicho/casa.png"). Num endereco como
+  // /jogar/jornada-dos-bichos o navegador resolve isso para
+  // /jogar/JornadaBicho/... e a imagem nao aparece. Como o portal e SPA e
+  // devolve o index.html para qualquer caminho desconhecido, a resposta vem
+  // com status 200 e a falha passa despercebida. Os bichos ja usam a barra
+  // (src={`/JornadaBicho/${item.image}`}); aqui fica igual.
+  const fundo = backgroundUrl?.startsWith('/')
+    ? backgroundUrl
+    : `/${backgroundUrl}`;
+
   return (
     <div
       className={`drop-zone ${zoneName}`}
       style={{ 
-      backgroundImage: `url(${backgroundUrl})`,
+      backgroundImage: `url(${fundo})`,
       backgroundSize: "cover",
       backgroundPosition: "center" 
       }}
@@ -50,9 +61,16 @@ function AreaColocar({ zoneName, onDrop, backgroundUrl, allObjects, droppedItems
           src={`/JornadaBicho/${item.image}`}
           alt={item.name}
           className="dropped-item-in-zone"
-          style={{ 
-            width: "90px", 
-            height: "90px", 
+          /* Arrastavel para a crianca poder arrumar a cena depois de acertar.
+             Solta de novo na mesma zona, o handleDrop so muda a posicao. */
+          draggable
+          onDragStart={(e) => e.dataTransfer.setData("text/plain", item.id)}
+          /* O tamanho sai daqui e passa a vir do CSS (.dropped-item-in-zone):
+             estilo em linha vence qualquer regra de folha, entao enquanto
+             ficasse aqui nao haveria como ajustar o bicho no cenario sem
+             mexer neste arquivo. Posicao continua em linha porque e calculada
+             a cada soltura. */
+          style={{
             objectFit: "contain",
             top: `${posicao.y}px`,
             left: `${posicao.x}px`,

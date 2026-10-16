@@ -17,6 +17,12 @@
 
     palco.style.transform =
       'translate(' + x + 'px, ' + y + 'px) scale(' + escala + ')';
+
+    /* Publica a escala para o CSS. Serve para elementos que ficam ancorados
+       na prancheta (para acompanharem a arte) mas NAO devem encolher junto
+       com ela — o botao Menu e um deles: ele se desfaz da escala com
+       scale(1 / var(--escala)). */
+    palco.style.setProperty('--escala', String(escala));
   }
 
   window.addEventListener('resize', ajustar);

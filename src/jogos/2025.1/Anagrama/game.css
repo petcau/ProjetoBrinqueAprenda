@@ -267,7 +267,7 @@
   transform: translate(var(--bq-escala-x, 0px), var(--bq-escala-y, 0px))
              scale(var(--bq-escala, 1));
   transform-origin: top left;
-  margin-left: var(--bq-escala-mx, 0px);
+  margin-left: 0;
   margin-right: var(--bq-escala-mx, 0px);
   margin-bottom: var(--bq-escala-mb, 0px);
 }
@@ -530,4 +530,62 @@
   .aviso-anagrama-caixa { padding: 1.4rem 1.6rem; gap: 1.1rem; max-width: 92%; }
   .aviso-anagrama .finish { font-size: 1.6rem; }
   .aviso-anagrama .botoes { font-size: 1.1rem; padding: 0.7rem 1.4rem; }
+}
+
+/* Margem de 5px em cima e embaixo, a pedido.
+
+   O .container tinha 2rem de respiro, o que sozinho ja deixava 32px de cada
+   lado. Vai para 5px — e sobra mais altura, entao as duas telas aparecem
+   maiores.
+
+   A tela inicial nao usa o hook de escala: ela e dimensionada pela largura,
+   com a altura saindo do aspect-ratio. Entao o desconto tem de bater com o
+   que o palco realmente deixa: a barra do portal (48px) mais os 2x5px de
+   respiro = 58px. Em tela pequena a barra encolhe para 42px e o desconto
+   acompanha, senao sobrariam 6px. */
+.container {
+  padding: 5px;
+}
+
+.tela-inicial-box {
+  width: min(80%, calc((100dvh - 58px) * 4 / 3));
+}
+
+@media (max-width: 680px), (max-height: 600px) {
+  .tela-inicial-box {
+    width: min(94%, calc((100dvh - 52px) * 4 / 3));
+  }
+}
+
+@media (max-width: 768px) {
+  .container { padding: 5px; }
+}
+
+/* A largura estava travada em 80%, e em telas medias era ela — nao a altura —
+   que limitava a tela inicial, deixando faixa sobrando em cima e embaixo. Com
+   96% quem manda passa a ser a altura disponivel, que e o que se quer. O teto
+   de 1200px da equipe continua valendo: em monitor grande a caixa para no
+   tamanho de projeto em vez de esticar. */
+.tela-inicial-box {
+  width: min(96%, calc((100dvh - 58px) * 4 / 3));
+}
+
+@media (max-width: 680px), (max-height: 600px) {
+  .tela-inicial-box {
+    width: min(96%, calc((100dvh - 52px) * 4 / 3));
+  }
+}
+
+/* Ainda sobrava faixa embaixo em janelas estreitas: com a largura travada em
+   96%, era ela que limitava, e a caixa nao chegava a usar a altura. Em 100%
+   (os 5px das laterais ja vem do respiro do .container) quem limita passa a
+   ser a altura na maior parte dos casos, e o vao de baixo fecha. */
+.tela-inicial-box {
+  width: min(100%, calc((100dvh - 58px) * 4 / 3));
+}
+
+@media (max-width: 680px), (max-height: 600px) {
+  .tela-inicial-box {
+    width: min(100%, calc((100dvh - 52px) * 4 / 3));
+  }
 }

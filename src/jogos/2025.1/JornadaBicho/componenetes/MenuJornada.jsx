@@ -44,8 +44,13 @@ function MenuJornada({ estado, setEstado }) {
   function getBack() {
     // Se o menu está sendo exibido, volta para a tela inicial
     if (estado) {
-      setEstado(false);
-      navigate("/");
+      // Sai do jogo e volta para a pagina dele no portal — e de la que a
+      // crianca veio, e e onde ficam a capa e as informacoes do jogo. Ia para
+      // a home ("/"), que perde esse contexto.
+      //
+      // O setEstado(false) que havia aqui trocava para a tela de JOGO no meio
+      // da saida, fazendo o tabuleiro piscar antes de navegar.
+      navigate("/jogo/jornada-dos-bichos");
     } else {
       // Se o jogo está sendo exibido, retorna ao menu do jogo
       setEstado(true);
@@ -53,10 +58,28 @@ function MenuJornada({ estado, setEstado }) {
   }
 
   return (
-    <div className="conteiner_Menu_Jornada" ref={quadro}>      
-      <button className="Butao_Voltar_Ao_Menu" onClick={getBack}>
-        Sair
-      </button>
+    <div
+      className={`conteiner_Menu_Jornada ${estado ? "" : "jogando_jornada"}`}
+      ref={quadro}
+    >      
+      {/* A barra so aparece durante o jogo: no menu a arte ja traz o nome, e
+          repetir em cima dela ficava redundante.
+
+          O getBack ja faz as duas coisas conforme a tela — durante o jogo
+          volta para o menu, no menu sai para o portal — e o rotulo acompanha. */}
+      {estado ? (
+        <button className="Butao_Voltar_Ao_Menu" onClick={getBack}>
+          Sair
+        </button>
+      ) : (
+        <div className="barra_jornada">
+          <button className="Butao_Voltar_Ao_Menu" onClick={getBack}>
+            Menu
+          </button>
+
+          <h2 className="titulo_barra_jornada">Jornada dos Bichos</h2>
+        </div>
+      )}
 
       {estado ? (
         <>

@@ -117,9 +117,15 @@ export function usarEscalaParaCaber(ref, gatilho, respiro = 64) {
       quadro.style.setProperty('--bq-escala-x', px(-esquerda * escala));
       quadro.style.setProperty('--bq-escala-y', px(-topo * escala));
       /* o espaço que o elemento deve ocupar no layout é o tamanho JÁ escalado */
+      /* Toda a compensacao horizontal vai para a DIREITA. Com transform-origin
+         em top left o desenho fica colado na borda esquerda da caixa, entao uma
+         margem negativa a esquerda arrastaria o jogo para fora da tela — foi
+         exatamente o que aconteceu quando eu dividia a diferenca entre os dois
+         lados. Assim a borda esquerda fica parada e so o espaco sobrando a
+         direita e devolvido ao layout. */
       quadro.style.setProperty(
         '--bq-escala-mx',
-        px((largura * escala - quadro.offsetWidth) / 2)
+        px(largura * escala - quadro.offsetWidth)
       );
       quadro.style.setProperty(
         '--bq-escala-mb',
@@ -137,13 +143,26 @@ export function usarEscalaParaCaber(ref, gatilho, respiro = 64) {
     }
     window.addEventListener('resize', medir);
     window.addEventListener('orientationchange', medir);
-    /* fontes e imagens mudam o tamanho medido depois do primeiro quadro */
-    const atraso = window.setTimeout(medir, 300);
+    /* Imagens e fontes chegam DEPOIS da primeira medição e mudam a altura do
+       conteúdo. No Jornada dos Bichos a fileira de animais carrega tarde: a
+       escala era calculada sem ela e o jogo voltava a ficar cortado embaixo.
+       Remedimos a cada imagem que termina de carregar. */
+    const imagens = [...quadro.querySelectorAll('img')];
+    for (const img of imagens) {
+      if (img.complete) continue;
+      img.addEventListener('load', medir);
+      img.addEventListener('error', medir);
+    }
+    const atrasos = [300, 900, 1800].map((ms) => window.setTimeout(medir, ms));
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(medir);
 
     return () => {
       if (observador) observador.disconnect();
-      window.clearTimeout(atraso);
+      for (const id of atrasos) window.clearTimeout(id);
+      for (const img of imagens) {
+        img.removeEventListener('load', medir);
+        img.removeEventListener('error', medir);
+      }
       window.removeEventListener('resize', medir);
       window.removeEventListener('orientationchange', medir);
     };

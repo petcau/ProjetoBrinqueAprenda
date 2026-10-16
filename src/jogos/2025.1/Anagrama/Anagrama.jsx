@@ -13,7 +13,8 @@ function Anagrama() {
 
   // Reduz o tabuleiro ate caber, sem mudar nada da composicao da equipe.
   const quadro = useRef(null);
-  usarEscalaParaCaber(quadro, iniciou);
+  // respiro 10: deixa 5px de folga em cima e embaixo, sem mais
+  usarEscalaParaCaber(quadro, iniciou, 10);
 
   // Se não iniciou, mostra a tela inicial (passando a função para iniciar)
   if (!iniciou) {

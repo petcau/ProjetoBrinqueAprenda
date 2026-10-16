@@ -6,6 +6,7 @@ import ItemsList from "./ListaItens";
 import ZonesList from "./ListaZonas";
 import somVitoriaSound from "../../../../../assets/Sons/somVitoria.mp3";
 import somDerrotaSound from "../../../../../assets/Sons/somDerrota.mp3";
+import somErroSound from "../../../../../assets/Sons/respErrada.mp3";
 /**
  * GameLogic é um componente React que gerencia a lógica central de um jogo educativo de arrastar e soltar.
  * Ele controla o estado do jogo, incluindo o nível atual, acertos, erros e status do jogo.
@@ -40,12 +41,24 @@ function GameLogic() {
   const [acertos, setAcertos] = useState(0);
   const [errorCount, setErrorCount] = useState(0);
   const [gameStatus, setGameStatus] = useState("Jogando"); // 'Jogando', 'Ganhou', 'Perdeu'
+  // A janela de fim some sozinha em 3s. Precisa de estado proprio: apagar o
+  // gameStatus junto esconderia tambem os botoes de Proximo Nivel / Tentar
+  // novamente, que dependem dele.
+  const [mostrarAviso, setMostrarAviso] = useState(false);
+
   const [dropped, setDropped] = useState({});
   const [shuffledItems, setShuffledItems] = useState([]);
   const currentLevel = levels[levelIndex];
   const currentLevelItems = levels[levelIndex].items;
   const [somAtivo, setSomAtivo] = useState(true);
   const SoundRef = useRef(null);
+
+  // O botao de mudo so controlava a musica de fundo: vitoria e derrota
+  // tocavam mesmo com o som desligado. Passam todos por aqui.
+  function tocar(som) {
+    if (!somAtivo) return;
+    new Audio(som).play().catch(() => {});
+  }
 
   useEffect(() => {
     const items = [...currentLevelItems].sort(() => Math.random() - 0.5);
@@ -82,21 +95,45 @@ function GameLogic() {
    */
   function handleDrop(itemId, zone, e) {
 
-    if (gameStatus !== "Jogando" || dropped[itemId]) {
+    const item = objects.find((obj) => obj.id === itemId);
+    if (!item) return;
+
+    // Onde a crianca soltou, em coordenadas do proprio cenario.
+    //
+    // O jogo e reduzido por transform: scale() para caber na tela. O
+    // getBoundingClientRect devolve a caixa JA escalada e o clientX e
+    // coordenada de tela, mas o x/y sera aplicado como `left`/`top` DENTRO do
+    // container escalado, onde 1px de CSS vale `escala` px na tela. Sem
+    // dividir, o bicho cai longe de onde foi solto, e o desvio cresce conforme
+    // se afasta do canto superior esquerdo. Comparar a caixa pintada com a de
+    // layout da a escala sem depender de onde ela foi aplicada — e da 1
+    // quando nao ha escala nenhuma.
+    const dropZone = e.currentTarget;
+    const rect = dropZone.getBoundingClientRect();
+    const escalaX = rect.width / dropZone.offsetWidth || 1;
+    const escalaY = rect.height / dropZone.offsetHeight || 1;
+
+    const x = (e.clientX - rect.left) / escalaX;
+    const y = (e.clientY - rect.top) / escalaY;
+
+    // Bicho que JA esta no cenario: so muda de lugar. Nao conta acerto de
+    // novo nem erro, senao arrastar para arrumar a cena mexeria no placar.
+    if (dropped[itemId]) {
+      if (dropped[itemId].zone !== zone) return;
+      setDropped((prev) => ({
+        ...prev,
+        [itemId]: { ...prev[itemId], x: x, y: y },
+      }));
       return;
     }
 
-    const item = objects.find((obj) => obj.id === itemId);
-    if (!item) return;
+    if (gameStatus !== "Jogando") {
+      return;
+    }
 
     const isCorrect = item.correctZone === zone;
 
     if (isCorrect) {
-
-      const dropZone = e.currentTarget;
-      const rect = dropZone.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
 
       // Marca o item como dropado na zona correta
       setDropped((prev) => ({
@@ -109,17 +146,20 @@ function GameLogic() {
         const newCount = prev + 1;
         if (newCount >= acertosNecessarios) {
           setGameStatus("Ganhou");
-          new Audio(somVitoriaSound).play();
+          tocar(somVitoriaSound);
 
         }
         return newCount;
       });
     } else {
+      // som a cada bicho errado, nao so quando o nivel acaba
+      tocar(somErroSound);
+
       setErrorCount((prev) => {
         const newCount = prev + 1;
         if (newCount >= errosMaximos) {
           setGameStatus("Perdeu");
-          new Audio(somDerrotaSound).play();          
+          tocar(somDerrotaSound);
         }
         return newCount;
       });
@@ -183,6 +223,17 @@ function GameLogic() {
   }
 }, [somAtivo]);
 
+  // A janela de fim de nível fica 3 segundos e some sozinha.
+  useEffect(() => {
+    if (gameStatus !== "Ganhou" && gameStatus !== "Perdeu") {
+      setMostrarAviso(false);
+      return undefined;
+    }
+    setMostrarAviso(true);
+    const tempo = setTimeout(() => setMostrarAviso(false), 3000);
+    return () => clearTimeout(tempo);
+  }, [gameStatus, levelIndex]);
+
   return (
     <div className="game_container_jornada">
       <audio
@@ -198,11 +249,22 @@ function GameLogic() {
   {somAtivo ? "🔇" : "🔊"}
 </button>
 
-      <Header
-        className="level_jornada"
-        level={levelIndex + 1}
-        description={currentLevel.description}
-      />
+      {/* Segunda barra: nivel e descricao a esquerda, acertos e erros a
+          direita. Os acertos ficavam la embaixo, depois da dica; juntar os
+          dois numa linha so deixa o placar sempre a vista. */}
+      <div className="barra2_jornada">
+        {/* sem description: ela saiu da barra e virou destaque acima do jogo */}
+        <Header className="level_jornada" level={levelIndex + 1} />
+
+        <div className="acertos_jornada">
+          <p>
+            Acertos: {acertos} / {acertosNecessarios}
+          </p>
+          <p>Erros: {errorCount} / {errosMaximos}</p>
+        </div>
+      </div>
+
+      <h3 className="destaque_desc_jornada">{currentLevel.description}</h3>
 
       <ZonesList
         zones={zones}
@@ -214,21 +276,14 @@ function GameLogic() {
 
       <p className="dica_jornada">{currentLevel.dica}</p>
 
-      <div className="acertos_jornada">
-        <p>
-          Acertos: {acertos} / {acertosNecessarios}
-        </p>
-        <p>Erros: {errorCount} / {errosMaximos}</p>
-      </div>
-
-      {gameStatus === "Ganhou" && (
+      {mostrarAviso && gameStatus === "Ganhou" && (
         <div className="game_won_jornada">
           <p className="texto_venceu_jornada">
             Parabéns! Vocês venceu este nível!
           </p>
         </div>
       )}
-      {gameStatus === "Perdeu" && (
+      {mostrarAviso && gameStatus === "Perdeu" && (
         <div className="game_over_jornada">
           <p className="texto_perdeu">Você perdeu! Muitos erros.</p>
         </div>

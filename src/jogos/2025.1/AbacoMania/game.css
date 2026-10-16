@@ -216,7 +216,7 @@ button:hover {
   transform: translate(var(--bq-escala-x, 0px), var(--bq-escala-y, 0px))
              scale(var(--bq-escala, 1));
   transform-origin: top left;
-  margin-left: var(--bq-escala-mx, 0px);
+  margin-left: 0;
   margin-right: var(--bq-escala-mx, 0px);
   margin-bottom: var(--bq-escala-mb, 0px);
 }
@@ -343,4 +343,13 @@ button:hover {
 @keyframes bq-aviso-entra {
   from { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
   to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* Margem de 5px em cima e embaixo, a pedido. O respiro de 30px do .container
+   somado a centralizacao vertical deixava uma faixa escura larga entre a barra
+   do portal e o jogo. Encostar no topo ainda rende escala maior, porque sobra
+   mais altura para o quadro ocupar. */
+.container {
+  align-items: flex-start;
+  padding: 5px;
 }

@@ -130,11 +130,58 @@
         })();
       </script>
     </div>
+
+    <!-- O botao passa para DENTRO do #game-scale: assim ele e reduzido junto
+         com o resto e fica sempre no mesmo ponto do pergaminho. Estava fora,
+         preso a janela, e por isso aparecia sobre a madeira. -->
+    <button type="button" class="botao-menu-jogo" onclick="window.location.replace('index.html')">
+      Menu
+    </button>
+
+    <button type="button" class="botao-som-jogo" id="btnSom" aria-pressed="false"
+            aria-label="Desligar o som" title="Ligar ou desligar o som">
+      <span id="iconeSom" aria-hidden="true">🔊</span>
+    </button>
   </div>
 
-  <button type="button" class="botao-menu-jogo" onclick="window.location.replace('index.html')">
-    Menu
-  </button>
+  <!-- Liga/desliga o som. Usa o mesmo mm_prefs que a tela de Opcoes ja grava,
+       com um campo "mudo" a mais — assim o volume escolhido nas Opcoes nao se
+       perde ao silenciar, e a escolha sobrevive a troca de tela. -->
+  <script>
+    (function () {
+      var audio = document.getElementById("bgm");
+      var botao = document.getElementById("btnSom");
+      var icone = document.getElementById("iconeSom");
+      if (!audio || !botao) return;
+
+      function lerPrefs() {
+        try {
+          return JSON.parse(localStorage.getItem("mm_prefs") || "{}");
+        } catch (e) {
+          return {};
+        }
+      }
+
+      function aplicar(mudo) {
+        audio.muted = mudo;
+        icone.textContent = mudo ? "🔇" : "🔊";
+        botao.setAttribute("aria-pressed", mudo ? "true" : "false");
+        botao.setAttribute("aria-label", mudo ? "Ligar o som" : "Desligar o som");
+      }
+
+      var prefs = lerPrefs();
+      aplicar(prefs.mudo === true);
+
+      botao.addEventListener("click", function () {
+        var atual = lerPrefs();
+        atual.mudo = !audio.muted;
+        aplicar(atual.mudo);
+        try {
+          localStorage.setItem("mm_prefs", JSON.stringify(atual));
+        } catch (e) { }
+      });
+    })();
+  </script>
 
   <!-- Liga a escala global que o #game-scale ja previa. Ver escala-tela.js -->
   <script src="escala-tela.js"></script>

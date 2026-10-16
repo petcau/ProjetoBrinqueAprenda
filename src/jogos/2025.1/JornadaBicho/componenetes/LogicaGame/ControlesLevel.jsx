@@ -38,10 +38,10 @@ const Controls = ({
         return (
           <>
           <button className="NAnterior" onClick={onPrevious} disabled={isFirst}>
-              Nível Anterior
+              ← Anterior
             </button>
           <button className="botton_proximo_nivel" onClick={onNext}>
-            Próximo Nível
+            Próximo →
           </button>
           </>
         );
@@ -63,11 +63,11 @@ const Controls = ({
               onClick={onPrevious}
               disabled={isFirst}
             >
-              Nível Anterior
+              ← Anterior
             </button>
 
             <button className="botton_proximo_nivel" onClick={onNext} disabled>
-              Próximo Nível
+              Próximo →
             </button>
           </>
         );

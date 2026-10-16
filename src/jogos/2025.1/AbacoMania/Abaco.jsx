@@ -34,7 +34,8 @@ function Abaco() {
 
     // Reduz o quadro de 1200x900 ate caber, sem mudar a composicao da equipe.
     const quadro = useRef(null);
-    usarEscalaParaCaber(quadro, true);
+    // respiro 10: deixa 5px de folga de cada lado, sem mais
+    usarEscalaParaCaber(quadro, true, 10);
 
     const linhasValores = [1, 5, 10, 50, 100];
     const alvo = levels.levels.find((level) => level.id === faseAtual)?.alvo ?? 0;
@@ -113,7 +114,7 @@ function Abaco() {
                     className="botao-menu-abaco"
                     onClick={() => navegar("/jogo/abacomania")}
                 >
-                    Menu
+                    Sair
                 </button>
 
                 <div className="valores">

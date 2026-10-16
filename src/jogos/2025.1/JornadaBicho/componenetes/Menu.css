@@ -1,3 +1,7 @@
+/* Fonte da barra superior, proxima da arte do titulo do jogo. O @import tem
+   de vir antes de qualquer regra, senao o CSS o descarta. */
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+
 .conteiner_Menu_Jornada{
     margin-top: 50px;
     margin-bottom: 50px;
@@ -57,7 +61,7 @@
   transform: translate(var(--bq-escala-x, 0px), var(--bq-escala-y, 0px))
              scale(var(--bq-escala, 1));
   transform-origin: top left;
-  margin-left: var(--bq-escala-mx, 0px);
+  margin-left: 0;
   margin-right: var(--bq-escala-mx, 0px);
   margin-bottom: var(--bq-escala-mb, 0px);
 }
@@ -67,4 +71,101 @@
    Menu.css e importado depois no bundle, entao e ele que vence. */
 .conteiner_Menu_Jornada {
   margin-top: 5px;
+}
+
+/* A altura de 800px era menor que o proprio conteudo, e com overflow: hidden o
+   que sobrava era cortado — o botao Sair em cima e a fileira de bichos embaixo
+   ficavam pela metade, inclusive em monitor grande, antes de qualquer escala.
+   Com a altura seguindo o conteudo nada mais e recortado, e a escala cuida de
+   fazer o conjunto caber. */
+.conteiner_Menu_Jornada {
+  height: auto;
+  min-height: 800px;
+}
+
+/* Barra superior dentro do painel, a pedido: nome do jogo, botao Menu e botao
+   de som. Antes o botao ficava solto sobre a arte e o som num canto, sem
+   nenhuma moldura que os reunisse.
+
+   A barra sai do fluxo e e ancorada no topo do painel; o painel ganha respiro
+   em cima do tamanho dela para o conteudo comecar abaixo. A altura e uma
+   variavel porque o botao de som precisa dela para se posicionar — ele mora
+   dentro do LogicaGame, longe daqui no DOM, e e trazido por cima. */
+.conteiner_Menu_Jornada {
+  --barra-jornada-h: 88px;
+  position: relative;
+}
+
+/* so a tela de jogo abre espaco para a barra */
+.conteiner_Menu_Jornada.jogando_jornada {
+  padding-top: calc(var(--barra-jornada-h) + 14px);
+}
+
+.barra_jornada {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--barra-jornada-h);
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #8a5a16 0%, #6d4510 100%);
+  border-bottom: 5px solid #ffc13a;
+  border-radius: 5px 5px 0 0;
+  z-index: 20;
+}
+
+.titulo_barra_jornada {
+  flex: 1;
+  margin: 0;
+  text-align: center;
+  font-size: 40px;
+  color: #ffffff;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.45);
+  letter-spacing: 1px;
+}
+
+/* Tipografia e cores da barra puxadas da arte do titulo, a pedido: letra
+   pesada e arredondada, marrom bem escuro com contorno creme, sobre o mesmo
+   laranja do fundo do jogo. A barra escura anterior destoava da arte. */
+.barra_jornada {
+  background: linear-gradient(180deg, #eaa842 0%, #d8902a 100%);
+  border-bottom: 5px solid #fff3dd;
+}
+
+.titulo_barra_jornada {
+  font-family: 'Luckiest Guy', 'Chewy', cursive;
+  font-weight: 400;
+  color: #2e2112;
+  letter-spacing: 2px;
+  /* contorno creme, como no desenho do titulo */
+  text-shadow:
+    -3px -3px 0 #fff3dd,
+    3px -3px 0 #fff3dd,
+    -3px 3px 0 #fff3dd,
+    3px 3px 0 #fff3dd,
+    0 5px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Titulo maior e centralizado na BARRA, a pedido. Com flex: 1 ele se
+   centralizava no espaco que sobrava depois do botao, entao ficava deslocado
+   para a direita. Ancorado no meio da barra, nao depende mais da largura do
+   botao nem do icone de som. */
+.titulo_barra_jornada {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  flex: none;
+  white-space: nowrap;
+  font-size: 54px;
+}
+
+/* Ancora tambem o eixo vertical: so com left/transform a caixa do titulo
+   continuava seguindo a posicao estatica e ultrapassava a altura da barra. */
+.titulo_barra_jornada {
+  top: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
 }
