@@ -372,3 +372,31 @@ body.jogo-ativo #controles-toque {
     font-size: 13px;
   }
 }
+
+/* No celular em pe, a cruzeta fica acima do botao de som do jogo. O botao de
+   acao permanece ao lado, sem cobrir o tabuleiro. */
+@media (max-width: 620px) and (orientation: portrait) {
+  #controles-toque {
+    left: clamp(.75rem, 2vw, 1rem);
+    right: auto;
+    bottom: calc(clamp(56px, 12vh, 80px) + clamp(.75rem, 2vh, 2rem) + 12px);
+    transform: none;
+    grid-template-columns: repeat(3, 44px) 72px;
+    grid-template-rows: repeat(3, 44px);
+    gap: 2px;
+  }
+
+  .tecla-toque.cima     { grid-column: 2; grid-row: 1; }
+  .tecla-toque.esquerda { grid-column: 1; grid-row: 2; }
+  .tecla-toque.direita  { grid-column: 3; grid-row: 2; }
+  .tecla-toque.baixo    { grid-column: 2; grid-row: 3; }
+
+  .tecla-toque.acao {
+    grid-column: 4;
+    grid-row: 2;
+    align-self: center;
+    height: 72px;
+    margin-left: 10px;
+    font-size: 14px;
+  }
+}
