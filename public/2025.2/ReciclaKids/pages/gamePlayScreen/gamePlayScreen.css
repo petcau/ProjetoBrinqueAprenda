@@ -177,3 +177,198 @@ article{
         width: min(220px, calc(100vw - 1rem));
     }
 }
+
+/* ===========================================================================
+   Controles na tela (setas + acao), para o jogo funcionar no celular.
+
+   Cruzeta de tres colunas por tres linhas: a seta de cima ocupa a coluna do
+   meio na primeira linha, esquerda e direita ladeiam a segunda, e a de baixo
+   fecha a terceira. O botao de acao fica ao lado, separado, para nao ser
+   tocado por engano no meio do movimento.
+   ======================================================================== */
+#controles-toque {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 9000;
+  display: grid;
+  grid-template-columns: repeat(3, 68px) 104px;
+  grid-template-rows: repeat(3, 68px);
+  gap: 8px;
+  align-items: center;
+  /* o toque na area vazia entre as teclas nao deve rolar a pagina */
+  touch-action: none;
+}
+
+.tecla-toque {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-size: 30px;
+  line-height: 1;
+  color: #ffffff;
+  background: #1f6fd0;
+  border: 4px solid #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 0 #11467f, 0 6px 10px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+}
+
+.tecla-toque:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #11467f, 0 3px 6px rgba(0, 0, 0, 0.35);
+}
+
+.tecla-toque.cima     { grid-column: 2; grid-row: 1; }
+.tecla-toque.esquerda { grid-column: 1; grid-row: 2; }
+.tecla-toque.direita  { grid-column: 3; grid-row: 2; }
+.tecla-toque.baixo    { grid-column: 2; grid-row: 3; }
+
+.tecla-toque.acao {
+  grid-column: 4;
+  grid-row: 2;
+  height: 104px;
+  font-size: 19px;
+  font-weight: bold;
+  line-height: 1.15;
+  background: #17a44a;
+  box-shadow: 0 4px 0 #0d6b30, 0 6px 10px rgba(0, 0, 0, 0.35);
+}
+
+.tecla-toque.acao:active {
+  box-shadow: 0 1px 0 #0d6b30, 0 3px 6px rgba(0, 0, 0, 0.35);
+}
+
+/* Em tela pequena a cruzeta encolhe para nao cobrir o terreno. */
+@media (max-width: 760px), (max-height: 560px) {
+  #controles-toque {
+    right: 10px;
+    bottom: 10px;
+    grid-template-columns: repeat(3, 54px) 78px;
+    grid-template-rows: repeat(3, 54px);
+    gap: 6px;
+  }
+
+  .tecla-toque { font-size: 24px; border-width: 3px; border-radius: 13px; }
+  .tecla-toque.acao { height: 78px; font-size: 15px; }
+}
+
+/* Setas mais juntas, a pedido: a cruzeta fica mais parecida com um controle
+   de verdade e o polegar alcanca as quatro sem esticar. O botao de acao
+   mantem a distancia por margem propria — se eu so diminuisse o gap da grade,
+   ele colaria nas setas e seria tocado por engano no meio do movimento. */
+#controles-toque {
+  gap: 2px;
+}
+
+.tecla-toque.acao {
+  margin-left: 16px;
+}
+
+@media (max-width: 760px), (max-height: 560px) {
+  #controles-toque {
+    gap: 2px;
+  }
+
+  .tecla-toque.acao {
+    margin-left: 12px;
+  }
+}
+
+/* As setas pareciam soltas por causa de align-items: center na grade: cada
+   botao ficava do tamanho do seu conteudo (a setinha) dentro de uma celula
+   bem maior, e sobrava vao em volta. Com stretch cada um preenche a propria
+   celula e a cruzeta fica fechada, como num controle de verdade. */
+#controles-toque {
+  align-items: stretch;
+  grid-template-columns: repeat(3, 62px) 100px;
+  grid-template-rows: repeat(3, 62px);
+}
+
+/* Os controles pertencem ao tabuleiro: ficam ocultos enquanto o tutorial ou
+   a tela de vitoria estiverem abertos. A classe e ativada pelo botao
+   CONTINUAR do tutorial e removida quando a fase termina. */
+body:not(.jogo-ativo) #controles-toque {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.jogo-ativo #controles-toque {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tecla-toque.acao {
+  align-self: center;
+  height: 100px;
+}
+
+@media (max-width: 760px), (max-height: 560px) {
+  #controles-toque {
+    grid-template-columns: repeat(3, 50px) 76px;
+    grid-template-rows: repeat(3, 50px);
+  }
+
+  .tecla-toque.acao { height: 76px; }
+}
+
+/* Em telas estreitas, a cruzeta vira uma barra abaixo do tabuleiro. Isso
+   preserva toda a area jogavel e evita que os botoes cubram casas ou lixos. */
+@media (max-width: 620px) {
+  #table {
+    transform: translateY(-32px) scale(var(--game-scale, 1));
+  }
+
+  #controles-toque {
+    left: 50%;
+    right: auto;
+    bottom: 8px;
+    transform: translateX(-50%);
+    grid-template-columns: repeat(4, 50px) 76px;
+    grid-template-rows: 54px;
+    gap: 4px;
+    align-items: stretch;
+  }
+
+  .tecla-toque.cima     { grid-column: 2; grid-row: 1; }
+  .tecla-toque.esquerda { grid-column: 1; grid-row: 1; }
+  .tecla-toque.baixo    { grid-column: 3; grid-row: 1; }
+  .tecla-toque.direita  { grid-column: 4; grid-row: 1; }
+
+  .tecla-toque.acao {
+    grid-column: 5;
+    grid-row: 1;
+    align-self: stretch;
+    height: auto;
+    margin-left: 8px;
+  }
+}
+
+@media (max-width: 380px) {
+  #controles-toque {
+    left: auto;
+    right: 6px;
+    transform: none;
+    grid-template-columns: repeat(4, 40px) 60px;
+    grid-template-rows: 48px;
+    gap: 2px;
+  }
+
+  .tecla-toque {
+    font-size: 21px;
+    border-width: 2px;
+    border-radius: 11px;
+  }
+
+  .tecla-toque.acao {
+    margin-left: 4px;
+    font-size: 13px;
+  }
+}

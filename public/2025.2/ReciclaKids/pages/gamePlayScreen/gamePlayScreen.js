@@ -269,6 +269,7 @@ function verificaVitoria(){
 
     if(limpo && character.papel===0 && character.plastico===0 && character.metal===0){
         let popup=document.getElementById("vitoriaPopup");
+        document.body.classList.remove("jogo-ativo");
         popup.style.display='flex';
     }
 }
@@ -280,6 +281,7 @@ const tutorialBtn = document.getElementById("popTutorialBtn");
 
 tutorialBtn.addEventListener("click", ()=>{
     tutorialPopup.style.display="none";
+    document.body.classList.add("jogo-ativo");
 })
 
 
