@@ -110,6 +110,10 @@
   object-fit: contain;
   width: 95px;
   height: 90px;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
 }
 
 .zones {
@@ -139,6 +143,17 @@
   object-fit: contain; /* Garante que a imagem caiba sem distorcer */
   transition: transform 0.3s ease; /* Adiciona uma transição suave */
    transform: translate(-50%, -50%);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+
+.arrastando-toque {
+  z-index: 10000 !important;
+  cursor: grabbing !important;
+  opacity: 0.9;
+  transition: none !important;
 }
 
 .result {

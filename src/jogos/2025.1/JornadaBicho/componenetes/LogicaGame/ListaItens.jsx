@@ -10,10 +10,10 @@ import PegarItem from "./PegarItens";
  * Cada objeto deve conter um identificador único.
  */
 
-const ItemsList = ({ objects }) => (
+const ItemsList = ({ objects, onDrop }) => (
   <div className="objects">
     {objects.map((obj) => (
-      <PegarItem key={obj.id} item={obj} />
+      <PegarItem key={obj.id} item={obj} onDrop={onDrop} />
     ))}
   </div>
 );

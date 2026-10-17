@@ -353,3 +353,21 @@ button:hover {
   align-items: flex-start;
   padding: 5px;
 }
+
+/* No celular, usar os 1200px inteiros da arte deixava todos os controles
+   pequenos demais. O quadro passa a ter uma janela logica de 700px: a imagem
+   de fundo continua com seus 900px de altura, centralizada, e somente as
+   laterais decorativas sao recortadas. O conteudo util ganha espaco sem
+   alterar a composicao usada no desktop. */
+@media (max-width: 768px) {
+  .game-container-V {
+    width: 700px;
+    background-size: auto 100%;
+    background-position: center top;
+    background-repeat: no-repeat;
+  }
+
+  .titulo {
+    margin-top: 168px;
+  }
+}

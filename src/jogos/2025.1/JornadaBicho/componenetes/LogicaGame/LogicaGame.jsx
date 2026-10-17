@@ -299,7 +299,7 @@ function GameLogic() {
         onReset={resetLevel}
       />
 
-      <ItemsList objects={unplacedItems} />
+      <ItemsList objects={unplacedItems} onDrop={handleDrop} />
 
     </div>
   );

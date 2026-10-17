@@ -459,3 +459,66 @@ body {
     width: 74px;
   }
 }
+
+/* No celular em pe, a identidade do jogo ocupa uma linha exclusiva. Os
+   controles ficam agrupados abaixo, sem disputar espaco com a logo. */
+@media (max-width: 700px) and (orientation: portrait) {
+  .jogo {
+    grid-template-rows: 124px minmax(0, 1fr) 108px;
+  }
+
+  .topo {
+    display: grid;
+    grid-template-columns: 68px 52px 52px 96px;
+    grid-template-rows: 60px 58px;
+    justify-content: center;
+    align-items: center;
+    column-gap: 7px;
+    height: 124px;
+  }
+
+  .topo > img {
+    position: static;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-self: center;
+    width: min(68vw, 250px);
+    max-height: 58px;
+    margin: 0;
+  }
+
+  .timer-holder,
+  #botao-voltar,
+  #botao-pausar,
+  .pontuacao-holder {
+    position: static;
+    inset: auto;
+    transform: none;
+    box-sizing: border-box;
+    margin: 0;
+  }
+
+  .timer-holder {
+    grid-column: 1;
+    grid-row: 2;
+    width: 68px;
+    min-height: 48px;
+  }
+
+  #botao-voltar {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  #botao-pausar {
+    grid-column: 3;
+    grid-row: 2;
+  }
+
+  .pontuacao-holder {
+    grid-column: 4;
+    grid-row: 2;
+    width: 96px;
+    min-height: 48px;
+  }
+}

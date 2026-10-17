@@ -728,3 +728,52 @@
   .game-container-D { --barra-h: 62px; }
   .barra-info-d .tempo-d { font-size: 36px; }
 }
+
+/* Em largura suficiente, fase e tempo continuam na mesma faixa do DIGIRACE.
+   Somente quando essa composicao nao cabe, o celular ganha uma segunda linha. */
+@media (max-width: 560px) {
+  .game-container-D {
+    --titulo-h: 72px;
+  }
+
+  .game-container-D:has(.barra-info-d) .textoMDTtitulo {
+    min-height: var(--titulo-h);
+    margin-bottom: 0;
+    border-bottom: 0;
+    padding-inline: 8px;
+    font-size: clamp(28px, 8.5vw, 36px);
+    white-space: nowrap;
+  }
+
+  .game-container-D:has(.barra-info-d) .MenuD {
+    margin-top: 0;
+  }
+
+  .game-container-D:has(.barra-info-d) .MenuD > div {
+    width: 100%;
+  }
+
+  .barra-info-d {
+    position: static;
+    width: calc(100% + (var(--painel-x) * 2));
+    height: var(--barra-h);
+    margin: 0 calc(var(--painel-x) * -1) 14px;
+    padding: 0 24px;
+    background: linear-gradient(180deg, #d9a81a 0%, #b88b12 100%);
+    border-bottom: 4px solid #8a6a0e;
+    flex: 0 0 auto;
+  }
+}
+
+@media (max-width: 560px) and (max-height: 700px) {
+  .game-container-D { --titulo-h: 54px; }
+  .barra-info-d { margin-bottom: 10px; }
+}
+
+@media (max-width: 560px) and (max-height: 620px) {
+  .game-container-D { --titulo-h: 44px; }
+  .barra-info-d {
+    margin-bottom: 8px;
+    padding-inline: 16px;
+  }
+}

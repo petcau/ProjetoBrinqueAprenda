@@ -9,17 +9,22 @@
  * @param {string} [props.item.image] - O nome do arquivo ou caminho da imagem a ser exibida para o item.
  * @returns {JSX.Element} Uma div arrastável contendo a imagem do item (se fornecida).
  */
-function PegarItem({ item }) {
+import { iniciarArrastePorPonteiro } from './arrastePonteiro';
+
+function PegarItem({ item, onDrop }) {
   console.log(item.image);
   return (
     <div
       className="drag-item"
       draggable
       onDragStart={(e) => e.dataTransfer.setData("text/plain", item.id)}
+      onPointerDown={(e) => iniciarArrastePorPonteiro(e, item.id, onDrop)}
     >
       {item.image && (
         <img
           src={`/JornadaBicho/${item.image}`}
+          alt={item.name}
+          draggable={false}
           style={{ width: "90px", height: "90px", objectFit: "contain" }}
         />
       )}

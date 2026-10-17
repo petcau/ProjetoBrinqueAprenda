@@ -1,3 +1,4 @@
+import { iniciarArrastePorPonteiro } from './arrastePonteiro';
 
 /**
  * Renderiza uma área de soltura (drop zone) com imagem de fundo personalizável.
@@ -39,6 +40,7 @@ function AreaColocar({ zoneName, onDrop, backgroundUrl, allObjects, droppedItems
   return (
     <div
       className={`drop-zone ${zoneName}`}
+      data-zone-name={zoneName}
       style={{ 
       backgroundImage: `url(${fundo})`,
       backgroundSize: "cover",
@@ -65,6 +67,7 @@ function AreaColocar({ zoneName, onDrop, backgroundUrl, allObjects, droppedItems
              Solta de novo na mesma zona, o handleDrop so muda a posicao. */
           draggable
           onDragStart={(e) => e.dataTransfer.setData("text/plain", item.id)}
+          onPointerDown={(e) => iniciarArrastePorPonteiro(e, item.id, onDrop)}
           /* O tamanho sai daqui e passa a vir do CSS (.dropped-item-in-zone):
              estilo em linha vence qualquer regra de folha, entao enquanto
              ficasse aqui nao haveria como ajustar o bicho no cenario sem
