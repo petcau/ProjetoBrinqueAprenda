@@ -79,6 +79,18 @@ function Sobre() {
               ))}
             </div>
           ))}
+
+          <aside className="bq-turma-creditos bq-idealizador" aria-labelledby="idealizador-titulo">
+            <h3 id="idealizador-titulo">Idealizado por</h3>
+            <ul>
+              <li>Prof. Peterson Lobato</li>
+              <li>
+                <a href="mailto:peterson.lobato@hotmail.com">
+                  peterson.lobato@hotmail.com
+                </a>
+              </li>
+            </ul>
+          </aside>
         </section>
       </div>
     </Layout>

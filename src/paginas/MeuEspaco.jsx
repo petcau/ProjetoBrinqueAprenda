@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Layout from '../componentes/Layout';
 import Icone from '../componentes/Icone';
 import { JOGOS } from '../dados/jogos';
@@ -19,6 +19,7 @@ import {
  * troca o bicho e o nome se quiser. Tudo vive no navegador daquele computador.
  */
 function MeuEspaco() {
+  const navegar = useNavigate();
   // O localStorage só existe no navegador, e esta página também é renderizada
   // fora dele nos testes. Por isso começa vazio e é preenchido depois.
   const [perfil, setPerfil] = useState(null);
@@ -59,6 +60,20 @@ function MeuEspaco() {
     e.preventDefault();
     setPerfil(atualizarPerfil(perfil.id, { apelido, avatar }));
     setEditando(false);
+  };
+
+  const limparHistorico = () => {
+    const confirmou = window.confirm(
+      'Isso apagará o perfil, o histórico, as pontuações e todas as preferências salvas neste navegador. Deseja continuar?',
+    );
+    if (!confirmou) return;
+
+    try {
+      window.localStorage.clear();
+      navegar('/', { replace: true });
+    } catch {
+      window.alert('Não foi possível limpar os dados deste navegador.');
+    }
   };
 
   return (
@@ -132,13 +147,22 @@ function MeuEspaco() {
                     {perfil.avatar}
                   </span>
                   <span className="bq-cartao-perfil-nome">{perfil.apelido}</span>
-                  <button
-                    type="button"
-                    className="bq-botao bq-botao-claro"
-                    onClick={abrirEdicao}
-                  >
-                    Trocar bicho ou nome
-                  </button>
+                  <div className="bq-cartao-perfil-acoes">
+                    <button
+                      type="button"
+                      className="bq-botao bq-botao-claro"
+                      onClick={abrirEdicao}
+                    >
+                      Trocar bicho ou nome
+                    </button>
+                    <button
+                      type="button"
+                      className="bq-botao bq-botao-perigo"
+                      onClick={limparHistorico}
+                    >
+                      Limpar histórico
+                    </button>
+                  </div>
                 </div>
               )}
             </section>

@@ -661,6 +661,25 @@ button:focus-visible {
   color: var(--bq-tinta-media);
 }
 
+.bq-idealizador {
+  margin-top: 24px;
+}
+
+.bq-idealizador ul {
+  margin: 12px 0 0;
+  padding-left: 0;
+  list-style: none;
+  color: var(--bq-tinta-media);
+}
+
+.bq-idealizador li + li {
+  margin-top: 6px;
+}
+
+.bq-idealizador a {
+  color: var(--bq-azul);
+}
+
 /* ============================================================================
    RODAPÉ
    ============================================================================
@@ -2051,15 +2070,39 @@ button:focus-visible {
   overflow-wrap: anywhere;
 }
 
-.bq-cartao-perfil .bq-botao {
+.bq-cartao-perfil-acoes {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.bq-cartao-perfil .bq-botao {
   font-size: 0.92rem;
   padding: 10px 18px;
 }
 
+.bq-botao-perigo {
+  color: #b63d24;
+  background: var(--bq-coral-nevoa);
+  border-color: #efb6a7;
+}
+
+.bq-botao-perigo:hover {
+  color: #fff;
+  background: var(--bq-coral);
+  border-color: var(--bq-coral);
+}
+
 @media (max-width: 520px) {
-  .bq-cartao-perfil .bq-botao {
+  .bq-cartao-perfil-acoes {
     margin-left: 0;
+    width: 100%;
+  }
+
+  .bq-cartao-perfil .bq-botao {
     width: 100%;
     justify-content: center;
   }
