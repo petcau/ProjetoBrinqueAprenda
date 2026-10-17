@@ -589,3 +589,23 @@
     width: min(100%, calc((100dvh - 52px) * 4 / 3));
   }
 }
+
+/* No celular, o fundo quadrado terminava junto com o conteudo e deixava uma
+   faixa escura grande no restante da tela. O quadro agora ocupa toda a altura
+   util do aparelho; a arte conserva a altura e e recortada igualmente nas
+   laterais. A mesa cresce dentro desse espaco para aproveitar o formato
+   vertical, sem interferir no tabuleiro de desktop. */
+@media (max-width: 768px) {
+  .game-container-anagrama {
+    min-height: calc(100dvh - 52px);
+    background-size: auto 100%;
+    background-position: center top;
+    background-repeat: no-repeat;
+  }
+
+  .mesa-container {
+    width: 76%;
+    flex: 1;
+    justify-content: space-evenly;
+  }
+}
