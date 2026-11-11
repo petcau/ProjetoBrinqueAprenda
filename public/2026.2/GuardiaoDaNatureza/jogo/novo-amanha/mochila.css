@@ -1,0 +1,248 @@
+.journey-pack {
+  color-scheme: light;
+  position: fixed;
+  margin: auto;
+  width: min(780px, calc(100vw - 24px));
+  max-width: none;
+  height: min(740px, 90dvh);
+  max-height: 90dvh;
+  padding: 0;
+  border: 3px solid #9c794a;
+  border-radius: 25px 7px;
+  background: #f5edcf;
+  color: #34523a;
+  box-shadow: 0 20px 90px #12322588;
+  overflow: hidden;
+  font:
+    14px/1.5 system-ui,
+    sans-serif;
+}
+.journey-pack[open] {
+  display: flex;
+  flex-direction: column;
+}
+.journey-pack::backdrop {
+  background: #112e259c;
+  backdrop-filter: blur(4px);
+}
+.journey-pack > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 22px 12px;
+  background: #dec98e;
+  border-bottom: 1px solid #a89762;
+  flex: 0 0 auto;
+}
+.journey-pack > header p {
+  margin: 0;
+  font: 700 8px system-ui;
+  letter-spacing: 2px;
+  color: #607344;
+}
+.journey-pack h2 {
+  font:
+    28px/1.2 Renascenca,
+    Lilita,
+    Georgia,
+    serif;
+  margin: 4px 0;
+  color: #3d562d;
+}
+.journey-pack button {
+  touch-action: manipulation;
+  min-height: 44px;
+  cursor: pointer;
+  font: 600 12px/1.3 system-ui;
+  border: 1px solid #95a46a;
+  border-radius: 11px 4px;
+  background: #dfe8ba;
+  color: #365338;
+  padding: 8px 12px;
+}
+.journey-pack button:hover {
+  filter: brightness(1.05);
+}
+.journey-pack button:active {
+  transform: translateY(1px);
+}
+.journey-pack button:focus-visible {
+  outline: 3px solid #589fa5;
+  outline-offset: 2px;
+}
+.journey-pack button:disabled {
+  cursor: default;
+  opacity: 0.65;
+}
+.journey-pack [data-pack-close] {
+  min-width: 44px;
+}
+.journey-pack > header [data-pack-close] {
+  font-size: 29px;
+  border-radius: 50%;
+}
+.journey-pack [role="tablist"] {
+  display: flex;
+  gap: 7px;
+  padding: 10px 14px;
+  background: #ede1b9;
+  flex-shrink: 0;
+}
+.journey-pack [role="tab"] {
+  flex: 1;
+  padding: 9px 5px;
+  background: none;
+  border: 0;
+}
+.journey-pack [role="tab"][aria-selected="true"] {
+  background: #3c643f;
+  color: #fff3c7;
+}
+.journey-pack [role="tabpanel"] {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 17px 17px;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.pack-intro {
+  font-size: 12px;
+  color: #617348;
+  margin: 13px 0 17px;
+}
+.pack-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.pack-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px;
+  border: 1px solid #b5bb8a;
+  border-radius: 16px 5px;
+  background: #fff9e9;
+  min-width: 0;
+}
+.pack-card > div:last-child {
+  min-width: 0;
+}
+.pack-card h3 {
+  font: 700 13px/1.3 system-ui;
+  margin: 1px 0 5px;
+  color: #395934;
+}
+.pack-card p {
+  font: 11px/1.5 system-ui;
+  margin: 0 0 7px;
+  color: #62714e;
+}
+.pack-icon,
+.crystal-gem,
+.pack-outfit {
+  flex: 0 0 46px;
+  width: 46px;
+  height: 54px;
+  display: grid;
+  place-content: center;
+}
+.pack-icon .ui-icon {
+  --icon-size: 40px;
+}
+.pack-locked {
+  background: #e6e4d1;
+  border-color: #c7c6a6;
+}
+.pack-locked .pack-icon,
+.pack-locked > svg {
+  filter: grayscale(1);
+  opacity: 0.65;
+}
+.pack-label {
+  font-size: 9px;
+  color: #697b4f;
+}
+.pack-card button {
+  font-size: 10px;
+  padding: 7px 10px;
+}
+.pack-card button[aria-pressed="true"] {
+  background: #426946;
+  color: #fff3c9;
+}
+.pack-amulet {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 15px 5px;
+}
+.pack-amulet > svg {
+  flex: 0 0 110px;
+  width: 110px;
+  height: 160px;
+}
+.pack-amulet h3 {
+  font: 700 18px system-ui;
+  color: #46663c;
+}
+.pack-amulet p {
+  font-size: 12px;
+}
+.journey-pack > footer {
+  padding: 9px 18px 12px;
+  display: flex;
+  justify-content: center;
+  background: #e9dfbb;
+}
+#pack-status {
+  padding: 0 17px;
+  margin: 3px 0;
+  font-size: 11px;
+  min-height: 0;
+}
+#pack-status:empty {
+  display: none;
+}
+@media (max-width: 600px) {
+  .journey-pack > header {
+    padding: 11px 14px;
+  }
+  .journey-pack h2 {
+    font-size: 24px;
+  }
+  .journey-pack [role="tablist"] {
+    gap: 3px;
+    padding: 7px;
+  }
+  .journey-pack [role="tab"] {
+    font-size: 10px;
+  }
+  .pack-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .pack-card {
+    padding: 11px;
+  }
+  .journey-pack [role="tabpanel"] {
+    padding: 0 10px 12px;
+  }
+  .pack-amulet {
+    gap: 12px;
+  }
+  .pack-amulet > svg {
+    flex-basis: 90px;
+    width: 90px;
+    height: 130px;
+  }
+  .pack-amulet p {
+    font-size: 11px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .journey-pack * {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,497 @@
+/* Mesmos materiais das artes: tecido verde, madeira, couro e luz quente. */
+.interface-viva .viva-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.interface-viva .viva-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.interface-viva dialog :is(.nature-button, .wood.button) {
+  background: linear-gradient(#466d43, #294b35) !important;
+  color: #fff2d1 !important;
+  border: 2px solid #b78a4b !important;
+  border-radius: 13px 5px !important;
+  box-shadow:
+    inset 0 1px #f3e8b64d,
+    0 3px 0 #60482744 !important;
+  font-family: system-ui, sans-serif !important;
+  font-weight: 750;
+  text-shadow: none !important;
+  text-transform: none;
+  transition:
+    filter 0.16s,
+    translate 0.16s;
+}
+.interface-viva dialog :is(.nature-button, .wood.button)::before,
+.interface-viva dialog :is(.nature-button, .wood.button)::after,
+.interface-viva dialog .interaction-leaf {
+  display: none !important;
+}
+.interface-viva dialog :is(.nature-button, .wood.button):hover {
+  filter: brightness(1.08);
+}
+.interface-viva dialog :is(.nature-button, .wood.button):active {
+  translate: 0 2px;
+}
+.interface-viva #jogo .actions {
+  gap: 12px;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+}
+.interface-viva #jogo .actions .round {
+  width: 68px;
+  height: 68px;
+  min-height: 68px;
+  padding: 5px;
+  border: 3px solid #c59a59;
+  background: radial-gradient(ellipse at 40% 20%, #6c8a4e, #2b4f39 78%);
+  color: #fff0c9;
+  box-shadow:
+    inset 0 0 0 2px #f6e9b641,
+    0 4px 0 #533b2c77;
+  gap: 1px;
+}
+.interface-viva #jogo .actions .round :is(.action-symbol, .ui-icon, svg) {
+  width: 38px !important;
+  height: 38px !important;
+  --icon-size: 38px;
+}
+.interface-viva #jogo .actions .round small {
+  font-size: 9px;
+  line-height: 1.2;
+  letter-spacing: 0.1px;
+  font-weight: 750;
+}
+.interface-viva #jogo .top-actions #pausa {
+  background: linear-gradient(#64804a, #2c5138);
+  color: #fff1c6;
+  border: 2px solid #c59a59;
+  box-shadow:
+    inset 0 0 0 2px #fff3c62e,
+    0 3px 0 #493b2c77;
+}
+body.interface-viva.left-handed #jogo .actions {
+  left: max(18px, env(safe-area-inset-left));
+  right: auto;
+}
+.interface-viva #jogo .joystick {
+  background: radial-gradient(ellipse at 50% 40%, #a7b96d55, #42654377);
+  border: 2px solid #ccb37b;
+  box-shadow:
+    inset 0 0 0 4px #2c4e3166,
+    0 4px 12px #263a2733;
+}
+.interface-viva #jogo #stick {
+  background: radial-gradient(ellipse at 40% 25%, #a9bf79, #426c45);
+  border: 2px solid #e0ca8b;
+  box-shadow:
+    inset 0 1px 2px #f8edc488,
+    0 3px 5px #193e2d77;
+}
+.interface-viva #menu-pausa .pause-buttons {
+  align-self: start;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+.interface-viva #menu-pausa #mochila,
+.interface-viva #menu-pausa .pause-more {
+  grid-column: 1 / -1;
+}
+.interface-viva #menu-pausa :is(#som, #mochila, #ajuda, #jump-action) {
+  display: block !important;
+  position: static !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 44px !important;
+  padding: 10px !important;
+  margin: 0 !important;
+  transform: none !important;
+  translate: none !important;
+  font-size: 13px !important;
+}
+.interface-viva #menu-pausa #jump-action[hidden] {
+  display: none !important;
+}
+.interface-viva #menu-pausa .pause-utility :is(.action-symbol, .ui-icon) {
+  display: inline-block;
+  vertical-align: middle;
+  width: 26px;
+  height: 26px;
+  margin-right: 5px;
+}
+.interface-viva #menu-pausa .pause-utility :is(.action-symbol, .ui-icon) svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.interface-viva #menu-pausa .pause-buttons > :is(button, a) {
+  min-height: 44px;
+}
+.interface-viva #menu-pausa .pause-more {
+  min-width: 0;
+  border: 1px solid #9ca57a;
+  border-radius: 12px 5px;
+  color: #f6ecd1;
+  background: #1c3d2c;
+}
+.interface-viva #menu-pausa .pause-more summary {
+  min-height: 40px;
+  cursor: pointer;
+  padding: 10px 12px;
+  font: 700 12px/1.5 system-ui;
+  touch-action: manipulation;
+}
+.interface-viva .pause-extra-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 0 9px 12px;
+}
+.interface-viva #menu-pausa .pause-extra-actions > button {
+  margin: 0;
+  min-height: 44px;
+  width: 100%;
+  font-size: 12px;
+  padding: 8px;
+}
+.interface-viva .journey-pack .pack-card .pack-icon,
+.interface-viva .journey-pack .pack-icon > svg {
+  flex: 0 0 62px;
+  width: 62px;
+  height: 66px;
+}
+.interface-viva .journey-pack .pack-card {
+  background: linear-gradient(130deg, #fff8e6, #ede4c0);
+  border-color: #b6b781;
+}
+.interface-viva .journey-pack > footer {
+  display: none;
+}
+.interface-viva :is(#intro, #conversa)[open] {
+  inset: auto 14px max(16px, env(safe-area-inset-bottom));
+  width: min(820px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 30px);
+  padding: 0;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 40% minmax(0, 1fr);
+  gap: 0;
+  align-items: stretch;
+  overflow: hidden;
+  border: 3px solid #a47b43;
+  border-radius: 24px 7px;
+  background: #f5e8c4;
+}
+.interface-viva :is(#intro, #conversa)::backdrop {
+  background: #183b2d47;
+  backdrop-filter: none;
+}
+.interface-viva .conversation-art {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: end;
+  justify-items: center;
+  gap: 5px;
+  padding: 18px 12px 12px;
+  background:
+    linear-gradient(#284b3533, #173b2bc9),
+    var(--meeting-background) center/cover;
+}
+.interface-viva .conversation-art figure {
+  margin: 0;
+  min-width: 0;
+  width: 100%;
+  text-align: center;
+}
+.interface-viva .conversation-art :is(.portrait, #intro-portrait),
+.interface-viva .conversation-art .conversation-kai > svg {
+  width: 100%;
+  height: clamp(110px, 26vh, 170px);
+  display: block;
+  margin: 0;
+  min-width: 0;
+  background: none !important;
+  filter: drop-shadow(0 4px 3px #18352766);
+}
+.interface-viva .conversation-art :is(svg, canvas) {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  overflow: hidden;
+}
+.interface-viva .conversation-art figcaption {
+  color: #fff1c7;
+  font: 750 11px/1.3 system-ui;
+  margin-top: 6px;
+  overflow-wrap: break-word;
+}
+.interface-viva .conversation-copy {
+  padding: 20px 24px;
+  min-width: 0;
+  max-height: calc(100dvh - 36px);
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.interface-viva :is(#intro, #conversa) :is(.eyebrow, .story-kicker) {
+  color: #617449;
+  font: 750 9px/1.5 system-ui;
+  letter-spacing: 1.2px;
+}
+.interface-viva :is(#intro, #conversa) h2 {
+  margin: 5px 0 10px;
+  font-size: clamp(21px, 3vw, 29px);
+  line-height: 1.15;
+  color: #365333;
+}
+.interface-viva :is(#intro, #conversa) p {
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0 0 14px;
+  color: #42543a;
+}
+.interface-viva :is(#intro footer, #conversa .story-footer) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+}
+.interface-viva :is(#intro-next, #conversa-avancar) {
+  min-height: 44px;
+  padding: 10px 20px;
+  font-size: 14px;
+  min-width: 140px;
+}
+.interface-viva.world-map .map-list,
+.interface-viva.world-map #map-fit,
+.interface-viva.world-map .guide {
+  display: none !important;
+}
+.interface-viva.world-map .map-bottom {
+  padding-top: 18px;
+}
+.interface-viva.world-map .map-hotspot {
+  top: min(var(--y), calc(100dvh - 110px));
+  background:
+    repeating-linear-gradient(3deg, transparent 0 8px, #6b442b15 9px 10px),
+    linear-gradient(#f2dca4, #d5ae6c) !important;
+  border: 2px solid #9e713a !important;
+  border-radius: 13px 5px !important;
+  box-shadow:
+    inset 0 0 0 2px #fff3c287,
+    0 4px 0 #684c3055 !important;
+}
+.interface-viva.world-map .map-hotspot:hover {
+  filter: brightness(1.06);
+}
+.interface-viva.world-map .journey-heading h1 {
+  font-size: clamp(22px, 2.6vw, 32px);
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+.interface-viva #phase-dialog[open] {
+  display: grid;
+  grid-template-columns: 44% minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  width: min(880px, calc(100vw - 30px));
+  height: min(450px, calc(100dvh - 28px));
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  overflow: hidden;
+  border: 3px solid #a57b40;
+  border-radius: 26px 7px;
+  background: #f4e6bf;
+}
+.interface-viva #phase-dialog .phase-meeting {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  padding: 18px 16px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: end;
+  gap: 10px;
+  background:
+    linear-gradient(#263f3033, #193c2bd6),
+    var(--meeting-background) center/cover;
+  border: 0;
+}
+.interface-viva #phase-dialog .meeting-dialogue {
+  display: none;
+}
+.interface-viva #phase-dialog :is(.meeting-npc, .meeting-kai) {
+  grid-column: auto;
+  align-self: end;
+  width: 100%;
+  min-width: 0;
+  text-align: center;
+  margin: 0;
+}
+.interface-viva #phase-dialog .meeting-mascot svg {
+  transform: scaleX(-1);
+}
+.interface-viva #phase-dialog :is(.meeting-npc, .meeting-kai) > :is(svg, img) {
+  width: 100%;
+  height: clamp(130px, 37vh, 250px);
+  overflow: hidden;
+  object-fit: contain;
+}
+.interface-viva #phase-dialog :is(.meeting-npc, .meeting-kai) > span {
+  display: block;
+  font: 750 13px/1.4 system-ui;
+  color: #fff0ca;
+  margin-top: 9px;
+}
+.interface-viva #phase-dialog .phase-information {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+.interface-viva #phase-dialog .phase-scene {
+  min-height: 0;
+  height: auto;
+  padding: 17px 48px 8px 20px;
+  display: block;
+  background: none;
+}
+.interface-viva #phase-dialog :is(.phase-symbol, .scene-leaf) {
+  display: none;
+}
+.interface-viva #phase-dialog #phase-number {
+  color: #6a7750;
+  font: 700 8px/1.3 system-ui;
+  letter-spacing: 1.2px;
+}
+.interface-viva #phase-dialog h2 {
+  font-size: clamp(22px, 3vw, 31px);
+  color: #365033;
+  margin: 7px 0 0;
+  line-height: 1.12;
+}
+.interface-viva #phase-dialog .phase-copy {
+  min-height: 0;
+  height: auto;
+  max-height: none;
+  overflow: visible;
+  padding: 8px 20px 12px;
+}
+.interface-viva #phase-dialog .phase-copy :is(p, li) {
+  font-size: 12px;
+  line-height: 1.45;
+  margin: 5px 0;
+}
+.interface-viva #phase-dialog .phase-copy h3 {
+  display: none;
+}
+.interface-viva #phase-dialog.phase-unlocked #phase-state {
+  display: none;
+}
+.interface-viva #phase-dialog .phase-loot {
+  gap: 7px;
+  margin: 10px 0 7px;
+}
+.interface-viva #phase-dialog .phase-loot > div {
+  padding: 9px;
+  background: #e3dfb7;
+  border-color: #b9b784;
+}
+.interface-viva #phase-dialog .phase-loot strong {
+  font-size: 11px;
+  line-height: 1.4;
+}
+.interface-viva #phase-dialog .phase-actions {
+  grid-column: 2;
+  grid-row: 2;
+  padding: 9px 20px 12px;
+  background: #ede0b6;
+}
+.interface-viva #phase-dialog .phase-actions > button {
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  font-size: 14px;
+}
+.interface-viva #phase-dialog .dialog-close {
+  z-index: 5;
+  width: 40px;
+  height: 40px;
+  min-height: 40px;
+  top: 8px;
+  right: 8px;
+  color: #43583a;
+  background: #e0ddb3;
+  border: 1px solid #9fa46d;
+}
+@media (orientation: landscape) and (max-height: 600px) {
+  .interface-viva :is(#message, #flora-talk, #toast, #dica, .care-notice) {
+    left: calc(max(16px, env(safe-area-inset-left)) + 120px);
+    right: calc(max(16px, env(safe-area-inset-right)) + 174px);
+    max-width: 390px;
+  }
+  body.interface-viva.left-handed
+    :is(#message, #flora-talk, #toast, #dica, .care-notice) {
+    left: calc(max(16px, env(safe-area-inset-left)) + 174px);
+    right: calc(max(16px, env(safe-area-inset-right)) + 120px);
+  }
+  .interface-viva #menu-pausa[open] {
+    width: min(760px, calc(100vw - 30px));
+  }
+  .interface-viva #menu-pausa .pause-buttons > :is(button, a) {
+    font-size: 13px;
+    padding: 9px;
+    min-height: 44px;
+  }
+  .interface-viva .conversation-copy {
+    padding: 15px 18px;
+  }
+  .interface-viva :is(#intro, #conversa) p {
+    font-size: 14px;
+    line-height: 1.45;
+    margin-bottom: 12px;
+  }
+  .interface-viva #phase-dialog .phase-copy :is(p, li) {
+    font-size: 11px;
+  }
+  .interface-viva #phase-dialog .phase-scene {
+    padding-top: 13px;
+  }
+}
+@media (orientation: landscape) and (max-height: 360px) {
+  .interface-viva.world-map .map-hotspot[data-phase="1"],
+  .interface-viva.world-map .map-hotspot[data-phase="5"] {
+    top: 28%;
+  }
+  .interface-viva.world-map .map-hotspot[data-phase="2"],
+  .interface-viva.world-map .map-hotspot[data-phase="6"] {
+    top: 48%;
+  }
+  .interface-viva.world-map .map-hotspot[data-phase="3"],
+  .interface-viva.world-map .map-hotspot[data-phase="4"] {
+    top: 67%;
+  }
+}
+.interface-viva.large-text :is(#intro, #conversa) p {
+  font-size: 16px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .interface-viva dialog button {
+    transition: none;
+  }
+}

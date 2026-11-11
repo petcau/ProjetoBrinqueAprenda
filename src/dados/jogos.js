@@ -204,6 +204,106 @@ export const TURMAS = [
         autores: ['Heitor Givercy Nascimento Macedo', 'Eyder Sanshes Brandão', 'Ítalo José Bomfim da Rocha'],
         jogo: { tipo: 'estatico', entrada: '/2026.2/SinfoniaDosCristais/index.html' },
       },
+      {
+        slug: 'rocketbloom',
+        progresso: {
+          chaves: ['rocketbloom.progress.v1'],
+          resumir: (v) => {
+            let progresso = {};
+
+            try {
+              progresso = JSON.parse(v['rocketbloom.progress.v1'] || '{}') || {};
+            } catch {
+              progresso = {};
+            }
+
+            const fases = Array.isArray(progresso.completedStageIds)
+              ? new Set(progresso.completedStageIds).size
+              : 0;
+            const plantas = Array.isArray(progresso.rescuedPlantIds)
+              ? new Set(progresso.rescuedPlantIds).size
+              : 0;
+            const recursos = (Number(progresso.coins) || 0) + (Number(progresso.diamonds) || 0);
+
+            return [
+              fases > 0 && { rotulo: 'Fases concluídas', valor: `${Math.min(fases, 20)} de 20` },
+              plantas > 0 && { rotulo: 'Plantas resgatadas', valor: `${Math.min(plantas, 4)} de 4` },
+              recursos > 0 && { rotulo: 'Itens coletados', valor: recursos.toLocaleString('pt-BR') },
+            ].filter(Boolean);
+          },
+        },
+        categorias: ['matematica', 'natureza'],
+        titulo: 'RocketBloom',
+        subtitulo: 'Pilote um foguete, resolva desafios matemáticos e resgate plantas em quatro planetas!',
+        sinopse: 'Uma corrida espacial educativa que combina operações matemáticas, reflexos e sustentabilidade em uma missão interplanetária.',
+        descricao: 'Em RocketBloom, a criança pilota um foguete científico por Terra, Marte, Saturno e Netuno. Durante cada viagem, precisa desviar de aviões, asteroides, cometas e outros obstáculos, coletar moedas e diamantes e conduzir a nave até a alternativa correta das perguntas matemáticas. A campanha reúne 20 fases com dificuldade progressiva: adição na Terra, subtração em Marte, multiplicação em Saturno e divisão em Netuno. Cada planeta também apresenta uma espécie vegetal a ser resgatada e cultivada no laboratório.',
+        chamada: 'Matemática em alta velocidade para explorar planetas, superar obstáculos e fazer a vida florescer pelo espaço!',
+        capa: '/capas/rocketbloom.webp',
+        dataCriacao: '2026-11',
+        publicoAlvo: 'a-partir-4ano',
+        habilidades: [
+          'Adição, subtração, multiplicação e divisão',
+          'Cálculo mental e tomada de decisão',
+          'Coordenação motora, atenção e reflexos',
+          'Sustentabilidade e cuidado com espécies vegetais',
+        ],
+        caracteristicas: [
+          { icone: '🚀', titulo: 'Missão interplanetária', descricao: 'Vinte fases levam o foguete pela Terra, Marte, Saturno e Netuno com desafios progressivos.' },
+          { icone: '➗', titulo: 'Respostas em movimento', descricao: 'As alternativas atravessam a rota e devem ser alcançadas enquanto o jogador desvia dos obstáculos.' },
+          { icone: '🌱', titulo: 'Laboratório de plantas', descricao: 'Espécies resgatadas crescem no laboratório e representam o impacto sustentável da missão.' },
+        ],
+        autores: ['Isaac Pessoa', 'Luiz Neto', 'Ricardo Santos', 'Thiago Pinheiro'],
+        jogo: { tipo: 'estatico', entrada: '/2026.2/RocketBloom/index.html' },
+      },
+      {
+        slug: 'guardiao-da-natureza',
+        progresso: {
+          chaves: ['guardiao.mapa.progresso.v1'],
+          resumir: (v) => {
+            let progresso = {};
+
+            try {
+              progresso = JSON.parse(v['guardiao.mapa.progresso.v1'] || '{}') || {};
+            } catch {
+              progresso = {};
+            }
+
+            const concluidas = Array.isArray(progresso.completed)
+              ? [...new Set(progresso.completed.filter((id) => Number.isInteger(id) && id >= 1 && id <= 5))]
+              : progresso.completedFirst === true
+                ? [1]
+                : [];
+
+            return [
+              concluidas.length > 0 && { rotulo: 'Regiões restauradas', valor: `${concluidas.length} de 5` },
+              concluidas.length > 0 && { rotulo: 'Fragmentos do colar', valor: `${concluidas.length} de 5` },
+              concluidas.length === 5 && { rotulo: 'Árvore Guardiã', valor: 'Restaurada' },
+            ].filter(Boolean);
+          },
+        },
+        categorias: ['natureza', 'logica'],
+        titulo: 'Guardião da Natureza',
+        subtitulo: 'Acompanhe Kai e Flora por cinco regiões e ajude a restaurar a Árvore Guardiã!',
+        sinopse: 'Uma aventura de exploração e cuidado ambiental em que cada missão recupera uma parte da ilha e fortalece a conexão com a natureza.',
+        descricao: 'Em Guardião da Natureza, a criança acompanha Kai e sua coruja Flora por cinco regiões que precisam de cuidado. A jornada combina exploração, diálogos, coleta de itens e pequenas missões ambientais para recuperar a floresta, os cursos d’água e outros ecossistemas. Cada região concluída entrega um fragmento para o colar do guardião e devolve vida ao mapa. Ao reunir os cinco cristais, o jogador pode chegar à Árvore Guardiã e concluir a história. O jogo oferece controles por teclado, toque e opções de áudio, imagem e acessibilidade.',
+        chamada: 'Explore, cuide e transforme cada região em uma jornada de amizade, responsabilidade e renovação ambiental!',
+        capa: '/capas/guardiao-da-natureza.webp',
+        dataCriacao: '2026-11',
+        publicoAlvo: 'a-partir-4ano',
+        habilidades: [
+          'Consciência ambiental e cuidado com ecossistemas',
+          'Exploração, observação e resolução de missões',
+          'Coordenação motora e orientação espacial',
+          'Responsabilidade, cooperação e persistência',
+        ],
+        caracteristicas: [
+          { icone: '🌳', titulo: 'Cinco regiões vivas', descricao: 'Cada missão recupera uma paisagem e aproxima Kai da Árvore Guardiã.' },
+          { icone: '🦉', titulo: 'Kai e Flora', descricao: 'A dupla explora a ilha, conversa com seus habitantes e aprende diferentes formas de cuidar.' },
+          { icone: '💠', titulo: 'Colar do guardião', descricao: 'Cinco fragmentos registram as conquistas e revelam o caminho para o encerramento da jornada.' },
+        ],
+        autores: ['Iuri Barroso Nascimento', 'Hicham Mohamed El Attar', 'Eric Nascimento', 'Natson Evangelista'],
+        jogo: { tipo: 'estatico', entrada: '/2026.2/GuardiaoDaNatureza/index.html' },
+      },
     ],
   },
   {

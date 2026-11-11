@@ -1231,7 +1231,7 @@ button:focus-visible {
       rgba(12, 18, 38, 0.12) 60%,
       rgba(12, 18, 38, 0) 72%
     ),
-    url('../assets/banner.webp');
+    url('../assets/banner-editorial.webp');
   background-size: cover, cover;
   background-position: center, center right;
   background-repeat: no-repeat, no-repeat;
@@ -1377,7 +1377,7 @@ button:focus-visible {
     width: 100%;
     /* Recorte na área dos personagens: robô, as três crianças e os ícones. */
     aspect-ratio: 2 / 1;
-    background-image: url('../assets/banner.webp');
+    background-image: url('../assets/banner-editorial.webp');
     background-size: cover;
     background-position: 64% center;
   }

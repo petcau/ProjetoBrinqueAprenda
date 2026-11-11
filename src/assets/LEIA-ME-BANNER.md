@@ -1,20 +1,22 @@
-# banner.webp — a arte da abertura
+# banner-editorial.webp — a arte da abertura
 
-Arquivo: `src/assets/banner.webp` · atual: **2135 × 502 px**, 237 KB
+Arquivo em uso: `src/assets/banner-editorial.webp` · **2135 × 502 px**
+
+O arquivo `banner.webp` anterior foi preservado como referência e alternativa.
 
 É a ilustração da primeira dobra da home. Para trocar, substitua o arquivo com
 o mesmo nome — o Vite cuida do resto, não é preciso mexer em código.
 
 ## O que precisa estar onde
 
-O leiaute conta com esta composição, que é a do banner atual:
+O leiaute conta com esta composição, que é a do banner editorial atual:
 
 ```
 ┌──────────────────────┬───────────────────────┬──────────────┐
 │  0 – 40%             │  40 – 80%             │  80 – 100%   │
 │  PAISAGEM CALMA      │  PERSONAGENS          │  CENÁRIO     │
-│  montanha, cachoeira │  robô, crianças,      │  castelo,    │
-│                      │  ícones flutuantes    │  planeta     │
+│  céu, folhas, morros │  robô, estudantes,    │  horta,      │
+│                      │  mapa e caderno       │  observatório│
 │  ← o texto fica aqui │  ← precisa aparecer   │  ← pode ser  │
 │    por cima, com     │    sempre             │    cortado   │
 │    escurecimento     │                       │              │

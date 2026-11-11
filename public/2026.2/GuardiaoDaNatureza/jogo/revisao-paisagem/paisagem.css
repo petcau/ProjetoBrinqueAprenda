@@ -1,0 +1,920 @@
+/* A partida usa paisagem. O aviso em retrato mantém a conversa e o progresso. */
+#girar-celular {
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  padding: max(20px, env(safe-area-inset-top))
+    max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom))
+    max(20px, env(safe-area-inset-left));
+  border: 0;
+  color: #f8edcc;
+  background: radial-gradient(ellipse at 50% 35%, #416b43, #153b30 75%);
+  font: 16px/1.5 system-ui;
+}
+#girar-celular[open] {
+  display: grid;
+  place-items: center;
+}
+#girar-celular::backdrop {
+  background: #153b30;
+}
+.rotate-card {
+  width: min(340px, 100%);
+  text-align: center;
+  border: 2px solid #b99a62;
+  border-radius: 28px 8px;
+  padding: 26px 20px;
+  background: #254c37;
+  box-shadow: 0 12px 50px #102c2777;
+}
+.rotate-card > svg {
+  width: 180px;
+  max-width: 80%;
+  height: 140px;
+}
+.rotate-card h1 {
+  font:
+    400 34px/1.15 Renascenca,
+    Lilita,
+    system-ui;
+  margin: 9px 0 14px;
+  color: #fff0ba;
+}
+.rotate-kicker {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: #c7d5a1;
+}
+#girar-dica {
+  font-size: 15px;
+  margin: 12px 0 21px;
+}
+#girar-tela-cheia {
+  min-height: 48px;
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #c8a367;
+  border-radius: 15px 5px;
+  background: #759153;
+  color: #fff7df;
+  font: 700 16px system-ui;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+#girar-status {
+  font-size: 12px;
+  color: #d5dfba;
+  min-height: 36px;
+  margin: 14px 0 0;
+}
+body[data-orientation-blocked="true"] {
+  overflow: hidden !important;
+}
+/* Controles contidos: folhas e ícones nunca alargam a área de toque. */
+#jogo .round,
+.world-map button,
+.ending-actions > .nature-button,
+dialog .nature-button,
+dialog .wood.button {
+  overflow: hidden;
+  isolation: isolate;
+}
+#jogo .round::before,
+#jogo .round::after,
+.world-map #map-fullscreen::before,
+.world-map #map-fullscreen::after,
+.world-map #map-pack::before,
+.world-map #map-pack::after {
+  content: none !important;
+}
+#jogo .round > .interaction-leaf {
+  display: none;
+}
+button,
+a,
+input,
+select {
+  touch-action: manipulation;
+}
+dialog :is(h1, h2, h3, p, li, strong, span, label) {
+  overflow-wrap: break-word;
+}
+dialog :is(button, a) {
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+.pause-heading {
+  min-width: 0;
+  text-align: left;
+}
+.pause-buttons {
+  min-width: 0;
+}
+#jump-action img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  pointer-events: none;
+}
+#jump-action small {
+  font: 700 8px/1 system-ui;
+  color: #fff0c5;
+}
+@media (orientation: landscape) {
+  #jogo .mission,
+  #jogo .missions {
+    left: max(12px, env(safe-area-inset-left));
+    top: max(8px, env(safe-area-inset-top));
+    width: 206px;
+    max-width: calc(100vw - 130px);
+    padding: 7px 9px;
+  }
+  #jogo :is(.mission, .missions) h1 button {
+    min-height: 28px;
+    font-size: 12px;
+    gap: 5px;
+  }
+  #jogo :is(.mission, .missions) .current-care {
+    font-size: 10px;
+    line-height: 1.3;
+    margin: 3px 0 0;
+  }
+  #jogo :is(.mission, .missions):not(.expanded) .goal {
+    min-height: 27px;
+  }
+  #jogo :is(.mission, .missions).expanded .goal {
+    min-height: 38px;
+  }
+  #jogo .top-actions {
+    top: max(8px, env(safe-area-inset-top));
+    right: max(12px, env(safe-area-inset-right));
+    gap: 8px;
+  }
+  #jogo .top-actions .round.small {
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    font-size: 20px;
+  }
+  #jogo .actions {
+    right: max(14px, env(safe-area-inset-right));
+    bottom: max(14px, env(safe-area-inset-bottom));
+    gap: 8px;
+    transform-origin: bottom right;
+  }
+  #jogo .actions .round {
+    width: 56px;
+    height: 56px;
+    min-height: 56px;
+    border-width: 2px;
+    gap: 1px;
+  }
+  #jogo .actions .round :is(canvas, svg) {
+    width: 29px !important;
+    height: 29px !important;
+  }
+  #jogo .actions .round .ui-icon {
+    --icon-size: 29px;
+    margin: 0;
+    width: 29px;
+    height: 29px;
+  }
+  #jogo .actions .round small {
+    font-size: 8px;
+    line-height: 1.1;
+    letter-spacing: 0.2px;
+    margin: 0;
+  }
+  #jogo .joystick {
+    left: max(20px, env(safe-area-inset-left));
+    bottom: max(18px, env(safe-area-inset-bottom));
+    width: 100px;
+    height: 100px;
+    transform-origin: bottom left;
+  }
+  #jogo .joystick .pad-arrows {
+    font-size: 88px;
+  }
+  #jogo #ajuda,
+  #jogo .flora-help {
+    width: 46px;
+    height: 46px;
+    right: max(18px, env(safe-area-inset-right));
+    bottom: 86px;
+  }
+  #jogo #jump-action {
+    width: 46px;
+    height: 46px;
+    right: calc(max(18px, env(safe-area-inset-right)) + 60px);
+    bottom: 86px;
+    gap: 0;
+  }
+  #jogo #jump-action img {
+    width: 30px;
+    height: 30px;
+  }
+  body.left-handed #jogo .actions {
+    left: max(14px, env(safe-area-inset-left));
+    right: auto;
+    transform-origin: bottom left;
+  }
+  body.left-handed #jogo .joystick {
+    right: max(20px, env(safe-area-inset-right));
+    left: auto;
+    transform-origin: bottom right;
+  }
+  body.left-handed #jogo #ajuda,
+  body.left-handed #jogo .flora-help {
+    left: max(18px, env(safe-area-inset-left));
+    right: auto;
+  }
+  body.left-handed #jogo #jump-action {
+    left: calc(max(18px, env(safe-area-inset-left)) + 60px);
+    right: auto;
+  }
+  #message,
+  #flora-talk,
+  #toast,
+  #dica,
+  .care-notice {
+    position: fixed;
+    top: auto;
+    bottom: max(14px, env(safe-area-inset-bottom));
+    left: calc(max(16px, env(safe-area-inset-left)) + 126px);
+    right: calc(max(16px, env(safe-area-inset-right)) + 220px);
+    width: auto;
+    max-width: 360px;
+    min-width: 0;
+    margin: 0 auto;
+    translate: none;
+    padding: 9px 12px;
+    border-radius: 15px 5px;
+    box-sizing: border-box;
+    line-height: 1.35;
+    font-size: 12px;
+  }
+  #flora-talk {
+    padding-right: 28px;
+    pointer-events: none;
+  }
+  #flora-talk #fechar-fala {
+    pointer-events: auto;
+    right: 4px;
+    top: 4px;
+  }
+  #flora-talk strong {
+    font-size: 9px;
+    letter-spacing: 0.7px;
+  }
+  #flora-talk p {
+    font-size: 12px;
+    line-height: 1.35;
+    margin: 2px 0;
+  }
+  #flora-talk::before,
+  #toast::before,
+  #dica::before {
+    content: none;
+  }
+  #toast:empty {
+    display: none;
+  }
+  .care-notice {
+    bottom: 78px;
+    font-size: 11px;
+  }
+  body.left-handed :is(#message, #flora-talk, #toast, #dica, .care-notice) {
+    left: calc(max(16px, env(safe-area-inset-left)) + 220px);
+    right: calc(max(16px, env(safe-area-inset-right)) + 126px);
+  }
+  #intro[open],
+  #conversa[open] {
+    inset: auto 12px max(12px, env(safe-area-inset-bottom));
+    margin: 0 auto;
+    max-width: min(620px, calc(100vw - 28px));
+    width: min(620px, calc(100vw - 28px));
+    max-height: calc(100dvh - 26px);
+    padding: 16px 20px;
+    gap: 14px;
+    overflow: auto;
+    align-items: center;
+  }
+  #intro[open] {
+    grid-template-columns: 76px minmax(0, 1fr);
+  }
+  #conversa .portrait,
+  #intro-portrait {
+    width: 76px;
+    height: 102px;
+    flex: 0 0 76px;
+    margin: 0;
+  }
+  #intro h2,
+  #conversa h2 {
+    font-size: 24px;
+    line-height: 1.15;
+    margin: 2px 0 8px;
+  }
+  #intro p,
+  #conversa p {
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 8px 0;
+  }
+  #intro footer,
+  .story-footer {
+    margin-top: 10px;
+    gap: 12px;
+    padding: 0;
+    flex-wrap: nowrap;
+    min-width: 0;
+  }
+  #intro footer .nature-button,
+  #conversa-avancar {
+    margin: 0 !important;
+    min-width: 140px;
+    width: auto;
+    max-width: 100%;
+    min-height: 44px;
+    padding: 10px 18px;
+    font-size: 13px;
+  }
+  #menu-pausa[open] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 10px 20px;
+    width: min(700px, calc(100vw - 30px));
+    max-width: none;
+    max-height: calc(100dvh - 24px);
+    padding: 18px;
+    overflow: auto;
+    align-items: start;
+  }
+  #menu-pausa .pause-heading {
+    grid-column: 1;
+    grid-row: 1;
+    position: relative;
+    padding-left: 68px;
+  }
+  #menu-pausa .pause-heading .pause-flora {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 55px;
+    height: 62px;
+    margin: 0;
+    object-fit: contain;
+  }
+  #menu-pausa .pause-flora img {
+    width: 55px;
+    height: 62px;
+    object-fit: contain;
+  }
+  #menu-pausa .pause-heading h2 {
+    font:
+      400 23px/1.2 Renascenca,
+      Lilita,
+      system-ui;
+    margin: 6px 0;
+    color: #fff0c7;
+  }
+  #menu-pausa .pause-heading p,
+  #menu-pausa .pause-summary {
+    font-size: 11px;
+    line-height: 1.4;
+    margin: 5px 0;
+  }
+  #menu-pausa .pause-heading .panel-eyebrow,
+  #menu-pausa .pause-heading .eyebrow {
+    font-size: 8px !important;
+    letter-spacing: 1px;
+  }
+  #menu-pausa .control-mode {
+    grid-column: 1;
+    grid-row: 2;
+    margin: 0;
+    gap: 5px;
+    padding: 12px;
+  }
+  #menu-pausa .control-mode select {
+    font-size: 13px;
+    min-height: 44px;
+    padding: 8px;
+  }
+  #menu-pausa .control-mode small {
+    font-size: 11px;
+    line-height: 1.35;
+  }
+  #menu-pausa .pause-buttons {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    align-self: center;
+  }
+  #menu-pausa .pause-buttons > :is(button, a) {
+    margin: 0;
+    min-height: 52px;
+    font-size: 12px;
+    line-height: 1.3;
+    padding: 9px 10px;
+    width: 100%;
+    display: grid;
+    place-items: center;
+    text-align: center;
+  }
+  #menu-pausa .pause-buttons > :first-child,
+  #menu-pausa #recomecar {
+    grid-column: 1/-1;
+  }
+  #menu-pausa #recomecar {
+    min-height: 44px;
+  }
+  .journey-pack[open] {
+    width: min(870px, calc(100vw - 28px));
+    height: calc(100dvh - 24px);
+    max-height: calc(100dvh - 24px);
+    border-radius: 20px 6px;
+  }
+  .journey-pack > header {
+    padding: 8px 16px;
+    min-height: 54px;
+  }
+  .journey-pack > header p {
+    display: none;
+  }
+  .journey-pack h2 {
+    font-size: 24px;
+    margin: 0;
+  }
+  .journey-pack > header [data-pack-close] {
+    min-height: 40px;
+    height: 40px;
+    min-width: 40px;
+    padding: 0;
+  }
+  .journey-pack > [role="tablist"] {
+    padding: 5px 12px;
+    gap: 5px;
+  }
+  .journey-pack > [role="tablist"] button {
+    min-height: 40px;
+  }
+  .journey-pack #pack-content {
+    padding: 12px 16px;
+    min-height: 0;
+    overflow: auto;
+  }
+  .journey-pack .pack-intro {
+    font-size: 11px;
+    margin: 0 0 10px;
+    line-height: 1.4;
+  }
+  .journey-pack .pack-grid {
+    gap: 9px;
+  }
+  .journey-pack .pack-card {
+    padding: 9px;
+    gap: 10px;
+    min-width: 0;
+    align-items: center;
+  }
+  .journey-pack .pack-card h3 {
+    font-size: 13px;
+    line-height: 1.3;
+    margin: 0 0 4px;
+  }
+  .journey-pack .pack-card p {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  .journey-pack .pack-card .pack-icon {
+    flex: 0 0 52px;
+    width: 52px;
+    height: 58px;
+  }
+  .journey-pack .pack-icon > svg {
+    width: 52px;
+    height: 58px;
+  }
+  .journey-pack .pack-card > div:last-child {
+    min-width: 0;
+  }
+  .journey-pack > footer {
+    padding: 6px 14px;
+  }
+  .journey-pack > footer button {
+    min-height: 40px;
+  }
+  #puzzle[open] {
+    width: min(680px, calc(100vw - 30px));
+    max-width: none;
+    max-height: calc(100dvh - 24px);
+    padding: 16px 20px;
+  }
+  #puzzle h2 {
+    font-size: 24px;
+    line-height: 1.2;
+    margin: 5px 0 9px;
+  }
+  #puzzle-description {
+    font-size: 13px;
+    line-height: 1.4;
+    margin: 5px 0 12px;
+  }
+  #puzzle-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 9px;
+  }
+  #puzzle-options button {
+    min-height: 96px;
+    font-size: 13px;
+    line-height: 1.3;
+    padding: 8px;
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 5px;
+  }
+  #puzzle-options button > svg {
+    width: 52px;
+    height: 57px;
+    margin: 0;
+  }
+  #puzzle-options .ui-icon {
+    --icon-size: 28px;
+  }
+  #puzzle-feedback {
+    font-size: 13px;
+    line-height: 1.45;
+    min-height: 0;
+    margin: 10px 0;
+  }
+  #puzzle-feedback:empty {
+    display: none;
+  }
+  #quiz-continue {
+    min-height: 44px;
+    margin: 6px 0;
+  }
+  .completion[open] {
+    width: min(670px, calc(100vw - 30px));
+    max-width: none;
+    max-height: calc(100dvh - 24px);
+    padding: 15px 20px;
+    display: grid;
+    grid-template-columns: 45% minmax(0, 1fr);
+    gap: 7px 15px;
+    align-items: center;
+  }
+  .completion > .eyebrow,
+  .completion > .panel-eyebrow,
+  .completion > h2 {
+    grid-column: 1/-1;
+    margin: 0;
+    font-size: 24px;
+  }
+  .completion > :is(.eyebrow, .panel-eyebrow) {
+    font-size: 9px;
+  }
+  .completion > #celebration,
+  .completion > .celebration-art {
+    grid-column: 1;
+    grid-row: 3 / span 3;
+    width: 100%;
+    height: 130px;
+    object-fit: contain;
+    margin: 0;
+  }
+  .completion > :is(#victory-stats, .completion-stats) {
+    grid-column: 2;
+    grid-row: 3;
+    font-size: 12px;
+    min-width: 0;
+  }
+  .completion > :is(#reward-label, #salvo, #save-state) {
+    grid-column: 2;
+    font-size: 11px;
+    line-height: 1.35;
+    margin: 0;
+  }
+  .completion > :is(a, button) {
+    margin: 0;
+    min-height: 44px;
+    font-size: 12px;
+    padding: 9px 12px;
+  }
+  #phase-dialog[open] {
+    width: min(780px, calc(100vw - 28px));
+    max-width: none;
+    max-height: calc(100dvh - 24px);
+    padding: 0;
+    display: grid;
+    grid-template-columns: 43% minmax(0, 1fr);
+    overflow: auto;
+  }
+  #phase-dialog .phase-scene {
+    grid-column: 1/-1;
+    min-height: 72px;
+    height: auto;
+    padding: 12px 60px 12px 22px;
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    column-gap: 14px;
+    align-items: center;
+  }
+  #phase-dialog .scene-leaf {
+    display: none;
+  }
+  #phase-dialog .phase-symbol {
+    position: static;
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    width: 42px;
+    height: 42px;
+  }
+  #phase-dialog .phase-symbol .ui-icon {
+    --icon-size: 38px;
+  }
+  #phase-dialog #phase-number {
+    grid-column: 2;
+    margin: 0;
+    font-size: 8px;
+  }
+  #phase-dialog h2 {
+    grid-column: 2;
+    margin: 3px 0 0;
+    font-size: 25px;
+    line-height: 1.1;
+    overflow-wrap: break-word;
+  }
+  #phase-dialog .phase-meeting {
+    grid-column: 1;
+    grid-row: 2;
+    padding: 14px 12px;
+    align-self: center;
+    grid-template-columns: 62px minmax(0, 1fr) 62px;
+    min-width: 0;
+    gap: 5px;
+  }
+  #phase-dialog .meeting-dialogue p {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  #phase-dialog .meeting-npc,
+  #phase-dialog .meeting-kai {
+    min-width: 0;
+  }
+  #phase-dialog .meeting-npc svg,
+  #phase-dialog .meeting-kai svg {
+    width: 60px;
+    height: 105px;
+  }
+  #phase-dialog .meeting-npc span,
+  #phase-dialog .meeting-kai span {
+    font-size: 10px;
+    white-space: normal;
+  }
+  #phase-dialog .phase-copy {
+    grid-column: 2;
+    grid-row: 2;
+    max-height: 190px;
+    overflow: auto;
+    padding: 12px 18px;
+    min-width: 0;
+  }
+  #phase-dialog .phase-copy p,
+  #phase-dialog .phase-copy li {
+    font-size: 11px;
+    line-height: 1.4;
+    margin: 5px 0;
+  }
+  #phase-dialog .phase-copy h3 {
+    font-size: 14px;
+    margin: 9px 0 4px;
+  }
+  #phase-dialog .phase-loot {
+    gap: 6px;
+    margin: 8px 0;
+  }
+  #phase-dialog .phase-loot strong {
+    font-size: 11px;
+    line-height: 1.35;
+  }
+  #phase-dialog .phase-state {
+    font-size: 10px;
+  }
+  .phase-actions {
+    grid-column: 1/-1;
+    padding: 8px 18px;
+    background: #e5dfbe;
+  }
+  .phase-actions > button {
+    margin: 0;
+    min-height: 44px;
+    font-size: 13px;
+  }
+  .world-map .map-list li button {
+    min-width: 0;
+  }
+  .world-map .map-list li button strong {
+    white-space: normal;
+    overflow-wrap: normal;
+    font-size: 10px;
+  }
+  .world-map .map-hotspot strong {
+    white-space: normal;
+    overflow-wrap: normal;
+  }
+  .ending-actions {
+    gap: 10px !important;
+    bottom: max(12px, env(safe-area-inset-bottom)) !important;
+  }
+  .ending-actions > :is(button, a) {
+    min-width: 0 !important;
+    width: 150px !important;
+    max-width: 21vw !important;
+    min-height: 46px !important;
+    padding: 10px 13px !important;
+    font-size: 12px !important;
+    line-height: 1.3 !important;
+    white-space: normal !important;
+  }
+  #ending-credits[open] {
+    width: min(700px, calc(100vw - 32px));
+    max-width: none;
+    height: calc(100dvh - 28px);
+    max-height: calc(100dvh - 28px);
+    padding: 0;
+    border-radius: 22px 7px;
+  }
+  #ending-credits .credit-window {
+    height: 100%;
+    max-height: none;
+    overflow: auto;
+  }
+  #ending-credits .credit-paper {
+    padding: 22px 28px 50px;
+  }
+  #ending-close-credits {
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    z-index: 5;
+  }
+  .large-text #intro p,
+  .large-text #conversa p {
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  .large-text dialog :is(button, a) {
+    font-size: 14px;
+  }
+}
+#jogo .action-symbol {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  pointer-events: none;
+}
+#jogo .action-symbol svg {
+  width: 30px;
+  height: 30px;
+}
+body[data-orientation-blocked="true"] .leaves * {
+  animation-play-state: paused !important;
+}
+@media (orientation: landscape) {
+  #message,
+  #flora-talk,
+  #toast,
+  #dica,
+  .care-notice {
+    transform: none !important;
+  }
+}
+.phase-meeting svg,
+.meeting-kai svg,
+.meeting-npc svg {
+  overflow: hidden !important;
+}
+@media (orientation: landscape) {
+  #phase-dialog[open] {
+    height: min(360px, calc(100dvh - 24px));
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+  #phase-dialog .phase-meeting {
+    min-height: 0;
+    height: 100%;
+    align-self: stretch;
+    align-items: center;
+    padding: 10px 12px;
+  }
+  #phase-dialog .phase-copy {
+    min-height: 0;
+    max-height: none;
+    height: 100%;
+  }
+  #phase-dialog .meeting-dialogue {
+    max-height: 100%;
+    overflow: auto;
+    padding: 8px;
+    margin: 0;
+  }
+  #phase-dialog .meeting-dialogue > div {
+    gap: 5px;
+    padding-top: 5px;
+  }
+  #phase-dialog .meeting-dialogue .ui-icon {
+    width: 24px;
+    height: 24px;
+    --icon-size: 24px;
+  }
+  #phase-dialog .phase-actions {
+    padding: 7px 18px;
+  }
+  #phase-dialog .phase-actions > button {
+    display: block;
+    width: min(280px, 100%);
+    margin-inline: auto;
+  }
+}
+
+/* O mesmo arranjo em paisagem ganha espaço de leitura em tablets e monitores. */
+@media (orientation: landscape) and (min-height: 601px) {
+  #jogo .mission,
+  #jogo .missions {
+    width: 250px;
+    padding: 10px 12px;
+  }
+  #jogo :is(.mission, .missions) h1 button {
+    font-size: 15px;
+    min-height: 34px;
+  }
+  #jogo :is(.mission, .missions) .current-care {
+    font-size: 12px;
+  }
+  #phase-dialog[open] {
+    height: min(500px, calc(100dvh - 40px));
+  }
+  #phase-dialog .phase-scene {
+    min-height: 105px;
+    padding: 20px 60px 20px 24px;
+  }
+  #phase-dialog h2 {
+    font-size: 30px;
+  }
+  #phase-dialog .phase-copy {
+    padding: 18px 22px;
+  }
+  #phase-dialog .phase-copy p,
+  #phase-dialog .phase-copy li,
+  #phase-dialog .meeting-dialogue p {
+    font-size: 13px;
+  }
+  #phase-dialog .phase-copy h3 {
+    font-size: 18px;
+  }
+  #phase-dialog .meeting-npc svg,
+  #phase-dialog .meeting-kai svg {
+    height: 125px;
+  }
+  #intro p,
+  #conversa p {
+    font-size: 16px;
+  }
+  .journey-pack .pack-card h3 {
+    font-size: 16px;
+  }
+  .journey-pack .pack-card p,
+  .journey-pack .pack-intro {
+    font-size: 14px;
+  }
+}
+
+/* Em celulares de 320 px de altura, as seis placas já são a seleção.
+   O rodapé mantém o progresso sem repetir outra fileira de destinos. */
+@media (orientation: landscape) and (max-height: 360px) {
+  .world-map .map-list {
+    display: none;
+  }
+  .world-map .map-hotspot[data-phase="1"],
+  .world-map .map-hotspot[data-phase="5"] {
+    top: 28%;
+  }
+  .world-map .map-hotspot[data-phase="2"],
+  .world-map .map-hotspot[data-phase="6"] {
+    top: 48%;
+  }
+  .world-map .map-hotspot[data-phase="3"],
+  .world-map .map-hotspot[data-phase="4"] {
+    top: 67%;
+  }
+}

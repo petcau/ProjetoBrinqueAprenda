@@ -1,0 +1,367 @@
+.settings-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0 14px;
+}
+.settings-tabs [role="tab"] {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 2px solid #a58a52;
+  border-radius: 12px;
+  color: #375439;
+  background: #e4ddb4;
+  font: 700 15px/1.2 system-ui;
+  cursor: pointer;
+}
+.settings-tabs [aria-selected="true"] {
+  color: #fff5d8;
+  background: linear-gradient(#4d7c47, #2b5536);
+  border-color: #d0b879;
+  box-shadow: inset 0 1px 0 #d8e4a255;
+}
+.settings-tabs button:focus-visible {
+  outline: 3px solid #dcbf69;
+  outline-offset: 3px;
+}
+.settings-in-tabs #preferences [hidden] {
+  display: none !important;
+}
+.settings-in-tabs .settings-bottom {
+  margin-top: 12px;
+}
+.creators-authorship {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 22px 0;
+}
+.creators-authorship > .eyebrow,
+.creators-authorship > .other-creators {
+  grid-column: 1/-1;
+  margin: 0;
+}
+.creator-name {
+  border: 1px solid #b2a777;
+  border-radius: 14px;
+  padding: 14px;
+  background: #e5dfbb;
+}
+.creator-name h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  line-height: 1.25;
+}
+.creator-name p {
+  margin: 0;
+}
+
+/* Uma área fixa em paisagem mantém as abas sempre à vista. */
+@media (orientation: landscape) {
+  body.settings-in-tabs {
+    height: 100dvh;
+    overflow: hidden;
+  }
+  .settings-in-tabs .page-footer {
+    display: none;
+  }
+  .settings-in-tabs .panel-layout {
+    position: fixed !important;
+    inset: 72px 18px 14px !important;
+    width: min(950px, calc(100vw - 36px)) !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    display: block !important;
+    transform: none !important;
+  }
+  .settings-in-tabs .settings-companion {
+    display: none !important;
+  }
+  .settings-in-tabs .wood-panel {
+    height: 100% !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    padding: 7px !important;
+  }
+  .settings-in-tabs .panel-inner {
+    height: 100% !important;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow: hidden !important;
+    padding: 14px 18px !important;
+  }
+  .settings-in-tabs .panel-heading {
+    flex: none;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .settings-in-tabs .panel-heading .eyebrow,
+  .settings-in-tabs .intro {
+    display: none;
+  }
+  .settings-in-tabs .panel-heading h1 {
+    font-size: 28px !important;
+    line-height: 1.1;
+    margin: 0 !important;
+  }
+  .settings-in-tabs #preferences {
+    min-height: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow: hidden;
+  }
+  .settings-in-tabs .settings-tabs {
+    flex: none;
+    margin: 0;
+  }
+  .settings-in-tabs #preferences .preference-card {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    margin: 0 !important;
+    padding: 12px !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .settings-in-tabs #preferences .preference-card legend {
+    display: none;
+  }
+  .settings-in-tabs .settings-bottom {
+    flex: none;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin: 0 !important;
+  }
+  .settings-in-tabs .settings-bottom p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+  .settings-in-tabs #reset {
+    min-height: 44px;
+    margin: 0;
+    padding: 8px 12px;
+  }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .settings-in-tabs .panel-layout {
+    inset: 66px 16px 10px !important;
+  }
+  .settings-in-tabs .panel-inner {
+    gap: 6px;
+    padding: 9px 12px !important;
+  }
+  .settings-in-tabs .panel-heading h1 {
+    font-size: 23px !important;
+  }
+  .settings-in-tabs #preferences {
+    gap: 6px;
+  }
+  .settings-in-tabs #preferences .preference-card {
+    padding: 6px 10px !important;
+  }
+  .settings-in-tabs #settings-panel-0:not([hidden]),
+  .settings-in-tabs #settings-panel-2:not([hidden]) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 16px;
+    align-content: start;
+  }
+  .settings-in-tabs #settings-panel-0 .setting-line:has(#music) {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .settings-in-tabs #settings-panel-0 .setting-line:has(#effects) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .settings-in-tabs #settings-panel-0 .volume-line:has(#musicVolume) {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .settings-in-tabs #settings-panel-0 .volume-line:has(#effectsVolume) {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .settings-in-tabs #preview-sound {
+    grid-column: 1/-1;
+    margin: 0;
+    min-height: 34px;
+    padding: 5px 10px;
+  }
+  .settings-in-tabs #settings-panel-2 .control-mode {
+    grid-column: 1/-1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 4px;
+  }
+  .settings-in-tabs .control-mode select {
+    flex: 1;
+    width: auto;
+    min-height: 38px;
+    padding: 6px;
+    font-size: 13px;
+  }
+  .settings-in-tabs .control-mode label {
+    flex: none;
+    font-size: 13px;
+    margin: 0;
+  }
+  .settings-in-tabs .control-mode small {
+    display: none;
+  }
+  .settings-in-tabs .setting-line {
+    margin: 0 !important;
+    min-height: 34px !important;
+    padding: 2px 0 !important;
+  }
+  .settings-in-tabs .setting-line strong {
+    font-size: 13px;
+  }
+  .settings-in-tabs .volume-line {
+    margin: 0 !important;
+    padding: 2px 0;
+    gap: 5px;
+    font-size: 12px;
+  }
+  .settings-in-tabs .volume-line label {
+    font-size: 12px;
+  }
+  .settings-in-tabs .settings-bottom {
+    gap: 10px;
+  }
+  .settings-in-tabs #reset {
+    min-height: 36px;
+    font-size: 12px;
+  }
+}
+@media (orientation: landscape) and (max-height: 340px) {
+  .settings-in-tabs #preview-sound {
+    display: none;
+  }
+  .settings-in-tabs .settings-bottom .save-status {
+    font-size: 10px;
+  }
+  .settings-in-tabs .panel-layout {
+    inset: 54px 12px 6px !important;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .settings-in-tabs .setting-line small {
+    display: none;
+  }
+  .settings-in-tabs .motion-status {
+    font-size: 11px;
+  }
+}
+@media (orientation: landscape) {
+  .settings-in-tabs .wood-panel,
+  .settings-in-tabs .panel-inner,
+  .settings-in-tabs #preferences {
+    box-sizing: border-box !important;
+  }
+  .settings-in-tabs #preferences .settings-tabs {
+    order: -1 !important;
+  }
+  .settings-in-tabs #preferences .preference-card {
+    order: 0 !important;
+  }
+  .settings-in-tabs #preferences .settings-bottom {
+    order: 1 !important;
+  }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .settings-in-tabs .volume-line input[type="range"] {
+    height: 24px;
+    min-height: 24px;
+    margin: 0;
+    padding: 0;
+  }
+  .settings-in-tabs .volume-line {
+    min-height: 0;
+  }
+  .settings-in-tabs #reset {
+    min-height: 40px;
+  }
+}
+@media (orientation: landscape) {
+  .settings-in-tabs .panel-layout {
+    min-height: 0 !important;
+    max-height: none !important;
+    box-sizing: border-box !important;
+  }
+}
+@media (orientation: landscape) {
+  .settings-in-tabs .wood-panel {
+    transform: none !important;
+  }
+  .settings-in-tabs #preferences {
+    gap: 8px !important;
+  }
+  .settings-in-tabs .settings-bottom {
+    padding: 0 !important;
+    border: 0 !important;
+  }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .settings-in-tabs #preferences {
+    gap: 6px !important;
+  }
+  .settings-in-tabs #settings-panel-0:not([hidden]) {
+    grid-template-rows: 34px 44px 34px;
+  }
+  .settings-in-tabs .volume-line {
+    height: auto !important;
+    min-height: 42px !important;
+  }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .settings-in-tabs #settings-panel-1:not([hidden]) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 16px;
+    align-content: start;
+  }
+  .settings-in-tabs #settings-panel-1 .motion-status {
+    margin: 0;
+    padding: 4px 0;
+    align-self: center;
+    font-size: 11px;
+    line-height: 1.35;
+  }
+}
+@media (orientation: landscape) and (max-height: 340px) {
+  .settings-in-tabs #settings-panel-0:not([hidden]) {
+    grid-template-rows: 34px 44px;
+  }
+  .settings-in-tabs #settings-panel-2:not([hidden]) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .settings-in-tabs #settings-panel-2 .control-mode {
+    grid-column: 1/-1;
+  }
+  .settings-in-tabs #settings-panel-2 .setting-line strong {
+    font-size: 12px;
+  }
+}
+@media (orientation: landscape) and (max-height: 340px) {
+  .settings-in-tabs #settings-panel-2 .control-mode {
+    margin: 0;
+  }
+  .settings-in-tabs #settings-panel-2 .control-mode select {
+    min-height: 30px;
+    height: 30px;
+    padding: 3px 6px;
+  }
+}

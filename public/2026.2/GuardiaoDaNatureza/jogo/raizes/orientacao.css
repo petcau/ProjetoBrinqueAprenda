@@ -1,0 +1,76 @@
+/* A partida usa paisagem. O aviso em retrato mantém a conversa e o progresso. */
+#girar-celular {
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  padding: max(20px, env(safe-area-inset-top))
+    max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom))
+    max(20px, env(safe-area-inset-left));
+  border: 0;
+  color: #f8edcc;
+  background: radial-gradient(ellipse at 50% 35%, #416b43, #153b30 75%);
+  font: 16px/1.5 system-ui;
+}
+#girar-celular[open] {
+  display: grid;
+  place-items: center;
+}
+#girar-celular::backdrop {
+  background: #153b30;
+}
+.rotate-card {
+  width: min(340px, 100%);
+  text-align: center;
+  border: 2px solid #b99a62;
+  border-radius: 28px 8px;
+  padding: 26px 20px;
+  background: #254c37;
+  box-shadow: 0 12px 50px #102c2777;
+}
+.rotate-card > svg {
+  width: 180px;
+  max-width: 80%;
+  height: 140px;
+}
+.rotate-card h1 {
+  font:
+    400 34px/1.15 Renascenca,
+    Lilita,
+    system-ui;
+  margin: 9px 0 14px;
+  color: #fff0ba;
+}
+.rotate-kicker {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: #c7d5a1;
+}
+#girar-dica {
+  font-size: 15px;
+  margin: 12px 0 21px;
+}
+#girar-tela-cheia {
+  min-height: 48px;
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #c8a367;
+  border-radius: 15px 5px;
+  background: #759153;
+  color: #fff7df;
+  font: 700 16px system-ui;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+#girar-status {
+  font-size: 12px;
+  color: #d5dfba;
+  min-height: 36px;
+  margin: 14px 0 0;
+}
+body[data-orientation-blocked="true"] {
+  overflow: hidden !important;
+}
