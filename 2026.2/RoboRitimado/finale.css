@@ -1,0 +1,266 @@
+/* The welcome, menu and last battle share the OrbitHop palette. */
+:root { scrollbar-width: none; }
+* { scrollbar-width: none; }
+*::-webkit-scrollbar { display: none; }
+body[data-screen=menu] .game-logo {
+  align-items: center;
+  font-style: italic;
+  transform: none;
+}
+body[data-screen=menu] .game-logo .logo-rhythm { transform: none; }
+body[data-screen=menu] .game-logo::before {
+  clip-path: none;
+  border: 2px solid #f9e6ff;
+  background: linear-gradient(162deg,#ffffff62,transparent 22%,#a6e8ff30 47%,#1a0d35 49%,#624079 78%,#f4a7f153);
+  background-color: #35224e;
+}
+.logo-sparkles { position: absolute; inset: 0; pointer-events: none; }
+.logo-sparkles b {
+  position: absolute;
+  color: #fef1ff;
+  font: 700 clamp(15px,2vw,28px)/1 system-ui;
+  text-shadow: 0 0 8px #ff84e3,0 0 14px #92efff;
+  animation: jewel-drift 5s ease-in-out infinite alternate;
+}
+.logo-sparkles b:nth-child(1) { left: 7%; bottom: 8%; }
+.logo-sparkles b:nth-child(2) { left: 19%; top: -10%; animation-delay: -.8s; }
+.logo-sparkles b:nth-child(3) { right: 9%; top: -8%; animation-delay: -1.3s; }
+.logo-sparkles b:nth-child(4) { right: 19%; bottom: 1%; animation-delay: -2s; }
+.logo-sparkles b:nth-child(5) { right: 37%; top: -11%; animation-delay: -3s; }
+@keyframes jewel-drift { to { transform: translateY(-4px) scale(1.14); } }
+.game-logo .logo-word::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(108deg,transparent 34%,#fff9 48%,#fff 50%,#b6f7ff77 53%,transparent 66%) -110% center / 240% 100%;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 0;
+  animation: title-reflection 6s linear infinite;
+}
+@keyframes title-reflection { from {background-position: 135% center} to {background-position: -105% center} }
+body[data-screen=menu] .menu-nav .orbit-button {
+  border: 2px solid #f9e6ff;
+  border-radius: 21px;
+  box-shadow: 0 3px 0 #170e28,0 0 0 2px #dc78cf,inset 0 0 0 2px #7bdff8;
+}
+.menu-nav .orbit-button::after {
+  background: linear-gradient(159deg,#ffffff32,transparent 34%,#bbd7ff26 49%,#291844 52%,#624078),#382454!important;
+}
+.menu-nav .orbit-button .button-copy small { color: #fff1ff; }
+.menu-nav .orbit-button .button-copy b {
+  background-image: repeating-linear-gradient(-12deg,#fff8 0 1px,transparent 2px 7px),
+    linear-gradient(#fff 3%,#c5f6ff 24%,#79dcfa 52%,#9688f2 54%,#e5caff 92%);
+  -webkit-text-stroke: 1px #402257;
+  paint-order: stroke fill;
+}
+.quick-fullscreen {
+  position: fixed;
+  z-index: 12;
+  right: clamp(12px,2vw,28px);
+  top: 12px;
+  color: #2d1944;
+  background: linear-gradient(150deg,#e0fbff,#f8c5ee);
+  border: 2px solid #fff;
+  box-shadow: 0 2px 0 #7e4d96;
+}
+.safety-dialog .quick-fullscreen { position: absolute; top: 8px; right: 9px; font-size: 11px; min-height: 30px; padding: 4px 9px; }
+.safety-dialog[open] { overflow: visible; }
+.safety-dialog .welcome-portrait {
+  overflow: visible;
+  pointer-events: none;
+  /* Trim the resting hand at the frame and let the extended hand overlap. */
+  clip-path: polygon(0 -30%, 145% -30%, 145% 125%, 49% 125%, 49% 100%, 0 100%);
+}
+.about-dialog {
+  width: min(500px,90vw);
+  padding: 24px;
+  color: #38234e;
+  background: #fff4fd;
+  border: 2px solid #cf9dea;
+}
+.about-dialog h2 { margin: 0 0 14px; }
+.about-dialog p { font-size: calc(15px * var(--ui-scale)); line-height: 1.6; }
+.dark-mode .about-dialog { color: #f5e9ff; background: #19132b; }
+.high-contrast .about-dialog { color: white; background: black; border-color: white; }
+.safety-dialog .welcome-portrait img {
+  width: 119%; max-width: none; max-height: none; height: auto;
+  margin-left: -8%;
+  transform: translateY(10%);
+  transform-origin: 48% 80%;
+  animation: pixel-welcome 5.2s ease-in-out infinite;
+}
+@keyframes pixel-welcome {
+  0%,100% { transform: translateY(10%) rotate(-.5deg) }
+  50% { transform: translateY(9%) rotate(.6deg) }
+}
+.warning-pending .safety-dialog .welcome-portrait img { animation-play-state: running!important; }
+.safety-dialog .safety-body { position: relative; padding-top: 43px; }
+.safety-dialog .dialog-kicker { display: inline-block; letter-spacing: .7px; margin-bottom: 5px; }
+.safety-dialog #safetyTitle {
+  transform: none;
+  letter-spacing: .04em;
+  text-shadow: none;
+  -webkit-text-stroke-width: .7px;
+}
+.safety-dialog #safetyTitle .welcome-bang { margin-left: .22em; }
+@media (min-width:761px) { .safety-dialog .safety-note { padding-left: 50px; } }
+.safety-dialog #safetyAccessibility:is(:hover,:focus-visible) { transform: none; }
+.safety-dialog #safetyAccessibility .button-icon { transition: transform .36s cubic-bezier(.2,.8,.2,1); }
+.safety-dialog #safetyAccessibility:is(:hover,:focus-visible) .button-icon { transform: scale(1.25); }
+.safety-dialog #closeSafety {
+  color: #45245f;
+  background: #f8eaff;
+  border: 2px solid #b579d7;
+  border-radius: 14px;
+  font-weight: 800;
+}
+.safety-dialog #closeSafety:hover { background: #e8d4ff; }
+.motion-reduced .logo-word::after,.motion-reduced .logo-sparkles b,.motion-reduced .welcome-portrait img { animation: none!important; }
+.dark-mode { color-scheme: dark; }
+.dark-mode .scene-shell,.dark-mode .app { background-color: #110f20; }
+.dark-mode .orbit-bg,.dark-mode .world { filter: brightness(.54) saturate(.72); }
+.dark-mode :is(.settings-dialog,.safety-dialog,.rotate-dialog,.phase-dialog,.game-dialog,.song-strip,.portal-card,.tutorial-instruction,.story-subtitle,.travel-caption #travelStatus) {
+  background: #19132b!important;
+  color: #f5e9ff!important;
+  border-color: #9778b8;
+}
+.dark-mode :is(.settings-dialog,.safety-dialog,.rotate-dialog,.phase-dialog,.game-dialog,.tutorial-instruction) :is(h2,p,small,strong,output,span,label) { color: #f5e9ff; }
+.dark-mode .settings-tabs button,.dark-mode .settings-dialog select { color: #f5e9ff; background: #302346; }
+.dark-mode .settings-tabs [aria-selected=true] { background: #584077; }
+.dark-mode:not(.high-contrast) .settings-dialog :is(.dialog-header,.settings-footer,.setting-row,.setting-sub) {
+  background: #261b3b;
+  border-color: #70528c!important;
+  color: #f5e9ff;
+  box-shadow: none;
+}
+.dark-mode .settings-dialog .setting-row output { background: #443157; }
+.device-setting label { display: block; margin-bottom: 6px; font-weight: 800; }
+.device-setting p { margin-bottom: 0; }
+.dark-mode .safety-dialog :is(.dialog-kicker,.welcome-warning,.welcome-features span) { color: #321c46; }
+.rotate-dialog { max-width: min(440px,92vw); padding: 22px; text-align: center; background: #392350; border: 2px solid #dfc5f8; }
+.rotate-icon { font-size: 32px; color: #adf4ff; }
+.rotate-dialog p { line-height: 1.5; }
+.settings-tabs { flex-wrap: wrap; }
+.cinema-controls { display: flex; justify-content: center; gap: 10px; }
+.cinema-controls button:disabled,.travel-controls button:disabled { opacity: .46; }
+body[data-screen=cutscene] #cinemaUI .story-subtitle { rotate: none; transform: none; }
+.travel-caption #travelStatus[data-speaker=GALACTUS] { color: #faf1ff; background: #302043; border-color: #d699f0; }
+.travel-caption #travelStatus[data-speaker=GALACTUS]::before { content: '☾ GALACTUS'; color: #e0b2f7; }
+.phase-dialog .tutorial-copy,.phase-dialog .phase-invitation { display: none!important; }
+.phase-dialog .chapter { padding: 4px 12px; }
+.phase-dialog .chapter h1,.phase-dialog .chapter h1 em { color: #402151; }
+.phase-dialog .chapter p,.phase-dialog .chapter .eyebrow,.phase-dialog .intro #introCopy,.phase-dialog .intro .intro-detail { color: #563969; }
+.dark-mode .phase-dialog .intro,.dark-mode .result-overlay,.dark-mode #pauseOverlay { background: #19132b!important; }
+.dark-mode .phase-dialog .intro :is(h1,em,p,summary,.eyebrow,.intro-detail,.text-button) { color: #faedff!important; }
+.phase-dialog .phase-cover { margin-bottom: 0; }
+.phase-dialog .intro .tutorial-keys { margin-block: 6px; }
+
+.battle-art { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.battle-hud { width: 100%; display: grid; grid-template-columns: 1fr 2.2fr 1fr; align-items: center; gap: 10px; }
+.battle-hud label,.battle-hud #battleCue {
+  background: #20132ef2; color: #fff; border: 1px solid #bb8cdf; border-radius: 13px; padding: 6px 9px;
+}
+.battle-hud label { font-size: clamp(10px,1.2vw,15px); font-weight: 700; }
+.battle-hud output { float: right; color: #fff; }
+.battle-hud meter { display: block; width: 100%; height: 13px; }
+.battle-hud meter::-webkit-meter-optimum-value { background: linear-gradient(90deg,#4fe8fa,#aa91ff); }
+#bossMeter::-webkit-meter-optimum-value { background: linear-gradient(90deg,#b560fa,#ff8ddf); }
+.battle-hud #battleCue { white-space: pre-line; font-weight: 700; text-align: center; font-size: clamp(9px,1.15vw,15px); min-height: 2.7em; }
+body[data-theme=fase11] :is(.scoreboard,.track-meta,.track-instruction,.track-crown,.pixel-side,.portal-card,.app .journey-nav) { display: none!important; }
+body[data-theme=fase11] .app .play-space {
+  position: relative; isolation: isolate; grid-template-columns: 1fr minmax(152px,32%) 1fr; gap: 0;
+}
+body[data-theme=fase11] .app .track-shell {
+  grid-column: 2; z-index: 1; border: 3px solid #ae8dd894; border-radius: 18px;
+  background: #22183428; box-shadow: 0 0 22px #9639c83b;
+}
+body[data-theme=fase11] .track-backdrop { display: none; }
+body[data-theme=fase11] .track-shell::before,body[data-theme=fase11] .track-shell::after { display: none; }
+body[data-theme=fase11] .app #track { height: 100%; }
+body[data-theme=fase11] .app .stage { grid-template-rows: 65px minmax(0,1fr) 50px; }
+body[data-theme=fase11] .world { filter: saturate(.77) brightness(.8); }
+.final-credits {
+  position: absolute; inset: 0; z-index: 2;
+  overflow: hidden; pointer-events: none; text-align: center;
+  background: linear-gradient(90deg,#0b081aee,#0b081ac4 62%,#0b081a66);
+  color: #fff3ff;
+}
+.final-credits>div { position: absolute; top: 0; width: 100%; padding: 10px; animation: credits-roll 22s linear both; }
+.travel-overlay[data-paused=true] .final-credits>div { animation-play-state: paused; }
+.final-credits p { margin-bottom: 5px; color: #c2f4ff; }
+.final-credits strong { line-height: 1.4; }
+@keyframes credits-roll { from { transform: translateY(64svh) } to { transform: translateY(-85%) } }
+.travel-overlay:has(.final-credits:not([hidden])) .travel-caption { z-index: 3; }
+.travel-overlay:has(.final-credits:not([hidden])) .travel-controls { z-index: 5; }
+.motion-reduced .final-credits>div,.photosensitive .final-credits>div { animation: none; top: 8%; }
+
+body:is([data-device=mobile],[data-device=tablet])[data-screen=game] .app { min-height: 100svh; height: 100svh; padding-bottom: 2px; }
+body:is([data-device=mobile],[data-device=tablet]) .app main { grid-template-rows: minmax(0,1fr) auto 45px; }
+body:is([data-device=mobile],[data-device=tablet]) .app .touch-controls { display: flex; justify-content: center; }
+body:is([data-device=mobile],[data-device=tablet]) .app .touch-controls button { width: clamp(43px,13vw,83px); height: 40px; }
+body:is([data-device=mobile],[data-device=tablet]) :is(.ambient,.orbit-fx) { opacity: .4; }
+body[data-device=mobile] :is(.track-shell,.orbit-button,.song-strip) { backdrop-filter: none; }
+body[data-screen=game] .app :is(.track-shell,.scoreboard,.song-strip,.portal-card) {
+  backdrop-filter: none;
+}
+@media (max-width:760px) {
+  body[data-screen=menu] .game-logo { font-size: clamp(28px,9.1vw,56px); }
+  .safety-dialog[open] { max-height: 93svh; overflow: auto; }
+  .safety-dialog .safety-body { padding-top: 40px; }
+  .safety-dialog .welcome-portrait { width: 100%; height: clamp(146px,27vh,210px); flex-basis: auto; }
+  .safety-dialog .welcome-portrait img { width: auto; height: 110%; margin: 0 0 7px; object-fit: contain; }
+  .safety-dialog .dialog-kicker { font-size: 10px; }
+  .safety-dialog .safety-body p,.safety-dialog .safety-body .welcome-warning { font-size: 12px; margin-block: 6px; }
+  .safety-dialog .welcome-features span { font-size: 9px; }
+  .safety-dialog .safety-close { font-size: 12px; padding: 8px; }
+  .safety-dialog .safety-body .safety-note { font-size: 10px; }
+  .travel-controls .quiet-button { padding: 6px; min-height: 34px; }
+  .battle-hud { gap: 4px; }
+  .battle-hud label,.battle-hud #battleCue { padding: 4px; }
+  .battle-hud output { float: none; display: block; }
+  .app .touch-controls { gap: 5px; }
+}
+@media (max-height:560px) and (orientation:landscape) {
+  .settings-dialog .dialog-header { padding: 8px 16px; }
+  .settings-dialog .dialog-header h2 { font-size: 22px; margin: 0; }
+  .settings-dialog .settings-tabs { padding: 7px 16px; gap: 6px; }
+  .settings-dialog .settings-tabs button { min-height: 32px; padding: 5px 10px; }
+  .settings-dialog .settings-footer { padding: 7px 16px; gap: 8px; }
+  .settings-dialog .settings-footer small { display: none; }
+  .settings-dialog .settings-content { padding: 0 16px 5px; }
+  .settings-dialog .setting-row { padding: 8px 12px; margin-bottom: 6px; }
+  .settings-dialog .setting-row p { margin: 4px 0; }
+  body[data-screen=menu] .scene-shell,body[data-screen=cutscene] .scene-shell { min-height: 0; height: 100svh; }
+  body[data-screen=menu] .menu-content { padding-top: 8px; }
+  body[data-screen=menu] .game-logo { font-size: clamp(25px,6vh,40px); padding: 6px 10px 19px; margin-block: 3px 9px; }
+  body[data-screen=menu] .menu-nav { gap: 5px; }
+  body[data-screen=menu] .menu-nav .orbit-button { min-height: 38px!important; padding: 4px 8px; }
+  .menu-nav .orbit-button .button-copy b { font-size: 19px!important; }
+  .menu-nav .orbit-button .button-icon { width: 26px; height: 26px; font-size: 16px; }
+  .menu-nav .orbit-button .button-copy small,.menu-hint,.menu-story { display: none; }
+  .safety-dialog[open] { max-height: 96svh; overflow: auto; }
+  .safety-dialog .safety-body { min-height: 0; padding-block: 37px 9px; }
+  .safety-dialog .safety-body p,.safety-dialog .safety-body .welcome-warning { font-size: 11px; margin-block: 5px; }
+  .safety-dialog .safety-body h2 { font-size: 25px; margin-block: 3px; }
+  .safety-dialog .safety-body .orbit-button { min-height: 36px; margin-block: 5px; }
+  .safety-dialog #closeSafety { padding: 5px; font-size: 12px; }
+  .safety-dialog .welcome-features { display: none; }
+  body[data-screen=cutscene] #cinemaUI .story-subtitle { top: 25%; font-size: calc(14px * var(--subtitle-scale)); padding: 9px 12px; }
+  body[data-screen=cutscene] .story-action { font-size: calc(10px * var(--subtitle-scale)); margin-bottom: 4px; }
+  .app .controls,.app footer { display: none; }
+  body[data-screen=game] .app { min-height: 100svh; height: 100svh; grid-template-rows: 36px minmax(0,1fr); }
+  body[data-screen=game] .app main { grid-template-rows: minmax(0,1fr) 42px; }
+  body[data-screen=game] .app .stage { grid-template-rows: 40px minmax(0,1fr) 35px; }
+  .app .song-strip { margin: 0; }
+  .phase-dialog .intro { padding: 10px 16px; }
+  .phase-dialog .phase-cover { width: 44px; height: 44px; }
+  .phase-dialog .chapter h1 { margin-block: 3px; }
+  .app .bottom-deck { padding: 0; }
+  .travel-caption .pill,.travel-caption small { display: none; }
+  .travel-caption h2 { font-size: 16px; }
+  .travel-caption #travelStatus { font-size: calc(13px * var(--subtitle-scale)); padding: 6px 10px; min-height: 0; }
+  .travel-caption #travelAction { font-size: calc(10px * var(--subtitle-scale)); margin-top: 3px; }
+}
+.high-contrast :is(.phase-dialog .chapter,.battle-hud label,.battle-hud #battleCue,.dark-mode .safety-dialog) { color: white; background: black; border-color: white; }

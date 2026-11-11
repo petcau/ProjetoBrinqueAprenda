@@ -1,0 +1,36 @@
+/* Hotspots follow the supplied 1280 × 720 film, including its baked-in labels. */
+.home-screen{min-height:100dvh;background:#080f25}
+.home-screen .cave-backdrop{filter:blur(15px) brightness(.45);transform:scale(1.05)}
+.menu-film-frame{position:absolute;width:var(--film-width,100vw);height:var(--film-height,56.25vw);left:var(--film-left,0);top:50%;transform:translateY(-50%);isolation:isolate}
+.menu-video{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:fill;pointer-events:none;opacity:0;transition:opacity .35s;background:#0a1431}
+.menu-video.ready{opacity:1}
+.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important;border:0!important}
+.home-screen .home-menu{display:block;position:absolute;inset:0;width:auto;max-width:none;margin:0;pointer-events:none}
+.home-screen .menu-choice{--menu-color:#ffe033;position:absolute;left:5.6%;top:36.2%;width:28%;height:6.8%;padding:0 2.3%;border:1px solid transparent;border-left:2px solid transparent;border-radius:0;background:transparent;display:flex;align-items:center;justify-content:space-between;gap:0;pointer-events:auto;overflow:visible;font-family:var(--game-font,'Fredoka','Trebuchet MS',sans-serif);font-size:var(--menu-font,28px);font-weight:700;line-height:1;transform:none;transition:background .16s,border-color .16s,box-shadow .16s}
+.home-screen .menu-choice:nth-child(2){top:44.8%;--menu-color:#5ef2ff}
+.home-screen .menu-choice:nth-child(3){top:53.4%;--menu-color:#ffd829}
+.home-screen .menu-choice:nth-child(4){top:62.0%;--menu-color:#ffeb60}
+.home-screen .menu-choice:nth-child(5){top:70.6%;--menu-color:#ffd026}
+.home-screen .menu-choice span{color:transparent;width:auto;display:block;transform:translateX(0);text-shadow:none;transition:color .15s,transform .24s cubic-bezier(.2,.9,.3,1),text-shadow .2s;font-family:var(--game-font,'Fredoka','Trebuchet MS',sans-serif);font-weight:700}
+.home-screen .menu-choice i{font-size:.66em;color:var(--menu-color);font-style:normal;opacity:0;transform:scale(.5) rotate(-30deg);transition:opacity .2s,transform .3s}
+.home-screen .menu-choice.menu-exit span{color:#ffd026;font-size:.83em;-webkit-text-stroke:1px #000;text-shadow:-1.2px -1.2px 0 #000,1.2px -1.2px 0 #000,-1.2px 1.2px 0 #000,1.2px 1.2px 0 #000}
+.home-screen .menu-choice:focus-visible{outline:2px solid var(--menu-color);outline-offset:4px}
+.home-screen .menu-choice:is(:focus-visible,:active){background:#09283f;border-color:#b4e9ff35;border-left-color:var(--menu-color);box-shadow:0 0 24px #ffd82940,inset 0 0 20px #ffd82910;transition:border-color .16s,box-shadow .16s}
+.home-screen .menu-choice:is(:focus-visible,:active) span{color:#ffea31;transform:translateX(6px);-webkit-text-stroke:1.2px #000;text-shadow:-1.5px -1.5px 0 #000,1.5px -1.5px 0 #000,-1.5px 1.5px 0 #000,1.5px 1.5px 0 #000,0 0 14px #ffea31aa;paint-order:stroke fill}
+.home-screen .menu-choice:is(:focus-visible,:active) i{opacity:1;transform:scale(1) rotate(0)}
+@media(hover:hover) and (pointer:fine){
+ .home-screen .menu-choice:hover{background:#09283f;border-color:#b4e9ff35;border-left-color:var(--menu-color);box-shadow:0 0 24px #ffd82940,inset 0 0 20px #ffd82910;transition:border-color .16s,box-shadow .16s}
+ .home-screen .menu-choice:hover span{color:#ffea31;transform:translateX(8px);-webkit-text-stroke:1.2px #000;text-shadow:-1.5px -1.5px 0 #000,1.5px -1.5px 0 #000,-1.5px 1.5px 0 #000,1.5px 1.5px 0 #000,0 0 14px #ffea31aa;paint-order:stroke fill}
+ .home-screen .menu-choice:hover i{opacity:1;transform:scale(1) rotate(0)}
+}
+.menu-film-frame.video-error .menu-choice span,.menu-film-frame:not(.video-ready) .menu-choice span{color:#ffea31;-webkit-text-stroke:1.2px #000;text-shadow:-1.5px -1.5px 0 #000,1.5px -1.5px 0 #000,-1.5px 1.5px 0 #000,1.5px 1.5px 0 #000;paint-order:stroke fill}
+.menu-film-frame.video-error .menu-choice,.menu-film-frame:not(.video-ready) .menu-choice{background:#0a1d36e8}
+.high-contrast .home-screen .menu-choice{background:#06152afa;border:1px solid #bfeaff}
+.high-contrast .home-screen .menu-choice span{color:white}
+.reduce-motion .home-screen .menu-choice span,.reduce-motion .home-screen .menu-choice i{transform:none!important}
+@media(prefers-reduced-motion:reduce){.home-screen .menu-choice span,.home-screen .menu-choice i{transform:none!important}.menu-video{transition:none}}
+@media(max-width:600px){.home-screen .menu-choice{font-size:clamp(22px,var(--menu-font),34px)}}
+
+/* Preloader Funcional em True Pixel Art */
+#preloaderScreen{position:fixed;inset:0;z-index:99999;background:#05030f;display:flex;align-items:center;justify-content:center;touch-action:none;user-select:none;cursor:pointer;overflow:hidden}
+#preloaderCanvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges;background:#05030f}

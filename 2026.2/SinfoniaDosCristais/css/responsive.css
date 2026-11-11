@@ -1,0 +1,23 @@
+@media(max-width:700px){.screen{min-height:100dvh}}
+@media(max-height:500px){.screen{min-height:100dvh}}
+
+/* Neutralização estrita de destaque de toque azul e seleção nativa em dispositivos móveis/touch */
+@media (hover: none) and (pointer: coarse) {
+  *, *::before, *::after {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+  }
+  html, body, button, a, canvas, svg, img, .journey-node, .menu-choice, .square-button, .pixel-button {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    touch-action: manipulation;
+  }
+  #truePixelScreen,
+  .game-screen,
+  body[data-screen="game"] {
+    touch-action: none !important;
+    overscroll-behavior: none !important;
+  }
+}

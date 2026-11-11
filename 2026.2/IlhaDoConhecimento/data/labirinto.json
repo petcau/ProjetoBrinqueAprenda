@@ -1,0 +1,290 @@
+{
+  "metrics": {
+    "width": 1024,
+    "height": 434,
+    "speed": 220,
+    "footW": 8,
+    "footH": 4,
+    "heroH": 75.6
+  },
+  "runas": [
+    {
+      "id": "estrela",
+      "nome": "Estrela",
+      "cor": "#facc15"
+    },
+    {
+      "id": "lua",
+      "nome": "Lua",
+      "cor": "#38bdf8"
+    },
+    {
+      "id": "flor",
+      "nome": "Flor",
+      "cor": "#f472b6"
+    },
+    {
+      "id": "folha",
+      "nome": "Folha",
+      "cor": "#4ade80"
+    },
+    {
+      "id": "borboleta",
+      "nome": "Borboleta",
+      "cor": "#a855f7"
+    },
+    {
+      "id": "pata",
+      "nome": "Pata",
+      "cor": "#fb923c"
+    }
+  ],
+  "fases": [
+    {
+      "spawn": [
+        512,
+        400
+      ],
+      "saidas": [
+        {
+          "id": "esq",
+          "zona": [
+            339,
+            142,
+            60,
+            60
+          ],
+          "pe": [
+            369,
+            172
+          ],
+          "arco": [
+            205,
+            170
+          ]
+        },
+        {
+          "id": "dir",
+          "zona": [
+            631,
+            141,
+            60,
+            60
+          ],
+          "pe": [
+            661,
+            171
+          ],
+          "arco": [
+            830,
+            170
+          ]
+        }
+      ]
+    },
+    {
+      "spawn": [
+        512,
+        400
+      ],
+      "saidas": [
+        {
+          "id": "topo",
+          "zona": [
+            486,
+            52,
+            60,
+            60
+          ],
+          "pe": [
+            516,
+            82
+          ],
+          "arco": [
+            516,
+            45
+          ]
+        },
+        {
+          "id": "esq",
+          "zona": [
+            339,
+            141,
+            60,
+            60
+          ],
+          "pe": [
+            369,
+            171
+          ],
+          "arco": [
+            205,
+            170
+          ]
+        },
+        {
+          "id": "dir",
+          "zona": [
+            632,
+            141,
+            60,
+            60
+          ],
+          "pe": [
+            662,
+            171
+          ],
+          "arco": [
+            830,
+            170
+          ]
+        }
+      ]
+    },
+    {
+      "spawn": [
+        512,
+        400
+      ],
+      "saidas": [
+        {
+          "id": "topo_esq",
+          "zona": [
+            399,
+            52,
+            60,
+            60
+          ],
+          "pe": [
+            429,
+            82
+          ],
+          "arco": [
+            420,
+            45
+          ]
+        },
+        {
+          "id": "topo_dir",
+          "zona": [
+            572,
+            52,
+            60,
+            60
+          ],
+          "pe": [
+            602,
+            82
+          ],
+          "arco": [
+            604,
+            45
+          ]
+        },
+        {
+          "id": "esq",
+          "zona": [
+            338,
+            141,
+            60,
+            60
+          ],
+          "pe": [
+            368,
+            171
+          ],
+          "arco": [
+            205,
+            170
+          ]
+        },
+        {
+          "id": "dir",
+          "zona": [
+            634,
+            141,
+            60,
+            60
+          ],
+          "pe": [
+            664,
+            171
+          ],
+          "arco": [
+            830,
+            170
+          ]
+        }
+      ]
+    }
+  ],
+  "camara": {
+    "spawn": [
+      512,
+      412
+    ],
+    "pedestal": {
+      "pe": [
+        512,
+        240
+      ],
+      "altura": 0,
+      "raio": 0
+    },
+    "chave": {
+      "altura": 61,
+      "centro": [
+        512,
+        218.2
+      ],
+      "flutuacao": 5.2
+    },
+    "disco": [
+      512,
+      239.6
+    ],
+    "interacao": 39,
+    "soleira": [
+      434,
+      148,
+      156,
+      24
+    ],
+    "alvo": [
+      512,
+      160
+    ],
+    "portal": {
+      "centro": [
+        512,
+        98
+      ],
+      "raio": 78
+    }
+  },
+  "LABIRINTO": {
+    "ERRO_NOVA_SEQUENCIA": false,
+    "CRUZAMENTOS": [
+      {
+        "cenario": 1,
+        "pedestais": 2
+      },
+      {
+        "cenario": 1,
+        "pedestais": 2
+      },
+      {
+        "cenario": 2,
+        "pedestais": 3
+      },
+      {
+        "cenario": 2,
+        "pedestais": 3
+      },
+      {
+        "cenario": 3,
+        "pedestais": 4
+      }
+    ]
+  }
+}

@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#20172a">
+  <title>Ilha do Conhecimento</title>
+  <link rel="icon" href="assets/hud/gato-rosto.png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/island.css">
+  <link rel="stylesheet" href="css/puzzles.css">
+  <link rel="stylesheet" href="css/rescue.css">
+  <link rel="stylesheet" href="css/settings.css">
+  <link rel="stylesheet" href="css/tutorial-card.css">
+  <link rel="stylesheet" href="css/intro.css">
+</head>
+<body>
+  <main id="home-screen" class="game-shell">
+    <section class="home" aria-label="Tela inicial de Ilha do Conhecimento">
+      <img class="room" src="assets/tela-inicial/quarto-sem-interface.png" alt="Uma criança estuda em seu quarto enquanto o gato dorme na cama.">
+      <div class="room-shade" aria-hidden="true"></div>
+      <button class="corner-button exit-button" data-open="exit" aria-label="Sair" title="Sair"><img src="assets/tela-inicial/sair-menu.png" alt=""></button>
+      <button class="corner-button settings-button" data-open="settings" aria-label="Configurações" title="Configurações"><img src="assets/tela-inicial/configuracoes-menu.png" alt=""></button>
+      <div class="home-menu">
+        <img class="logo" src="assets/tela-inicial/logo-ilha-do-conhecimento.png" alt="Ilha do Conhecimento" fetchpriority="high">
+        <nav aria-label="Menu principal">
+          <button class="image-button" data-open="start" aria-label="Iniciar"><img src="assets/tela-inicial/iniciar.png" alt="" draggable="false"></button>
+          <button class="image-button" data-open="tutorial" aria-label="Tutorial"><img src="assets/tela-inicial/tutorial.png" alt="" draggable="false"></button>
+        </nav>
+      </div>
+      <span class="sleep-mark" aria-hidden="true">z<span>z</span></span>
+      <button id="home-fullscreen-btn" class="home-fullscreen-btn" type="button" aria-label="Ativar tela cheia" aria-pressed="false" title="Tela cheia" hidden>
+        <img src="assets/configuracoes/mural/ui/icone-tela-cheia.webp" alt="">
+      </button>
+    </section>
+  </main>
+
+  <section id="island-screen" class="island-screen" data-touch-mode="arrows" aria-label="Exploração da Ilha do Conhecimento" hidden>
+    <div class="island-viewport">
+      <canvas id="island-canvas" tabindex="0" aria-label="Ilha explorável. Mova-se com WASD ou setas, interaja com E, abra o mapa com M e pause com Esc.">Seu navegador precisa permitir Canvas 2D para desenhar a ilha.</canvas>
+      <!-- Nome do lugar no alto, ao centro. Objetivo e descobertas seguem para leitores de tela. -->
+      <div class="island-place"><h1 id="island-region">Praça do Portal</h1></div>
+      <p id="island-objective" class="visually-hidden">Conquiste as quatro chaves e encontre seu gato na montanha.</p>
+      <span id="island-discovery" class="visually-hidden" aria-live="polite">1 de 6 lugares descobertos</span>
+      <button id="island-settings-button" class="island-gear" data-open="settings" aria-label="Configurações" title="Configurações"><img src="assets/tela-inicial/configuracoes-menu.png" alt=""></button>
+      <!-- As chaves aparecem no canvas (canto superior esquerdo); esta lista fica só para leitores de tela. -->
+      <div class="island-keyring visually-hidden" role="group" aria-label="Chaves da aventura">
+        <span id="island-key-count" aria-live="polite">0 de 4 chaves</span>
+        <div class="island-key-slots">
+          <span id="island-key-forest" class="island-key-slot" data-owned="false" data-key-name="Chave verde" role="img" aria-label="Chave verde: a encontrar"><img src="assets/hud/chave-verde.png" alt=""><small>Lógica</small></span>
+          <span id="island-key-village" class="island-key-slot" data-owned="false" data-key-name="Chave azul" role="img" aria-label="Chave azul: a encontrar"><img src="assets/hud/chave-azul.png" alt=""><small>Álgebra</small></span>
+          <span id="island-key-ruins" class="island-key-slot" data-owned="false" data-key-name="Chave vermelha" role="img" aria-label="Chave vermelha: a encontrar"><img src="assets/hud/chave-vermelha.png" alt=""><small>Formas</small></span>
+          <span id="island-key-farm" class="island-key-slot" data-owned="false" data-key-name="Chave amarela" role="img" aria-label="Chave amarela: a encontrar"><img src="assets/hud/chave-amarela.png" alt=""><small>Contas</small></span>
+        </div>
+      </div>
+      <button id="island-minimap-button" class="island-minimap" aria-label="Abrir mapa completo da ilha"><span>ILHA DO CONHECIMENTO <span aria-hidden="true">↗</span></span><canvas id="island-minimap" width="192" height="144" aria-hidden="true"></canvas><span class="minimap-caption"><i aria-hidden="true"></i> Você está aqui</span></button>
+      <p id="island-loading" class="island-loading" role="status">Preparando sua ilha…</p>
+      <div class="island-direction-pad island-touch" role="group" aria-label="Movimento. Segure uma direção para caminhar."><button data-walk="up" aria-label="Caminhar para cima"><span class="visually-hidden">↑</span></button><button data-walk="left" aria-label="Caminhar para a esquerda"><span class="visually-hidden">←</span></button><button data-walk="down" aria-label="Caminhar para baixo"><span class="visually-hidden">↓</span></button><button data-walk="right" aria-label="Caminhar para a direita"><span class="visually-hidden">→</span></button></div>
+      <div id="island-joystick" class="island-joystick island-touch" role="group" aria-label="Joystick. Arraste para caminhar."><span class="joystick-base"><span id="joystick-stick" class="joystick-stick"></span></span></div>
+      <button id="island-interact" class="island-interact island-touch" aria-label="Interagir" disabled><kbd class="visually-hidden">E</kbd><span id="island-interact-label">Aproxime-se de uma placa</span></button>
+    </div>
+    <p id="island-announcement" class="visually-hidden" aria-live="polite"></p>
+  </section>
+
+  <section id="puzzle-screen" class="puzzle-screen" data-region="forest" aria-labelledby="puzzle-title" hidden>
+    <header class="puzzle-header">
+      <div class="puzzle-brand"><img src="assets/hud/livro.png" alt=""><span>Ilha do Conhecimento<small>UM NOVO DESAFIO NA AVENTURA</small></span></div>
+      <button id="puzzle-return" class="puzzle-return" type="button">← Voltar à ilha <kbd>Esc</kbd></button>
+    </header>
+    <div class="puzzle-layout">
+      <aside class="puzzle-stage" aria-label="Ambiente do desafio">
+        <div class="puzzle-stage-heading"><span class="puzzle-eyebrow">VOCÊ CHEGOU À</span><p id="puzzle-region">Floresta dos Padrões</p></div>
+        <div class="puzzle-scenery" aria-hidden="true">
+          <span class="puzzle-prop puzzle-prop-left"></span>
+          <img id="puzzle-scene" class="puzzle-scene-object" src="assets/puzzles/ambiente/arvore-copa.png" alt="" draggable="false">
+          <span class="puzzle-prop puzzle-prop-right"></span>
+          <img class="puzzle-character" src="assets/personagem/personagem-lado.png" alt="" draggable="false">
+        </div>
+        <div class="puzzle-stage-note"><p id="puzzle-caption">A floresta guarda um segredo. Observe com atenção!</p><div class="puzzle-key-preview"><img id="puzzle-key" src="assets/hud/chave-verde.png" alt="Chave verde" draggable="false"><span id="puzzle-key-label">Sua próxima conquista</span></div></div>
+      </aside>
+      <article class="puzzle-activity" aria-labelledby="puzzle-title">
+        <div class="puzzle-page-heading"><span class="puzzle-eyebrow">APRENDER ABRE CAMINHOS</span><span id="puzzle-round" class="puzzle-round">Desafio 1 de 3</span></div>
+        <h1 id="puzzle-title" tabindex="-1">O segredo da sequência</h1>
+        <p id="puzzle-instruction" class="puzzle-instruction">Observe a sequência e repita na mesma ordem.</p>
+        <div id="puzzle-board" class="puzzle-board"></div>
+        <div id="puzzle-controls" class="puzzle-controls"></div>
+        <p id="puzzle-feedback" class="puzzle-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+        <div class="puzzle-page-actions"><button id="puzzle-help" class="puzzle-help" type="button" aria-controls="puzzle-hint"><img src="assets/hud/livro.png" alt="">Preciso de uma dica</button><button id="puzzle-next" class="puzzle-action puzzle-primary" type="button" hidden>Próximo desafio →</button></div>
+        <p id="puzzle-hint" class="puzzle-hint" hidden></p>
+      </article>
+    </div>
+    <footer class="puzzle-footer"><img src="assets/hud/pata.png" alt=""><p>Cada descoberta deixa você mais perto do seu gato.</p><span id="puzzle-progress">Uma chave, três pequenos desafios</span></footer>
+  </section>
+
+  <dialog id="island-info-dialog" class="island-dialog" aria-labelledby="island-info-title">
+    <button class="panel-close" data-close aria-label="Fechar placa"><img src="assets/hud/fechar.png" alt=""></button>
+    <span id="island-info-chapter" class="chapter"></span><h1 id="island-info-title"></h1>
+    <p id="island-info-copy"></p><p id="island-info-note" class="island-note"></p>
+    <button class="asset-button green" data-close>Continuar explorando</button>
+  </dialog>
+  <dialog id="island-pause-dialog" class="island-dialog island-pause" aria-labelledby="island-pause-title">
+    <span class="chapter">UMA PAUSA NA AVENTURA</span><h1 id="island-pause-title">A ilha espera por você.</h1><p>Respire um pouquinho. Há muito para descobrir!</p>
+    <button class="asset-button green" data-close>Continuar explorando</button><button id="island-pause-settings" class="asset-button parchment" data-open="settings">Configurações</button><button id="island-return-menu" class="asset-button parchment">Voltar ao menu</button>
+    <p class="island-note">Posição, desafios, chaves e cadeados ficam guardados nesta sessão. Recarregar a página reinicia a aventura.</p>
+  </dialog>
+  <dialog id="island-map-dialog" class="island-dialog island-map-dialog" aria-labelledby="island-map-title">
+    <button class="panel-close" data-close aria-label="Fechar mapa"><img src="assets/hud/fechar.png" alt=""></button>
+    <span class="chapter">SEU GUIA DE EXPLORAÇÃO</span><h1 id="island-map-title">Uma ilha conectada</h1>
+    <canvas id="island-map" width="576" height="432" role="img" aria-label="Mapa da ilha com a posição atual. Montanha ao norte, floresta a noroeste, vila a sudoeste, ruínas a nordeste e fazenda a sudeste."></canvas>
+    <p class="island-map-legend"><i aria-hidden="true"></i> Você está aqui. As pontes ligam os dois lados do rio.</p><p>Ao norte: montanha. À esquerda: floresta e vila. À direita: ruínas e fazenda.</p>
+    <button class="asset-button green" data-close>Voltar à aventura</button>
+  </dialog>
+
+  <section id="rescue-screen" class="rescue-screen" aria-labelledby="rescue-title" hidden>
+    <header class="rescue-header"><span>ILHA DO CONHECIMENTO · MONTANHA</span><button id="rescue-return" class="island-ui-button">Voltar à ilha <kbd>Esc</kbd></button></header>
+    <div class="rescue-content">
+      <span class="chapter">QUATRO CHAVES, UM GRANDE REENCONTRO</span>
+      <h1 id="rescue-title" tabindex="-1">O gato espera por você</h1>
+      <p id="rescue-copy"></p>
+      <div class="rescue-scene" aria-label="Seu gato no arco da montanha">
+        <img class="rescue-arch" src="assets/puzzles/ambiente/arco.png" alt="">
+        <img class="rescue-friend" src="assets/personagem/gato-frente.png" alt="Seu gato alaranjado">
+        <img class="rescue-child" src="assets/personagem/personagem-lado.png" alt="Sua personagem">
+        <img class="rescue-fence" src="assets/puzzles/ambiente/cerca.png" alt="">
+        <span class="rescue-heart" aria-hidden="true">♥</span>
+      </div>
+      <p id="rescue-count">0 de 4 cadeados abertos</p>
+      <div class="rescue-locks" role="group" aria-label="Cadeados do gato">
+        <button id="rescue-lock-forest" class="rescue-lock" data-region="forest"><img src="assets/hud/chave-verde.png" alt=""><img class="lock-icon" src="assets/final/cadeado-cinza.png" alt=""><span id="rescue-label-forest">Falta a chave verde</span><small>Floresta dos Padrões</small></button>
+        <button id="rescue-lock-village" class="rescue-lock" data-region="village"><img src="assets/hud/chave-azul.png" alt=""><img class="lock-icon" src="assets/final/cadeado-cinza.png" alt=""><span id="rescue-label-village">Falta a chave azul</span><small>Vila do Conhecimento</small></button>
+        <button id="rescue-lock-ruins" class="rescue-lock" data-region="ruins"><img src="assets/hud/chave-vermelha.png" alt=""><img class="lock-icon" src="assets/final/cadeado-cinza.png" alt=""><span id="rescue-label-ruins">Falta a chave vermelha</span><small>Ruínas das Formas</small></button>
+        <button id="rescue-lock-farm" class="rescue-lock" data-region="farm"><img src="assets/hud/chave-amarela.png" alt=""><img class="lock-icon" src="assets/final/cadeado-cinza.png" alt=""><span id="rescue-label-farm">Falta a chave amarela</span><small>Fazenda dos Números</small></button>
+      </div>
+      <p id="rescue-feedback" class="rescue-feedback" role="status" aria-live="polite"></p>
+      <p id="rescue-missing" class="rescue-note"></p>
+      <button id="rescue-menu" class="asset-button green" hidden>Voltar ao quarto</button>
+    </div>
+  </section>
+
+    <dialog id="book-dialog" class="book-dialog mural-dialog" aria-labelledby="settings-title">
+
+    <div class="mural-stage">
+      <!-- Marcações para modo ?calibrar -->
+      <div class="calibrar-moldura" aria-hidden="true"></div>
+      <div class="calibrar-safe" aria-hidden="true"></div>
+      <div class="calibrar-gato-dormindo" aria-hidden="true"></div>
+      <div class="calibrar-badge" aria-hidden="true">--cortica-x: 22.9%<br>--cortica-y: 14.9%<br>--cortica-w: 55.3%<br>--cortica-h: 60.3%</div>
+
+      <div class="mural-cortica">
+        <div id="settings-view" class="mural-view" data-section="index">
+          <!-- B. Menu Principal no mural -->
+          <div class="mural-main" data-settings-section="index">
+            <div class="mural-placa-titulo">
+              <img src="assets/configuracoes/mural/ui/placa-titulo.webp" alt="" class="placa-img">
+              <h1 id="settings-title" tabindex="-1">Configurações</h1>
+            </div>
+
+            <nav class="mural-grid" aria-label="Opções de configurações">
+              <!-- Linha 1 -->
+              <button class="mural-card card-audio" data-settings-go="audio" data-tone="audio" aria-label="Som">
+                <img src="assets/configuracoes/mural/ui/cartao-azul.webp" alt="" class="card-bg">
+                <img src="assets/configuracoes/mural/ui/icone-som.webp" alt="" class="card-icon">
+                <span class="card-label">Som</span>
+              </button>
+              <button class="mural-card card-controls" data-settings-go="controls" data-tone="controls" aria-label="Controles">
+                <img src="assets/configuracoes/mural/ui/cartao-amarelo.webp" alt="" class="card-bg">
+                <img src="assets/configuracoes/mural/ui/icone-controles.webp" alt="" class="card-icon">
+                <span class="card-label">Controles</span>
+              </button>
+              <button class="mural-card card-language" data-settings-go="language" data-tone="language" aria-label="Idioma">
+                <img src="assets/configuracoes/mural/ui/cartao-menta.webp" alt="" class="card-bg">
+                <img src="assets/configuracoes/mural/ui/icone-idioma.webp" alt="" class="card-icon">
+                <span class="card-label">Idioma</span>
+              </button>
+              <button class="mural-card card-access" data-settings-go="access" data-tone="access" aria-label="Acessibilidade">
+                <img src="assets/configuracoes/mural/ui/cartao-rosa.webp" alt="" class="card-bg">
+                <img src="assets/configuracoes/mural/ui/icone-acessibilidade.webp" alt="" class="card-icon">
+                <span class="card-label">Acessibilidade</span>
+              </button>
+
+              <!-- Linha 2 -->
+              <button class="mural-card card-howto" data-settings-go="howto" data-tone="howto" aria-label="Como jogar">
+                <img src="assets/configuracoes/mural/ui/cartao-amarelo.webp" alt="" class="card-bg">
+                <img src="assets/configuracoes/mural/ui/icone-como-jogar.webp" alt="" class="card-icon">
+                <span class="card-label">Como jogar</span>
+              </button>
+              <button class="mural-card card-about" data-settings-go="about" data-tone="about" aria-label="Sobre nós">
+                <img src="assets/configuracoes/mural/ui/cartao-menta.webp" alt="" class="card-bg">
+                <img src="assets/configuracoes/mural/ui/icone-sobre-nos.webp" alt="" class="card-icon">
+                <span class="card-label">Sobre nós</span>
+              </button>
+              <button class="mural-card card-quit" id="settings-card-quit" data-settings-quit type="button" aria-label="Voltar ao menu principal">
+                <img src="assets/configuracoes/mural/ui/cartao-azul.webp" alt="" class="card-bg">
+                <img src="assets/configuracoes/mural/ui/icone-voltar.webp" alt="" class="card-icon">
+                <span class="card-label">Voltar ao menu</span>
+              </button>
+              <button class="mural-card card-fullscreen" id="settings-fullscreen" type="button" aria-pressed="false" aria-label="Ativar tela cheia">
+                <img src="assets/configuracoes/mural/ui/cartao-rosa.webp" alt="" class="card-bg">
+                <img src="assets/configuracoes/mural/ui/icone-tela-cheia.webp" alt="" class="card-icon">
+                <span class="card-label" id="settings-fullscreen-label">Tela cheia</span>
+              </button>
+            </nav>
+
+            <div class="mural-actions">
+              <button id="settings-continue" class="mural-action-btn action-verde" data-close aria-label="Continuar">
+                <img src="assets/configuracoes/mural/ui/etiqueta-verde.webp" alt="" class="action-bg">
+                <span>Continuar</span>
+              </button>
+              <button id="settings-replay-intro" class="mural-action-btn action-historia" type="button" data-open="replay-intro" aria-label="Rever a história">
+                <img src="assets/configuracoes/mural/ui/tira-listrada.webp" alt="" class="action-bg">
+                <span>Rever a história</span>
+              </button>
+              <button id="settings-reset" class="mural-action-btn action-listrada" aria-label="Restaurar padrões">
+                <img src="assets/configuracoes/mural/ui/tira-listrada.webp" alt="" class="action-bg">
+                <img src="assets/configuracoes/mural/ui/icone-restaurar.webp" alt="" class="action-icon">
+                <span>Restaurar padrões</span>
+              </button>
+            </div>
+            <p id="settings-reset-note" class="settings-note" role="status" aria-live="polite" style="position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap;"></p>
+          </div>
+
+          <!-- D. Submenus na folha de caderno -->
+          <div class="mural-sheet-container" hidden>
+            <div class="mural-sheet">
+              <!-- Cabeçalho do Submenu (Voltar + Ícone + Título em fluxo) -->
+              <header class="sheet-header">
+                <button id="settings-back" class="sheet-back-btn" type="button" aria-label="Voltar ao mural" hidden>
+                  <img src="assets/configuracoes/mural/ui/icone-voltar.webp" alt="" class="back-icon">
+                  <span>Voltar</span>
+                </button>
+
+                <div class="sheet-title-group">
+                  <img id="sheet-header-icon" src="assets/configuracoes/mural/ui/icone-som.webp" alt="" class="sheet-header-icon">
+                  <h2 id="sheet-main-title" class="sheet-title" tabindex="-1">Sons da aventura</h2>
+                </div>
+              </header>
+
+              <!-- Reserva do gato: x >= 72% e y >= 60% -->
+              <div class="sheet-cat-reserve" aria-hidden="true"></div>
+
+              <!-- ==========================================
+                   TELA 1: SOM
+                   ========================================== -->
+              <div class="settings-spread sheet-spread" data-settings-section="audio" hidden>
+                <h2 id="settings-audio-title" class="visually-hidden" tabindex="-1">Sons da aventura</h2>
+                <div class="sheet-page" data-page-section="audio" data-page="1">
+                  <div class="audio-sliders-column">
+                    <!-- Linha Som -->
+                    <div class="mural-audio-row row-som">
+                      <div class="audio-row-header">
+                        <img src="assets/configuracoes/mural/ui/icone-som.webp" alt="" class="audio-row-icon">
+                        <label for="sound-volume" class="audio-row-label">Som</label>
+                      </div>
+                      <output id="sound-value" for="sound-volume" class="audio-row-value">70%</output>
+                    </div>
+                    <div class="mural-slider-wrap slider-som">
+                      <input id="sound-volume" type="range" min="0" max="100" value="70">
+                    </div>
+
+                    <!-- Linha Música -->
+                    <div class="mural-audio-row row-musica">
+                      <div class="audio-row-header">
+                        <img src="assets/configuracoes/musica.png" alt="" class="audio-row-icon">
+                        <label for="music-volume" class="audio-row-label">Música</label>
+                      </div>
+                      <output id="music-value" for="music-volume" class="audio-row-value">35%</output>
+                    </div>
+                    <div class="mural-slider-wrap slider-musica">
+                      <input id="music-volume" type="range" min="0" max="100" value="35">
+                    </div>
+
+                    <div class="audio-actions-row">
+                      <!-- Ouvir um efeito -->
+                      <button class="mural-link-efeito text-link" id="test-sound">♪ Ouvir um efeito</button>
+
+                      <!-- Ouvir música de teste -->
+                      <button class="mural-btn-musica music-toggle" id="music-toggle" aria-pressed="false">
+                        <span class="status-dot"></span>
+                        <span id="music-status">Ouvir música de teste</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Cartão Silenciar tudo (coluna direita) -->
+                  <div class="mural-card-silenciar">
+                    <button id="toggle-mute" class="mural-switch switch-mute" role="switch" aria-checked="false" data-setting="mute">
+                      <span class="switch-img"></span>
+                    </button>
+                    <div class="mute-info">
+                      <span class="mute-title">Silenciar tudo</span>
+                      <p class="mute-desc">Nenhum som toca enquanto estiver ligado.</p>
+                      <span id="toggle-mute-state" class="switch-state-mute">Desligado</span>
+                    </div>
+                  </div>
+                  <div class="mural-notes-decor" aria-hidden="true">♪ ♫ ♪</div>
+                </div>
+              </div>
+
+              <!-- ==========================================
+                   TELA 2: CONTROLES (VELOCIDADE E TOQUE)
+                   ========================================== -->
+              <div class="settings-spread sheet-spread" data-settings-section="controls" hidden>
+                <h2 id="settings-controls-title" class="visually-hidden" tabindex="-1">Como se mexer</h2>
+                
+                <div class="sheet-page" data-page-section="controls" data-page="1">
+                  <div class="mural-speed-row">
+                    <div class="speed-control-group">
+                      <div class="mural-speed-header">
+                        <img src="assets/hud/pata.png" alt="" class="speed-icon">
+                        <span class="speed-label" id="speed-label">Velocidade da caminhada</span>
+                      </div>
+                      <div class="stepper-mural stepper" role="group" aria-labelledby="speed-label">
+                        <button id="speed-prev" class="mural-page-arrow prev" aria-label="Mais devagar"></button>
+                        <output id="speed-value" class="stepper-value" aria-live="polite">Normal</output>
+                        <button id="speed-next" class="mural-page-arrow next" aria-label="Mais rápido"></button>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="mural-touch-section">
+                    <div class="mural-touch-header">
+                      <img src="assets/configuracoes/mural/ui/icone-controles.webp" alt="" class="touch-icon">
+                      <span class="touch-title" id="touch-label">Controle na tela</span>
+                      <span class="touch-hint">Para jogar com o dedo no tablet ou no celular.</span>
+                    </div>
+                    <div class="touch-choice mural-card-choices" role="radiogroup" aria-labelledby="touch-label">
+                      <button class="mural-touch-card touch-option is-selected" id="touch-arrows" role="radio" aria-checked="true" data-touch="arrows">
+                        <div class="touch-card-demo demo-arrows">
+                          <img src="assets/hud/controles/setas-completo.webp" alt="" class="touch-demo-img">
+                        </div>
+                        <span class="touch-name">Setas</span>
+                      </button>
+                      <button class="mural-touch-card touch-option" id="touch-joystick" role="radio" aria-checked="false" data-touch="joystick">
+                        <div class="touch-card-demo demo-joystick">
+                          <div class="touch-demo-joystick">
+                            <img src="assets/hud/controles/joystick-base.webp" alt="" class="touch-demo-base">
+                            <img src="assets/hud/controles/joystick-manche.webp" alt="" class="touch-demo-manche">
+                          </div>
+                        </div>
+                        <span class="touch-name">Joystick</span>
+                      </button>
+                      <button class="mural-touch-card touch-option" id="touch-off" role="radio" aria-checked="false" data-touch="off">
+                        <div class="touch-card-demo demo-off">
+                          <span class="off-icon">⌨</span>
+                        </div>
+                        <span class="touch-name">Nenhum</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ==========================================
+                   TELA 3: IDIOMA (1 PÁGINA)
+                   ========================================== -->
+              <div class="settings-spread sheet-spread" data-settings-section="language" hidden>
+                <h2 id="settings-language-title" class="visually-hidden" tabindex="-1">Qual é a sua língua?</h2>
+                <div class="sheet-page" data-page-section="language" data-page="1">
+                  <p class="section-copy intro-language">A ilha fala português. O inglês está a caminho!</p>
+                  <div class="language-content-row">
+                    <div class="language-cards">
+                      <button id="lang-pt" class="mural-lang-card lang-pt is-selected" aria-pressed="true">
+                        <img src="assets/configuracoes/mural/ui/cartao-selecionado.webp" alt="" class="lang-card-bg">
+                        <span class="flag flag-br" aria-hidden="true"></span>
+                        <span class="lang-card-name">Português</span>
+                        <span class="lang-card-sub">PT-BR · em uso</span>
+                        <span class="lang-check" aria-hidden="true">✓</span>
+                      </button>
+                      <button id="lang-en" class="mural-lang-card lang-en" aria-pressed="false" aria-disabled="true" aria-describedby="language-note">
+                        <img src="assets/configuracoes/mural/ui/cartao-azul.webp" alt="" class="lang-card-bg">
+                        <span class="flag flag-us" aria-hidden="true"></span>
+                        <span class="lang-card-name">English</span>
+                        <span class="lang-card-sub">EN</span>
+                        <span class="lang-soon">Em breve</span>
+                      </button>
+                    </div>
+                    <img src="assets/configuracoes/mural/ui/icone-idioma.webp" alt="" class="mural-decor-idioma" aria-hidden="true">
+                  </div>
+                  <p id="language-note" class="settings-note lang-note" role="status" aria-live="polite">O inglês ainda não está disponível.</p>
+                </div>
+              </div>
+
+              <!-- ==========================================
+                   TELA 4: ACESSIBILIDADE (1 PÁGINA)
+                   ========================================== -->
+              <div class="settings-spread sheet-spread" data-settings-section="access" hidden>
+                <h2 id="settings-access-title" class="visually-hidden" tabindex="-1">Jogar com conforto</h2>
+                <div class="sheet-page" data-page-section="access" data-page="1">
+                  <p class="section-copy intro-access">Letras maiores ajudam a ler. Menos animações deixam a tela mais calminha.</p>
+                  
+                  <div class="access-cards-column">
+                    <div class="mural-access-card card-large-text">
+                      <button id="toggle-large-text" class="mural-switch switch-access" role="switch" aria-checked="false" data-setting="largeText">
+                        <span class="switch-img"></span>
+                      </button>
+                      <div class="access-info">
+                        <span class="access-title">Letras maiores</span>
+                        <span class="access-desc">Textos do livro, da ilha e dos desafios crescem.</span>
+                      </div>
+                      <span id="toggle-large-text-state" class="access-state">Desligado</span>
+                    </div>
+
+                    <div class="mural-access-card card-calm">
+                      <button id="toggle-calm" class="mural-switch switch-access" role="switch" aria-checked="false" data-setting="calm">
+                        <span class="switch-img"></span>
+                      </button>
+                      <div class="access-info">
+                        <span class="access-title">Menos animações</span>
+                        <span class="access-desc">As páginas trocam sem virar e a ilha fica mais paradinha.</span>
+                      </div>
+                      <span id="toggle-calm-state" class="access-state">Desligado</span>
+                    </div>
+
+                    <div class="mural-access-preview" aria-hidden="true">
+                      <span class="preview-aa">Aa</span>
+                      <span class="preview-text">A ilha espera por você!</span>
+                    </div>
+                  </div>
+
+                  <img src="assets/configuracoes/mural/ui/icone-acessibilidade.webp" alt="" class="mural-decor-access" aria-hidden="true">
+                </div>
+              </div>
+
+              <!-- ==========================================
+                   TELA 5: COMO JOGAR (1 PÁGINA)
+                   ========================================== -->
+              <div class="settings-spread sheet-spread" data-settings-section="howto" hidden>
+                <h2 id="settings-howto-title" class="visually-hidden" tabindex="-1">Sua missão</h2>
+                <div class="sheet-page" data-page-section="howto" data-page="1">
+                  <p class="section-copy intro-howto">Seu gato ficou preso na montanha. Quatro chaves vão abrir os cadeados!</p>
+                  
+                  <ol class="mural-steps-list">
+                    <li class="step-row step-row-1">
+                      <span class="step-badge">1</span>
+                      <span class="step-text">Ande pela ilha com <b>WASD</b> ou as setas.</span>
+                    </li>
+                    <li class="step-row step-row-2">
+                      <span class="step-badge">2</span>
+                      <span class="step-text">Chegue perto de uma placa e aperte <b>E</b>.</span>
+                    </li>
+                    <li class="step-row step-row-3">
+                      <span class="step-badge">3</span>
+                      <span class="step-text">Resolva os desafios e ganhe uma chave.</span>
+                    </li>
+                    <li class="step-row step-row-4">
+                      <span class="step-badge">4</span>
+                      <span class="step-text">Leve as quatro chaves até a montanha.</span>
+                    </li>
+                  </ol>
+
+                  <div class="mural-keys-grid" aria-hidden="true">
+                    <img src="assets/hud/chave-verde.png" alt="">
+                    <img src="assets/hud/chave-azul.png" alt="">
+                    <img src="assets/hud/chave-vermelha.png" alt="">
+                    <img src="assets/hud/chave-amarela.png" alt="">
+                  </div>
+
+                  <div class="howto-buttons-row">
+                    <button class="mural-btn-tutorial asset-button green howto-tutorial" data-open="tutorial">
+                      <img src="assets/configuracoes/mural/ui/etiqueta-verde.webp" alt="" class="tutorial-btn-bg">
+                      <span>Abrir o tutorial</span>
+                    </button>
+                    <button id="howto-replay-intro" class="mural-btn-tutorial asset-button parchment howto-replay-intro" type="button" data-open="replay-intro">
+                      <img src="assets/configuracoes/mural/ui/tira-listrada.webp" alt="" class="tutorial-btn-bg">
+                      <span>Rever a história</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ==========================================
+                   TELA 6: SOBRE NÓS (2 PÁGINAS COM CRÉDITOS)
+                   ========================================== -->
+              <div class="settings-spread sheet-spread" data-settings-section="about" hidden>
+                <h2 id="settings-about-title" class="visually-hidden" tabindex="-1">Ilha do Conhecimento</h2>
+                <div class="sheet-page" data-page-section="about" data-page="1">
+                  <p class="section-copy intro-about">Uma pequena aventura para aprender matemática brincando, feita para crianças de 7 a 10 anos.</p>
+                  
+                  <div class="mural-about-list">
+                    <div class="about-item item-1">
+                      <img src="assets/configuracoes/mural/ui/icone-creditos.webp" alt="" class="about-icon">
+                      <div class="about-content">
+                        <strong>O que você aprende</strong>
+                        <p>Lógica, números que faltam, formas e contas.</p>
+                      </div>
+                    </div>
+                    <div class="about-item item-2">
+                      <img src="assets/configuracoes/mural/ui/icone-sobre-nos.webp" alt="" class="about-icon">
+                      <div class="about-content">
+                        <strong>Errar faz parte</strong>
+                        <p>Sem pressa: tente de novo quantas vezes quiser.</p>
+                      </div>
+                    </div>
+                    <div class="about-item item-3">
+                      <img src="assets/configuracoes/mural/ui/icone-idioma.webp" alt="" class="about-icon">
+                      <div class="about-content">
+                        <strong>Joga no navegador</strong>
+                        <p>A aventura não é salva. Ao recarregar a página, a ilha começa de novo.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mural-heart-decor" aria-hidden="true">♥</div>
+                </div>
+
+                <div class="sheet-page" data-page-section="about" data-page="2" hidden style="opacity:0;">
+                  <div class="mural-blackboard" aria-hidden="true">créditos</div>
+
+                  <div class="mural-credits-list">
+                    <div class="credits-row row-1">
+                      <span class="credits-tag tag-yellow">Ideia e desafios</span>
+                      <span class="credits-desc">Equipe Ilha do Conhecimento</span>
+                    </div>
+                    <div class="credits-row row-2">
+                      <span class="credits-tag tag-blue">Programação</span>
+                      <span class="credits-desc">Equipe Ilha do Conhecimento</span>
+                    </div>
+                    <div class="credits-row row-3">
+                      <span class="credits-tag tag-pink">Arte em pixel</span>
+                      <span class="credits-desc">Kit visual do projeto, com apoio de imagens geradas por IA</span>
+                    </div>
+                    <div class="credits-row row-4">
+                      <span class="credits-tag tag-green">Sons</span>
+                      <span class="credits-desc">Criados pelo próprio navegador</span>
+                    </div>
+                    <div class="credits-row row-5">
+                      <span class="credits-tag tag-yellow">Agradecimento especial</span>
+                      <span class="credits-desc">Você, explorador!</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Alias vazio de créditos para compatibilidade -->
+              <div class="settings-spread sheet-spread" data-settings-section="credits" hidden></div>
+
+              <!-- Rodapé de paginação (exibido apenas em Controles) -->
+              <footer id="sheet-pagination" class="sheet-pagination" hidden>
+                <button id="sheet-prev-page" class="mural-page-arrow prev" type="button" aria-label="Página anterior"></button>
+                <span id="sheet-page-indicator" class="sheet-page-num" aria-live="polite">1 / 2</span>
+                <button id="sheet-next-page" class="mural-page-arrow next" type="button" aria-label="Próxima página"></button>
+              </footer>
+            </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="tutorial-view" class="book-content mural-tutorial" hidden>
+          <section class="page left-page">
+            <span class="chapter">COMO JOGAR <span id="step-count">01 / 03</span></span>
+            <h1 id="tutorial-title">Explore a ilha</h1>
+            <p class="tutorial-copy" id="tutorial-copy"></p>
+            <div class="key-guide" id="key-guide"><div class="wasd-cluster"><div><kbd>W</kbd></div><div><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></div></div><span>ou as setas do teclado</span></div>
+            <p class="tutorial-tip" id="tutorial-tip"></p>
+          </section>
+          <section class="page right-page tutorial-practice" aria-label="Demonstração dos controles">
+            <div id="movement-practice">
+              <div class="practice-board" id="practice-board" aria-label="Área de prática de movimento"><img class="practice-tree" src="assets/ilha/arvore.png" alt="Árvore"><img id="practice-player" src="assets/personagem/personagem-frente.png" alt="Personagem"></div>
+              <div class="direction-pad" aria-label="Controles de movimento"><button data-move="up" aria-label="Mover para cima">↑</button><button data-move="left" aria-label="Mover para a esquerda">←</button><button data-move="down" aria-label="Mover para baixo">↓</button><button data-move="right" aria-label="Mover para a direita">→</button></div>
+              <p class="practice-caption">Experimente aqui!</p>
+            </div>
+            <div id="interaction-practice" hidden>
+              <div class="interaction-scene"><img src="assets/personagem/personagem-lado.png" alt="Personagem"><div class="key-pedestal"><img id="practice-key" src="assets/hud/chave-amarela.png" alt="Chave de demonstração"><span></span></div></div>
+              <button id="interact-button" class="asset-button parchment">Interagir <kbd>E</kbd></button>
+              <p class="practice-caption" id="interaction-result" aria-live="polite">Uma chave espera por você.</p>
+            </div>
+            <div id="regions-practice" hidden>
+              <div class="region-grid" aria-label="Quatro regiões"><button data-region="0"><img src="assets/hud/chave-verde.png" alt="">Lógica</button><button data-region="1"><img src="assets/hud/chave-azul.png" alt="">Álgebra</button><button data-region="2"><img src="assets/hud/chave-vermelha.png" alt="">Geometria</button><button data-region="3"><img src="assets/hud/chave-amarela.png" alt="">Operações</button></div>
+              <p id="region-description" class="practice-caption" aria-live="polite">Toque em uma chave para descobrir o desafio.</p>
+              <img class="rescue-cat" src="assets/personagem/gato-frente.png" alt="O gato que vamos resgatar.">
+            </div>
+          </section>
+          <div class="book-actions"><button id="previous-step" class="asset-button parchment">Voltar</button><div class="page-dots" aria-label="Páginas do tutorial"><button data-step="0" aria-label="Página 1" aria-current="step"></button><button data-step="1" aria-label="Página 2"></button><button data-step="2" aria-label="Página 3"></button></div><button id="next-step" class="asset-button green">Próxima</button></div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Confirmação de Voltar ao menu principal -->
+    <div id="settings-confirm-dialog" class="mural-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="settings-confirm-title" aria-describedby="settings-confirm-desc" hidden>
+      <div class="mural-confirm-card">
+        <h2 id="settings-confirm-title" class="mural-confirm-title">Voltar ao menu principal?</h2>
+        <p id="settings-confirm-desc" class="mural-confirm-desc">Quer sair do jogo e voltar ao menu principal?</p>
+        <p id="settings-confirm-puzzle-warning" class="mural-confirm-warning" hidden>O desafio atual será reiniciado.</p>
+        <div class="mural-confirm-actions">
+          <button id="settings-confirm-yes" class="mural-confirm-btn btn-yes" type="button" aria-label="Voltar ao menu">
+            <span>Voltar ao menu</span>
+          </button>
+          <button id="settings-confirm-no" class="mural-confirm-btn btn-no" type="button" aria-label="Continuar jogando">
+            <span>Continuar jogando</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- C1, C2: Botão fechar na raiz da sobreposição, irmão do palco -->
+    <button class="mural-close" data-close aria-label="Fechar configurações"><img src="assets/configuracoes/mural/ui/fechar-normal.webp" alt=""></button>
+  </dialog>
+
+  <dialog id="message-dialog" class="message-dialog" aria-labelledby="message-title">
+    <button class="panel-close" data-close aria-label="Fechar"><img src="assets/hud/fechar.png" alt=""></button>
+    <span class="chapter" id="message-chapter">UM PRIMEIRO OLHAR</span>
+    <h1 id="message-title">A aventura está chegando!</h1>
+    <img id="island-preview" class="island-preview" src="assets/ilha/ilha-referencia.png" alt="A ilha com suas quatro regiões e a montanha do gato.">
+    <p id="message-copy"></p>
+    <div class="message-actions"><button id="message-back" class="asset-button parchment">Voltar ao menu</button><button id="message-confirm" class="asset-button green" hidden>Ver tutorial</button></div>
+  </dialog>
+  <noscript><p class="noscript">Ative o JavaScript para usar os botões do jogo.</p></noscript>
+  <script src="js/audio.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/game-settings.js"></script>
+  <script src="js/settings-book.js"></script>
+  <script src="js/tutorial-data.js"></script>
+  <script src="js/tutorial-demos.js"></script>
+  <script src="js/tutorial-card.js"></script>
+  <script src="js/island-world.js"></script>
+  <script src="js/island-art.js"></script>
+  <script src="js/island-keys.js"></script>
+  <script src="js/dev-puzzle-screen.js"></script>
+  <script src="js/walk-animation.js"></script>
+  <script src="js/hero-animation.js"></script>
+  <script src="js/island-renderer.js"></script>
+  <script src="js/adventure-progress.js"></script>
+  <script src="js/puzzle-data.js"></script>
+  <script src="js/puzzle-game.js"></script>
+  <script src="js/rescue-game.js"></script>
+  <script src="js/maze-triggers.js"></script>
+  <script src="js/memory-maze-game.js"></script>
+  <script src="js/island-game.js"></script>
+  <script src="js/intro-story.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

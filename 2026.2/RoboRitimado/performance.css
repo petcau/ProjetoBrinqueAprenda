@@ -1,0 +1,13 @@
+/* Stage additions leave Pixel's canvas and reference drawing scale unchanged. */
+.pixel-stage{position:absolute;inset:48px -7px -36px 4px;width:calc(100% + 3px);height:calc(100% - 12px);pointer-events:none;z-index:0}
+.app .pixel-art{z-index:1;pointer-events:none}
+.dance-badge{display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px;align-items:center;left:7%;right:3%;padding:8px 12px;text-align:left;z-index:3;background:#372447ed}
+.dance-badge canvas{width:48px;height:42px;border:2px solid #e6d1ff;border-radius:14px;background:#151028}
+.dance-badge span{font-size:9px}.dance-badge b{font-size:13px;line-height:1.25}
+.pixel-mood{display:block;font-size:10px;color:#fff0c7;margin-top:3px;line-height:1.2}
+.app .song-strip{position:relative;z-index:3}
+body[data-theme=brinquedos] .app .scoreboard,body[data-theme=brinquedos] .app .song-strip{background:#f3f0fff2}
+.world:before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 61%,#35274d38 76%,#35274d50);backdrop-filter:blur(1px) saturate(.82);mask-image:linear-gradient(90deg,transparent 60%,#000 76%);pointer-events:none}
+@media(max-width:760px){.pixel-stage{inset:60px -11px -28px -8px;width:calc(100% + 19px);height:calc(100% - 32px)}.dance-badge{display:block;left:3px;right:0;padding:7px 4px;text-align:center}.dance-badge canvas{display:none}.dance-badge b{font-size:9px}.dance-badge span{font-size:7px}.pixel-mood{font-size:8px}}
+.photosensitive .pixel-stage{opacity:.8}.high-contrast .dance-badge{background:#000;border-color:#fff}.high-contrast .pixel-mood{color:#ff0}
+body.high-contrast .app .scoreboard,body.high-contrast .app .song-strip{background:#000;color:#fff;border-color:#fff}
