@@ -1,0 +1,87 @@
+/* Base e tela inicial */
+* { box-sizing: border-box; }
+:root { color-scheme: light; --ink: #513525; --paper: #f3deb5; --green: #3d783e; --room: url('../assets/tela-inicial/quarto-sem-interface.png'); font-family: Georgia, 'Times New Roman', serif; }
+body { margin: 0; min-height: 100svh; display: grid; place-items: center; background: #1d1628; color: var(--ink); }
+body::before { content: ''; position: fixed; inset: -30px; background: linear-gradient(#1a112bbd,#150f24dd),var(--room) center/cover; filter: blur(18px); z-index: -1; }
+button, input { font: inherit; } button { cursor: pointer; -webkit-tap-highlight-color: transparent; } button:disabled { cursor: default; } button img { pointer-events: none; } [hidden] { display: none !important; }
+button:focus-visible, input:focus-visible { outline: 3px solid #f8d771; outline-offset: 4px; }
+.game-shell { width: min(1480px, 95vw, calc((100svh - 65px) * 2.085)); padding-top: 10px; }
+.home { position: relative; aspect-ratio: 1280/614; border-radius: 10px; overflow: hidden; border: 3px solid #806044; box-shadow: 0 0 0 5px #2a1c2b, 0 24px 80px #0008; isolation: isolate; }
+.room { width: 100%; height: 100%; display: block; object-fit: cover; }
+.room-shade { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 42%,#180e300a 20%,#190c393d 85%); pointer-events: none; }
+.home-menu { position: absolute; top: 5%; left: 27%; width: 46%; display: flex; align-items: center; flex-direction: column; }
+.logo { width: 100%; height: auto; filter: drop-shadow(0 10px 7px #190c3877); animation: arrive .65s ease-out both; }
+.home-menu nav { display: grid; width: 60%; gap: 8px; margin-top: -1%; }
+.image-button { padding: 0; border: 0; background: none; border-radius: 10px; transition: transform .16s, filter .16s; line-height: 0; }
+.image-button img { width: 100%; height: auto; display: block; }
+.image-button:hover { transform: translateY(-3px) scale(1.025); filter: brightness(1.13) drop-shadow(0 4px 9px #ffda7344); }
+.image-button:active { transform: translateY(2px) scale(.99); }
+.corner-button { position: absolute; top: 3%; width: 7%; max-width: 90px; background: none; padding: 0; border: 0; transition: transform .15s,filter .15s; line-height: 0; }
+.corner-button img { width: 100%; display: block; }.exit-button { left: 2%; }.settings-button { right: 2%; }.corner-button:hover { transform: scale(1.08); filter: brightness(1.15); }
+.sleep-mark { position: absolute; right: 9.7%; top: 67%; color: #cfb5e1; font: italic bold clamp(10px,1.5vw,22px) Georgia; animation: sleepy 3s ease-in-out infinite; pointer-events: none; }.sleep-mark span { position: absolute; left: 14px; top: -12px; font-size: .7em; }
+.home-footer { display: flex; justify-content: space-between; padding: 17px 4px; font: 10px system-ui,sans-serif; color: #c7b6bd; letter-spacing: 2px; }.version { color: #c9b28a; }
+/* Livro compartilhado entre tutorial e configurações. */
+dialog { padding: 0; border: 0; background: transparent; color: var(--ink); max-width: none; }
+dialog::backdrop { background: #100b21bb; backdrop-filter: blur(6px); }
+.book-dialog { width: min(1120px, 96vw, calc((100svh - 24px) * 1.499)); max-height: calc(100svh - 24px); overflow: auto; }
+.book-scene { position: relative; aspect-ratio: 1280/854; }
+.book-background { position: absolute; width: 100%; height: 100%; inset: 0; display: block; border-radius: 9px; box-shadow: 0 20px 80px #0007; }
+.book-close { position: absolute; top: 3%; right: 3%; width: 5.5%; padding: 0; background: transparent; border: 0; z-index: 2; }.book-close img { display: block; width: 100%; }
+.book-content { position: absolute; inset: 19% 12% 20% 13%; display: grid; grid-template-columns: 1fr 1fr; column-gap: 9%; grid-template-rows: 1fr auto; }
+.page { min-width: 0; }.chapter { display: block; font: 600 clamp(9px,1vw,12px) system-ui,sans-serif; letter-spacing: 1.7px; color: #906d49; }
+h1 { font-size: clamp(22px,2.8vw,36px); font-weight: bold; line-height: 1.12; margin: 12px 0 15px; letter-spacing: -.5px; }
+.subtitle { font-size: clamp(13px,1.6vw,20px); line-height: 1.5; color: #815937; margin: 0; }.settings-cat { display: block; height: clamp(90px,14vw,172px); max-height: 42%; width: auto; max-width: 100%; margin: 22px auto 3px; image-rendering: pixelated; }.cat-caption { text-align: center; font-style: italic; font-size: clamp(11px,1.2vw,15px); color: #936f47; margin: 3px 0; }
+.volume-group { margin: 15px 0 26px; }.volume-group label { display: flex; align-items: center; gap: 7px; font-size: clamp(13px,1.6vw,20px); font-weight: bold; }.volume-group label img { width: 32px; height: 32px; object-fit: contain; image-rendering: pixelated; }.volume-group output { margin-left: auto; font: 600 clamp(11px,1.2vw,15px) system-ui; color: #896641; }
+input[type=range] { display: block; appearance: none; width: 100%; height: 18px; margin: 20px 0 12px; border: 3px solid #563a28; border-radius: 4px; cursor: pointer; background: linear-gradient(to right,#65a559 70%,#4b393f 70%); }
+#music-volume { background: linear-gradient(to right,#579cae 35%,#4b393f 35%); }input[type=range]::-webkit-slider-thumb { appearance: none; width: 37px; height: 37px; background: url('../assets/configuracoes/slider-pata.png') center/contain no-repeat; border: 0; filter: drop-shadow(0 2px 1px #4f302966); }input[type=range]::-moz-range-thumb { width: 37px; height: 37px; background: url('../assets/configuracoes/slider-pata.png') center/contain no-repeat; border: 0; }
+.text-link { font: 12px system-ui; border: 0; border-bottom: 1px dotted #8a6847; background: none; color: #755333; padding: 3px 0; }.text-link:hover { color: #325f31; }.music-toggle { display: inline-flex; align-items: center; gap: 7px; padding: 7px 10px; border: 1px solid #bb9866; border-radius: 5px; background: #f3dfb57a; color: #6e5034; font: 12px system-ui; }.status-dot { width: 7px; height: 7px; border-radius: 50%; background: #9c8672; }.music-toggle[aria-pressed=true] .status-dot { background: #4f9147; box-shadow: 0 0 0 3px #72995422; }.audio-note { font: italic clamp(10px,1.15vw,14px)/1.6 Georgia; color: #8b6846; }
+.book-actions { grid-column: 1/-1; display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-top: 15px; }.asset-button { border: 0; background: url('../assets/hud/botao-pergaminho.png') center/100% 100% no-repeat; min-height: 48px; padding: 13px 22px; font: bold clamp(12px,1.25vw,16px) system-ui; color: #503626; text-align: center; transition: filter .15s,transform .15s; }.asset-button.green { background-image: url('../assets/hud/botao-verde.png'); }.asset-button.red { background-image: url('../assets/hud/botao-vermelho.png'); }.asset-button:hover { filter: brightness(1.08); transform: translateY(-2px); }.asset-button:active { transform: translateY(1px); }.book-actions>.asset-button { width: 43%; max-width: 265px; }
+/* Tutorial: explicação e uma pequena prática por página. */
+#step-count { float: right; letter-spacing: 0; }.tutorial-copy { font-size: clamp(13px,1.5vw,18px); line-height: 1.55; margin: 0 0 14px; }.tutorial-tip { font: italic clamp(11px,1.2vw,14px)/1.5 Georgia; color: #8a643d; margin-top: 20px; }.key-guide { margin-top: 20px; text-align: center; }.key-guide div { display: flex; justify-content: center; gap: 5px; margin-bottom: 5px; }kbd { display: inline-grid; place-items: center; min-width: 32px; height: 31px; padding: 3px 7px; border: 1px solid #b68b55; border-bottom: 3px solid #a87a46; border-radius: 5px; background: #f9edce; font: bold 13px system-ui; }.key-guide>span { display: block; font: 11px system-ui; color: #826442; margin-top: 9px; }
+.practice-board { position: relative; height: clamp(125px,16vw,196px); margin-top: 8px; overflow: hidden; border: 3px solid #826b3d; border-radius: 8px; background: url('../assets/ilha/tile-grama.png') repeat; background-size: 64px; box-shadow: inset 0 0 35px #42583a66; }.practice-tree { position: absolute; height: 65%; right: 4%; top: -3%; pointer-events: none; image-rendering: pixelated; }#practice-player { position: absolute; width: 38px; height: 48px; left: 42%; top: 55%; image-rendering: pixelated; transition: left .1s linear,top .1s linear; transform: translate(-50%,-100%); }.direction-pad { display: grid; grid-template-columns: repeat(3,38px); grid-template-rows: repeat(2,34px); gap: 4px; justify-content: center; margin-top: 10px; }.direction-pad button { border: 1px solid #a47d50; border-bottom: 3px solid #8c653e; border-radius: 4px; background: #f3d9a6; color: #624029; font-size: 20px; }.direction-pad button:hover { background: #e8c388; }.direction-pad [data-move=up] { grid-column: 2; }.direction-pad [data-move=left] { grid-row: 2; grid-column: 1; }.direction-pad [data-move=down] { grid-row: 2; grid-column: 2; }.direction-pad [data-move=right] { grid-row: 2; grid-column: 3; }.practice-caption { font: clamp(11px,1.2vw,14px)/1.5 system-ui; text-align: center; color: #7b5838; margin: 10px 0 0; }
+.interaction-scene { display: flex; align-items: flex-end; justify-content: center; gap: 30px; height: clamp(130px,18vw,210px); border-bottom: 2px solid #a0835066; margin-bottom: 20px; padding-bottom: 15px; }.interaction-scene>img { width: 64px; height: 80px; image-rendering: pixelated; }.key-pedestal { width: 65px; display: grid; place-items: center; }.key-pedestal img { width: 48px; height: 64px; image-rendering: pixelated; animation: keyfloat 2s ease-in-out infinite; }.key-pedestal span { display: block; width: 60px; height: 22px; border: 3px solid #837c65; border-bottom-width: 7px; background: #b2ac8f; border-radius: 5px; }.key-pedestal.collected img { visibility: hidden; }#interact-button { width: 100%; }#interact-button kbd { margin-left: 5px; min-width: 23px; height: 25px; }
+.region-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 10px; }.region-grid button { display: grid; justify-items: center; padding: 7px; border: 1px solid #b4915e; border-radius: 6px; background: #f5e2bd99; color: #634b30; font: 12px system-ui; }.region-grid button img { width: 30px; height: 40px; image-rendering: pixelated; }.region-grid button:hover,.region-grid button[aria-pressed=true] { background: #d9d59d; border-color: #739054; }.rescue-cat { display: block; width: 48px; height: 60px; margin: 12px auto 0; image-rendering: pixelated; }.page-dots { display: flex; gap: 7px; }.page-dots button { padding: 0; border: 1px solid #9e7b50; width: 8px; height: 8px; border-radius: 50%; background: transparent; }.page-dots button[aria-current] { background: #97713f; }.page-dots button::after { content: ''; display: block; width: 20px; height: 28px; transform: translate(-7px,-10px); }
+/* Avisos de início e saída. */
+.message-dialog { width: min(570px,94vw); max-height: 94svh; overflow: auto; background: #f3dfb8; border: 5px solid #8c6242; border-radius: 12px; box-shadow: 0 0 0 3px #3e2927,0 30px 90px #0008; padding: 30px; }.message-dialog h1 { padding-right: 25px; font-size: 30px; }.panel-close { position: absolute; top: 10px; right: 10px; background: none; border: 0; padding: 0; width: 34px; }.panel-close img { display: block; width: 100%; }.island-preview { display: block; width: 100%; max-height: 250px; object-fit: contain; background: #add5d0; border: 2px solid #a68c5d; border-radius: 7px; }.message-dialog p { font: 15px/1.65 system-ui; }.message-actions { display: flex; gap: 10px; margin-top: 20px; }.message-actions button { flex: 1; padding: 13px 12px; }.noscript { position: fixed; bottom: 0; color: white; padding: 12px; background: #64372c; }
+@keyframes arrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }@keyframes sleepy { 0%,100% { transform: translateY(0); opacity: .5; }50% { transform: translateY(-6px); opacity: .9; } }@keyframes keyfloat { 0%,100% { transform: translateY(0); }50% { transform: translateY(-5px); } }
+@media (max-width:700px) { .home-footer { font-size: 8px; letter-spacing: 1px; gap: 12px; }.game-shell { width: 96vw; }.home-menu { top: 4%; left: 25%; width: 50%; }.home-menu nav { gap: 2px; width: 63%; }.corner-button { width: 9%; }.book-dialog { width: min(94vw,600px); max-height: 92svh; background: #edcf99; border: 4px solid #886041; border-radius: 10px; }.book-scene { aspect-ratio: auto; }.book-background { object-fit: cover; opacity: .14; }.book-close { position: absolute; top: 7px; right: 7px; width: 34px; }.book-content { position: relative; inset: auto; display: flex; flex-direction: column; gap: 18px; padding: 33px 23px 22px; }.chapter { font-size: 10px; }h1 { font-size: 28px; margin-top: 9px; }.subtitle { font-size: 16px; }.settings-cat,.cat-caption { display: none; }.right-page { border-top: 1px solid #ad844a77; padding-top: 14px; }.volume-group { margin: 5px 0 24px; }.volume-group label { font-size: 17px; }.volume-group output { font-size: 13px; }.audio-note { font-size: 12px; margin: 0; }.book-actions { margin-top: 0; gap: 8px; }.asset-button { font-size: 13px; min-height: 48px; }.tutorial-copy { font-size: 16px; }.key-guide { display: none; }.tutorial-tip { font-size: 13px; margin: 10px 0 0; }.practice-board { height: 160px; }.tutorial-practice { padding-top: 12px; }.practice-caption { font-size: 13px; }.interaction-scene { height: 145px; }.region-grid button { font-size: 13px; }.message-dialog { padding: 25px 20px; }.message-dialog h1 { font-size: 26px; }.message-dialog p { font-size: 14px; } }
+@media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; } }
+@media (max-width:480px) and (orientation:portrait) { .home { aspect-ratio:4/3; }.home-menu { top:3%;left:17%;width:66%; }.home-menu nav { width:72%;gap:5px; }.corner-button { width:12%; }.room { object-position:center; }.sleep-mark { display:none; }.home-footer { letter-spacing:.5px; } }
+
+/* Menu em tela cheia: o quarto ocupa toda a janela, sem moldura nem rodapé.
+   Fica no fim do arquivo para prevalecer sobre as regras de tamanho acima. */
+.game-shell { position: fixed; inset: 0; width: 100vw; height: 100svh; padding: 0; }
+.home { width: 100%; height: 100%; aspect-ratio: auto; border: 0; border-radius: 0; box-shadow: none; }
+.room { object-fit: cover; object-position: center; }
+.home-menu { top: 6%; left: 50%; width: min(44vw, 72svh * 1.1, 620px); transform: translateX(-50%); }
+.home-menu nav { width: 60%; gap: 10px; margin-top: 2%; }
+.corner-button { top: 3%; width: clamp(44px, 6vw, 84px); }
+.exit-button { left: 2.2%; }
+.settings-button { right: 2.2%; }
+@media (max-width:700px) { .home-menu { top: 8%; width: 70vw; } .corner-button { width: 48px; } }
+
+
+/* Tela cheia: a aba inteira pertence ao jogo; áreas seguras protegem notch e barras de gesto. */
+html, body { width: 100%; height: 100vh; height: 100dvh; margin: 0; overflow: hidden; }
+body { display: block; min-height: 0; }
+.game-shell { height: 100vh; height: 100dvh; }
+.corner-button { margin-top: env(safe-area-inset-top); }
+.exit-button { margin-left: env(safe-area-inset-left); }
+.settings-button { margin-right: env(safe-area-inset-right); }
+/* Configurações/tutorial: o diálogo cobre a janela; o livro (1280 × 854) escala sem esticar
+   e as sobras mostram a mesa de madeira (cor da mesa + a própria arte borrada e escurecida). */
+.book-dialog { position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100dvh; max-width: 100vw; max-height: 100vh; max-height: 100dvh; margin: 0; padding: 0; border: 0; border-radius: 0; overflow: hidden; background: #27140a; }
+.book-dialog[open] { display: grid; place-items: center; }
+.book-dialog::backdrop { background: #27140a; backdrop-filter: none; }
+.book-dialog::before { content: ''; position: absolute; inset: -40px; background: url('../assets/configuracoes/livro-cenario.png') center/cover; filter: blur(16px) brightness(.5); pointer-events: none; }
+.book-dialog .book-scene { position: relative; width: min(100vw, calc(100dvh * 1280 / 854)); height: auto; aspect-ratio: 1280 / 854; max-height: 100dvh; margin: auto; }
+.book-close { min-width: 44px; min-height: 44px; margin-top: env(safe-area-inset-top); margin-right: env(safe-area-inset-right); }
+@media (max-width: 700px) {
+  .book-dialog { background: #edcf99; overflow: hidden auto; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); border: 0; border-radius: 0; }
+  .book-dialog[open] { display: block; }
+  .book-dialog::before { display: none; }
+  .book-dialog .book-scene { width: 100%; max-height: none; min-height: 100%; aspect-ratio: auto; }
+  .book-close { position: fixed; top: calc(env(safe-area-inset-top) + 6px); right: calc(env(safe-area-inset-right) + 6px); width: 44px; height: 44px; margin: 0; }
+  .index-item, .asset-button, .touch-option, .music-toggle, .text-link, .language-card, .paw-toggle { min-height: 44px; }
+}
+@media (max-height: 500px) and (orientation: landscape) { .index-item { min-height: 44px; } .index-menu { gap: 3px; } }

@@ -1,0 +1,35 @@
+{
+  "imagem": "personagem_spritesheet_8_direcoes_v2.png",
+  "tamanho_imagem": [
+    192,
+    448
+  ],
+  "frame_width": 48,
+  "frame_height": 56,
+  "colunas": 4,
+  "linhas": 8,
+  "pivo_pes": {
+    "x": 24,
+    "y": 52
+  },
+  "linhas_por_direcao": {
+    "baixo": 0,
+    "esquerda": 1,
+    "direita": 2,
+    "cima": 3,
+    "baixo_esquerda": 4,
+    "baixo_direita": 5,
+    "cima_esquerda": 6,
+    "cima_direita": 7
+  },
+  "ciclo_caminhada_colunas": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "quadro_parado": 0,
+  "ticks_por_quadro_a_60hz": 8,
+  "quadros_por_segundo_animacao": 7.5,
+  "retangulo_do_quadro": "x = coluna*48, y = linha*56, largura 48, altura 56"
+}

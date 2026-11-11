@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Algoritimando — Área do professor</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css?v=202611111239" />
+    <link rel="stylesheet" href="editor.css?v=202611111239" />
+  </head>
+  <body class="editor">
+    <!-- ================== O EDITOR ================== -->
+    <div class="ed-pagina">
+      <header class="ed-topo">
+        <div class="ed-identidade">
+          <a class="ed-voltar-jogo" href="index.html">‹ Voltar ao jogo</a>
+          <h1>Área do professor</h1>
+          <p>
+            Monte um chamado seu para a turma jogar, com as suas imagens e os
+            seus textos. Ele é salvo como um arquivo .json neste computador.
+          </p>
+        </div>
+        <div class="ed-acoes-coluna">
+          <div class="ed-acoes">
+            <button id="btn-abrir" class="btn ghost small" type="button">
+              Abrir arquivo…
+            </button>
+            <button id="btn-novo" class="btn ghost small" type="button">
+              Começar do zero
+            </button>
+            <button id="btn-salvar" class="btn small" type="button">
+              Salvar arquivo
+            </button>
+          </div>
+          <p id="indicador-tamanho" class="ed-tamanho" aria-live="polite"></p>
+          <p class="ed-nota">
+            Enquanto você edita, um rascunho fica guardado só neste navegador. O
+            que vale é o arquivo baixado em “Salvar arquivo”: é ele que você
+            guarda, compartilha e abre no jogo.
+          </p>
+        </div>
+      </header>
+
+      <section class="ed-cartao ed-linha-campos">
+        <label class="ed-campo">
+          <span class="ed-rotulo">Nome do chamado</span>
+          <input
+            id="campo-titulo"
+            type="text"
+            maxlength="60"
+            placeholder="Ex.: Plantar um feijão no algodão"
+          />
+          <span class="ed-ajuda"
+            >É o nome que a turma vê, e vira o nome do arquivo salvo.</span
+          >
+        </label>
+        <label class="ed-campo">
+          <span class="ed-rotulo">Cenário</span>
+          <select id="campo-cenario"></select>
+          <span class="ed-ajuda"
+            >O fundo da fase e da tela de lição, entre os do jogo.</span
+          >
+        </label>
+        <label class="ed-campo">
+          <span class="ed-rotulo">Montagem</span>
+          <select id="campo-montagem">
+            <option value="">Nenhuma</option>
+            <option value="pilha">Pilha (como um sanduíche)</option>
+            <option value="cena">
+              Cena (as peças entram numa cena, como a mochila)
+            </option>
+            <option value="tirinha">Tirinha (um quadrinho por passo)</option>
+          </select>
+          <span class="ed-ajuda"
+            >A imagem que se monta ao lado do tabuleiro, na ordem em que a
+            criança coloca as cartas. Cada passo ganha um campo de peça.</span
+          >
+        </label>
+        <div class="ed-campo" id="bloco-base-cena" hidden>
+          <span class="ed-rotulo">Fundo da cena</span>
+          <div id="base-cena-editor" class="ed-licao-imagem"></div>
+          <span class="ed-ajuda"
+            >O que aparece antes de qualquer carta. As peças precisam ter o
+            mesmo tamanho deste fundo e fundo transparente.</span
+          >
+        </div>
+      </section>
+
+      <!-- avisos da validação (preenchidos pelo editor.js) -->
+      <div id="avisos" class="ed-avisos" hidden></div>
+
+      <div class="ed-corpo">
+        <!-- ---------- lista de níveis ---------- -->
+        <aside class="ed-cartao ed-fases">
+          <h2>Níveis</h2>
+          <p class="ed-ajuda">
+            Comece com um nível de poucos passos e vá detalhando nos seguintes:
+            é assim que aparecem as etapas que a gente costuma pular.
+          </p>
+          <ol id="lista-fases"></ol>
+          <button
+            id="btn-nova-fase"
+            class="btn ghost small ed-largo"
+            type="button"
+          >
+            + Novo nível
+          </button>
+        </aside>
+
+        <!-- ---------- nível aberto ---------- -->
+        <main class="ed-painel-fase">
+          <div id="sem-fase" class="ed-cartao">
+            <p>
+              Nenhum nível por aqui. Crie o primeiro com o botão
+              <strong>+ Novo nível</strong>.
+            </p>
+          </div>
+          <div id="fase-conteudo" hidden>
+            <section class="ed-cartao">
+              <h2 id="fase-cabecalho">Nível 1</h2>
+              <div class="ed-linha-campos">
+                <label class="ed-campo">
+                  <span class="ed-rotulo">Título do nível</span>
+                  <input
+                    id="campo-fase-titulo"
+                    type="text"
+                    maxlength="80"
+                    placeholder="Ex.: Plante a sementinha!"
+                  />
+                  <span class="ed-ajuda"
+                    >Aparece no alto da tela, bem grande.</span
+                  >
+                </label>
+                <label class="ed-campo">
+                  <span class="ed-rotulo">Frase de instrução</span>
+                  <input
+                    id="campo-fase-instrucao"
+                    type="text"
+                    maxlength="120"
+                    placeholder="Ex.: Arraste as cartas para os espaços numerados."
+                  />
+                  <span class="ed-ajuda"
+                    >Aparece embaixo do título, explicando o que fazer.</span
+                  >
+                </label>
+              </div>
+              <label class="ed-campo">
+                <span class="ed-rotulo">Fala do Robô-guia</span>
+                <input
+                  id="campo-fase-mascote"
+                  type="text"
+                  maxlength="120"
+                  placeholder="Ex.: Repare no que precisa estar pronto antes!"
+                />
+                <span class="ed-ajuda"
+                  >O que o Robô-guia diz enquanto a criança joga este nível. Use
+                  para dar a dica do que ele tem de novo. Em branco, ele diz a
+                  frase padrão do jogo.</span
+                >
+              </label>
+            </section>
+
+            <section class="ed-cartao">
+              <h2>Passos do nível</h2>
+              <p class="ed-ajuda">
+                Escreva os passos <strong>na ordem certa</strong>, de cima para
+                baixo. No jogo, as cartas aparecem embaralhadas: é a criança
+                quem monta a ordem.
+              </p>
+              <p class="ed-nota">
+                Ao usar fotos de alunos, verifique a autorização de imagem junto
+                à escola. O arquivo gerado fica salvo apenas neste computador.
+              </p>
+              <ol id="lista-passos"></ol>
+              <button
+                id="btn-novo-passo"
+                class="btn ghost small ed-largo"
+                type="button"
+              >
+                + Novo passo
+              </button>
+            </section>
+
+            <section class="ed-cartao">
+              <h2>Tela de lição</h2>
+              <p class="ed-ajuda">
+                Aparece quando a criança completa o nível: é onde a brincadeira
+                vira conversa sobre o que ela aprendeu. Campo vazio não aparece
+                na tela.
+              </p>
+              <label class="ed-campo">
+                <span class="ed-rotulo">Pergunta-título</span>
+                <input
+                  id="campo-licao-pergunta"
+                  type="text"
+                  maxlength="90"
+                  placeholder="Ex.: Por que a ordem dos passos importa?"
+                />
+              </label>
+              <div class="ed-campo">
+                <span class="ed-rotulo"
+                  >Imagem da lição (é o que a criança vê)</span
+                >
+                <div id="licao-imagem-editor" class="ed-licao-imagem"></div>
+                <span class="ed-ajuda"
+                  >Um desenho que mostre a ideia da lição. O texto abaixo fica
+                  no botão "Para o professor", para guiar a conversa.</span
+                >
+              </div>
+              <label class="ed-campo">
+                <span class="ed-rotulo">Texto da lição (para o professor)</span>
+                <textarea
+                  id="campo-licao-texto"
+                  rows="4"
+                  placeholder="Ex.: Para plantar o feijão, você colocou os passos em uma ordem.&#10;Se a gente troca os passos de lugar, dá confusão!"
+                ></textarea>
+                <span class="ed-ajuda"
+                  >Duas ou três frases curtas. Cada linha vira um
+                  parágrafo.</span
+                >
+              </label>
+              <div class="ed-linha-campos">
+                <label class="ed-campo">
+                  <span class="ed-rotulo">Pergunta para conversar (1)</span>
+                  <input
+                    id="campo-licao-reflexao1"
+                    type="text"
+                    maxlength="140"
+                    placeholder="Ex.: O que acontece se regar antes de pôr a semente?"
+                  />
+                </label>
+                <label class="ed-campo">
+                  <span class="ed-rotulo">Pergunta para conversar (2)</span>
+                  <input
+                    id="campo-licao-reflexao2"
+                    type="text"
+                    maxlength="140"
+                    placeholder="Ex.: O que mais você faz que só dá certo em uma ordem?"
+                  />
+                </label>
+              </div>
+            </section>
+
+            <div class="ed-rodape-fase">
+              <button id="btn-testar" class="btn green" type="button">
+                ▶ Testar este nível como a criança verá
+              </button>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- entradas de arquivo (invisíveis; abertas pelos botões) -->
+    <input type="file" id="input-imagem" accept="image/*" hidden />
+    <input
+      type="file"
+      id="input-abrir"
+      accept=".json,application/json"
+      hidden
+    />
+
+    <!-- ================== A PRÉVIA ==================
+         As telas de fase e de lição do jogo, iguais às do index.html,
+         escondidas sobre o editor. O jogo.js, o arrasto.js e o motor.js
+         (os MESMOS arquivos do jogo) cuidam de tudo: o professor testa
+         exatamente o que a criança vai receber. Se mudar essas telas no
+         index.html, copie a mudança para cá. -->
+    <div class="ed-previa" hidden>
+      <div id="stage">
+        <section class="screen" id="fase">
+          <header class="top">
+            <button
+              class="chip home"
+              data-home
+              title="Voltar ao menu principal"
+              aria-label="Voltar ao menu principal"
+            >
+              <svg class="icone" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3.2 2.8 11h2.7v9.3h5V14h3v6.3h5V11h2.7Z" />
+              </svg></button
+            ><button
+              class="chip who"
+              type="button"
+              title="Trocar de agente"
+            ></button>
+            <div class="title-box fase-faixa">
+              <h2 class="fase-titulo"></h2>
+              <p class="fase-instrucao"></p>
+            </div>
+            <span
+              class="chip starsum contador-estrelas"
+              role="img"
+              aria-label="0 estrelas"
+              ><img src="img/ui/estrela.webp" alt="" />
+              <b class="contador-estrelas-num">0</b></span
+            >
+          </header>
+          <div class="fase-arte" aria-hidden="true"></div>
+          <main class="area-jogo">
+            <!-- Tabuleiro: um espaço numerado por passo (montado pelo jogo.js) -->
+            <section
+              class="tabuleiro"
+              aria-label="Tabuleiro com os passos em ordem"
+            >
+              <ol class="tabuleiro-grade"></ol>
+              <!-- resultado do "Verificar" (jogo.js) -->
+              <p class="verificacao" role="status" hidden></p>
+            </section>
+            <!-- Bandeja: as cartas entram embaralhadas (montada pelo jogo.js) -->
+            <section class="bandeja" aria-label="Cartas ainda não usadas">
+              <ul class="bandeja-fila"></ul>
+            </section>
+            <!-- Montagem: a imagem que se monta conforme as cartas (montagem.js) -->
+            <section class="montagem" aria-hidden="true" hidden></section>
+          </main>
+          <!-- Robô-guia: fala da fase e, quando a criança erra, a
+             explicação do erro (sempre do PRIMEIRO problema) -->
+          <aside class="guia">
+            <div class="face">
+              <img class="guia-rosto" src="img/guide.webp" alt="" />
+            </div>
+            <div class="guia-fala">
+              <b>Robô-guia</b>
+              <p class="mascote-balao"></p>
+            </div>
+          </aside>
+          <footer class="rodape">
+            <button
+              class="chip progresso"
+              id="btn-niveis"
+              type="button"
+              title="Escolher nível"
+            >
+              <span class="progresso-texto">Nível 1 de 5</span> ▾
+            </button>
+            <div class="rodape-direita">
+              <!-- só no celular: a montagem é opcional e troca de lugar com a cena -->
+              <button
+                class="chip"
+                id="btn-montagem"
+                type="button"
+                aria-pressed="false"
+                hidden
+              >
+                Ver montagem
+              </button>
+              <button
+                class="btn green"
+                id="btn-verificar"
+                type="button"
+                disabled
+              >
+                Verificar
+              </button>
+              <button class="chip" id="btn-dica" type="button">
+                <span class="dica-icone"
+                  ><img src="img/ui/dica.webp" alt="" /><b
+                    class="dica-restantes"
+                    aria-hidden="true"
+                    >1</b
+                  ></span
+                >
+                <span class="dica-pedir">Pedir dica</span
+                ><span class="dica-curta">Dica</span>
+              </button>
+            </div>
+          </footer>
+        </section>
+
+        <!-- Lição: a atividade vira conceito (conteúdo vem da fase.licao) -->
+        <section class="screen" id="licao">
+          <div class="licao-arte" aria-hidden="true"></div>
+          <header class="top">
+            <button
+              class="chip home"
+              data-home
+              title="Voltar ao menu principal"
+              aria-label="Voltar ao menu principal"
+            >
+              <svg class="icone" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3.2 2.8 11h2.7v9.3h5V14h3v6.3h5V11h2.7Z" />
+              </svg></button
+            ><button
+              class="chip who"
+              type="button"
+              title="Trocar de agente"
+            ></button>
+            <span class="chip starsum"
+              ><img src="img/ui/estrela.webp" alt="" />
+              <b class="gStars">0</b></span
+            >
+          </header>
+          <section
+            class="panel conclusao-painel"
+            role="dialog"
+            aria-labelledby="conclusao-parabens conclusao-pergunta"
+            tabindex="-1"
+          >
+            <header class="conclusao-topo">
+              <p class="title-box conclusao-parabens" id="conclusao-parabens">
+                <img src="img/ui/estrela.webp" alt="" /> Parabéns! Você completou
+                o nível!
+              </p>
+              <p class="conclusao-progresso conclusao-progresso-texto"></p>
+            </header>
+            <div class="conclusao-corpo">
+              <h3 class="conclusao-pergunta" id="conclusao-pergunta">
+                <span class="conclusao-pergunta-texto"></span>
+              </h3>
+              <!-- para a criança: a imagem que representa a lição -->
+              <div class="licao-imagem" role="img"></div>
+              <!-- para o professor: o texto da lição, atrás de um botão -->
+              <div class="licao-professor" id="licao-professor" hidden>
+                <div class="conclusao-texto"></div>
+                <div class="conclusao-reflexao">
+                  <h3>Pense e converse</h3>
+                  <ul></ul>
+                </div>
+              </div>
+              <button
+                class="btn ghost small licao-botao-prof"
+                type="button"
+                aria-expanded="false"
+                aria-controls="licao-professor"
+              >
+                Ler a lição
+              </button>
+            </div>
+            <footer class="conclusao-rodape">
+              <div class="rewards">
+                <div>
+                  <img src="img/ui/estrela.webp" alt="" /><b
+                    class="premio-estrelas"
+                    >+1 estrela</b
+                  >
+                </div>
+                <div>
+                  <img src="img/ui/dica.webp" alt="" /><b class="premio-dicas"
+                    >+1 dica</b
+                  >
+                </div>
+              </div>
+              <button class="btn conclusao-continuar" type="button">
+                <span class="conclusao-continuar-texto">Próximo nível</span> ›
+              </button>
+            </footer>
+          </section>
+        </section>
+        <div class="modal" id="niveis">
+          <div class="panel">
+            <h2 class="niveis-titulo"></h2>
+            <p>
+              Escolha um nível para jogar. Os que você já fez podem ser jogados
+              de novo!
+            </p>
+            <div class="lista-niveis"></div>
+            <button class="btn ghost niveis-fechar" type="button">
+              Voltar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sr leitor-avisos" aria-live="polite"></div>
+    <div class="sr leitor-explicacao" aria-live="polite"></div>
+
+    <!-- a prévia guarda progresso e dicas em chaves próprias: testar
+         aqui não mexe no jogo de quem usa este computador -->
+    <script>
+      window.ALGORITIMANDO_PREVIA = true;
+    </script>
+    <script src="js/motor.js?v=202611111239"></script>
+    <script src="js/comum.js?v=202611111239"></script>
+    <script src="js/som.js?v=202611111239"></script>
+    <script src="js/progresso.js?v=202611111239"></script>
+    <script src="js/perfil.js?v=202611111239"></script>
+    <script src="js/arrasto.js?v=202611111239"></script>
+    <script src="js/conclusao.js?v=202611111239"></script>
+    <script src="js/montagem.js?v=202611111239"></script>
+    <script src="js/jogo.js?v=202611111239"></script>
+    <script src="js/situacoes.js?v=202611111239"></script>
+    <script src="js/editor.js?v=202611111239"></script>
+  </body>
+</html>

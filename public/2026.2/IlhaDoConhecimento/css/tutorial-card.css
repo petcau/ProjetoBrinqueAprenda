@@ -1,0 +1,443 @@
+/* Estilos do Cartão de Tutorial e Motor de Demonstração (Ilha do Conhecimento) */
+
+#tutorial-card-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: rgba(10, 16, 22, 0.78);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+#tutorial-card-dialog[hidden] {
+  display: none !important;
+}
+
+/* Wrapper do Cartão: proporção exata do asset tutorial-cartao.webp (1373 x 1116 = 1.23:1) */
+.tutorial-card-wrapper {
+  position: relative;
+  /* Garante que cabe sem rolagem em 1920x945, 1366x625, 1280x600 e 844x390 */
+  width: min(92vw, calc(92dvh * 1373 / 1116), 840px);
+  aspect-ratio: 1373 / 1116;
+  max-height: 94dvh;
+  background-image: url('../assets/tutorial/tutorial-cartao.webp');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(0 14px 32px rgba(0, 0, 0, 0.65));
+  container-type: size;
+  box-sizing: border-box;
+}
+
+/* Área Segura do Conteúdo: x de 8% a 92% (largura 84%), y de 15% a 94% (altura 79%).
+   O pino no topo central (y de 2% a 13.5%) é estritamente preservado. */
+.tutorial-card-content {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 15%;
+  bottom: 6.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 1cqh 1cqw;
+}
+
+/* Cabeçalho do Cartão */
+.tutorial-card-header {
+  width: 100%;
+  text-align: center;
+  margin-top: 1cqh;
+  flex-shrink: 0;
+}
+
+.tutorial-card-title {
+  margin: 0;
+  color: #3e2613;
+  font-family: 'Press Start 2P', system-ui, sans-serif;
+  font-size: clamp(15px, 3.2cqw, 24px);
+  font-weight: 800;
+  line-height: 1.2;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  letter-spacing: -0.5px;
+}
+
+/* Caixa da Moldura de Vídeo: proporção 1008 x 751 (1.34:1) */
+.tutorial-video-box {
+  position: relative;
+  width: min(84cqw, calc(52cqh * 1008 / 751));
+  aspect-ratio: 1008 / 751;
+  flex-shrink: 1;
+  margin: auto 0;
+}
+
+/* Imagem da moldura de madeira sobreposta ao vídeo */
+.tutorial-moldura-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Janela interna transparente da moldura: x de 9.5% a 90.3% (815 px) e y de 14.2% a 84.2% (526 px) */
+.tutorial-stage-viewport {
+  position: absolute;
+  left: 9.5%;
+  top: 14.2%;
+  width: 80.8%;
+  height: 70.0%;
+  overflow: hidden;
+  background: #101820;
+  border-radius: 4px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tutorial-stage-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  touch-action: none;
+}
+
+/* Botão de replay em modo reduzido */
+.tutorial-replay-btn {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: #254b38;
+  border: 2px solid #84d296;
+  border-radius: 20px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 6px 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+.tutorial-replay-btn:hover {
+  background: #31624a;
+}
+.tutorial-replay-btn:focus-visible {
+  outline: 3px solid #ffe591;
+}
+
+/* Texto explicativo (linguagem infantil, legível e acolhedora) */
+.tutorial-card-copy-box {
+  width: 100%;
+  text-align: center;
+  flex-shrink: 0;
+  margin: 1cqh 0;
+}
+
+.tutorial-card-copy {
+  margin: 0 auto;
+  color: #4a3420;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: clamp(13px, 2.4cqw, 18px);
+  line-height: 1.35;
+  font-weight: 600;
+  max-width: 44ch;
+}
+
+/* Barra inferior de Ações */
+.tutorial-card-actions {
+  width: 92%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+  margin-bottom: 0.5cqh;
+}
+
+/* Botão Secundário: Voltar (imagem 368x152 px; face 128 px; espessura 3D 24 px; pontas 64 px).
+   Escala s = --btn-face-h / 128 (face >= 56 px).
+   Centro na face: normal a 64*s do topo; pressionado a 80*s do topo (desce 16*s). */
+.tutorial-btn-voltar {
+  --btn-face-h: 56px;
+  --btn-cap-w: calc(var(--btn-face-h) * 64 / 128);
+  position: relative;
+  box-sizing: border-box;
+  height: calc(var(--btn-face-h) * 152 / 128);
+  min-height: calc(56px * 152 / 128);
+  min-width: calc(2 * var(--btn-cap-w) + 84px);
+  padding-top: 0;
+  padding-bottom: calc(var(--btn-face-h) * 24 / 128);
+  padding-left: 6px;
+  padding-right: 6px;
+  border-style: solid;
+  border-color: transparent;
+  border-width: 0 var(--btn-cap-w);
+  border-image-source: url('../assets/tutorial/botao-voltar-normal.webp');
+  border-image-slice: 0 64 fill;
+  border-image-width: 0 var(--btn-cap-w);
+  border-image-repeat: stretch;
+  background: transparent;
+  color: #fff6df;
+  font-family: inherit;
+  font-size: clamp(15px, 2.2cqw, 18px);
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 2px 0 #3b2209;
+  cursor: pointer;
+  user-select: none;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.tutorial-btn-voltar:hover {
+  filter: brightness(1.05);
+}
+.tutorial-btn-voltar:active,
+.tutorial-btn-voltar.is-pressed {
+  border-image-source: url('../assets/tutorial/botao-voltar-pressionado.webp');
+  padding-top: calc(var(--btn-face-h) * 16 / 128);
+  padding-bottom: calc(var(--btn-face-h) * 8 / 128);
+}
+.tutorial-btn-voltar:focus-visible {
+  outline: 3px solid #ffe591;
+  outline-offset: 2px;
+}
+
+/* Reserva CSS caso a imagem do botão secundário falhe */
+.tutorial-btn-voltar.is-fallback-css {
+  border-image: none;
+  border: 2px solid #4a2e16;
+  border-radius: 14px;
+  background: #6c4627;
+  box-shadow: 0 4px 0 #3b2209;
+  padding: 6px 18px;
+}
+.tutorial-btn-voltar.is-fallback-css:active,
+.tutorial-btn-voltar.is-fallback-css.is-pressed {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #3b2209;
+  padding: 6px 18px;
+}
+
+/* Bolinhas de etapa */
+.tutorial-step-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.tutorial-step-dot {
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+.tutorial-step-dot.active {
+  background-image: url('../assets/tutorial/ponto-ativo.webp');
+}
+.tutorial-step-dot.inactive {
+  background-image: url('../assets/tutorial/ponto-inativo.webp');
+}
+
+/* Botão Principal: Próximo / OK (imagem 488x184 px; face 160 px; espessura 3D 24 px; pontas 80 px).
+   Escala s = --btn-face-h / 160 (face >= 56 px).
+   Centro na face: normal a 80*s do topo; pressionado a 96*s do topo (desce 16*s). */
+.tutorial-btn-principal {
+  --btn-face-h: clamp(56px, 8.2cqh, 64px);
+  --btn-cap-w: calc(var(--btn-face-h) * 80 / 160);
+  position: relative;
+  box-sizing: border-box;
+  height: calc(var(--btn-face-h) * 184 / 160);
+  min-height: calc(56px * 184 / 160);
+  min-width: calc(2 * var(--btn-cap-w) + 124px);
+  padding-top: 0;
+  padding-bottom: calc(var(--btn-face-h) * 24 / 160);
+  padding-left: 8px;
+  padding-right: 8px;
+  border-style: solid;
+  border-color: transparent;
+  border-width: 0 var(--btn-cap-w);
+  border-image-source: url('../assets/tutorial/botao-primario-verde-normal.webp');
+  border-image-slice: 0 80 fill;
+  border-image-width: 0 var(--btn-cap-w);
+  border-image-repeat: stretch;
+  background: transparent;
+  color: #fff8e2;
+  font-family: inherit;
+  font-size: clamp(16px, 2.5cqw, 20px);
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 2px 0 #1f3d0c;
+  cursor: pointer;
+  user-select: none;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.tutorial-btn-principal:hover {
+  filter: brightness(1.06);
+}
+.tutorial-btn-principal:active,
+.tutorial-btn-principal.is-pressed {
+  border-image-source: url('../assets/tutorial/botao-primario-verde-pressionado.webp');
+  padding-top: calc(var(--btn-face-h) * 16 / 160);
+  padding-bottom: calc(var(--btn-face-h) * 8 / 160);
+}
+.tutorial-btn-principal--dourado {
+  border-image-source: url('../assets/tutorial/botao-primario-dourado-normal.webp');
+  text-shadow: 0 2px 0 #4a3208;
+}
+.tutorial-btn-principal--dourado:active,
+.tutorial-btn-principal--dourado.is-pressed {
+  border-image-source: url('../assets/tutorial/botao-primario-dourado-pressionado.webp');
+}
+.tutorial-btn-principal:focus-visible {
+  outline: 3px solid #ffe591;
+  outline-offset: 2px;
+}
+
+/* Reserva CSS caso a imagem do botão primário falhe */
+.tutorial-btn-principal.is-fallback-css {
+  border-image: none;
+  border: 2px solid #5a9446;
+  border-radius: 14px;
+  background-color: #468735;
+  box-shadow: 0 4px 0 #2e5922;
+  padding: 8px 24px;
+}
+.tutorial-btn-principal.is-fallback-css:active,
+.tutorial-btn-principal.is-fallback-css.is-pressed {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #2e5922;
+  padding: 8px 24px;
+}
+
+/* Unidade interna centralizada: texto + ícone (~0,40x a altura da face) */
+.tutorial-btn-inner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--btn-face-h, 56px) * 0.16);
+  height: 100%;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.tutorial-btn-label {
+  display: inline-block;
+  line-height: 1;
+}
+
+.tutorial-btn-icon {
+  height: calc(var(--btn-face-h, 56px) * 0.40);
+  width: auto;
+  display: block;
+  flex-shrink: 0;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  pointer-events: none;
+}
+.tutorial-btn-icon--arrow-right,
+.tutorial-btn-icon--arrow-left {
+  aspect-ratio: 80 / 104;
+}
+.tutorial-btn-icon--check {
+  aspect-ratio: 120 / 104;
+}
+
+/* Botão Fechar (X) no topo direito */
+.tutorial-card-close {
+  position: absolute;
+  top: 3.5%;
+  right: 3.5%;
+  width: clamp(56px, 6.5cqw, 64px);
+  height: clamp(56px, 6.5cqw, 64px);
+  min-width: 56px;
+  min-height: 56px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tutorial-card-close img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  transition: transform 0.08s;
+}
+.tutorial-card-close:hover img {
+  transform: scale(1.08);
+}
+.tutorial-card-close:active img {
+  transform: scale(0.95);
+}
+.tutorial-card-close:focus-visible {
+  outline: 3px solid #ffe591;
+  border-radius: 50%;
+}
+
+/* Adaptações para Telas Menores / Celular Paisagem (mantendo a face >= 56 px) */
+@media (max-height: 480px) {
+  .tutorial-card-content {
+    top: 13%;
+    bottom: 5%;
+  }
+  .tutorial-card-title {
+    font-size: clamp(13px, 2.8cqw, 17px);
+  }
+  .tutorial-video-box {
+    width: min(74cqw, calc(43cqh * 1008 / 751));
+  }
+  .tutorial-card-copy {
+    font-size: clamp(11px, 2cqw, 14px);
+    line-height: 1.25;
+  }
+  .tutorial-btn-principal,
+  .tutorial-btn-voltar {
+    --btn-face-h: 56px;
+    font-size: 15px;
+  }
+}

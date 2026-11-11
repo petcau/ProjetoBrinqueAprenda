@@ -24,6 +24,189 @@
 
 export const TURMAS = [
   {
+    semestre: '2026.2',
+    disciplina: 'Web1',
+    curso: 'Engenharia de Software',
+    periodo: 'agosto a dezembro de 2026',
+    jogos: [
+      {
+        slug: 'algoritimando',
+        progresso: {
+          chaves: ['algoritimando-progresso', 'algoritimando-perfil'],
+          resumir: (v) => {
+            const lerJson = (valor) => {
+              try {
+                return JSON.parse(valor || '{}');
+              } catch {
+                return {};
+              }
+            };
+
+            const progresso = lerJson(v['algoritimando-progresso']);
+            const perfil = lerJson(v['algoritimando-perfil']);
+            const estrelas = Object.values(progresso).reduce(
+              (total, chamado) =>
+                total +
+                (Array.isArray(chamado?.niveis)
+                  ? chamado.niveis.reduce((soma, n) => soma + (Number(n) || 0), 0)
+                  : 0),
+              0,
+            );
+            const concluidos = Object.keys(perfil.concluidos ?? {}).length;
+
+            return [
+              estrelas > 0 && { rotulo: 'Estrelas', valor: estrelas },
+              concluidos > 0 && { rotulo: 'Chamados concluídos', valor: `${concluidos} de 8` },
+              perfil.senior && { rotulo: 'Cargo', valor: 'Agente Sênior' },
+              !perfil.senior && perfil.promovido && { rotulo: 'Cargo', valor: 'Agente' },
+            ].filter(Boolean);
+          },
+        },
+        categorias: ['tecnologia', 'logica'],
+        titulo: 'Algoritimando',
+        subtitulo: 'Organize os passos, resolva os chamados e pense como um programador!',
+        sinopse: 'Uma aventura de lógica em que cada missão ensina a transformar tarefas do cotidiano em sequências claras e eficientes.',
+        descricao: 'Em Algoritimando, a criança se torna agente de uma central de ajuda e recebe chamados como preparar um sanduíche, organizar uma mochila e orientar a travessia de uma rua. Para resolver cada missão, é preciso arrastar os cartões e colocar as ações em uma ordem válida, observando dependências, repetições, condições e etapas que podem acontecer ao mesmo tempo. A cada nível concluído, o Robô-guia relaciona a atividade ao conceito de algoritmo.',
+        chamada: 'Uma forma visual e divertida de desenvolver pensamento computacional, raciocínio lógico e capacidade de decompor problemas!',
+        capa: '/capas/algoritimando.webp',
+        dataCriacao: '2026-11',
+        publicoAlvo: 'a-partir-4ano',
+        habilidades: [
+          'Pensamento computacional e algoritmos',
+          'Ordenação lógica de sequências',
+          'Decomposição e resolução de problemas',
+          'Reconhecimento de condições, repetições e dependências',
+        ],
+        caracteristicas: [
+          { icone: '🧩', titulo: 'Sequências interativas', descricao: 'Cartões de ações podem ser arrastados para construir uma solução passo a passo.' },
+          { icone: '🤖', titulo: 'Robô-guia', descricao: 'Dicas explicam as consequências de uma ordem incorreta sem entregar toda a resposta.' },
+          { icone: '⭐', titulo: 'Progressão por missões', descricao: 'O jogador conquista estrelas, selos e promoções ao concluir os chamados da cidade.' },
+        ],
+        autores: ['Paulo Helder de Santana Souza', 'Maria Eduarda'],
+        jogo: { tipo: 'estatico', entrada: '/2026.2/Algoritimando/index.html' },
+      },
+      {
+        slug: 'ilha-do-conhecimento',
+        categorias: ['matematica', 'logica'],
+        titulo: 'Ilha do Conhecimento',
+        subtitulo: 'Conquiste quatro chaves, supere desafios matemáticos e ajude a resgatar um amigo especial!',
+        sinopse: 'Uma aventura em pixel art que transforma matemática, memória e raciocínio lógico em uma jornada por uma ilha cheia de descobertas.',
+        descricao: 'Em Ilha do Conhecimento, a criança explora uma ilha conectada e precisa conquistar quatro chaves para libertar um gato. Cada região propõe um tipo de desafio: operações aritméticas, álgebra inicial, geometria e um labirinto que trabalha memória e raciocínio lógico. Entre um desafio e outro, o jogador movimenta a personagem pelo mapa, encontra caminhos e acompanha uma história em quadrinhos que apresenta a missão.',
+        chamada: 'Explore, calcule e pense com estratégia em uma aventura matemática colorida, acolhedora e cheia de segredos!',
+        capa: '/capas/ilha-do-conhecimento.webp',
+        dataCriacao: '2026-11',
+        publicoAlvo: 'a-partir-4ano',
+        habilidades: [
+          'Operações aritméticas e cálculo mental',
+          'Álgebra inicial e reconhecimento de padrões',
+          'Geometria e percepção espacial',
+          'Memória, raciocínio lógico e resolução de problemas',
+        ],
+        caracteristicas: [
+          { icone: '🗺️', titulo: 'Ilha explorável', descricao: 'Um mapa conectado em pixel art conduz a criança entre as diferentes regiões do conhecimento.' },
+          { icone: '🔑', titulo: 'Quatro desafios', descricao: 'Cada área vencida entrega uma chave necessária para concluir a missão de resgate.' },
+          { icone: '🐱', titulo: 'Aventura com propósito', descricao: 'A história, os tutoriais e o objetivo de salvar o gato dão sentido a cada atividade matemática.' },
+        ],
+        autores: ['Daniel Pinheiro dos Santos', 'Gabriel Jacob', 'Luiz Seneterri'],
+        jogo: { tipo: 'estatico', entrada: '/2026.2/IlhaDoConhecimento/index.html' },
+      },
+      {
+        slug: 'robo-ritmado',
+        progresso: {
+          chaves: ['robo-ritmado-best-v04', 'rr-worlds-v07', 'robo-ritmado-toys-unlocked'],
+          resumir: (v) => {
+            const melhor = Number(v['robo-ritmado-best-v04']) || 0;
+            const progresso = Math.max(0, Number(v['rr-worlds-v07']) || 0);
+            const mundos = Math.min(10, progresso + 1);
+
+            return [
+              melhor > 0 && { rotulo: 'Melhor pontuação', valor: melhor.toLocaleString('pt-BR') },
+              { rotulo: 'Mundos liberados', valor: `${mundos} de 10` },
+              progresso >= 10 && { rotulo: 'Fase final', valor: 'Liberada' },
+            ].filter(Boolean);
+          },
+        },
+        categorias: ['artes', 'tecnologia'],
+        titulo: 'Robô Ritimado',
+        subtitulo: 'Acompanhe a batida, atravesse mundos musicais e ajude Pixel a voltar para casa!',
+        sinopse: 'Uma aventura musical futurista em que ritmo, coordenação e atenção conduzem Pixel por dez mundos e uma grande apresentação final.',
+        descricao: 'Em Robô Ritimado, a criança acompanha as setas no compasso da música e usa o teclado ou os controles de toque para ajudar Pixel a completar cada apresentação. A jornada passa por dez mundos com cenários, músicas e metas próprias, além de uma fase final que conclui a história. Sequências precisas ativam o Frenesi e aumentam a pontuação, enquanto diálogos, tutoriais e mensagens de incentivo acolhem diferentes ritmos de aprendizagem. O jogo também oferece ajustes de cores, movimento, velocidade, legendas, som e sensibilidade visual.',
+        chamada: 'Uma jornada de música e descobertas que desenvolve percepção rítmica, coordenação motora e concentração!',
+        capa: '/capas/robo-ritmado.webp',
+        dataCriacao: '2026-11',
+        publicoAlvo: 'a-partir-4ano',
+        habilidades: [
+          'Percepção rítmica e musical',
+          'Coordenação entre estímulos visuais e resposta motora',
+          'Atenção, concentração e tempo de reação',
+          'Persistência e acompanhamento de sequências',
+        ],
+        caracteristicas: [
+          { icone: '🎵', titulo: 'Dez mundos musicais', descricao: 'Cada mundo apresenta uma música, um cenário e uma meta de pontuação diferentes.' },
+          { icone: '🤖', titulo: 'A jornada de Pixel', descricao: 'Cenas e diálogos conectam as apresentações em uma aventura futurista completa.' },
+          { icone: '♿', titulo: 'Acessibilidade ajustável', descricao: 'Controles de cores, movimento, legendas, velocidade, som e sensibilidade visual adaptam a experiência.' },
+        ],
+        autores: ['Ísis Maria Teles de Oliveira', 'Fernanda da Silva Bispo', 'Luis Fabiano Moreira Teles'],
+        jogo: { tipo: 'estatico', entrada: '/2026.2/RoboRitimado/index.html' },
+      },
+      {
+        slug: 'sinfonia-dos-cristais',
+        progresso: {
+          chaves: ['crystal-campaign-v4'],
+          resumir: (v) => {
+            let campanha = {};
+
+            try {
+              campanha = JSON.parse(v['crystal-campaign-v4'] || '{}') || {};
+            } catch {
+              campanha = {};
+            }
+
+            const concluidas = Array.isArray(campanha.completed)
+              ? campanha.completed.filter((id) => Number.isInteger(id))
+              : [];
+            const fasesPrincipais = concluidas.filter((id) => id >= 1 && id <= 20).length;
+            const recordes = campanha.records && typeof campanha.records === 'object'
+              ? Object.values(campanha.records)
+              : [];
+            const estrelas = recordes.reduce(
+              (total, recorde) => total + Math.max(0, Number(recorde?.stars) || 0),
+              0,
+            );
+
+            return [
+              fasesPrincipais > 0 && { rotulo: 'Fases restauradas', valor: `${fasesPrincipais} de 20` },
+              estrelas > 0 && { rotulo: 'Estrelas', valor: estrelas },
+              concluidas.includes(21) && { rotulo: 'Porta Ancestral', valor: 'Concluída' },
+            ].filter(Boolean);
+          },
+        },
+        categorias: ['matematica', 'artes', 'natureza'],
+        titulo: 'Sinfonia dos Cristais',
+        subtitulo: 'Conecte cristais, acompanhe o ritmo e restaure a harmonia dos biomas brasileiros!',
+        sinopse: 'Uma aventura matemática em pixel art na qual cristais, música e exploração transformam conceitos abstratos em descobertas visuais.',
+        descricao: 'Em Sinfonia dos Cristais, a criança ajuda uma pequena fada a restaurar a energia de quatro biomas: Caverna, Floresta, Rio e Caatinga. Ao longo de 20 fases e uma sequência final, os desafios apresentam de forma visual fusão e separação de quantidades, frações, divisão, padrões e relações matemáticas. Cristais podem ser arrastados, combinados e conectados, enquanto fases musicais convidam o jogador a observar sequências e acompanhar o ritmo. A experiência aceita mouse, teclado e toque e inclui ajustes de acessibilidade.',
+        chamada: 'Matemática, música e natureza se encontram em uma jornada visual repleta de cristais, ritmo e descobertas!',
+        capa: '/capas/sinfonia-dos-cristais.webp',
+        dataCriacao: '2026-11',
+        publicoAlvo: 'a-partir-4ano',
+        habilidades: [
+          'Raciocínio matemático visual',
+          'Operações, frações e divisão',
+          'Reconhecimento de padrões e relações',
+          'Ritmo, coordenação e consciência ambiental',
+        ],
+        caracteristicas: [
+          { icone: '💎', titulo: 'Matemática com cristais', descricao: 'Quantidades e relações são exploradas de forma concreta por meio de cristais que podem ser combinados e conectados.' },
+          { icone: '🌿', titulo: 'Quatro biomas', descricao: 'Caverna, Floresta, Rio e Caatinga formam uma campanha com 20 fases e uma grande conclusão.' },
+          { icone: '🎵', titulo: 'Desafios musicais', descricao: 'Ritmo, padrões sonoros e sequências visuais tornam a jornada variada e multissensorial.' },
+        ],
+        autores: ['Heitor Givercy Nascimento Macedo', 'Eyder Sanshes Brandão', 'Ítalo José Bomfim da Rocha'],
+        jogo: { tipo: 'estatico', entrada: '/2026.2/SinfoniaDosCristais/index.html' },
+      },
+    ],
+  },
+  {
     semestre: "2025.2",
     disciplina: 'Web1',
     curso: 'Engenharia de Software',
@@ -464,6 +647,13 @@ export const CATEGORIAS = [
     descricao: 'O Brasil, o mundo e quem veio antes.',
     cor: '#b05a22',
     fundo: '#fbeee4',
+  },
+  {
+    slug: 'artes',
+    nome: 'Arte e Música',
+    descricao: 'Ritmo, expressão e criatividade em movimento.',
+    cor: '#a63fc4',
+    fundo: '#f8eafd',
   },
   {
     slug: 'tecnologia',

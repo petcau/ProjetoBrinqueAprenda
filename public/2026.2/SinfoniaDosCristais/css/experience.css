@@ -1,0 +1,503 @@
+.menu-art,.crystal-light,#menuParticles{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;image-rendering:pixelated;image-rendering:crisp-edges}.menu-art{object-fit:fill}.crystal-light{background:url('../assets/story/interface/menu-aprovado.png') center/100% 100%;filter:brightness(2.1) saturate(1.25);mix-blend-mode:normal;opacity:0.5;image-rendering:pixelated;will-change:opacity;transform:translateZ(0)}#menuParticles{z-index:1}.home-screen .home-menu{z-index:2}
+.game-screen{background:#05030f}
+.reduce-motion .crystal-light{opacity:.3!important}
+/* Interactive Pixel Art Menu Buttons over the Sinfonia dos Cristais Sanctuary Backdrop */
+.home-screen .menu-choice{--menu-color:#a8ff66;position:absolute;left:7%;top:36.2%;width:28%;height:6.8%;padding:0!important;border:none!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;display:flex;align-items:center;justify-content:flex-start;cursor:pointer;transition:transform .05s ease-out;z-index:2;isolation:isolate;will-change:transform;transform:translateZ(0)}
+.home-screen .menu-choice:nth-child(2){top:44.8%;--menu-color:#5ef2ff}
+.home-screen .menu-choice:nth-child(3){top:53.4%;--menu-color:#9feaff}
+.home-screen .menu-choice:nth-child(4){top:62.0%;--menu-color:#ff8ae2}
+.home-screen .menu-choice:nth-child(5){top:70.6%;--menu-color:#ffd35a}
+.home-screen .menu-choice .menu-btn-art{height:100%;width:auto;max-width:100%;object-fit:contain;object-position:left center;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none;filter:drop-shadow(0 3px 6px rgba(0,0,0,0.75));transition:transform .05s ease-out;will-change:transform;transform:translateZ(0)}
+.home-screen .menu-choice:is(:hover,:focus-visible){transform:translateX(5px) scale(1.02)}
+.home-screen .menu-choice:active{transform:translateX(3px) scale(0.98)}
+.home-screen .menu-choice:is(:hover,:focus-visible,:active) .menu-btn-art{filter:drop-shadow(0 0 7px var(--menu-color)) brightness(1.22) contrast(1.05)}
+.home-screen .menu-choice:focus-visible{outline:2px solid var(--menu-color);outline-offset:6px;border-radius:4px}
+.reduce-motion .home-screen .menu-choice{transform:none!important}
+@media(prefers-reduced-motion:reduce){.home-screen .menu-choice{transform:none!important}}
+
+/* ============================================================================
+ * CARD DE CRÉDITOS EM ESTILO DE CRISTAIS (#creditsDialog) & CRÉDITOS ROLANTES FINAIS
+ * ============================================================================ */
+dialog#creditsDialog.crystal-credits-dialog {
+  max-width: min(680px, 94vw);
+  width: 100%;
+  max-height: 90vh;
+  padding: 0;
+  border: 2px solid #68d8ff;
+  border-radius: 16px;
+  background: radial-gradient(circle at 50% 0%, #1d163c 0%, #0d081d 65%, #070410 100%);
+  box-shadow:
+    0 0 0 3px rgba(124, 77, 255, 0.38),
+    0 20px 60px rgba(0, 0, 0, 0.92),
+    inset 0 0 32px rgba(64, 196, 255, 0.22);
+  color: #f3f8ff;
+  overflow: hidden;
+}
+
+dialog#creditsDialog.crystal-credits-dialog::backdrop {
+  background: rgba(4, 2, 12, 0.84);
+  backdrop-filter: blur(5px);
+}
+
+.crystal-credits-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 88vh;
+  padding: 20px 24px 18px;
+  gap: 14px;
+  font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+}
+
+.crystal-card-prism-border {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(104, 216, 255, 0.22), transparent 35%, transparent 65%, rgba(224, 64, 251, 0.22));
+}
+
+.crystal-card-header {
+  text-align: center;
+  border-bottom: 1px solid rgba(104, 216, 255, 0.32);
+  padding-bottom: 10px;
+}
+
+.crystal-card-gems {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 4px;
+  font-size: 1.15rem;
+}
+
+.c-gem.gem-cyan, .gem-cyan { color: #40c4ff; text-shadow: 0 0 10px #40c4ff; }
+.c-gem.gem-emerald, .gem-emerald { color: #69f0ae; text-shadow: 0 0 10px #69f0ae; }
+.c-gem.gem-paraiba, .gem-paraiba { color: #18ffff; text-shadow: 0 0 10px #18ffff; }
+.c-gem.gem-opal, .gem-opal { color: #ffab40; text-shadow: 0 0 10px #ffab40; }
+
+.crystal-card-eyebrow {
+  display: block;
+  font-size: 0.74rem;
+  letter-spacing: 0.2em;
+  color: #80d8ff;
+  font-weight: 700;
+}
+
+.crystal-card-title {
+  margin: 2px 0 0;
+  font-size: 1.55rem;
+  background: linear-gradient(90deg, #ffffff, #80d8ff, #ea80fc, #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 14px rgba(64, 196, 255, 0.35);
+}
+
+.crystal-card-subtitle {
+  margin: 2px 0 0;
+  font-size: 0.95rem;
+  color: #ffd54f;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.crystal-card-body {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 4px;
+}
+
+.crystal-credit-block {
+  background: linear-gradient(180deg, rgba(35, 26, 68, 0.78), rgba(18, 13, 38, 0.88));
+  border: 1px solid rgba(128, 216, 255, 0.35);
+  border-radius: 12px;
+  padding: 11px 14px;
+  box-shadow: inset 0 0 14px rgba(104, 216, 255, 0.1);
+}
+
+.crystal-block-title {
+  margin: 0 0 9px;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #80d8ff;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.crystal-advisor-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.crystal-avatar-ring {
+  width: 68px;
+  height: 68px;
+  border-radius: 14px;
+  padding: 3px;
+  background: linear-gradient(135deg, #40c4ff, #e040fb, #ffd54f);
+  box-shadow: 0 0 16px rgba(64, 196, 255, 0.45);
+  flex-shrink: 0;
+}
+
+.crystal-avatar-ring img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 11px;
+  display: block;
+  background: #cfd8dc;
+}
+
+.crystal-advisor-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.crystal-advisor-meta strong {
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.crystal-advisor-meta span {
+  font-size: 0.84rem;
+  color: #ffd54f;
+  font-weight: 600;
+}
+
+.crystal-team-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 8px;
+}
+
+.crystal-team-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 9px;
+  background: rgba(11, 8, 25, 0.68);
+  border: 1px solid rgba(128, 216, 255, 0.24);
+}
+
+.crystal-team-item div {
+  display: flex;
+  flex-direction: column;
+}
+
+.crystal-team-item strong {
+  font-size: 0.88rem;
+  color: #f5f9ff;
+}
+
+.crystal-team-item small {
+  font-size: 0.76rem;
+  color: #ffd54f;
+  font-weight: 700;
+}
+
+.crystal-tools-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 7px;
+}
+
+.crystal-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #e0f7fa;
+  background: linear-gradient(135deg, rgba(0, 176, 255, 0.24), rgba(124, 77, 255, 0.32));
+  border: 1px solid rgba(128, 216, 255, 0.48);
+  box-shadow: 0 0 8px rgba(64, 196, 255, 0.2);
+}
+
+.crystal-uneb-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: left;
+}
+
+.crystal-uneb-logo {
+  width: 52px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 3px;
+  border: 2px solid #80d8ff;
+  flex-shrink: 0;
+}
+
+.crystal-card-footer {
+  display: flex;
+  justify-content: center;
+  padding-top: 4px;
+}
+
+.crystal-close-btn {
+  background: linear-gradient(135deg, #00b0ff, #7c4dff) !important;
+  color: #ffffff !important;
+  border: 1px solid #b3e5fc !important;
+  padding: 8px 24px !important;
+  border-radius: 999px !important;
+  font-weight: 800 !important;
+  cursor: pointer;
+  box-shadow: 0 0 16px rgba(64, 196, 255, 0.45);
+}
+
+/* ============================================================================
+ * TELA PRETA DE CRÉDITOS ROLANTES FINAIS (#rollingCreditsOverlay)
+ * ============================================================================ */
+.rolling-credits-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #000000;
+  color: #f5f9ff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+}
+
+.rolling-credits-overlay[hidden] {
+  display: none !important;
+}
+
+.rolling-credits-stars {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(64, 196, 255, 0.12), transparent 35%),
+    radial-gradient(circle at 80% 70%, rgba(224, 64, 251, 0.12), transparent 35%);
+  pointer-events: none;
+}
+
+.rolling-credits-skip {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  z-index: 10002;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 2px solid #80d8ff;
+  background: rgba(16, 12, 36, 0.88);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(64, 196, 255, 0.45);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.rolling-credits-skip:hover {
+  transform: scale(1.05);
+  background: rgba(38, 28, 82, 0.95);
+}
+
+.rolling-credits-viewport {
+  position: relative;
+  width: min(680px, 92vw);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.rolling-credits-roll {
+  width: 100%;
+  text-align: center;
+  padding: 20px 16px 120px;
+  will-change: transform;
+}
+
+.rc-crystal-badge {
+  color: #80d8ff;
+  letter-spacing: 0.24em;
+  font-size: 0.85rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.rc-game-title {
+  margin: 0;
+  font-size: 2.3rem;
+  color: #ffffff;
+  text-shadow: 0 0 18px rgba(64, 196, 255, 0.65);
+}
+
+.rc-subtitle {
+  margin: 4px 0 0;
+  font-size: 1.2rem;
+  color: #ffd54f;
+  font-weight: 700;
+}
+
+.rc-divider {
+  margin: 26px auto;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  color: #68d8ff;
+  font-size: 1rem;
+}
+
+.rc-section {
+  margin: 0 auto;
+  max-width: 540px;
+}
+
+.rc-heading {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #80d8ff;
+  margin: 0 0 16px;
+}
+
+.rc-advisor-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.rc-photo-frame {
+  width: 112px;
+  height: 112px;
+  padding: 4px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #40c4ff, #e040fb, #ffd54f);
+  box-shadow: 0 0 24px rgba(64, 196, 255, 0.55);
+}
+
+.rc-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+  background: #cfd8dc;
+}
+
+.rc-advisor-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.rc-advisor-role {
+  font-size: 0.95rem;
+  color: #ffd54f;
+  font-weight: 700;
+}
+
+.rc-team-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rc-team-list li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(20, 15, 42, 0.72);
+  border: 1px solid rgba(128, 216, 255, 0.28);
+}
+
+.rc-team-list strong {
+  font-size: 1.08rem;
+  color: #ffffff;
+}
+
+.rc-role-tag {
+  font-size: 0.86rem;
+  color: #ffd54f;
+  font-weight: 700;
+}
+
+.rc-tools-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.rc-tool-pill {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(26, 20, 56, 0.85);
+  border: 1px solid #68d8ff;
+  color: #e0f7fa;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.rc-uneb-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.rc-uneb-frame {
+  width: 92px;
+  height: 106px;
+  background: #ffffff;
+  padding: 6px;
+  border-radius: 12px;
+  border: 2px solid #80d8ff;
+  box-shadow: 0 0 20px rgba(64, 196, 255, 0.4);
+}
+
+.rc-uneb-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.rc-uneb-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.rc-finale-thanks h3 {
+  font-size: 1.8rem;
+  color: #ffd54f;
+  text-shadow: 0 0 18px rgba(255, 213, 79, 0.6);
+  margin: 8px 0 0;
+}
+
+.rc-gems-row {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  font-size: 1.3rem;
+}

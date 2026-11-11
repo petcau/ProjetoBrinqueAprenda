@@ -1,0 +1,141 @@
+{
+  "updatedAt": "2026-11-04T16:14:56.042Z",
+  "engine": "Crystal Math Mania — High-Fidelity Multi-Track Procedural Synthesizer & LAME MP3 (192 kbps)",
+  "tracks": [
+    {
+      "id": "forest_regular",
+      "fileName": "musica-floresta-fases.mp3",
+      "title": "Sussurros da Mata Ancestral (Floresta - Fases Normais)",
+      "biome": "forest",
+      "kind": "regular",
+      "levels": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "durationSec": 53.3,
+      "bpm": 90,
+      "key": "E minor / G major",
+      "instruments": [
+        "Emerald Celtic Harp",
+        "Native Wooden Flute",
+        "Nylon Acoustic Guitar",
+        "Crystal Lithophone",
+        "Chamber Cello & Viola",
+        "Organic Seed Shaker"
+      ]
+    },
+    {
+      "id": "forest_special",
+      "fileName": "musica-floresta-especial.mp3",
+      "title": "O Despertar da Esmeralda (Floresta - Fase 10 Especial / Araci)",
+      "biome": "forest",
+      "kind": "special",
+      "levels": [
+        10
+      ],
+      "durationSec": 57.1,
+      "bpm": 126,
+      "key": "E major / A major",
+      "instruments": [
+        "Forest Drums & Log Drums",
+        "Accelerated Maracas",
+        "Dual Pan Flutes",
+        "Emerald Bell Chimes",
+        "Spiccato Strings & Horns",
+        "Percussive Rhythm Guitar"
+      ]
+    },
+    {
+      "id": "river_regular",
+      "fileName": "musica-rio-fases.mp3",
+      "title": "Correnteza Turquesa (Rio - Fases Normais)",
+      "biome": "river",
+      "kind": "regular",
+      "levels": [
+        11,
+        12,
+        13,
+        14
+      ],
+      "durationSec": 54.5,
+      "bpm": 88,
+      "key": "C major / F Lydian",
+      "instruments": [
+        "Water Cascading Harp",
+        "Clear Acoustic Piano",
+        "Silver Transverse Flute",
+        "Water Celesta & Glass Bells",
+        "Warm Legato Strings",
+        "Water Droplet Percussion"
+      ]
+    },
+    {
+      "id": "river_special",
+      "fileName": "musica-rio-especial.mp3",
+      "title": "A Dança das Cascatas (Rio - Fase 15 Especial / Irecê)",
+      "biome": "river",
+      "kind": "special",
+      "levels": [
+        15
+      ],
+      "durationSec": 58.1,
+      "bpm": 124,
+      "key": "D major (Pentatonic Sound Crystals)",
+      "instruments": [
+        "Paraíba Tourmaline Chimes",
+        "Aquatic Marimba",
+        "Virtuosic Silver Flute",
+        "Water Drums & Log Percussion",
+        "Acoustic Steel Guitar",
+        "Dynamic Strings"
+      ]
+    },
+    {
+      "id": "caatinga_regular",
+      "fileName": "musica-caatinga-fases.mp3",
+      "title": "Sol Sobre o Arenito (Caatinga - Fases Normais)",
+      "biome": "caatinga",
+      "kind": "regular",
+      "levels": [
+        16,
+        17,
+        18,
+        19
+      ],
+      "durationSec": 51.1,
+      "bpm": 94,
+      "key": "D Mixolydian",
+      "instruments": [
+        "Viola Caipira / 12-String Guitar",
+        "Rabeca Sertaneja (Rustic Fiddle)",
+        "Sandstone Lithophone",
+        "Cabaça Shaker & Dry Seeds",
+        "Acoustic Upright Bass",
+        "Warm Desert Wind Chiff"
+      ]
+    },
+    {
+      "id": "caatinga_special",
+      "fileName": "musica-caatinga-especial.mp3",
+      "title": "O Baião da Opala de Fogo (Caatinga - Fase 20 Especial / Jurema)",
+      "biome": "caatinga",
+      "kind": "special",
+      "levels": [
+        20
+      ],
+      "durationSec": 57.3,
+      "bpm": 134,
+      "key": "A major / E Mixolydian (Traditional Fast Baião)",
+      "instruments": [
+        "Traditional Zabumba",
+        "Crystal Triangle",
+        "Virtuosic Solo Rabeca",
+        "Brazilian Sanfona (Accordion)",
+        "7-String Guitar & Cavaquinho",
+        "Fire Opal Chimes"
+      ]
+    }
+  ]
+}

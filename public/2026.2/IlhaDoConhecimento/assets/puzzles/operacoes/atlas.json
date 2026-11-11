@@ -1,0 +1,68 @@
+{
+ "saco_trigo": {
+  "w": 130,
+  "h": 151
+ },
+ "saco_farinha": {
+  "w": 130,
+  "h": 147
+ },
+ "pao": {
+  "w": 137,
+  "h": 109
+ },
+ "barril": {
+  "w": 116,
+  "h": 147
+ },
+ "caixa": {
+  "w": 142,
+  "h": 147
+ },
+ "cesta": {
+  "w": 168,
+  "h": 139
+ },
+ "slot": {
+  "w": 176,
+  "h": 180
+ },
+ "placa_pedido": {
+  "w": 364,
+  "h": 287
+ },
+ "etiqueta": {
+  "w": 163,
+  "h": 91
+ },
+ "carroca_vermelha": {
+  "w": 294,
+  "h": 226
+ },
+ "carroca_azul": {
+  "w": 298,
+  "h": 227
+ },
+ "carroca_verde": {
+  "w": 299,
+  "h": 226
+ },
+ "carrinho": {
+  "w": 875,
+  "h": 509
+ },
+ "engrenagem": {
+  "w": 151,
+  "h": 155
+ },
+ "lanterna_apagada": {
+  "w": 69,
+  "h": 99
+ },
+ "velas_frames": {
+  "frames": 16,
+  "w": 224,
+  "h": 224,
+  "nota": "eixo no centro de cada frame; 16 ângulos cobrem 90°"
+ }
+}

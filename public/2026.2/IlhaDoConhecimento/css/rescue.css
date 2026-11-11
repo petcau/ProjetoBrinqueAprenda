@@ -1,0 +1,60 @@
+/* Progresso na ilha e a tela de reencontro, usando somente imagens locais. */
+.island-keyring { position:absolute; left:16px; bottom:16px; padding:9px 13px; background:#f4e3b9f2; border:2px solid #927859; border-radius:5px; color:#544734; pointer-events:none; }
+.island-keyring>span { display:block; font:700 11px system-ui; margin-bottom:5px; }
+.island-key-slots { display:flex; gap:12px; }
+.island-key-slot { position:relative; display:grid; justify-items:center; gap:3px; }
+.island-key-slot[data-owned=true]::after { content:'✓'; position:absolute; top:0; right:-5px; color:#356338; font:700 12px system-ui; }
+.island-key-slot img { width:24px; height:32px; object-fit:contain; image-rendering:pixelated; }
+.island-key-slot small { font:9px system-ui; }
+.island-key-slot[data-owned=false] { opacity:.5; }
+.island-key-slot[data-owned=false] img { filter:grayscale(1); }
+.rescue-screen { width:100%; min-height:100svh; padding:20px; background:radial-gradient(ellipse at top,#bac2a6,#6a8278 70%); color:#51432e; }
+.rescue-header { display:flex; justify-content:space-between; align-items:center; gap:16px; width:min(1040px,100%); margin:0 auto 24px; }
+.rescue-header>span { font:700 11px system-ui; letter-spacing:1px; color:#294f40; }
+.rescue-content { width:min(840px,100%); margin:auto; background:#f4e2bd; border:4px solid #897555; box-shadow:0 0 0 3px #43594c,0 16px 40px #29463d44; border-radius:10px; text-align:center; padding:30px 36px; }
+.rescue-content h1 { font-size:clamp(28px,4vw,42px); margin:10px 0 12px; }
+.rescue-content>p { font:16px/1.6 system-ui; }
+.rescue-scene { position:relative; height:220px; max-width:470px; margin:22px auto 0; border-bottom:8px solid #889776; background:linear-gradient(transparent 70%,#a3b185 70%); }
+.rescue-scene img { position:absolute; image-rendering:pixelated; object-fit:contain; }
+.rescue-arch { height:210px; width:210px; bottom:0; left:50%; transform:translateX(-50%); }
+.rescue-friend { width:52px; height:65px; bottom:4px; left:50%; transform:translateX(-50%); }
+.rescue-child { width:64px; height:80px; bottom:0; left:12%; }
+.rescue-fence { width:165px; height:64px; bottom:0; left:50%; transform:translateX(-50%); }
+.rescue-heart { position:absolute; left:calc(50% - 10px); bottom:77px; font-size:27px; color:#b6553d; display:none; }
+.rescue-screen[data-rescued=true] .rescue-fence { display:none; }
+.rescue-screen[data-rescued=true] .rescue-heart { display:block; }
+#rescue-count { font-weight:700; color:#426240; }
+.rescue-locks { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.rescue-lock { display:grid; grid-template-columns:1fr 1fr; align-items:center; justify-items:center; padding:14px 8px; border:2px solid #a1875e; border-bottom:5px solid #8b704b; border-radius:6px; background:#fff0cf; color:#58452e; }
+.rescue-lock>img { width:30px; height:40px; image-rendering:pixelated; object-fit:contain; }
+.rescue-lock>span { grid-column:1/-1; margin:10px 0 5px; font:700 12px/1.4 system-ui; }
+.rescue-lock>small { grid-column:1/-1; font:10px/1.4 system-ui; }
+.rescue-lock:hover:enabled { background:#dce6bb; }
+.rescue-lock:disabled { background:#e1d5bc; color:#756953; }
+.rescue-lock:disabled img { filter:grayscale(1); opacity:.6; }
+.rescue-lock[data-unlocked=true] { background:#d9e4b9; border-color:#739268; }
+.rescue-lock[data-unlocked=true]>img:first-child { opacity:1; filter:none; }
+.rescue-lock[data-unlocked=true] .lock-icon { visibility:hidden; }
+.rescue-content .rescue-feedback { min-height:26px; margin:15px 0 6px; font-weight:700; color:#386a3c; }
+.rescue-content .rescue-note { font-size:13px; color:#746447; margin:8px auto 16px; max-width:600px; }
+#rescue-menu { min-width:220px; }
+@media(max-width:600px) {
+  .island-keyring { left:8px; bottom:8px; padding:6px 9px; }
+  .island-key-slots { gap:10px; }
+  .island-key-slot img { width:18px; height:24px; }
+  .island-key-slot small { font-size:8px; }
+  .rescue-screen { padding:12px; }
+  .rescue-header { gap:10px; margin-bottom:18px; }
+  .rescue-header>span { font-size:9px; line-height:1.5; }
+  .rescue-content { padding:24px 16px; }
+  .rescue-content>.chapter { font-size:9px; }
+  .rescue-content>p { font-size:14px; }
+  .rescue-scene { height:185px; }
+  .rescue-arch { height:180px; width:180px; }
+  .rescue-locks { grid-template-columns:repeat(2,1fr); gap:10px; }
+}
+@media(max-height:520px) and (orientation:landscape) {
+  .island-keyring { bottom:8px; padding:5px 9px; }
+  .island-key-slot small { display:none; }
+  .island-key-slot img { height:22px; width:17px; }
+}

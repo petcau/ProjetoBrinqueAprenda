@@ -1,0 +1,47 @@
+/* World-specific ornamentation. Direction targets stay fixed and readable. */
+:root{--world-glow:#ff94d6;--world-gold:#ffe5a5}
+.brand strong{font-size:27px;letter-spacing:-.9px;font-style:normal;font-weight:850;white-space:nowrap}
+.brand strong span{color:#ffd3ef}.brand-star{font-size:31px}
+.journey-nav{display:flex;align-items:center;gap:12px}.journey-link{font-size:11px;letter-spacing:3px;color:#ffdcf1}
+.world-chip{border:1px solid #fff5;border-radius:22px;background:#28163f88;padding:8px 13px;display:flex;gap:8px;align-items:center;font-size:9px;backdrop-filter:blur(12px)}
+.world-chip small{font-size:9px}.world-chip[aria-current=step]{border-color:var(--pink);box-shadow:0 0 17px #ffb3eb30;background:#4a275bbe;opacity:1}.world-chip:disabled{cursor:default}
+.track-shell{border:3px solid #efb2e5;box-shadow:0 0 0 1px #fff8,0 0 24px #ff8edb60,0 12px 40px #37144466;border-radius:19px}
+.track-shell::before,.track-shell::after{content:'';position:absolute;top:32px;bottom:0;width:4px;z-index:3;pointer-events:none;background:repeating-linear-gradient(135deg,#ffe6f5 0 7px,#ef81c9 7px 14px,#c5f5ff 14px 21px);background-size:100% 100px;animation:rail-scroll 9s linear infinite}
+.track-shell::before{left:0}.track-shell::after{right:0;animation-direction:reverse}
+.track-meta{background:linear-gradient(100deg,#65274d,#382057 50%,#24526b);text-shadow:0 1px 5px #21112c;font-size:7px}
+.track-meta span:first-child{letter-spacing:1.4px}.track-instruction{color:#fff0fa;text-shadow:0 1px 5px #150820}
+.song-icon{box-shadow:0 0 14px #f788db35}.portal-charged .energy-track>div{box-shadow:0 0 12px #fff0c7}
+.portal-charged .portal-card{border-color:#ffe8b4;box-shadow:0 0 17px #ffc8ee50}
+.replay-secondary{min-width:180px;background:none;color:#eed6f8;font-size:10px;padding:7px 12px;margin-top:4px!important;box-shadow:none}
+.portal-button{background:linear-gradient(100deg,#fff1ad,#ffc7e9);font-size:11px;min-width:240px}
+.result-overlay:has(#nextStage:not([hidden])) .result-stars{font-size:24px;margin-top:8px}
+.result-overlay:has(#nextStage:not([hidden])) h2{margin:7px 0;font-size:26px}
+.result-overlay:has(#nextStage:not([hidden])) .result-score{font-size:28px;margin:8px 0}
+.result-overlay:has(#nextStage:not([hidden])) .result-grid>div{padding:6px 3px}
+.result-overlay .result-detail{line-height:1.6;font-size:9px}.result-overlay .intro-detail{max-width:95%;line-height:1.4}
+body[data-theme=brinquedos]{--world-glow:#85cbff;--world-gold:#ffdc70;--pink:#ffda65}
+body[data-theme=brinquedos] .brand strong span{color:#ffe399}
+body[data-theme=brinquedos] .world::after{background:linear-gradient(180deg,#102851a1 0,#172b4830 23%,transparent 50%,#152b4c25 76%,#10213ba8 100%)}
+body[data-theme=brinquedos] .track-shell{border-color:#ffda70;box-shadow:0 0 0 1px #fff9,0 0 25px #679fff70,0 12px 40px #10386666}
+body[data-theme=brinquedos] .track-shell::before,body[data-theme=brinquedos] .track-shell::after{background:repeating-linear-gradient(0deg,#ffd966 0 10px,#ff7d8e 10px 20px,#78bdff 20px 30px,#8fe9b7 30px 40px);background-size:100% 120px}
+body[data-theme=brinquedos] .track-meta{background:linear-gradient(100deg,#235b95,#323e85 50%,#85692d)}
+body[data-theme=brinquedos] .overlay{background:linear-gradient(140deg,#183459ee,#201c40ee)}
+body[data-theme=brinquedos] .pill{color:#ffdf8c;border-color:#ffdf8c66}
+body[data-theme=brinquedos] .primary-button{background:linear-gradient(100deg,#ffe3a0,#a8dfff)}
+body[data-theme=brinquedos] .scoreboard,body[data-theme=brinquedos] .portal-card,body[data-theme=brinquedos] .song-strip{background:#132c4bc9}
+body[data-theme=brinquedos] .scoreboard span{color:#d5e6ff}
+body[data-theme=brinquedos] .energy-track>div{background:linear-gradient(90deg,#79c6ff,#ffe68b)}
+body[data-theme=brinquedos] .tutorial-keys kbd:nth-child(1){color:#88c5ff}body[data-theme=brinquedos] .tutorial-keys kbd:nth-child(2){color:#ffe182}body[data-theme=brinquedos] .tutorial-keys kbd:nth-child(3){color:#91edbd}body[data-theme=brinquedos] .tutorial-keys kbd:nth-child(4){color:#ffa4ae}
+.travel-overlay{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse at 50% 36%,#603779f2 0,#201339f8 50%,#10142afa 100%);backdrop-filter:blur(18px);padding:30px}
+.travel-overlay h2{font-size:42px;margin:24px 0 16px}.travel-overlay h2 em{color:#ffe59c}
+.travel-overlay p{font-size:14px;color:#f0dbff;margin:0 0 18px}.travel-overlay>span:last-of-type{font-size:11px;color:#b5ddff;letter-spacing:2px}
+.travel-rings{position:relative;width:190px;height:190px;margin-bottom:24px;display:grid;place-items:center}
+.travel-rings i{position:absolute;inset:0;border:4px solid #f5b0ed;border-top-color:#a3e7ff;border-bottom-color:#ffe2a3;border-radius:50%;box-shadow:0 0 40px #ef9bff77,inset 0 0 30px #a9e6ff33;animation:portal-turn 2s linear infinite}
+.travel-rings i:nth-child(2){inset:18px;animation-direction:reverse;border-width:2px}.travel-rings i:nth-child(3){inset:35px;border-style:dashed;animation-duration:5s}
+.travel-rings b{font-size:60px;color:#fff0bd;text-shadow:0 0 30px #ff91dc;animation:portal-breathe 1s ease-in-out infinite alternate}
+@keyframes rail-scroll{to{background-position-y:100px}}@keyframes portal-turn{to{transform:rotate(360deg)}}@keyframes portal-breathe{to{transform:scale(1.15)}}
+.soft-effects .track-shell::before,.soft-effects .track-shell::after{animation:none}.soft-effects .track-shell{box-shadow:0 0 0 1px #fff5}.soft-effects .travel-rings i,.soft-effects .travel-rings b{animation:none}
+@media(max-width:1100px){.brand strong{font-size:24px}.journey-nav{gap:7px}.world-chip{font-size:8px;padding:7px 10px}.journey-link{letter-spacing:1px}.top-actions .icon-button span{display:none}}
+@media(max-width:760px){.brand strong{font-size:22px}.brand-star{font-size:24px}.journey-nav{position:absolute;top:62px;right:12px;gap:5px;z-index:6}.world-chip{font-size:7px;padding:4px 7px}.world-chip span{display:none}.journey-link{font-size:7px}.stage-top .scoreboard{margin-top:15px}.chapter{max-width:62%}.chapter p{font-size:7px}.track-shell{border-width:2px}.track-meta{font-size:6px}.result-overlay:has(#nextStage:not([hidden])) h2{font-size:21px}.portal-button{min-width:190px;font-size:9px}.result-overlay .result-grid b{font-size:16px}.result-overlay .result-detail{font-size:7px}.result-overlay .intro-detail{font-size:6px}.travel-overlay h2{font-size:31px}.travel-rings{width:145px;height:145px}.replay-secondary{min-width:170px;font-size:9px}.track-shell::before,.track-shell::after{width:3px}}
+@media(max-height:730px) and (min-width:761px){.result-overlay:has(#nextStage:not([hidden])) .result-stars{font-size:20px;margin-top:3px}.result-overlay:has(#nextStage:not([hidden])) h2{font-size:22px;margin:5px 0}.result-overlay:has(#nextStage:not([hidden])) .result-score{font-size:24px;margin:5px 0}.result-overlay:has(#nextStage:not([hidden])) .result-grid>div{padding:4px 3px}.portal-button{padding:10px 16px}}
+@media(prefers-reduced-motion:reduce){.track-shell::before,.track-shell::after,.travel-rings i,.travel-rings b{animation:none}}

@@ -1,0 +1,33 @@
+.map-screen>.map-art,.map-screen>.map-shade,.map-screen>.route-wrap,.map-screen>.world-labels,.map-screen>.map-caption{display:none!important}
+.map-screen{background:#05030f;overflow:hidden;position:relative;width:100vw;height:100dvh}
+.journey-map{position:absolute;width:max(100vw,calc(100dvh * 1.77683));height:max(100dvh,calc(100vw / 1.77683));aspect-ratio:1672/941;left:50%;top:50%;transform:translate(-50%,-50%);background:url('../assets/story/interface-extra/mapa-sem-personagem.png') center/100% 100% no-repeat;image-rendering:pixelated;box-shadow:0 0 40px rgba(0,0,0,0.85)}
+.journey-node{position:absolute;width:3.1%;min-width:24px;aspect-ratio:1;border:2px solid #a87ffb;border-radius:50%;background:radial-gradient(circle,#4b2685 0%,#1e0e3a 85%);box-shadow:0 0 8px rgba(168,127,251,0.75),inset 0 0 4px rgba(255,255,255,0.35);transform:translate(-50%,-50%);z-index:3;padding:0;pointer-events:auto;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#ffffff;font-family:var(--game-font,'Fredoka',sans-serif);font-size:11px;font-weight:700;transition:transform .12s,box-shadow .12s,border-color .12s}
+.journey-node:before{content:attr(data-level);font-size:10px;font-weight:700;color:#ffffff;text-shadow:1px 1px 1px #000;line-height:1}
+.journey-node:active{transform:translate(-50%,-50%) scale(0.95)}
+.journey-node:hover,.journey-node:focus-visible{border-color:#ffffff;box-shadow:0 0 16px #ffffff,0 0 8px #ffea31;transform:translate(-50%,-50%) scale(1.18);z-index:4}
+.journey-node.current{border-color:#ffe887;box-shadow:0 0 14px #ffea31,0 0 6px #ffffff;animation:node-pulse 1.4s ease-in-out infinite alternate}
+.journey-node.locked{background:#10132bcc;border-color:#5b6177;box-shadow:none;cursor:not-allowed;opacity:0.65}
+.journey-node.locked:before{color:#8b92ab}
+.journey-node.done{background:radial-gradient(circle,#1f7a4a 0%,#0d3b23 85%);border-color:#52e697;box-shadow:0 0 8px rgba(82,230,151,0.75),inset 0 0 4px rgba(255,255,255,0.35)}
+.journey-node.done:before{display:none}
+.journey-node.done:after{content:'✓';font-size:12px;color:#ffffff;font-weight:800;text-shadow:1px 1px #0d3b23}
+.journey-node[data-level="5"]:not(.done):before,.journey-node[data-level="10"]:not(.done):before,.journey-node[data-level="15"]:not(.done):before,.journey-node[data-level="20"]:not(.done):before{content:'♪';font-size:12px;color:#ffe887}
+.journey-node[data-level="21"]:not(.locked){background:radial-gradient(circle,#b88219 0%,#4a2f05 85%);border-color:#ffd86b;box-shadow:0 0 12px rgba(255,216,107,0.7),inset 0 0 4px rgba(255,255,255,0.4);color:#fff5a8}
+.journey-node[data-level="21"]:before{display:none}
+.journey-node[data-level="21"]:not(.locked):after{content:'★';font-size:13px;color:#fff5a8;text-shadow:1px 1px #2b1804}
+@keyframes node-pulse{from{box-shadow:0 0 8px #ffea31,0 0 3px #fff}to{box-shadow:0 0 18px #ffea31,0 0 8px #fff}}
+.journey-fairy{position:absolute;width:5%;aspect-ratio:1;background:0 0/400% 200% no-repeat;image-rendering:pixelated;transform:translate(-50%,-105%);pointer-events:none;z-index:5;border-radius:45%;will-change:left,top;filter:drop-shadow(0 3px 4px #060b22)}
+.map-screen .screen-bar{position:absolute;top:0;left:0;right:0;z-index:10;pointer-events:none;padding:12px 24px;background:linear-gradient(180deg,rgba(8,15,37,0.78) 0%,rgba(8,15,37,0.3) 70%,transparent 100%)}.map-screen .screen-bar .square-button{pointer-events:auto}
+.map-screen.iris-entering .screen-bar .square-button{pointer-events:none}
+.map-caption{display:none!important}
+.journey-dialog{width:min(580px,94vw);aspect-ratio:1.5;border:0;background:transparent url('../assets/story/interface-extra/paineis-mundos.png') var(--panel-x) var(--panel-y)/200% 200%;padding:0;overflow:hidden;color:#ffffff;font-family:var(--game-font,'Fredoka',sans-serif);filter:drop-shadow(0 0 9px #a278bc);animation:panel-idle 3s ease-in-out infinite alternate}
+.journey-dialog::backdrop{background:#071023c9}
+.journey-dialog h2{position:absolute;top:16%;left:15%;width:70%;font-size:clamp(16px,2.5vw,23px);text-align:center;font-family:var(--game-font,'Fredoka',sans-serif);color:#ffffff;-webkit-text-stroke:1.2px #000;text-shadow:-1.5px -1.5px 0 #000,1.5px -1.5px 0 #000,-1.5px 1.5px 0 #000,1.5px 1.5px 0 #000,2px 3px 4px #000;paint-order:stroke fill;font-weight:700}
+.journey-stars{position:absolute;top:35%;left:15%;width:70%;height:23%;display:flex;align-items:center;justify-content:center;text-align:center;font-size:clamp(29px,6vw,48px);color:#ffe887;-webkit-text-stroke:1.5px #000;text-shadow:-2px -2px 0 #000,2px -2px 0 #000,-2px 2px 0 #000,2px 2px 0 #000,2px 3px 5px #000;background:#25183c;letter-spacing:8px}
+.journey-dialog p{position:absolute;top:57%;left:15%;width:70%;text-align:center;font-size:14px;background:#25183ce6;font-family:var(--game-font,'Fredoka',sans-serif);color:#92e8ff;-webkit-text-stroke:0.6px #000;text-shadow:-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,1px 2px 2px #000;paint-order:stroke fill;font-weight:600;padding:2px 6px;border-radius:4px}
+.journey-dialog button{position:absolute;top:70%;width:30%;height:12%;display:flex;align-items:center;justify-content:center;text-align:center;border:2px solid #92e8ff;border-radius:6px;background:#2b184ae6;font-weight:700;font-size:17px;font-family:var(--game-font,'Fredoka',sans-serif);color:#ffffff;-webkit-text-stroke:1px #000;text-shadow:-1.2px -1.2px 0 #000,1.2px -1.2px 0 #000,-1.2px 1.2px 0 #000,1.2px 1.2px 0 #000,2px 2px 3px #000;paint-order:stroke fill;cursor:pointer;transition:transform .12s,background .12s}
+.journey-dialog button:hover{background:#41246ee6;color:#92e8ff;transform:scale(1.04)}
+.journey-begin{left:18%}.journey-back{right:17%}
+@keyframes panel-idle{to{filter:drop-shadow(0 0 15px #a278bc)}}
+.reduce-motion .journey-dialog{animation:none}
+@media(max-width:600px){.journey-dialog p{font-size:10px}.journey-node{min-width:20px}.map-caption{font-size:12px}}

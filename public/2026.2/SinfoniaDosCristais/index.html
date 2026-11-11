@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111338"><meta name="description" content="Uma aventura de cristais, natureza brasileira e música. Explore quatro mundos resolvendo desafios em True Pixel Art.">
+<title>Crystal Math Mania — Sinfonia dos Cristais</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%237aeaff' d='M8 3h16v5h5v12h-5v5h-5v5h-6v-5H8v-5H3V8h5z'/%3E%3Cpath fill='%235945ba' d='M8 12h16L16 26z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/pixel.css?v=9">
+<link rel="stylesheet" href="css/menu.css?v=7">
+<link rel="stylesheet" href="css/journey.css?v=8">
+<link rel="preload" as="audio" href="assets/audio/musica-menu.mp3" type="audio/mp3">
+<link rel="stylesheet" href="css/experience.css?v=12">
+<link rel="stylesheet" href="css/responsive.css?v=3">
+</head><body data-screen="home">
+<div id="preloaderScreen" class="preloader-screen" aria-label="Carregando recursos do jogo" role="status"><canvas id="preloaderCanvas" width="640" height="360" aria-hidden="true"></canvas></div>
+<div id="orientationOverlay" class="orientation-overlay" role="dialog" aria-label="Gire o dispositivo para o modo paisagem" hidden>
+  <div class="orientation-card">
+    <div class="orientation-icon" aria-hidden="true">📱↻</div>
+    <h2>Modo Paisagem Recomendado</h2>
+    <p>Para jogar <strong>Sinfonia dos Cristais</strong> com a melhor visualização, gire seu aparelho para a horizontal (paisagem).</p>
+    <button type="button" id="enterLandscapeFullscreenBtn" class="pixel-button">Tela Cheia e Modo Paisagem</button>
+  </div>
+</div>
+<a class="skip-link" href="#newGameButton">Ir ao menu</a>
+<main>
+<section id="home" class="screen home-screen" aria-labelledby="gameTitle">
+<div class="cave-backdrop" aria-hidden="true"></div>
+<div class="menu-film-frame" id="menuFilmFrame">
+<img class="menu-art" src="assets/story/interface/menu-aprovado.png" alt="" draggable="false"><div id="crystalLights" aria-hidden="true"></div><canvas id="menuParticles" aria-hidden="true"></canvas>
+<h1 id="gameTitle" class="visually-hidden">Crystal Math Mania — Sinfonia dos Cristais</h1>
+<nav class="home-menu" aria-label="Menu inicial">
+<button id="newGameButton" class="menu-choice primary" aria-label="Novo Jogo"><img class="menu-btn-art" src="assets/story/interface/btn-novo-jogo.png" alt="Novo Jogo" draggable="false"><span class="visually-hidden">Novo Jogo</span></button>
+<button id="continueButton" class="menu-choice" aria-label="Continuar"><img class="menu-btn-art" src="assets/story/interface/btn-continuar.png" alt="Continuar" draggable="false"><span class="visually-hidden">Continuar</span></button>
+<button data-settings class="menu-choice" aria-label="Opções"><img class="menu-btn-art" src="assets/story/interface/btn-opcoes.png" alt="Opções" draggable="false"><span class="visually-hidden">Opções</span></button>
+<button id="creditsButton" class="menu-choice" aria-label="Créditos"><img class="menu-btn-art" src="assets/story/interface/btn-creditos.png" alt="Créditos" draggable="false"><span class="visually-hidden">Créditos</span></button>
+<button id="exitButton" class="menu-choice menu-exit" aria-label="Sair"><img class="menu-btn-art" src="assets/story/interface/btn-sair.png" alt="Sair" draggable="false"><span class="visually-hidden">Sair</span></button>
+</nav></div><p class="visually-hidden" id="homeSave">Sua jornada começa com um pequeno brilho.</p>
+</section>
+<section id="map" class="screen map-screen" aria-labelledby="mapTitle" hidden>
+<div class="map-art" aria-hidden="true"></div><div class="map-shade" aria-hidden="true"></div>
+<header class="screen-bar"><button data-home class="square-button" aria-label="Voltar ao início">⌂</button><div><span class="eyebrow">A JORNADA ECOLÓGICA</span><h2 id="mapTitle">O caminho da luz</h2></div><button data-settings class="square-button" aria-label="Configurações">⚙</button></header>
+<div id="worldLabels" class="world-labels"></div><div class="route-wrap"><svg id="mapRoute" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true"></svg><div id="levelNodes"></div></div>
+<div class="map-caption" hidden><span id="mapProgress"></span><p>Escolha uma luz no caminho.</p></div>
+</section>
+<section id="game" class="screen game-screen" hidden></section>
+</main>
+<div id="feedback" class="toast" role="status" aria-live="polite"></div>
+<dialog id="settingsDialog" class="settings-dialog" aria-labelledby="settingsTitle"><form method="dialog">
+<div class="panel-title"><h2 id="settingsTitle">Configurações</h2><button class="square-button close" aria-label="Fechar configurações">×</button></div>
+<div class="settings-tabs" role="tablist" aria-label="Categoria"><button type="button" id="soundTab" role="tab" aria-selected="true" aria-controls="soundPanel">♪ Som</button><button type="button" id="accessTab" role="tab" aria-selected="false" aria-controls="accessPanel" tabindex="-1">◉ Acessibilidade</button></div>
+<div id="soundPanel" role="tabpanel" aria-labelledby="soundTab">
+<label class="setting-row"><span>Música<small>Notas, composição e vocal</small></span><input id="musicVolume" type="range" min="0" max="100" value="50"><output id="musicValue">50%</output></label>
+<label class="setting-row"><span>Efeitos<small>Colisões, fusões e fragmentos</small></span><input id="fxVolume" type="range" min="0" max="100" value="50"><output id="fxValue">50%</output></label>
+<button type="button" id="testSound" class="pixel-button">Ouvir um cristal</button></div>
+<div id="accessPanel" role="tabpanel" aria-labelledby="accessTab" hidden>
+<label class="setting-row"><input id="voiceToggle" type="checkbox"><span>Narrador<small>Instruções e mensagens de navegação</small></span></label>
+<label class="setting-row"><input id="contrastToggle" type="checkbox"><span>Alto contraste<small>Realça bordas e textos da interface</small></span></label>
+<label class="setting-row"><input id="motionToggle" type="checkbox"><span>Reduzir movimentos<small>Sem tremores, giros ou animações intensas</small></span></label>
+<label class="setting-row"><input id="assistToggle" type="checkbox"><span>Ritmo tranquilo<small>Experiência contemplativa sem pressa</small></span></label>
+<p class="keyboard-guide">Arraste cristais para somar, subtrair ou anular; toque em Citrinos e Água-Marinhas para dividir; pressione R para reiniciar a fase.</p></div>
+<footer class="settings-footer"><button class="square-button" aria-label="Voltar">←</button></footer><p id="fileStatus" role="status"></p>
+</form></dialog>
+<dialog id="creditsDialog" class="crystal-credits-dialog" aria-labelledby="creditsTitle">
+  <form method="dialog" class="crystal-credits-card">
+    <div class="crystal-card-prism-border" aria-hidden="true"></div>
+    <header class="crystal-card-header">
+      <div class="crystal-card-gems" aria-hidden="true">
+        <span class="c-gem gem-cyan">❖</span>
+        <span class="c-gem gem-emerald">❖</span>
+        <span class="c-gem gem-paraiba">❖</span>
+        <span class="c-gem gem-opal">❖</span>
+      </div>
+      <span class="crystal-card-eyebrow">✦ CRÉDITOS DO JOGO ✦</span>
+      <h2 id="creditsTitle" class="crystal-card-title">Crystal Math Mania</h2>
+      <p class="crystal-card-subtitle">Sinfonia dos Cristais</p>
+    </header>
+    <div class="crystal-card-body">
+      <section class="crystal-credit-block advisor-block">
+        <h3 class="crystal-block-title"><span>◆</span> Orientador e Professor <span>◆</span></h3>
+        <div class="crystal-advisor-card">
+          <div class="crystal-avatar-ring">
+            <img src="assets/credits/peterson-lobato.jpg" data-credit-img="peterson" alt="Orientador e Professor Peterson Lobato">
+          </div>
+          <div class="crystal-advisor-meta">
+            <strong>Peterson Lobato</strong>
+            <span>Orientador e Professor</span>
+          </div>
+        </div>
+      </section>
+      <section class="crystal-credit-block">
+        <h3 class="crystal-block-title"><span>◆</span> Integrantes da Equipe <span>◆</span></h3>
+        <ul class="crystal-team-grid">
+          <li class="crystal-team-item"><span class="c-gem gem-cyan">✦</span><div><strong>Heitor Givercy Nascimento Macedo</strong><small>Gestor</small></div></li>
+          <li class="crystal-team-item"><span class="c-gem gem-emerald">✦</span><div><strong>Eyder Sanshes Brandão</strong><small>Programador</small></div></li>
+          <li class="crystal-team-item"><span class="c-gem gem-paraiba">✦</span><div><strong>Ítalo José Bomfim da Rocha</strong><small>Programador</small></div></li>
+          <li class="crystal-team-item"><span class="c-gem gem-opal">✦</span><div><strong>Italo Marcus de Sant'Ana Freitas</strong><small>Desinger</small></div></li>
+        </ul>
+      </section>
+      <section class="crystal-credit-block">
+        <h3 class="crystal-block-title"><span>◆</span> Ferramentas Usadas <span>◆</span></h3>
+        <div class="crystal-tools-badges">
+          <span class="crystal-badge">VS Code</span>
+          <span class="crystal-badge">Antigravity IDE</span>
+          <span class="crystal-badge">Codex IDE</span>
+          <span class="crystal-badge">PixelLabAi</span>
+          <span class="crystal-badge">Google Sala de Aula</span>
+          <span class="crystal-badge">Trello</span>
+          <span class="crystal-badge">Figma</span>
+        </div>
+      </section>
+      <section class="crystal-credit-block uneb-block">
+        <h3 class="crystal-block-title"><span>◆</span> Instituição <span>◆</span></h3>
+        <div class="crystal-uneb-card">
+          <img class="crystal-uneb-logo" src="assets/credits/uneb-logo.png" data-credit-img="uneb" alt="Brasão UNEB">
+          <strong>Universidade do Estado da Bahia (UNEB)</strong>
+        </div>
+      </section>
+    </div>
+    <footer class="crystal-card-footer">
+      <button class="pixel-button crystal-close-btn">✦ Voltar ao Menu ✦</button>
+    </footer>
+  </form>
+</dialog>
+<dialog id="exitDialog"><form method="dialog" class="result-card"><h2>Até a próxima nota!</h2><p>Seu progresso foi guardado neste navegador. Você pode fechar esta aba.</p><button class="pixel-button">Continuar aqui</button></form></dialog>
+<script src="js/true-pixel-engine.js?v=24"></script>
+<script src="js/preloader.js?v=4"></script>
+<script src="js/true-pixel-cave.js?v=24"></script>
+<script src="js/true-pixel-worlds.js?v=7"></script>
+<script src="js/final-phase.js?v=2"></script>
+<script src="js/performance.js"></script>
+<script src="js/campaign.js?v=7"></script>
+<script src="js/campaign-current.js?v=3"></script>
+<script src="js/rules.js"></script>
+<script src="js/audio.js?v=16"></script>
+<script src="js/journey-map.js?v=4"></script>
+<script src="js/app.js?v=15"></script>
+<script src="js/menu.js?v=15"></script>
+<script src="js/test-harness.js?v=4"></script>
+</body></html>

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#150f2e">
+  <meta name="description" content="Robô Ritmado: ajude Pixel a viajar por dez mundos até a batalha final em OrbitHop.">
+  <title>Robô Ritmado • A aventura de Pixel</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=0.15">
+  <link rel="stylesheet" href="stage.css?v=0.15">
+  <link rel="stylesheet" href="worlds.css?v=0.15">
+  <link rel="stylesheet" href="front.css?v=0.15">
+  <link rel="stylesheet" href="playful.css?v=0.15">
+  <script src="settings.js?v=0.15" defer></script>
+  <script src="interface-audio.js?v=0.15" defer></script>
+  <script src="sprite-assets.js?v=0.15" defer></script>
+  <link rel="stylesheet" href="wonder.css?v=0.15">
+  <link rel="stylesheet" href="performance.css?v=0.15">
+  <link rel="stylesheet" href="encore.css?v=0.15">
+  <link rel="stylesheet" href="adventure.css?v=0.15">
+  <link rel="stylesheet" href="journey.css?v=0.15">
+  <link rel="stylesheet" href="encounter.css?v=0.15">
+  <link rel="stylesheet" href="story.css?v=0.15">
+  <link rel="stylesheet" href="finale.css?v=0.15.1">
+  <script src="performance.js?v=0.15" defer></script>
+  <script src="campaign.js?v=0.15" defer></script>
+  <script src="levels.js?v=0.15" defer></script>
+  <script src="narrative.js?v=0.15" defer></script>
+  <script src="portal.js?v=0.15" defer></script>
+  <script src="reflection.js?v=0.15" defer></script>
+  <script src="travel.js?v=0.15" defer></script>
+  <script src="battle.js?v=0.15" defer></script>
+  <script src="battle-effects.js?v=0.15" defer></script>
+  <script src="finale.js?v=0.15" defer></script>
+  <script src="game.js?v=0.15" defer></script>
+  <script src="cinematic.js?v=0.15" defer></script>
+  <script src="front.js?v=0.15" defer></script>
+</head>
+<body data-theme="doces" data-screen="menu" class="warning-pending">
+  <div class="world" aria-hidden="true"></div>
+  <div class="ambient" aria-hidden="true"><i>✦</i><i>♪</i><i>✧</i><i>♫</i><i>✦</i><i>♡</i><i>✧</i><i>♪</i></div>
+  <div class="app">
+    <header class="topbar">
+
+      <nav id="journeyNav" class="journey-nav" aria-label="Os dez mundos da aventura"></nav>
+      <div class="top-actions"><button id="effects" class="icon-button" aria-pressed="false" title="Reduzir os efeitos visuais">✧ <span>Efeitos suaves</span></button><button id="fullscreen" class="icon-button" title="Alternar tela cheia" aria-label="Alternar tela cheia">⛶</button></div>
+    </header>
+
+    <main>
+      <section class="stage" aria-label="Jogo de ritmo no Reino dos Doces">
+        <div class="stage-top">
+          <div id="battleHUD" class="battle-hud" hidden>
+            <label>Pixel <output id="pixelLife">100 / 100</output><meter id="pixelMeter" min="0" max="100" value="100"></meter></label>
+            <div id="battleCue" role="status" aria-live="polite"></div>
+            <label>Galactus <output id="bossLife">150 / 150</output><meter id="bossMeter" min="0" max="150" value="150"></meter></label>
+          </div>
+
+
+          <div class="scoreboard" aria-label="Placar">
+            <div><span>TOTAL</span><strong id="score">00000</strong></div>
+            <div class="combo-stat"><span>COMBO</span><strong><b id="combo">0</b><small>×</small></strong></div>
+            <div><span>RECORDE</span><strong id="best">00000</strong></div>
+          </div>
+        </div>
+
+        <div class="play-space">
+          <canvas id="battleArt" class="battle-art" aria-hidden="true" hidden></canvas>
+          <div class="track-shell" id="trackShell">
+            <div id="trackBackdrop" class="track-backdrop" aria-hidden="true"></div>
+            <div class="track-crown" aria-hidden="true"><span>♡</span><b>♪</b><span>♡</span></div><div class="track-meta"><span><i></i> <span id="trackName">PISTA DE CRISTAL</span></span><span id="tempoLabel">90 BPM · FÁCIL</span></div>
+            <div id="frenzyAlert" class="frenzy-alert" role="status" hidden><img id="frenzyIcon" alt=""><span id="frenzyLabel"></span></div>
+              <canvas id="track" aria-label="Quatro pistas com setas que descem até a linha de acerto"></canvas>
+            <div class="track-instruction">Aperte quando as setas se encontrarem</div>
+            <div id="judgment" class="judgment" aria-hidden="true"></div>
+            <div id="countdown" class="countdown" aria-hidden="true"></div>
+
+
+
+
+
+
+          </div>
+
+          <div class="pixel-side"><div id="pixelSpeech" class="pixel-speech" role="status" aria-live="polite" data-tone="welcome"><span>♪ PIXEL</span><p id="pixelSpeechText">Vamos encontrar a nossa batida?</p></div><canvas id="pixelStage" class="pixel-stage" aria-hidden="true"></canvas><div class="dance-badge"><canvas id="pixelPortrait" width="96" height="84" aria-hidden="true"></canvas><div><span id="danceStyle">Pop de açúcar</span><b id="dancePhrase">Vamos dançar?</b><small id="pixelMood" class="pixel-mood">Animando</small></div></div>
+            <div id="pixelArt" class="pixel-art" role="img" aria-label="Pixel de corpo inteiro dançando com a guitarra, no traje do Reino dos Doces"><canvas id="pixelSprite" aria-hidden="true"></canvas></div>
+            <span id="pixelMessage" class="sr-only">Vamos encontrar a nossa batida?</span>
+            <p id="spriteStatus" class="sprite-status" role="status">Preparando Pixel…</p>
+          </div>
+        </div>
+
+        <div class="bottom-deck"><div class="song-strip"><div class="song-icon"><img id="albumCover" src="assets/album-doces.svg" alt="Capa de Doce Travessia"></div><div class="song-info"><strong id="songName">Doce Travessia</strong><span id="songDescription">Sinos de cristal · 90 BPM</span></div><span id="time">0:00 / 0:43</span><div class="song-progress" role="progressbar" aria-label="Progresso da música" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="songFill"></div></div><button id="pause" class="pause-button" disabled aria-label="Pausar música">Ⅱ</button><label class="volume-control"><span aria-hidden="true">♪</span><input id="volume" type="range" min="0" max="100" value="55" aria-label="Volume da música"></label></div>
+          <div class="portal-card"><div class="portal-heading"><span>♫ RESSONÂNCIA DE PIXEL</span><b id="energyValue">0%</b></div><div class="energy-track"><div id="energyFill"></div></div><p id="energyHint">Cada acerto nos leva mais longe.</p></div>
+        </div>
+      </section>
+
+      <section class="controls" aria-label="Controles e ajustes">
+        <div class="control-help"><span class="keyboard-legend"><kbd>←</kbd><kbd>↓</kbd><kbd>↑</kbd><kbd>→</kbd></span><span>para tocar <b>·</b> <kbd>Esc</kbd> para pausar</span></div>
+        <label class="sync-control" title="Valor positivo: o jogo aceita o comando mais tarde. Valor negativo: aceita mais cedo.">Ajuste de ritmo <input id="offset" type="range" min="-200" max="200" step="10" value="0" aria-label="Ajuste do atraso entre som e comando em milissegundos"><output id="offsetValue">0 ms</output></label>
+      </section>
+      <div class="touch-controls" aria-label="Setas para jogar com toque"><button data-lane="0" aria-label="Esquerda">←</button><button data-lane="1" aria-label="Baixo">↓</button><button data-lane="2" aria-label="Cima">↑</button><button data-lane="3" aria-label="Direita">→</button></div>
+    </main>
+    <footer><span>♪ OUÇA. BRINQUE. BRILHE.</span><span>VERSÃO 0.15.1 <b>•</b> ONZE FASES</span></footer>
+  </div>
+  <dialog id="travelOverlay" class="travel-overlay" aria-label="A jornada de Pixel">
+    <canvas id="travelCanvas" aria-hidden="true"></canvas>
+    <div class="travel-controls"><button id="backTravel" class="quiet-button">← Voltar</button><button id="pauseTravel" class="quiet-button">Pausar cena</button><button id="nextTravel" class="quiet-button">Avançar →</button><button id="skipTravel" class="quiet-button">Pular cena</button></div>
+    <div id="finalCredits" class="final-credits" hidden>
+      <div><h2>Robô Ritmado</h2><p>Agradecimento especial</p><strong>Professor Peterson Lobato</strong>
+      <p>Equipe</p><strong>Ísis Maria Teles de Oliveira<br>Fernanda da Silva Bispo<br>Luis Fabiano Moreira Teles</strong>
+      <p>Músicas originais geradas para o jogo</p><strong>Órbita de Casa · Doce Travessia · Desfile dos Brinquedos<br>Valsa dos Cristais · Órbita das Nuvens · Sol em Movimento<br>Balanço das Raízes · Vaga-lumes em Órbita · Maré de Cristais<br>Pulso de Magma · Voo das Pétalas<br>Órbita em Ruptura · Tempus Infinitum · Estrelas de Casa</strong>
+      <p>Referências visuais</p><strong>America Chavez · Marvel<br>Max Mayfield · Stranger Things<br>Galactus · Marvel</strong></div>
+    </div>
+    <div class="travel-caption"><span class="pill">O RITMO ABRE CAMINHOS</span><h2 id="travelDestination"></h2><p id="travelStatus" role="status" aria-live="polite"></p><p id="travelAction" class="travel-action"></p><small id="travelSummary"></small></div>
+    <button id="retryTravel" class="primary-button" hidden>Tentar abrir o portal novamente</button>
+  </dialog>
+<dialog id="phaseDialog" class="game-dialog phase-dialog" aria-labelledby="levelTitle"><div id="intro" class="overlay intro">
+              <div id="phaseFlurries" class="phase-flurries" aria-hidden="true"></div><div class="phase-cover"><img id="phaseAlbum" src="assets/album-doces.svg" alt=""></div>          <div class="chapter"><span id="chapterLabel" class="eyebrow">FASE 01 · PRIMEIRA PARADA</span><h1><span id="levelTitle">Reino dos</span> <em id="levelEm">Doces</em></h1><p id="levelSubtitle">Doces, cristais e uma batida que abre caminhos.</p></div>
+              <h2 id="introTitle" class="phase-invitation">O caminho de casa<br>começa no <em>ritmo.</em></h2>
+              <p id="introCopy">Pixel se perdeu entre os mundos.<br>Toque na batida e carregue o portal!</p>
+              <div class="tutorial-keys" aria-label="Use as quatro setas do teclado"><kbd>←</kbd><kbd>↓</kbd><kbd>↑</kbd><kbd>→</kbd></div>
+              <p class="tutorial-copy">Espere a seta cair até o alvo.<br>Então aperte a mesma seta no teclado.</p>
+              <p class="tutorial-copy">Cinco “No ritmo!” seguidos ativam o Frenesi. Os próximos acertos perfeitos valem 200 pontos até a sequência acabar.</p>
+              <button id="start" class="primary-button">Entrar no ritmo <span>▶</span></button>
+              <div class="notice-actions"><button id="phaseAccessibility" class="text-button">◎ Acessibilidade</button><button class="text-button" data-return-menu>Voltar ao menu</button></div><span id="introDetail" class="intro-detail">43 segundos de música · Meta: 2.600 pontos</span>
+              <p id="audioError" class="error" role="alert" hidden></p>
+                <details class="phase-worlds"><summary>Revisitar mundos liberados</summary><nav id="phaseJourneyNav" aria-label="Escolher uma fase já liberada"></nav></details>
+            </div></dialog>
+<dialog id="pauseDialog" class="game-dialog " aria-labelledby="pauseHeading"><div id="pauseOverlay" class="overlay" hidden><span class="pill">Ⅱ UMA PAUSA NA BATIDA</span><h2 id="pauseHeading">Pixel está<br>te esperando.</h2><p>As notas e a música estão pausadas.</p><button id="resume" class="primary-button">Continuar <span>▶</span></button><button id="restartPause" class="text-button">Recomeçar a música</button><button class="text-button" data-return-menu>Voltar ao menu</button></div></dialog>
+<dialog id="resultDialog" class="game-dialog " aria-labelledby="resultTitle"><div id="results" class="overlay result-overlay" hidden>
+              <canvas id="retryPixel" class="retry-portrait" width="600" height="650" role="img" aria-label="Pixel com o traje desta fase" hidden></canvas>
+              <span id="resultPill" class="pill">✦ VIAGEM CONCLUÍDA</span><div class="result-stars" id="stars" aria-label="Resultado em estrelas">✦ ✦ ✦</div>
+              <div id="retryCoach" class="retry-coach" hidden><p>Eu confio em você!<br>Cada tentativa ajuda a aprender.<br>Vamos tentar juntos mais uma vez?</p></div>
+              <h2 id="resultTitle">Você fez música!</h2><p id="resultMessage"></p>
+              <strong id="resultScore" class="result-score">0 <small>pontos</small></strong>
+              <div class="result-grid"><div><b id="resultPerfect">0</b><span>No ritmo!</span></div><div><b id="resultGood">0</b><span>Muito bem!</span></div><div><b id="resultNear">0</b><span>Quase!</span></div><div><b id="resultMiss">0</b><span>Próxima!</span></div></div>
+              <div class="result-detail" id="resultDetail"></div>
+              <button id="nextStage" class="primary-button portal-button" hidden>Entrar em Brinquedolândia <span>✦</span></button>
+              <button id="lastStory" class="primary-button" hidden>Rever o desfecho <span>✦</span></button><button id="playAgain" class="primary-button">Tocar de novo <span>↻</span></button>
+              <button class="text-button" data-return-menu>Voltar ao menu</button><span id="resultHint" class="intro-detail">Complete a música para seguir viagem.</span>
+            </div></dialog>
+  <div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
+</body>
+</html>

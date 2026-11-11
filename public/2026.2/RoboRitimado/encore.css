@@ -1,0 +1,104 @@
+/* Comic concert panels: same controls, arranged as five large poster rows. */
+body[data-screen=menu] .scene-shell{min-height:760px;height:100svh}
+body[data-screen=menu] .menu-content{width:47%;max-width:700px;margin-left:3.5%;padding:88px 0 64px;position:relative;z-index:6}
+body[data-screen=menu] .menu-kicker{font-size:10px;padding:5px 11px;letter-spacing:.7px}
+body[data-screen=menu] .game-logo{display:flex;align-items:baseline;gap:14px;font-size:clamp(38px,4.1vw,64px);letter-spacing:-3px;line-height:1.1;margin:9px 0 10px;transform:rotate(-2deg);text-shadow:3px 3px 0 #211436,-2px -2px 0 #211436,2px -2px 0 #211436,-2px 2px 0 #211436,0 6px 0 #ac76c5}
+body[data-screen=menu] .game-logo span{display:inline;padding:0;-webkit-text-fill-color:#ff93e9;text-shadow:inherit}
+body[data-screen=menu] .menu-story{font-size:13px;padding:6px 13px;margin:0 0 16px;border-radius:12px;line-height:1.35;max-width:none}
+body[data-screen=menu] .menu-story br{display:none}
+body[data-screen=menu] .menu-nav{display:flex;flex-direction:column;gap:12px;width:100%;max-width:620px;padding:0 10px}
+.menu-nav .orbit-button{--poster:#ec7bdc;--poster-dark:#893b9a;--poster-ink:#fff4ff;border:0!important;border-radius:0;min-height:79px!important;box-shadow:none!important;isolation:isolate;background:none!important;padding:9px 20px 9px 9px;position:relative;filter:none!important;transform:rotate(-1deg);gap:14px;will-change:auto;color:var(--poster-ink)!important;transition:transform .17s ease}
+.menu-nav .orbit-button:before{content:''!important;position:absolute;inset:0!important;width:auto!important;height:auto!important;z-index:-2;clip-path:polygon(0 8%,96% 0,100% 88%,4% 100%);background:#21142f!important;animation:none!important;transform:none;box-shadow:none!important}
+.menu-nav .orbit-button:after{content:'';position:absolute;inset:5px;z-index:-1;clip-path:polygon(0 8%,96% 0,100% 88%,4% 100%);background:linear-gradient(120deg,#fff2,transparent 45%),repeating-linear-gradient(-25deg,transparent 0 29px,#ffffff0d 30px 32px),var(--poster)!important;animation:none!important;opacity:1}
+.menu-nav .orbit-button .button-copy{flex:1;min-width:0;z-index:1}
+.menu-nav .orbit-button .button-copy b{display:block;font-family:'Comic Sans MS','Trebuchet MS',sans-serif;font-size:clamp(30px,3.8vw,57px);font-weight:900;line-height:1.05;letter-spacing:-2px;text-transform:uppercase;color:var(--poster-ink);text-shadow:2px 2px 0 #281735,-2px -2px 0 #281735,2px -2px 0 #281735,-2px 2px 0 #281735,0 5px 0 var(--poster-dark);transform:rotate(-2deg);white-space:nowrap}
+.menu-nav .orbit-button .button-copy small{display:block;color:#2b163e;font-size:11px;font-weight:800;line-height:1.3;margin-top:3px;letter-spacing:.3px;text-shadow:0 1px 0 #ffffff65}
+.menu-nav .orbit-button .button-icon{height:54px;width:62px;flex-shrink:0;border:3px solid #291637;border-radius:5px;background:linear-gradient(145deg,#fff9,#ffffff27);color:#352044;font-size:33px;box-shadow:3px 3px 0 #ffffff5c;transform:rotate(-4deg)}
+.menu-nav .orbit-button .button-arrow{font-size:26px!important;color:#fff!important;text-shadow:2px 2px 0 #281735;margin-left:auto;display:block}
+.menu-nav .orbit-button.play{--poster:#ef6bd5;--poster-dark:#8e358e;min-height:94px!important;transform:rotate(-2deg);margin:0}
+.menu-nav .orbit-button.tutorial{--poster:#77d9fa;--poster-dark:#467bb2;transform:rotate(1deg)}
+.menu-nav .orbit-button.options{--poster:#ba98f4;--poster-dark:#684496;transform:rotate(-1.4deg)}
+.menu-nav .orbit-button.accessibility{--poster:#77ccea;--poster-dark:#496ba3;transform:rotate(.8deg)}
+.menu-nav .orbit-button.accessibility .button-copy b{font-size:clamp(23px,2.6vw,39px);letter-spacing:-1.3px}
+.menu-nav .orbit-button.about{--poster:#e7a0ee;--poster-dark:#9462ab;transform:rotate(-.7deg)}
+.menu-nav #menuResume{--poster:#a4d5ff;--poster-dark:#577bab}
+.menu-nav #menuResume .button-copy b{font-size:clamp(23px,2.7vw,40px)}
+.menu-nav .orbit-button:hover,.menu-nav .orbit-button:focus-visible{transform:translateX(12px) rotate(0) scale(1.025);z-index:3;outline:none}
+.menu-nav .orbit-button:focus-visible:before{background:#fff!important;filter:drop-shadow(0 0 4px #9feaff)}
+.menu-nav .orbit-button:hover:after{background:linear-gradient(100deg,#ffffff80,transparent 55%),var(--poster)!important}
+.menu-nav .orbit-button:active,.menu-nav .orbit-button.clicked{transform:translateX(18px) scale(.975)}
+.menu-nav .orbit-button.play.clicked:after{background:radial-gradient(ellipse,#fff8,transparent 72%),var(--poster)!important}
+.menu-nav .orbit-button.tutorial.clicked{transform:translateX(12px) rotate(2deg)}
+.menu-nav .orbit-button.tutorial.clicked:after{background:repeating-linear-gradient(125deg,#fff6 0 8px,transparent 9px 24px),var(--poster)!important}
+.menu-nav .orbit-button.options.clicked .button-icon{transform:rotate(150deg)}
+.menu-nav .orbit-button.accessibility.clicked:after{background:linear-gradient(90deg,#fff9,transparent,#fff5),var(--poster)!important}
+.menu-nav .orbit-button.about.clicked .button-icon{transform:rotate(-20deg) scale(1.16)}
+body[data-screen=menu] .menu-hint{margin-top:17px;font-size:10px;background:#fffcee;border:2px solid #372149;color:#503564;max-width:620px;border-radius:12px;padding:6px 11px}
+body[data-screen=menu] .actor-wrap{right:-1%;width:53%;height:79%;bottom:11%;z-index:3;overflow:visible;pointer-events:none}
+#menuStage.menu-stage{position:absolute;inset:0 auto auto 0;width:100%;height:calc(100% + 120px);z-index:0;pointer-events:none}
+#orbitPixel{position:relative;z-index:2}
+body[data-screen=menu] .actor-plinth{display:none}
+body:not([data-screen=menu]) .menu-stage{display:none}
+body[data-screen=menu] .pixel-greeting{width:190px;right:1.4%;top:28%;font-size:14px;z-index:5;animation:none;border-color:#fff;border-width:3px;box-shadow:0 5px 0 #39234f80}
+body[data-screen=menu] .say-hello{right:13%;bottom:6.8%;z-index:7;font-size:14px;padding:9px 18px;background:#bcecff;border:3px solid #2d1e42;box-shadow:0 4px 0 #f5beef}
+body[data-screen=menu] .orbit-footer{z-index:8;bottom:11px}
+.settings-open .scene-shell *,.settings-open .scene-shell *:before,.settings-open .scene-shell *:after{animation-play-state:paused!important}
+.interface-enlarged[data-screen=menu] .scene-shell{min-height:980px;height:auto}
+.interface-enlarged .menu-nav .orbit-button .button-copy b{font-size:calc(46px * var(--ui-scale));white-space:normal;overflow-wrap:anywhere}
+.interface-enlarged .menu-nav .orbit-button.accessibility .button-copy b{font-size:calc(30px * var(--ui-scale))}
+.interface-enlarged .menu-nav .orbit-button .button-copy small{font-size:calc(10px * var(--ui-scale))}
+.interface-enlarged .menu-nav .orbit-button .button-icon{font-size:calc(28px * var(--ui-scale))}
+.interface-enlarged .menu-nav #menuResume .button-copy b{font-size:calc(28px * var(--ui-scale))}
+.photosensitive #menuStage{filter:brightness(.72) saturate(.6)}
+/* Only the inexpensive moving layer is redrawn. Scene blur is kept static. */
+.world:before{backdrop-filter:none;background:linear-gradient(90deg,transparent 61%,#35274d42 76%,#35274d58)}
+.app .track-shell{backdrop-filter:none}
+.track-backdrop{position:absolute;inset:43px -9px -9px;background-position:center;background-size:cover;filter:blur(5px);transform:scale(1.03);pointer-events:none;z-index:0}
+.app #track{position:relative;z-index:1}.app .track-meta{position:relative;z-index:4}
+.high-contrast .track-backdrop{display:none}
+.app .dance-badge{display:none}
+.pixel-speech{position:absolute;top:7px;left:4%;right:3%;z-index:4;background:linear-gradient(120deg,#fff7fd,#e8f8ff);color:#49315e;border:3px solid #fff;border-radius:21px 21px 7px 21px;box-shadow:0 4px 0 #724a976e;padding:8px 14px;min-height:61px;pointer-events:none}
+.pixel-speech:after{content:'';position:absolute;bottom:-11px;left:52%;width:17px;height:17px;background:#eef4ff;border-right:3px solid white;border-bottom:3px solid white;transform:rotate(36deg)}
+body[data-theme=doces] .pixel-speech:after{left:46%}
+.pixel-speech span{display:block;font-size:9px;font-weight:900;color:#ad409b;letter-spacing:1.2px;margin-bottom:3px}
+.pixel-speech p{font-size:calc(14px * var(--subtitle-scale));line-height:1.25;font-weight:750;margin:0;letter-spacing:0}
+.pixel-speech[data-tone=encourage]{background:linear-gradient(120deg,#fff4db,#f9eaff)}
+.pixel-speech[data-tone=celebrate]{border-color:#fff3b2;background:linear-gradient(120deg,#ffecfa,#e5f7ff)}
+.pixel-speech.changed{animation:speech-arrival .28s ease-out}
+@keyframes speech-arrival{from{opacity:.5;transform:translateY(4px)}to{opacity:1;transform:none}}
+.high-contrast .pixel-speech{background:#000!important;color:#fff;border-color:#fff}.high-contrast .pixel-speech:after{background:#000}.high-contrast .pixel-speech span{color:#ff0}
+.high-contrast .menu-nav .orbit-button:after{background:#000!important}.high-contrast .menu-nav .orbit-button .button-copy b,.high-contrast .menu-nav .orbit-button .button-copy small{color:#fff;text-shadow:none}.high-contrast .menu-nav .orbit-button:before{background:#fff!important}
+.photosensitive .pixel-speech,.motion-reduced .pixel-speech{animation:none!important}
+.motion-reduced .menu-nav .orbit-button:hover,.photosensitive .menu-nav .orbit-button:hover{transform:none}
+.photosensitive .menu-nav .orbit-button.clicked,.motion-reduced .menu-nav .orbit-button.clicked{transform:none}
+@media(min-width:761px) and (max-height:800px){
+ body[data-screen=menu] .scene-shell{min-height:700px;height:100svh}
+ body[data-screen=menu] .menu-content{padding-top:77px}.menu-nav .orbit-button{min-height:69px!important}.menu-nav .orbit-button.play{min-height:79px!important}.menu-nav .orbit-button .button-copy b{font-size:42px}.menu-nav .orbit-button.accessibility .button-copy b{font-size:30px}.menu-nav .orbit-button .button-icon{height:44px;width:53px;font-size:28px}
+ body[data-screen=menu] .game-logo{font-size:47px;margin:7px 0}.menu-nav .orbit-button .button-copy small{font-size:10px}body[data-screen=menu] .menu-story{margin-bottom:12px;font-size:12px}body[data-screen=menu] .menu-nav{gap:10px}body[data-screen=menu] .menu-hint{margin-top:12px}
+ body[data-screen=menu] .menu-nav:has(#menuResume:not([hidden])) .orbit-button{min-height:59px!important}
+}
+@media(min-width:761px){body[data-screen=menu]:has(#menuResume:not([hidden])) .menu-story{display:none}}
+@media(max-width:1100px) and (min-width:761px){.menu-nav .orbit-button .button-copy b{font-size:37px}.menu-nav .orbit-button.accessibility .button-copy b{font-size:25px}.menu-nav .orbit-button .button-icon{width:44px;height:44px;font-size:25px}.menu-nav .orbit-button{gap:8px;padding-right:12px}.menu-nav .orbit-button .button-arrow{display:none}body[data-screen=menu] .game-logo{font-size:40px;gap:8px}.pixel-speech p{font-size:calc(12px * var(--subtitle-scale))}}
+@media(max-width:760px){
+ body[data-screen=menu] .scene-shell{height:auto;min-height:1080px}
+ body[data-screen=menu] .menu-content{width:90%;margin-left:5%;padding:88px 0 440px;max-width:none}
+ body[data-screen=menu] .game-logo{font-size:40px;gap:9px;letter-spacing:-2px;margin:8px 0 12px}
+ body[data-screen=menu] .menu-kicker{font-size:8px}body[data-screen=menu] .menu-story{font-size:12px;padding:7px 9px;margin-bottom:15px}
+ body[data-screen=menu] .menu-nav{gap:10px;padding:0 4px;max-width:none}
+ .menu-nav .orbit-button{min-height:71px!important;gap:9px;padding:7px 11px}.menu-nav .orbit-button.play{min-height:82px!important}
+ .menu-nav .orbit-button .button-copy b{font-size:36px;letter-spacing:-1px}.menu-nav .orbit-button.accessibility .button-copy b{font-size:23px;letter-spacing:-.9px}.menu-nav #menuResume .button-copy b{font-size:23px}
+ .menu-nav .orbit-button .button-copy small{font-size:9px}.menu-nav .orbit-button .button-icon{height:43px;width:44px;font-size:25px;border-width:2px}.menu-nav .orbit-button .button-arrow{font-size:20px!important;display:block}
+ body[data-screen=menu] .menu-hint{font-size:9px;max-width:none;margin-top:14px}
+ body[data-screen=menu] .actor-wrap{width:380px;height:380px;max-width:100vw;right:0;bottom:68px;opacity:1;z-index:3}
+ body[data-screen=menu] .pixel-greeting{top:auto;bottom:355px;right:5%;width:190px;font-size:12px;padding:9px 13px}
+ body[data-screen=menu] .say-hello{bottom:16px;right:12px;left:auto;width:134px;min-width:0;max-width:134px;min-height:43px;font-size:12px;padding:7px 9px;white-space:nowrap}
+ body[data-screen=menu] .orbit-footer{bottom:8px;left:4%;right:4%}.now-playing{font-size:9px;padding:7px 9px}.music-toggle{font-size:9px}
+ .pixel-speech{left:3px;right:0;top:8px;padding:8px 5px;border-radius:14px;min-height:0}.pixel-speech p{font-size:calc(10px * var(--subtitle-scale));line-height:1.35;overflow-wrap:anywhere}.pixel-speech span{font-size:8px;letter-spacing:.2px}.pixel-speech:after{left:48%;width:10px;height:10px;bottom:-7px}
+ .track-backdrop{top:37px}
+ .large-subtitles .pixel-speech p{font-size:13px}
+ .interface-enlarged[data-screen=menu] .scene-shell{min-height:1200px}
+ .interface-enlarged .menu-nav .orbit-button .button-copy b{font-size:calc(29px * var(--ui-scale));line-height:1.1}
+ .interface-enlarged .menu-nav .orbit-button.accessibility .button-copy b{font-size:calc(23px * var(--ui-scale))}
+ .interface-enlarged .menu-nav #menuResume .button-copy b{font-size:calc(21px * var(--ui-scale))}
+}
+@media(prefers-reduced-motion:reduce){.pixel-speech{animation:none!important}.menu-nav .orbit-button{transition:none!important}.menu-nav .orbit-button:hover{transform:none}}

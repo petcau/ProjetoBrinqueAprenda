@@ -133,7 +133,7 @@ E dentro de `jogos`, a entrada do seu jogo. Copie este modelo:
   // Áreas do jogo. Pode ser mais de uma. É o que faz o jogo aparecer na
   // barra de categorias da home e no filtro de /jogos. Valores possíveis:
   //   'matematica' 'portugues' 'ciencias' 'logica'
-  //   'natureza'   'historia-geografia'   'tecnologia' É o que faz o jogo
+  //   'natureza'   'historia-geografia'   'artes'   'tecnologia' É o que faz o jogo
   // aparecer na barra de categorias da home e no filtro de /jogos.
   categorias: ['matematica', 'logica'],
 

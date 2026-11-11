@@ -1,0 +1,189 @@
+/* Readable dialogue and cinematic framing for the OrbitHop story. */
+body[data-screen=cutscene] .scene-shell {
+  height: 100svh;
+  min-height: 650px;
+}
+body[data-screen=cutscene] .cinema-ui {
+  inset: 24px 3% 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+body[data-screen=cutscene] .cinema-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+body[data-screen=cutscene] .cinema-place {
+  max-width: 55%;
+  padding: 10px 17px;
+  border: 2px solid #d8bded;
+  border-radius: 18px;
+  background: #251c40e8;
+  color: #fff1fa;
+}
+body[data-screen=cutscene] .cinema-place h2 {
+  font-size: clamp(19px, 2vw, 29px);
+  margin: 4px 0;
+  color: #fff0fc;
+}
+body[data-screen=cutscene] .cinema-place span {
+  font-size: 10px;
+  color: #c5eaff;
+}
+body[data-screen=cutscene] .view-toolbar {
+  display: flex;
+  gap: 9px;
+}
+body[data-screen=cutscene] #cinemaUI .story-subtitle {
+  top: 25%;
+  bottom: auto;
+  left: 0;
+  width: min(520px, 39vw);
+  max-height: 49svh;
+  overflow: auto;
+  font-size: calc(21px * var(--subtitle-scale));
+  line-height: 1.5;
+  padding: 20px 24px;
+  transition: none;
+  text-align: left;
+}
+body[data-screen=cutscene] #cinemaUI .story-subtitle::after {
+  right: 14px;
+  top: auto;
+  bottom: -15px;
+}
+body[data-screen=cutscene] #cinemaUI .story-subtitle b {
+  font-size: 12px;
+  margin-bottom: 9px;
+}
+body[data-screen=cutscene] .story-action {
+  width: min(980px, 92vw);
+  font-size: calc(14px * var(--subtitle-scale));
+  line-height: 1.4;
+  max-height: 18svh;
+  overflow: auto;
+}
+body[data-screen=cutscene] .cinema-progress {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+body[data-screen=cutscene] .cinema-controls {
+  pointer-events: auto;
+}
+.travel-controls {
+  flex-wrap: wrap;
+}
+.travel-caption #travelStatus {
+  position: relative;
+  width: min(850px, 90vw);
+  font-size: calc(20px * var(--subtitle-scale));
+  line-height: 1.45;
+  max-height: 30svh;
+  overflow: auto;
+  pointer-events: auto;
+  text-align: left;
+}
+.travel-caption #travelStatus::before {
+  content: '✦ PIXEL';
+  display: block;
+  color: #9c448d;
+  font-size: 11px;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+.travel-caption #travelAction {
+  margin-top: 9px;
+  min-height: 0;
+  max-width: 900px;
+  padding: 8px 13px;
+  color: #f6ebff;
+  background: #241b3fe8;
+  border: 1px solid #c5b5d7;
+  border-radius: 13px;
+  font-size: calc(13px * var(--subtitle-scale));
+  font-weight: normal;
+  line-height: 1.4;
+  max-height: 15svh;
+  overflow: auto;
+  pointer-events: auto;
+}
+.travel-overlay[data-memory=true] .travel-caption .pill {
+  background: #0e0a1e;
+  color: #dfbfe8;
+}
+.high-contrast .story-subtitle,
+.high-contrast .travel-caption #travelStatus,
+.high-contrast .travel-caption #travelAction {
+  background: #000;
+  color: #fff;
+  border-color: #fff;
+}
+.high-contrast .travel-caption #travelStatus::before {
+  color: #ff0;
+}
+@media(max-width:760px) {
+  body[data-screen=cutscene] .scene-shell {
+    min-height: 720px;
+  }
+  body[data-screen=cutscene] .cinema-ui {
+    inset: 14px 4% 16px;
+  }
+  body[data-screen=cutscene] .cinema-top {
+    flex-direction: column;
+    gap: 8px;
+  }
+  body[data-screen=cutscene] .cinema-place {
+    max-width: 100%;
+    padding: 7px 10px;
+  }
+  body[data-screen=cutscene] .cinema-place h2 {
+    font-size: 19px;
+  }
+  body[data-screen=cutscene] .view-toolbar {
+    align-self: flex-end;
+  }
+  body[data-screen=cutscene] #cinemaUI .story-subtitle {
+    top: 140px;
+    width: 100%;
+    max-height: 35svh;
+    font-size: calc(17px * var(--subtitle-scale));
+    padding: 12px 15px;
+  }
+  body[data-screen=cutscene] .story-action {
+    font-size: calc(11px * var(--subtitle-scale));
+    margin-bottom: 8px;
+    padding: 7px 9px;
+  }
+  body[data-screen=cutscene] .cinema-progress {
+    gap: 4px;
+  }
+  body[data-screen=cutscene] .cinema-progress span {
+    width: 16px;
+  }
+  .travel-controls {
+    justify-content: flex-end;
+    gap: 6px;
+  }
+  .travel-controls .quiet-button {
+    font-size: 11px;
+    padding: 8px;
+  }
+  .travel-caption {
+    bottom: 15px;
+  }
+  .travel-caption h2 {
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+  .travel-caption #travelStatus {
+    font-size: calc(16px * var(--subtitle-scale));
+    padding: 11px 13px;
+    max-height: 32svh;
+  }
+  .travel-caption #travelAction {
+    font-size: calc(11px * var(--subtitle-scale));
+  }
+}

@@ -1,0 +1,478 @@
+/* Área do professor (editor.html). Usa as cores e fontes do jogo
+   (style.css) e desfaz o "palco" centralizado do jogo: aqui a página
+   é comum, com rolagem. A prévia volta a usar o palco do jogo. */
+
+html,
+body.editor {
+  display: block;
+  height: auto;
+  min-height: 100%;
+  background: #f3e2c4;
+  color: var(--ink);
+}
+body.editor.ed-testando {
+  overflow: hidden;
+}
+.ed-pagina {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: Nunito, sans-serif;
+}
+.ed-pagina h1,
+.ed-pagina h2 {
+  font-family: Fredoka, sans-serif;
+  font-weight: 700;
+}
+.ed-pagina h1 {
+  font-size: 30px;
+  color: var(--p);
+}
+.ed-pagina h2 {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+.ed-pagina .btn {
+  font-size: 16px;
+  padding: 8px 18px;
+  border-width: 2px;
+  box-shadow: 0 4px 0 var(--ink);
+}
+.ed-pagina .btn:active {
+  box-shadow: 0 1px 0 var(--ink);
+}
+
+/* ---------- topo ---------- */
+.ed-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.ed-identidade {
+  flex: 1 1 360px;
+}
+.ed-identidade p {
+  font-weight: 700;
+  color: #6a5238;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+.ed-voltar-jogo {
+  font-weight: 800;
+  color: var(--brown);
+  text-decoration: none;
+}
+.ed-voltar-jogo:hover {
+  text-decoration: underline;
+}
+.ed-acoes-coluna {
+  flex: 1 1 340px;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ed-acoes {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.ed-tamanho {
+  font-weight: 800;
+  font-size: 14px;
+  color: #6a5238;
+}
+.ed-tamanho.alerta {
+  color: #b3382f;
+}
+.ed-nota {
+  font-size: 13px;
+  font-weight: 700;
+  color: #7a644a;
+  line-height: 1.4;
+}
+
+/* ---------- cartões e campos ---------- */
+.ed-cartao {
+  background: var(--cream);
+  border: 2px solid var(--brown);
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: 0 4px 0 #5b4326;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ed-linha-campos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px 16px;
+}
+section.ed-cartao.ed-linha-campos {
+  display: grid;
+}
+.ed-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ed-rotulo {
+  font-weight: 800;
+  font-size: 15px;
+}
+.ed-ajuda {
+  font-size: 13px;
+  font-weight: 600;
+  color: #7a644a;
+  line-height: 1.35;
+}
+.ed-pagina input[type="text"],
+.ed-pagina textarea,
+.ed-pagina select {
+  font:
+    700 15px Nunito,
+    sans-serif;
+  color: var(--ink);
+  background: #fff;
+  border: 2px solid #d9b98a;
+  border-radius: 10px;
+  padding: 8px 10px;
+  width: 100%;
+}
+.ed-pagina textarea {
+  resize: vertical;
+}
+.ed-pagina input:focus-visible,
+.ed-pagina textarea:focus-visible,
+.ed-pagina select:focus-visible {
+  outline: 3px solid #ffd34d;
+  border-color: var(--p);
+}
+
+/* ---------- avisos ---------- */
+.ed-avisos {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ed-aviso {
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.4;
+  border: 2px solid;
+}
+.ed-aviso-erro {
+  background: #fde7e4;
+  border-color: #d9443b;
+}
+.ed-aviso-atencao {
+  background: #fff5d6;
+  border-color: #e0a800;
+}
+.ed-aviso-ok {
+  background: #e3f4e8;
+  border-color: var(--g);
+}
+
+/* ---------- corpo: níveis + nível aberto ---------- */
+.ed-corpo {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+.ed-fases {
+  position: sticky;
+  top: 12px;
+}
+#lista-fases,
+#lista-passos {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ed-fase-item {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  border: 2px solid #d9b98a;
+  border-radius: 12px;
+  background: #fff;
+}
+.ed-fase-item.atual {
+  border-color: var(--p);
+  background: #efe3fb;
+}
+.ed-fase-abrir {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  font-family: Nunito, sans-serif;
+}
+.ed-fase-abrir strong {
+  font-family: Fredoka, sans-serif;
+  font-size: 16px;
+}
+.ed-fase-nome {
+  font-weight: 700;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ed-fase-qtd {
+  font-size: 12px;
+  font-weight: 700;
+  color: #7a644a;
+}
+.ed-fase-botoes,
+.ed-passo-botoes {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  padding-right: 4px;
+}
+.ed-botao-mini {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 2px solid #d9b98a;
+  background: var(--cream);
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 1;
+}
+.ed-botao-mini:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.ed-botao-mini.ed-apagar:hover:not(:disabled) {
+  border-color: #d9443b;
+  color: #d9443b;
+}
+.ed-largo {
+  width: 100%;
+}
+.ed-painel-fase,
+#fase-conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+#fase-conteudo[hidden] {
+  display: none;
+}
+
+/* ---------- cartão de passo ---------- */
+.ed-passo {
+  border: 2px solid #d9b98a;
+  border-radius: 14px;
+  background: #fff;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ed-passo-alca {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ed-passo-num {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--brown);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-family: Fredoka, sans-serif;
+  font-weight: 700;
+}
+.ed-passo-corpo {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+.ed-figuras {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ed-figura {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ed-miniatura {
+  width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: stretch;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+.ed-miniatura-figura {
+  height: 105px;
+  border-radius: 10px;
+  background: #f3e6cf center/contain no-repeat;
+  border: 2px solid #d9b98a;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #a88a63;
+}
+.ed-miniatura.vazia .ed-miniatura-figura {
+  border-style: dashed;
+}
+.ed-miniatura-rotulo {
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--p);
+}
+.ed-miniatura:hover .ed-miniatura-figura {
+  border-color: var(--p);
+}
+.ed-tirar-imagem {
+  background: none;
+  border: 0;
+  font-weight: 700;
+  font-size: 12px;
+  color: #b3382f;
+  text-decoration: underline;
+}
+.ed-passo-campos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ed-check {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-weight: 800;
+  font-size: 14px;
+}
+.ed-check input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--p);
+}
+.ed-check-textos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ed-vem-depois {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--brown);
+  background: #f7e6c8;
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+.ed-vem-depois.livre {
+  color: #2f7a46;
+  background: #e3f4e8;
+}
+/* do que o passo depende: uma caixinha por passo de cima */
+.ed-depende {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.ed-depende legend {
+  padding: 0;
+  margin-bottom: 4px;
+}
+.ed-dep {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #fbf3e4;
+}
+.ed-dep:has(input:checked) {
+  background: #f7e6c8;
+}
+.ed-dep textarea {
+  margin-left: 26px;
+  width: calc(100% - 26px);
+}
+/* imagem da lição: o mesmo seletor, maior */
+.ed-licao-imagem .ed-miniatura,
+.ed-licao-imagem .ed-figura {
+  width: min(100%, 360px);
+}
+.ed-licao-imagem .ed-miniatura-figura {
+  height: auto;
+  aspect-ratio: 16 / 10;
+}
+.ed-rodape-fase {
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------- prévia: o palco do jogo por cima do editor ---------- */
+.ed-previa {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #1d1824;
+  display: grid;
+  place-items: center;
+}
+.ed-previa[hidden] {
+  display: none;
+}
+/* na prévia não há agente escolhido */
+.ed-previa .chip.who {
+  display: none;
+}
+
+/* ---------- celular ---------- */
+@media (max-width: 760px) {
+  .ed-corpo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ed-fases {
+    position: static;
+  }
+  .ed-passo-corpo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ed-miniatura {
+    width: 100%;
+  }
+  .ed-miniatura-figura {
+    height: 140px;
+  }
+  .ed-dep textarea {
+    margin-left: 0;
+    width: 100%;
+  }
+}

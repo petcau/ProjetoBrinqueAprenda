@@ -1,0 +1,338 @@
+/* A ilha usa coordenadas próprias; o canvas é uma janela sobre o mundo.
+   HUD imersivo: o canvas ocupa a tela inteira e os controles flutuam sobre ele. */
+.island-screen { position:fixed; inset:0; width:100vw; height:100svh; margin:0; padding:0; background:#253d36; color:#f6e6bd; z-index:1; }
+body.is-playing::before { background:#253d36; filter:none; }
+.island-viewport { position:absolute; inset:0; overflow:hidden; background:#55acbc; }
+#island-canvas { display:block; width:100%; height:100%; image-rendering:pixelated; outline-offset:-5px; }#island-canvas:focus-visible { outline:3px solid #ffe3a366; }
+
+/* Nome do lugar: alto, ao centro. Aparece por 5 s ao entrar em uma nova região. */
+.island-place { pointer-events:none; position:absolute; top:14px; left:50%; transform:translateX(-50%); max-width:min(46vw,520px); padding:8px 22px; background:#f4e3b9f2; color:#544734; border:2px solid #927859; border-radius:6px; box-shadow:3px 4px #344a4033; text-align:center; opacity:0; visibility:hidden; transition:opacity 400ms ease, visibility 400ms ease; }
+.island-place.is-visible { opacity:1; visibility:visible; transition:opacity 300ms ease, visibility 300ms ease; }
+.island-place h1 { margin:0; padding:0; font-size:22px; line-height:1.15; letter-spacing:-.3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+@media (prefers-reduced-motion: reduce) {
+  .island-place, .island-place.is-visible { transition:none !important; }
+}
+body.calm-motion .island-place, body.calm-motion .island-place.is-visible { transition:none !important; }
+body.large-text .island-place h1 { font-size:26px; }
+
+/* Engrenagem: canto superior direito, ao lado do minimapa. */
+.island-gear { position:absolute; top:14px; right:14px; width:54px; height:54px; padding:0; border:0; background:none; line-height:0; transition:transform .15s,filter .15s; }
+.island-gear img { width:100%; height:100%; display:block; object-fit:contain; image-rendering:pixelated; }
+.island-gear:hover { transform:scale(1.08); filter:brightness(1.15); }
+
+.island-minimap { position:absolute; top:14px; right:78px; padding:9px; background:#f0dfb2ee; border:2px solid #927859; border-radius:5px; color:#615641; box-shadow:3px 4px #344a4033; }.island-minimap>span:first-child { display:flex; justify-content:space-between; font:700 8px system-ui; letter-spacing:.6px; margin-bottom:7px; }.island-minimap canvas { display:block; width:168px; height:126px; image-rendering:pixelated; border:1px solid #6f8a77; }.minimap-caption { display:flex; align-items:center; justify-content:center; gap:5px; font:10px system-ui; margin-top:7px; }.minimap-caption i,.island-map-legend i { display:inline-block; width:8px; height:8px; background:#fff4c8; border:2px solid #4e493f; border-radius:50%; }
+.island-loading { position:absolute; left:50%; top:55%; transform:translate(-50%,-50%); background:#f6e3b9; border:2px solid #8d7757; border-radius:5px; padding:18px; font:14px system-ui; text-align:center; color:#55442e; box-shadow:0 8px 28px #254a4466; }
+
+/* ==========================================================================
+   Controles de toque da Ilha (Setas, Joystick, Interação)
+   ========================================================================== */
+
+.island-touch {
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  z-index: 10;
+}
+
+/* 1. Direcional de Setas (.island-direction-pad) */
+.island-direction-pad {
+  position: absolute;
+  left: clamp(10px, 2.5vw, 24px);
+  bottom: clamp(10px, 2.5vh, 24px);
+  display: grid;
+  grid-template-columns: repeat(3, clamp(48px, 11.5vh, 64px));
+  grid-template-rows: repeat(2, clamp(48px, 11.5vh, 64px));
+  gap: clamp(4px, 1vh, 6px);
+  padding: 0;
+  margin: 0;
+}
+
+.island-direction-pad button {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 48px;
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  border: 2px solid #8c6f48;
+  border-radius: 6px;
+  background-color: #f7e3bf;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  image-rendering: pixelated;
+  opacity: 0.8;
+  cursor: pointer;
+  outline: none;
+  touch-action: none;
+  box-shadow: 0 2px 4px rgba(20, 45, 35, 0.4);
+  transition: transform 60ms ease, filter 60ms ease, opacity 60ms ease;
+}
+
+.island-direction-pad button:hover {
+  opacity: 0.95;
+}
+
+.island-direction-pad button:active,
+.island-direction-pad button.is-pressed {
+  transform: translateY(2px);
+  filter: brightness(0.85);
+  opacity: 1;
+}
+
+.island-direction-pad button:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+  filter: drop-shadow(0 0 3px #ffe3a3);
+}
+
+.island-direction-pad button[data-walk="up"] {
+  grid-column: 2;
+  grid-row: 1;
+  background-image: url('../assets/hud/controles/seta-cima.webp');
+}
+
+.island-direction-pad button[data-walk="left"] {
+  grid-column: 1;
+  grid-row: 2;
+  background-image: url('../assets/hud/controles/seta-esquerda.webp');
+}
+
+.island-direction-pad button[data-walk="down"] {
+  grid-column: 2;
+  grid-row: 2;
+  background-image: url('../assets/hud/controles/seta-baixo.webp');
+}
+
+.island-direction-pad button[data-walk="right"] {
+  grid-column: 3;
+  grid-row: 2;
+  background-image: url('../assets/hud/controles/seta-direita.webp');
+}
+
+/* 2. Joystick analógico (#island-joystick) */
+.island-joystick {
+  position: absolute;
+  left: clamp(10px, 2.5vw, 24px);
+  bottom: clamp(10px, 2.5vh, 24px);
+  width: clamp(96px, 22vh, 120px);
+  height: clamp(96px, 22vh, 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+  transition: opacity 120ms ease;
+}
+
+.island-joystick.is-active {
+  opacity: 1;
+}
+
+.joystick-base {
+  position: relative;
+  width: 95%;
+  height: 95%;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 2px solid #78836a;
+  background-color: #415744;
+  background-image: url('../assets/hud/controles/joystick-base.webp');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+
+.joystick-stick {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 48%;
+  height: 48%;
+  box-sizing: border-box;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2px solid #8a6a3f;
+  background-color: #f5e3b4;
+  background-image: url('../assets/hud/controles/joystick-manche.webp');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  transition: transform 80ms ease-out;
+}
+
+.island-joystick.is-active .joystick-stick {
+  transition: none;
+  filter: brightness(0.9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .joystick-stick { transition: none !important; }
+}
+body.calm-motion .joystick-stick {
+  transition: none !important;
+}
+
+/* 3. Botão de Interação (#island-interact) */
+.island-interact {
+  position: absolute;
+  right: clamp(10px, 2.5vw, 24px);
+  bottom: clamp(10px, 2.5vh, 24px);
+  width: clamp(64px, 14vh, 80px);
+  height: clamp(64px, 14vh, 80px);
+  min-width: 64px;
+  min-height: 64px;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  border: 2px solid #8c6f48;
+  border-radius: 50%;
+  background-color: #f7e3bf;
+  background-image: url('../assets/hud/controles/botao-interagir.webp');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  image-rendering: pixelated;
+  outline: none;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(20, 45, 35, 0.4);
+  transition: transform 80ms ease, filter 80ms ease, opacity 120ms ease;
+}
+
+.island-interact kbd {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+#island-interact-label {
+  display: none;
+}
+
+/* Estado desabilitado (sem placa por perto) */
+.island-interact:disabled {
+  opacity: 0.45;
+  box-shadow: none;
+  cursor: default;
+  filter: none;
+}
+
+/* Estado ativo (perto de placa/interativo): opacidade 1.0 com leve pulso */
+@keyframes interact-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.025); }
+}
+
+.island-interact:not(:disabled) {
+  opacity: 1;
+  animation: interact-pulse 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .island-interact:not(:disabled) { animation: none !important; }
+}
+body.calm-motion .island-interact:not(:disabled) {
+  animation: none !important;
+}
+
+/* Pressionado */
+.island-interact:not(:disabled):active,
+.island-interact:not(:disabled).is-pressed {
+  transform: translateY(2px) scale(1) !important;
+  filter: brightness(0.85);
+  animation: none;
+}
+
+.island-interact:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+  filter: drop-shadow(0 0 4px #ffe3a3);
+}
+
+/* ==========================================================================
+   Regras de Exibição dos Controles de Toque
+   Fonte da verdade única: data-touch-mode ("arrows" | "joystick" | "off")
+   A escolha do jogador em Configurações prevalece sobre qualquer detecção.
+   ========================================================================== */
+
+/* Padrão / Reset */
+.island-direction-pad,
+.island-joystick {
+  display: none;
+}
+
+/* Modo Setas (arrows): mostra direcional e botão de interação; oculta joystick */
+#island-screen[data-touch-mode="arrows"] .island-direction-pad,
+body[data-touch-mode="arrows"] .island-direction-pad,
+body.touch-arrows .island-direction-pad {
+  display: grid;
+}
+
+#island-screen[data-touch-mode="arrows"] .island-joystick,
+body[data-touch-mode="arrows"] .island-joystick,
+body.touch-arrows .island-joystick {
+  display: none;
+}
+
+#island-screen[data-touch-mode="arrows"] .island-interact,
+body[data-touch-mode="arrows"] .island-interact,
+body.touch-arrows .island-interact {
+  display: block;
+}
+
+/* Modo Joystick (joystick): mostra joystick e botão de interação; oculta direcional */
+#island-screen[data-touch-mode="joystick"] .island-direction-pad,
+body[data-touch-mode="joystick"] .island-direction-pad,
+body.touch-joystick .island-direction-pad {
+  display: none;
+}
+
+#island-screen[data-touch-mode="joystick"] .island-joystick,
+body[data-touch-mode="joystick"] .island-joystick,
+body.touch-joystick .island-joystick {
+  display: flex;
+}
+
+#island-screen[data-touch-mode="joystick"] .island-interact,
+body[data-touch-mode="joystick"] .island-interact,
+body.touch-joystick .island-interact {
+  display: block;
+}
+
+/* Modo Nenhum (off): oculta direcional, joystick e botão de interação */
+#island-screen[data-touch-mode="off"] .island-direction-pad,
+#island-screen[data-touch-mode="off"] .island-joystick,
+#island-screen[data-touch-mode="off"] .island-interact,
+body[data-touch-mode="off"] .island-direction-pad,
+body[data-touch-mode="off"] .island-joystick,
+body[data-touch-mode="off"] .island-interact,
+body.touch-off .island-direction-pad,
+body.touch-off .island-joystick,
+body.touch-off .island-interact {
+  display: none !important;
+}
+
+.island-dialog { width:min(510px,94vw); padding:32px; max-height:92svh; overflow:auto; background:#f3dfb8; border:4px solid #8c704e; border-radius:8px; box-shadow:0 0 0 3px #354936,0 30px 90px #0008; }.island-dialog h1 { font-size:30px; padding-right:12px; }.island-dialog p { font:15px/1.7 system-ui; }.island-dialog .island-note { font:12px/1.6 system-ui; padding-top:14px; border-top:1px solid #b39b7377; color:#76694e; margin:18px 0; }.island-dialog>.asset-button { display:block; width:100%; }.island-pause>.asset-button { margin-top:8px; }.island-map-dialog { width:min(690px,95vw); }.island-map-dialog h1 { margin-bottom:18px; }#island-map { width:100%; height:auto; display:block; border:3px solid #7d8a70; image-rendering:pixelated; border-radius:4px; }.island-map-dialog p { font-size:12px; line-height:1.5; }.island-map-legend { display:flex; align-items:center; justify-content:center; gap:7px; }.island-map-legend i { width:11px; height:11px; }
+.visually-hidden { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+
+@media(max-width:800px) { .island-place { top:10px; padding:6px 14px; }.island-place h1 { font-size:18px; }.island-gear { top:10px; right:10px; width:46px; height:46px; }.island-minimap { top:10px; right:64px; padding:6px; }.island-minimap canvas { width:120px; height:90px; }.island-minimap>span:first-child { font-size:6px; } }
+@media(max-width:540px) { .island-place { max-width:52vw; }.island-place h1 { font-size:15px; }.island-minimap { display:none; }.island-dialog { padding:28px 21px 24px; }.island-dialog h1 { font-size:25px; }.island-dialog p { font-size:14px; } }
+@media(max-height:520px) and (orientation:landscape) { .island-place { top:8px; padding:5px 14px; }.island-place h1 { font-size:16px; }.island-gear { top:8px; right:8px; width:40px; height:40px; }.island-minimap { top:8px; right:56px; padding:5px; }.island-minimap canvas { width:96px; height:72px; }.minimap-caption { display:none; } }
+
+
+/* Preenche a aba e respeita áreas seguras. */
+.island-screen { height: 100vh; height: 100dvh; overflow: hidden; }
+.island-place { margin-top: env(safe-area-inset-top); }
+.island-gear { margin-top: env(safe-area-inset-top); margin-right: env(safe-area-inset-right); }
+.island-minimap { margin-top: env(safe-area-inset-top); margin-right: env(safe-area-inset-right); }
+.island-direction-pad, .island-joystick { margin-left: env(safe-area-inset-left); margin-bottom: env(safe-area-inset-bottom); }
+.island-interact { margin-right: env(safe-area-inset-right); margin-bottom: env(safe-area-inset-bottom); }

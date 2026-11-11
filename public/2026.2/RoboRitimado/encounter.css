@@ -1,0 +1,272 @@
+/* Menu, welcome and phase feedback */
+body[data-screen=menu] .menu-content {
+  padding-top: clamp(26px, 5vh, 54px);
+}
+body[data-screen=menu] .actor-wrap {
+  right: 0;
+}
+body[data-screen=menu] .menu-kicker {
+  margin: 0 0 9px 4px;
+}
+body[data-screen=menu] .game-logo {
+  transform: none;
+  justify-content: center;
+  padding: 12px 19px 31px;
+  gap: .12em;
+}
+body[data-screen=menu] .game-logo::before {
+  inset: 0;
+  border-radius: 48% 48% 26px 26px / 22% 22% 26px 26px;
+  background: radial-gradient(ellipse at 50% 0%, #7e3984, transparent 72%), linear-gradient(125deg,#312750,#211439);
+  box-shadow: 0 5px 0 #170e28, 0 0 0 2px #dc78cf, inset 0 0 0 2px #7bdff8;
+}
+body[data-screen=menu] .game-logo::after {
+  bottom: 8px;
+  border-radius: 50%;
+}
+.game-logo .logo-decoration {
+  position: absolute;
+  bottom: 11px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #a7eaff;
+  text-shadow: 0 0 10px #ed6acf;
+  font: bold clamp(12px, 1.6vw, 22px)/1.2 'Trebuchet MS', sans-serif;
+}
+body[data-screen=menu] .menu-nav .orbit-button {
+  transform: none;
+  border-radius: 21px;
+}
+.menu-nav .orbit-button::before,
+.menu-nav .orbit-button::after {
+  clip-path: none;
+}
+.menu-nav .orbit-button::before {
+  background: linear-gradient(105deg,#7cdafa,#b08afa,#ed78cf)!important;
+}
+.menu-nav .orbit-button::after {
+  inset: 3px;
+  background: radial-gradient(ellipse at 90% 0%,#6b3b86,transparent 70%),linear-gradient(110deg,#2a1c46,#352353)!important;
+}
+.menu-nav .orbit-button .button-copy b {
+  font-style: normal;
+  background-image: linear-gradient(180deg,#adf0ff,#79cefa 40%,#f17acb 77%,#ff9ce2);
+}
+.menu-nav .orbit-button .button-icon {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  flex: 0 0 auto;
+  line-height: 1;
+  color: #321642;
+  background: linear-gradient(145deg,#85dcff,#e976d4);
+}
+.menu-nav .orbit-button:not(:hover) .button-icon {
+  transform: none;
+}
+.safety-dialog[open] {
+  width: min(1100px,95vw);
+}
+.safety-dialog .welcome-portrait {
+  left: 0;
+  width: 45%;
+  bottom: 0;
+  overflow: hidden;
+}
+.safety-dialog .welcome-portrait img {
+  display: block;
+  width: 108%;
+  flex-shrink: 0;
+  margin-left: -4%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  transform: translateY(11%);
+}
+.safety-dialog .safety-body {
+  min-height: 500px;
+  padding: 24px 26px 22px 45%;
+}
+.safety-dialog .dialog-kicker {
+  background: #ead3ff;
+  color: #3f2259;
+  font-size: 12px;
+}
+.safety-dialog .safety-body h2 {
+  font-size: clamp(24px,3.35vw,45px);
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+.welcome-bang {
+  display: inline-block;
+  margin-left: .14em;
+}
+.safety-dialog .safety-body p {
+  font-size: 16px;
+  line-height: 1.42;
+}
+.safety-dialog .safety-body .welcome-warning {
+  font-size: 15px;
+}
+.welcome-features span,
+.safety-dialog .safety-body .safety-note {
+  font-size: 13px;
+}
+.safety-dialog .safety-close {
+  font-size: 15px;
+}
+.phase-dialog .intro {
+  isolation: isolate;
+}
+.phase-flurries {
+  z-index: -1;
+  opacity: .27;
+}
+.phase-flurries img {
+  position: absolute;
+  left: calc(2% + var(--i)*9.8%);
+  top: -32px;
+  width: 30px;
+  height: 30px;
+  animation: phase-flurry 9s linear infinite;
+  animation-delay: calc(var(--i)*-.9s);
+}
+.phase-dialog .intro > :not(.phase-flurries) {
+  position: relative;
+}
+.frenzy-alert {
+  position: absolute;
+  z-index: 5;
+  top: 51px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 90%;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 2px solid var(--rail,#d494f5);
+  border-radius: 18px;
+  padding: 5px 12px;
+  background: #2b164b;
+  color: #fff;
+  font-size: clamp(11px,1.2vw,16px);
+  animation: frenzy-arrival .52s ease-out both;
+  pointer-events: none;
+}
+.frenzy-alert[hidden], .retry-portrait[hidden] {
+  display: none;
+}
+.frenzy-alert img {
+  width: 26px;
+  height: 26px;
+}
+@keyframes frenzy-arrival {
+  from { opacity: 0; transform: translateX(-50%) scale(.83); }
+  to { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+.frenzy-active .app .track-shell {
+  box-shadow: inset 0 0 0 3px var(--rail2), 0 0 22px var(--rail);
+}
+.photosensitive .frenzy-alert, .motion-reduced .frenzy-alert {
+  animation: none;
+}
+.photosensitive.frenzy-active .app .track-shell {
+  box-shadow: inset 0 0 0 2px var(--rail2);
+}
+.retry-dialog.game-dialog {
+  width: min(1000px,95vw);
+}
+.retry-dialog .result-overlay {
+  position: relative;
+  min-height: min(490px,83svh);
+  padding-left: 44%;
+}
+.retry-portrait {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 43%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  pointer-events: none;
+}
+.retry-dialog .retry-coach {
+  display: block;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+.retry-dialog .retry-coach p {
+  font-size: 15px;
+}
+.locked-journey {
+  border: 2px solid var(--theme-edge);
+  border-radius: 15px;
+  background: #34204f;
+  padding: 10px 13px;
+}
+.game-dialog .overlay .locked-journey {
+  color: #fff;
+}
+body[data-theme=masmorra] {
+  --rail:#ffa36f;
+  --rail2:#ef81ad;
+  --panel:#722e43;
+  --theme-light:#ffe1ce;
+  --theme-edge:#ae5462;
+  --sticker:'♨';
+}
+body[data-theme=colina] {
+  --rail:#ff9dc1;
+  --rail2:#c0a1ff;
+  --panel:#753556;
+  --theme-light:#ffe0ed;
+  --theme-edge:#b05b89;
+  --sticker:'❀';
+}
+@media (max-width:760px) {
+  body[data-screen=menu] .game-logo {
+    font-size: clamp(28px,10.4vw,62px);
+    gap: .10em;
+  }
+  .safety-dialog[open] {
+    display: flex;
+    flex-direction: column;
+  }
+  .safety-dialog .safety-body {
+    flex: 0 0 auto;
+    min-height: 0;
+    padding: 17px 14px 4px;
+  }
+  .safety-dialog .safety-body p {
+    margin-block: 9px;
+  }
+  .safety-dialog .safety-body h2 {
+    font-size: clamp(21px,7.2vw,37px);
+  }
+  .safety-dialog .welcome-portrait {
+    order: 1;
+    flex: 0 0 205px;
+    height: 205px;
+    top: auto;
+    bottom: auto;
+    align-items: flex-end;
+    margin: 0;
+  }
+  .safety-dialog .welcome-portrait img {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+  .retry-dialog .result-overlay {
+    min-height: 0;
+    padding: 16px 14px 214px;
+  }
+  .retry-portrait {
+    width: 100%;
+    height: 210px;
+  }
+}
