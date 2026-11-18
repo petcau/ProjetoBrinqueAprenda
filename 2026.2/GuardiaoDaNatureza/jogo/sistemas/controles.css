@@ -1,0 +1,114 @@
+body[data-controls="keyboard"] #joystick,
+body[data-controls="keyboard"] .actions,
+body[data-controls="keyboard"] [data-touch-controls] {
+  display: none !important;
+}
+.keyboard-legend {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  background: #183d2bdc;
+  border: 1px solid #a6ba795c;
+  border-radius: 13px 4px 13px 4px;
+  padding: 9px 13px;
+  color: #e7ebc9;
+  font-size: 10px;
+  pointer-events: none;
+  max-width: calc(100% - 80px);
+}
+body[data-controls="touch"] .keyboard-legend {
+  display: none;
+}
+.control-mode {
+  display: grid;
+  gap: 9px;
+  text-align: left;
+  margin: 18px 0;
+}
+.control-mode label {
+  font-size: 13px;
+  font-weight: 750;
+  color: inherit;
+}
+.control-mode select {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #a3ba7d;
+  border-radius: 12px 4px 12px 4px;
+  padding: 10px 12px;
+  background: #f3efd6;
+  color: #36513a;
+  font: inherit;
+}
+.control-mode p {
+  font-size: 11px !important;
+  line-height: 1.5 !important;
+}
+.ui-icon {
+  display: inline-flex;
+  width: var(--icon-size, 25px);
+  height: var(--icon-size, 25px);
+  flex: 0 0 var(--icon-size, 25px);
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+}
+.ui-icon svg {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.ui-icon.flora-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.round .ui-icon {
+  --icon-size: 33px;
+  margin-bottom: 8px;
+}
+.goal .ui-icon {
+  --icon-size: 20px;
+}
+.water .ui-icon {
+  --icon-size: 14px;
+}
+.phase-symbol .ui-icon {
+  --icon-size: 42px;
+}
+.keyboard-mode-note {
+  font-size: 11px;
+  color: #cfdcb2;
+}
+body[data-controls="keyboard"] .help {
+  bottom: 18px !important;
+}
+body[data-stage="recompensa"] .keyboard-legend {
+  display: none;
+}
+.goal .ui-icon::before,
+.goal .ui-icon::after {
+  content: none;
+}
+.control-shortcut {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 10px 0;
+}
+.control-shortcut a {
+  font-size: 11px;
+  color: inherit;
+}
+.field-settings::backdrop {
+  background: #102c24a8;
+  backdrop-filter: blur(4px);
+}
+.notice-icon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pause-summary .ui-icon {
+  --icon-size: 19px;
+}

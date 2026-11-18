@@ -1,0 +1,99 @@
+@font-face {
+  font-family: Renascenca;
+  src: url("../nova-versao/assets/lilita-one.ttf");
+  font-display: swap;
+}
+body.renascimento .nature-button,
+body.renascimento .forest-button,
+body.renascimento .panel .button,
+body.renascimento .nature-wood {
+  position: relative;
+  background: transparent url("assets/madeira.svg") center/100% 100% no-repeat !important;
+  border: 0 !important;
+  border-radius: 7px;
+  color: #fff2c4 !important;
+  box-shadow: 0 5px 9px #1c100c44;
+  font-family: Renascenca, system-ui, sans-serif;
+  text-shadow: 0 2px 1px #3e261b;
+  font-weight: 400;
+  transition:
+    transform 0.2s,
+    filter 0.2s;
+  isolation: isolate;
+}
+body.renascimento .nature-button:hover,
+body.renascimento .forest-button:hover,
+body.renascimento .nature-wood:hover {
+  transform: translateY(-3px) rotate(-0.6deg);
+  filter: brightness(1.12);
+}
+body.renascimento .nature-button:active,
+body.renascimento .forest-button:active,
+body.renascimento .nature-wood:active {
+  transform: translateY(2px) scale(0.96);
+}
+body.renascimento button:focus-visible,
+body.renascimento a:focus-visible {
+  outline: 3px solid #ffe1a0;
+  outline-offset: 4px;
+}
+body.renascimento .round,
+body.renascimento .settings-dock {
+  background: transparent url("assets/madeira-redonda.svg") center/100% 100%
+    no-repeat !important;
+  border: 0 !important;
+  border-radius: 50%;
+  box-shadow: 0 5px 12px #21130b66;
+}
+body.renascimento .nature-button::after {
+  content: "❧" / "";
+  color: #c2d976;
+  font-size: 30px;
+  position: absolute;
+  right: -7px;
+  top: -12px;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s,
+    transform 0.3s;
+  transform: rotate(-25deg) translateY(8px);
+}
+body.renascimento .nature-button:hover::after,
+body.renascimento .nature-button:active::after {
+  opacity: 1;
+  transform: rotate(10deg) translateY(-2px);
+}
+.wood-spark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  pointer-events: none;
+  z-index: 9;
+  color: #d0dc88;
+  font: 25px Renascenca;
+  animation: wood-leaf 0.65s ease-out forwards;
+}
+@keyframes wood-leaf {
+  to {
+    opacity: 0;
+    transform: translate(var(--fly-x), -65px) rotate(95deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.renascimento *,
+  body.renascimento *::after {
+    scroll-behavior: auto !important;
+  }
+  .wood-spark {
+    display: none;
+  }
+  body.renascimento .nature-button,
+  body.renascimento .forest-button {
+    transition: filter 0.15s;
+    transform: none !important;
+  }
+}
+body.reduce-motion .wood-spark {
+  display: none;
+}

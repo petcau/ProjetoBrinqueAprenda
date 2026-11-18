@@ -1,0 +1,796 @@
+/* Brisa: a pintura permanece; o movimento e os comandos ganham espaço. */
+.brisa-icon {
+  overflow: hidden !important;
+  flex: none;
+  filter: drop-shadow(0 2px 1px #17392b38);
+}
+.home .game-logo {
+  animation: brisa-title 7s ease-in-out infinite;
+  transform-origin: 50% 75%;
+  will-change: transform;
+}
+@keyframes brisa-title {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-0.45deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(0.45deg);
+  }
+}
+.home-menu a {
+  transition:
+    filter 0.32s ease,
+    scale 0.3s ease !important;
+}
+.home-menu a:focus-visible {
+  filter: brightness(1.15);
+  outline: 3px solid #ffe9a7;
+  outline-offset: 2px;
+}
+.home-settings {
+  width: 78px;
+  height: 78px;
+  border: 5px solid #9c713a !important;
+  box-shadow:
+    inset 0 1px 0 #fff1b385,
+    0 4px #5c3c20,
+    0 8px 12px #17372a5e !important;
+  padding: 9px !important;
+}
+.home-settings .brisa-gear {
+  width: 54px !important;
+  height: 54px !important;
+  transition: rotate 0.8s ease;
+}
+.home-settings:is(:hover, :focus-visible) .brisa-gear {
+  rotate: 45deg;
+}
+#falling-leaves {
+  z-index: 40;
+  contain: strict;
+}
+/* As folhas da transição são os sprites pintados, com fechamento e abertura próprios. */
+.transition-canopy {
+  transition: transform 0.72s cubic-bezier(0.32, 0.65, 0.26, 1) !important;
+  inset: -25% -18%;
+  background: linear-gradient(130deg, #133e30, #4c7941 48%, #14382d);
+}
+.transition-canopy i {
+  width: 35vw;
+  height: 35vw;
+  left: calc(-3% + (var(--i) - 1) * 8.6%);
+  top: calc(-16% + var(--row) * 34%);
+  rotate: calc(-30deg + var(--i) * 29deg);
+  opacity: 0.94;
+}
+.transition-canopy i svg {
+  overflow: hidden !important;
+  filter: drop-shadow(0 10px 9px #17372b66);
+}
+.is-covering.is-leaving .transition-canopy {
+  transition-duration: 0.9s !important;
+}
+.is-covering.is-arriving .transition-canopy {
+  transform: translateX(0) rotate(-7deg);
+  transition: none !important;
+}
+.view.entering {
+  animation-duration: 0.7s;
+}
+.map-view.entering {
+  animation-name: brisa-map-arrive;
+}
+@keyframes brisa-map-arrive {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.brisa-map-pack {
+  position: absolute;
+  z-index: 9;
+  right: 18px;
+  bottom: 60px;
+  width: 74px;
+  height: 82px;
+  border: 3px solid #b68b4a;
+  border-radius: 23px 23px 19px 19px;
+  background: radial-gradient(ellipse at 40% 20%, #547740, #244e38);
+  box-shadow:
+    inset 0 1px #f9df9a88,
+    0 4px #5e4325,
+    0 6px 16px #19382d55;
+  color: #fff0bd;
+  padding: 6px 8px 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  touch-action: manipulation;
+  font: 400 13px Lilita;
+}
+.brisa-map-pack svg {
+  width: 53px;
+  height: 53px;
+}
+.brisa-map-pack:hover {
+  filter: brightness(1.16);
+  scale: 1.045;
+}
+.brisa-map-pack:active {
+  scale: 0.95;
+}
+.island-ending .brisa-map-pack {
+  opacity: 0;
+  pointer-events: none;
+}
+/* As cinco placas usam uma moldura com proporção própria, sem comprimir os nomes. */
+.map-hotspot {
+  width: clamp(204px, 21vw, 260px);
+  min-height: 84px;
+  padding: 18px 23px;
+  grid-template-columns: 38px minmax(0, 1fr);
+  transition:
+    scale 0.28s ease,
+    filter 0.28s ease !important;
+}
+.map-hotspot .map-region-name {
+  font-size: 19px;
+  line-height: 1.1;
+}
+.map-hotspot:hover {
+  scale: 1.035;
+}
+.map-hotspot:active {
+  scale: 0.965;
+}
+.map-hotspot .number {
+  width: 26px;
+  height: 26px;
+  top: 3px;
+  left: 6px;
+  box-shadow:
+    0 2px 4px #173d2e66,
+    inset 0 1px #fff1a5aa;
+}
+.map-hotspot .number:after {
+  content: "";
+  position: absolute;
+  right: -7px;
+  top: -2px;
+  width: 12px;
+  height: 7px;
+  background: #9dbc50;
+  border: 1px solid #56783b;
+  border-radius: 90% 0 90% 0;
+  rotate: -25deg;
+}
+.phase-brief > footer .wood-button,
+.ra-pause nav .wood-button,
+#back-home {
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent url("../viva/assets/botao.webp") center/100% 100%
+    no-repeat !important;
+  color: #fff0bd !important;
+  text-shadow: 0 2px #5e4525;
+  padding: 15px 30px;
+}
+#back-home {
+  min-height: 62px;
+  min-width: 124px;
+  padding: 12px 22px;
+}
+#back-home .nature-symbol {
+  width: 27px;
+  height: 27px;
+}
+.phase-brief > footer .wood-button {
+  min-height: 66px;
+  font: 400 22px Lilita;
+}
+.phase-brief #start-phase:hover,
+.phase-brief #phase-back:hover {
+  filter: brightness(1.14);
+  scale: 1.025;
+}
+#phase-items {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.25;
+}
+.brief-item-art {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex: none;
+}
+.brief-item-art .brisa-icon {
+  width: 46px;
+  height: 46px;
+}
+/* Objetos de verdade nos comandos, sem o desenho de linha dentro de outro círculo. */
+.ra-world-icon {
+  padding: 6px !important;
+}
+.ra-world-icon .brisa-icon {
+  width: 38px !important;
+  height: 38px !important;
+}
+.raizes-jogo .actions button {
+  padding: 5px !important;
+}
+.raizes-jogo .actions button .brisa-icon {
+  width: 50px !important;
+  height: 50px !important;
+}
+.raizes-jogo #stick {
+  box-shadow:
+    inset 0 2px #fff1b66b,
+    0 4px 8px #17382a5e !important;
+}
+.raizes-jogo .joystick {
+  background:
+    repeating-conic-gradient(
+      from -10deg,
+      #5f774535 0 25deg,
+      transparent 25deg 45deg
+    ),
+    radial-gradient(circle, #6e8b47c0, #254d34e0) !important;
+}
+/* Coleção comum ao mapa e à fase. Só seu conteúdo rola. */
+.brisa-pack {
+  width: min(960px, calc(100vw - 40px));
+  max-width: 960px;
+  height: min(610px, calc(100dvh - 40px));
+  max-height: calc(100dvh - 40px);
+  padding: 20px 24px;
+  border: 7px solid #9d7846;
+  border-radius: 23px;
+  background: linear-gradient(120deg, #f8edcc, #e7dbb4);
+  color: #345439;
+  overflow: hidden;
+  box-sizing: border-box;
+  box-shadow:
+    inset 0 0 0 2px #dac18b,
+    0 15px 50px #17382c66;
+}
+.brisa-pack[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.brisa-pack > header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  border-bottom: 1px solid #b4a56e;
+  padding-bottom: 12px;
+  flex: none;
+}
+.brisa-pack .pack-emblem svg {
+  width: 67px;
+  height: 67px;
+}
+.brisa-pack h2 {
+  font: 400 34px/1.05 Lilita;
+  margin: 5px 0 0;
+  color: #355b3a;
+}
+.brisa-pack > header .icon-button {
+  margin-left: auto;
+  flex: none;
+  width: 44px;
+  height: 44px;
+}
+.brisa-pack > .ra-tabs {
+  margin: 0;
+}
+.brisa-pack #pack-content {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  padding-right: 6px;
+}
+.brisa-pack #pack-status:empty {
+  display: none;
+}
+.collection-hint {
+  margin: 2px 0 13px;
+  font-size: 12px;
+  color: #65764a;
+}
+.brisa-collection {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.brisa-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  padding: 15px 11px 12px;
+  border: 1px solid #bcb17a;
+  border-radius: 17px;
+  background:
+    radial-gradient(ellipse at 50% 0, #fff7daab, transparent 65%), #e9e2bd;
+  min-width: 0;
+}
+.brisa-item.is-known {
+  background:
+    radial-gradient(ellipse at 50% 0, #fff9dc, transparent 70%), #dce2b7;
+  border-color: #a4ad70;
+}
+.brisa-item h3,
+.crystal-collection h3 {
+  font: 400 18px/1.15 Lilita;
+  margin: 0 0 6px;
+}
+.brisa-item p,
+.crystal-collection p {
+  font-size: 11px;
+  line-height: 1.45;
+  margin: 0;
+}
+.brisa-item > div:not(.item-illustration) {
+  width: 100%;
+}
+.brisa-item button {
+  margin-top: 10px;
+  min-height: 38px;
+  padding: 7px 12px;
+  border-radius: 12px;
+  background: #3c6840;
+  border: 1px solid #9c9c59;
+  color: #fff0bf;
+  font: 600 12px system-ui;
+}
+.item-illustration {
+  position: relative;
+  height: 103px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.item-illustration .brisa-icon {
+  width: 105px;
+  height: 103px;
+}
+.is-undiscovered .item-illustration {
+  filter: grayscale(1) brightness(0.35);
+  opacity: 0.17;
+}
+.is-undiscovered h3,
+.is-undiscovered p {
+  color: #7f8465;
+}
+.is-undiscovered {
+  border-style: dashed;
+  background: #d8d9b977;
+}
+.uniform-detail {
+  position: absolute;
+  right: 21%;
+  bottom: -1px;
+}
+.uniform-detail svg {
+  width: 28px;
+  height: 28px;
+}
+.uniform-resgate > svg {
+  filter: sepia(0.5) saturate(1.3);
+}
+.uniform-voluntario > svg {
+  filter: hue-rotate(100deg) saturate(0.7);
+}
+.uniform-plantio > svg {
+  filter: saturate(1.3);
+}
+.worn-label {
+  display: inline-block;
+  font-size: 10px;
+  color: #f6efc9;
+  background: #487246;
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin-top: 8px;
+}
+.brisa-item.is-worn {
+  border: 2px solid #68854b;
+}
+.brisa-crystals {
+  display: grid;
+  grid-template-columns: 28% minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  min-height: 100%;
+}
+.brisa-necklace {
+  text-align: center;
+}
+.brisa-necklace .relicario-view {
+  max-width: 100%;
+  height: 250px;
+}
+.crystal-collection {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.crystal-collection article {
+  text-align: center;
+  border: 1px solid #b6ad79;
+  border-radius: 14px;
+  padding: 10px;
+}
+.crystal-collection .cristal-folha {
+  height: 92px;
+  width: 72px;
+}
+.crystal-collection h3 {
+  font-size: 16px;
+}
+/* Madeira e tecido unem as opções; a pausa tem duas colunas em paisagem. */
+.settings-shell {
+  border-color: #946b39;
+  box-shadow:
+    inset 0 0 0 2px #e4cb8f,
+    0 10px 40px #16392d66;
+}
+.settings-shell .ra-setting,
+.settings-shell .ra-volume,
+.ra-phase-settings .ra-setting,
+.ra-phase-settings .ra-volume {
+  padding: 10px 12px;
+  border: 1px solid #b8b17e;
+  border-radius: 13px;
+  background: #dce0b77a;
+}
+.settings-shell .ra-settings-body > section,
+.ra-phase-settings .ra-settings-body > section {
+  gap: 10px;
+  align-content: start;
+}
+.ra-settings-body [data-setting-panel="controles"] .mode-choice {
+  grid-column: 1/-1;
+}
+.ra-settings-body .calm-pace {
+  grid-column: auto;
+}
+#menu-pausa.ra-pause {
+  width: min(740px, calc(100vw - 38px));
+  max-width: 740px;
+  max-height: calc(100dvh - 32px);
+  padding: 24px;
+  overflow: auto;
+  position: fixed;
+  border: 6px solid #967340;
+  border-radius: 25px;
+}
+#menu-pausa[open] {
+  display: grid;
+  grid-template-columns: 42% 1fr;
+  align-items: center;
+  gap: 20px;
+}
+#menu-pausa > header {
+  position: static;
+  text-align: center;
+}
+#menu-pausa #pause-flora {
+  display: block;
+  width: 130px;
+  height: 135px;
+  margin: 0 auto;
+  position: static;
+}
+#menu-pausa h2 {
+  font: 400 28px/1.06 Lilita;
+  margin: 7px 0;
+}
+#menu-pausa .eyebrow {
+  font-size: 8px;
+}
+#menu-pausa .ra-pause-full {
+  position: absolute;
+  right: auto;
+  left: 8px;
+  top: 8px;
+  width: 40px;
+  height: 40px;
+  padding: 6px;
+}
+#menu-pausa > p {
+  display: none;
+}
+#menu-pausa nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+#menu-pausa nav .wood-button {
+  min-height: 66px;
+  font: 400 21px Lilita;
+  gap: 9px;
+}
+#menu-pausa nav .nature-symbol {
+  width: 30px;
+  height: 30px;
+}
+.ra-phase-settings {
+  border: 6px solid #967340 !important;
+  border-radius: 22px !important;
+  background: linear-gradient(130deg, #f6ebc8, #e3d5aa) !important;
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .home .game-logo {
+    animation-name: brisa-title-small;
+  }
+  @keyframes brisa-title-small {
+    0%,
+    100% {
+      transform: translateY(0) rotate(-0.35deg);
+    }
+    50% {
+      transform: translateY(-3px) rotate(0.35deg);
+    }
+  }
+  .home-settings {
+    width: 61px;
+    height: 61px;
+    padding: 7px !important;
+    right: 14px;
+    bottom: 14px;
+  }
+  .home-settings .brisa-gear {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  #back-home {
+    min-height: 48px;
+    min-width: 106px;
+    padding: 10px 18px;
+  }
+  .map-hotspot {
+    width: 183px;
+    min-height: 64px;
+    padding: 13px 17px;
+    grid-template-columns: 29px minmax(0, 1fr);
+    max-width: 28vw;
+  }
+  .map-hotspot .map-region-name {
+    font-size: 14px;
+  }
+  .map-hotspot .number {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    top: 2px;
+    left: 5px;
+  }
+  .map-hotspot small {
+    font-size: 8px;
+  }
+  .brisa-map-pack {
+    right: 10px;
+    bottom: 51px;
+    width: 57px;
+    height: 64px;
+    border-radius: 18px;
+    font-size: 10px;
+    padding: 4px;
+  }
+  .brisa-map-pack svg {
+    width: 41px;
+    height: 41px;
+  }
+  .phase-brief > footer .wood-button {
+    min-height: 48px;
+    font-size: 17px;
+    padding: 9px 20px;
+  }
+  .brief-item-art .brisa-icon {
+    width: 32px;
+    height: 32px;
+  }
+  #phase-items {
+    font-size: 10px;
+    gap: 4px;
+  }
+  .brief-item-art {
+    gap: 0;
+  }
+  .brisa-pack {
+    width: calc(100vw - 24px);
+    height: calc(100dvh - 20px);
+    max-height: calc(100dvh - 20px);
+    padding: 10px 16px;
+    border-width: 5px;
+  }
+  .brisa-pack[open] {
+    gap: 6px;
+  }
+  .brisa-pack > header {
+    padding-bottom: 6px;
+    gap: 9px;
+  }
+  .brisa-pack .pack-emblem svg {
+    width: 40px;
+    height: 40px;
+  }
+  .brisa-pack h2 {
+    font-size: 24px;
+    margin: 3px 0 0;
+  }
+  .brisa-pack header .eyebrow {
+    font-size: 7px;
+  }
+  .brisa-pack > .ra-tabs button {
+    min-height: 33px;
+  }
+  .brisa-collection {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .brisa-item {
+    padding: 10px 8px;
+    gap: 6px;
+    border-radius: 12px;
+  }
+  .item-illustration {
+    height: 69px;
+  }
+  .item-illustration .brisa-icon {
+    width: 75px;
+    height: 69px;
+  }
+  .brisa-item h3 {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  .brisa-item p,
+  .crystal-collection p {
+    font-size: 10px;
+  }
+  .collection-hint {
+    font-size: 10px;
+    margin-bottom: 7px;
+  }
+  .brisa-crystals {
+    grid-template-columns: 23% 1fr;
+    gap: 10px;
+  }
+  .brisa-necklace .relicario-view {
+    height: 172px;
+  }
+  .brisa-necklace h3 {
+    font-size: 14px;
+  }
+  .crystal-collection {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .crystal-collection article {
+    padding: 7px;
+  }
+  .crystal-collection .cristal-folha {
+    height: 73px;
+    width: 52px;
+  }
+  .crystal-collection h3 {
+    font-size: 12px;
+  }
+  .uniform-detail {
+    right: 14%;
+  }
+  .uniform-detail svg {
+    width: 23px;
+    height: 23px;
+  }
+  .settings-shell .ra-setting,
+  .settings-shell .ra-volume,
+  .ra-phase-settings .ra-setting,
+  .ra-phase-settings .ra-volume {
+    padding: 6px 9px;
+    border-radius: 9px;
+  }
+  .settings-shell .ra-settings-body > section,
+  .ra-phase-settings .ra-settings-body > section {
+    gap: 6px;
+  }
+  #menu-pausa.ra-pause {
+    padding: 14px 20px;
+    width: min(620px, calc(100vw - 30px));
+  }
+  #menu-pausa[open] {
+    grid-template-columns: 40% 1fr;
+    gap: 17px;
+  }
+  #menu-pausa #pause-flora {
+    width: 92px;
+    height: 94px;
+  }
+  #menu-pausa h2 {
+    font-size: 24px;
+  }
+  #menu-pausa nav .wood-button {
+    min-height: 55px;
+    font-size: 18px;
+  }
+  .ra-world-icon .brisa-icon {
+    width: 34px !important;
+    height: 34px !important;
+  }
+  .raizes-jogo .actions button .brisa-icon {
+    width: 44px !important;
+    height: 44px !important;
+  }
+}
+@media (max-width: 740px) and (orientation: landscape) {
+  .brisa-collection {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .crystal-collection {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .map-hotspot {
+    width: 170px;
+    padding: 12px 15px;
+    grid-template-columns: 27px minmax(0, 1fr);
+  }
+  .map-hotspot .map-region-name {
+    font-size: 13px;
+  }
+  .brisa-map-pack {
+    right: 6px;
+    bottom: 47px;
+    width: 52px;
+    height: 59px;
+  }
+  .brisa-map-pack svg {
+    width: 36px;
+    height: 36px;
+  }
+  #phase-items {
+    flex-wrap: wrap;
+  }
+  .brief-item-art .brisa-icon {
+    width: 27px;
+    height: 27px;
+  }
+  #menu-pausa #pause-flora {
+    height: 80px;
+    width: 80px;
+  }
+  #menu-pausa nav .wood-button {
+    min-height: 50px;
+  }
+}
+.reduce-motion .home .game-logo {
+  animation: none !important;
+  will-change: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .home .game-logo {
+    animation: none !important;
+    will-change: auto;
+  }
+  button,
+  a {
+    transition: none !important;
+  }
+}
+.item-illustration .uniform-detail .nature-symbol {
+  width: 23px !important;
+  height: 23px !important;
+}

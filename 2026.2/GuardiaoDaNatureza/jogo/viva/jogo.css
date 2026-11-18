@@ -1,0 +1,296 @@
+.raizes-jogo .mission,
+.raizes-jogo .missions {
+  border: 4px solid transparent !important;
+  background:
+    linear-gradient(#244d3eee, #244d3eee) padding-box,
+    var(--wood) border-box !important;
+  border-radius: 17px !important;
+  box-shadow:
+    0 3px 0 #644e2e55,
+    0 5px 14px #163a3033 !important;
+}
+.raizes-jogo .mission h1,
+.raizes-jogo .missions h1 {
+  font-size: 17px !important;
+  color: #fff0bd !important;
+  letter-spacing: 0.01em;
+}
+.raizes-jogo .mission .goal > svg,
+.raizes-jogo .mission .goal [data-icon] svg,
+.raizes-jogo .missions .goal svg {
+  width: 28px !important;
+  height: 28px !important;
+}
+.raizes-jogo .goal {
+  font-size: 12px;
+  gap: 6px;
+}
+.raizes-jogo .water {
+  margin-top: 5px;
+  border-top: 1px solid #81936166;
+  padding-top: 5px;
+}
+.ra-world-icon {
+  border: 4px solid #aa854e !important;
+  background: radial-gradient(circle at 38% 28%, #557b42, #234c35) !important;
+  box-shadow:
+    inset 0 1px #e4d89d88,
+    0 3px 0 #634a2c,
+    0 4px 8px #18372c66 !important;
+}
+.ra-world-icon svg {
+  width: 30px !important;
+  height: 30px !important;
+}
+.ra-world-icon:active {
+  scale: 0.94;
+}
+.raizes-jogo .actions button {
+  border-color: #af8a4d !important;
+  box-shadow:
+    inset 0 1px #d9dc9a88,
+    0 3px #694b2a,
+    0 5px 12px #163c3066 !important;
+  background: radial-gradient(circle at 40% 30%, #4b7845, #244e37) !important;
+}
+.raizes-jogo .actions button > svg {
+  width: 45px !important;
+  height: 45px !important;
+}
+.raizes-jogo .actions button small {
+  font-size: 9px !important;
+}
+.raizes-jogo .joystick {
+  border: 5px solid #a67b43 !important;
+  background: radial-gradient(circle, #5c7f45a8, #244c32c9) !important;
+  box-shadow:
+    inset 0 1px #e5d69b88,
+    0 3px #62462c,
+    0 6px 16px #1b3b3355 !important;
+}
+.raizes-jogo #stick {
+  background: radial-gradient(circle at 35% 25%, #dce09d, #6f9458) !important;
+  border: 3px solid #d4b97a !important;
+  box-shadow: 0 3px 7px #1b382d77 !important;
+}
+.raizes-jogo .ra-talk {
+  background:
+    linear-gradient(#fbefce, #e4d5ad) padding-box,
+    var(--wood) border-box !important;
+  border-radius: 22px !important;
+  box-shadow: 0 12px 50px #102c2a88 !important;
+}
+.ra-talk-scene {
+  border-radius: 14px;
+  border: 2px solid #aa8b4c;
+  align-self: center;
+  height: calc(100% - 10px) !important;
+}
+.ra-talk-copy {
+  padding: 0 5px;
+}
+.ra-talk-copy p {
+  font-weight: 600 !important;
+  line-height: 1.5 !important;
+}
+.ra-talk > header h2 {
+  color: #395b37 !important;
+}
+.ra-talk footer button {
+  background: linear-gradient(#537c43, #2c5a38) !important;
+  color: #fff0c4 !important;
+  border: 2px solid #ad8a48 !important;
+}
+.raizes-jogo #message,
+.raizes-jogo #flora-talk,
+.raizes-jogo #toast,
+.raizes-jogo #dica {
+  background: linear-gradient(#f9edc9f5, #e6d8b2f5) !important;
+  border: 2px solid #aa8c4e !important;
+  box-shadow:
+    0 3px 0 #5b4d2b33,
+    0 3px 12px #133b2a33 !important;
+  color: #365638 !important;
+  border-radius: 14px 14px 14px 4px !important;
+}
+.raizes-jogo .ra-phase-settings {
+  height: min(405px, calc(100dvh - 26px));
+}
+.raizes-jogo .ra-tabs button {
+  padding-inline: 7px;
+}
+.raizes-jogo .ra-settings-body > section {
+  min-height: 0;
+}
+.raizes-jogo #phase-settings .ra-settings-body {
+  padding-top: 3px;
+}
+.raizes-jogo .ra-pack,
+.raizes-jogo .ra-pause {
+  background:
+    linear-gradient(#f5e9c7, #e4d5af) padding-box,
+    var(--wood) border-box;
+}
+.raizes-jogo .ra-dialog h2 {
+  font-family: Lilita;
+  color: #365638 !important;
+}
+.raizes-jogo .completion h2 {
+  font-family: Lilita;
+}
+.raizes-jogo .top-actions button {
+  transition:
+    filter 0.15s,
+    scale 0.15s;
+}
+.raizes-jogo .top-actions button:hover {
+  filter: brightness(1.15);
+}
+body[data-graphics="leve"] dialog::backdrop {
+  backdrop-filter: none !important;
+}
+.high-contrast #message,
+.high-contrast #flora-talk {
+  background: #fff0c4 !important;
+}
+.raizes-jogo .current-care {
+  font-size: 11px !important;
+  line-height: 1.35;
+}
+.raizes-jogo .keyboard-legend {
+  border-radius: 10px;
+  background: #2b5139df !important;
+  font-size: 10px !important;
+  color: #e4e9c6 !important;
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .raizes-jogo .mission,
+  .raizes-jogo .missions {
+    width: 198px !important;
+    max-width: 30vw !important;
+    padding: 7px 10px !important;
+  }
+  .raizes-jogo .mission h1,
+  .raizes-jogo .missions h1 {
+    font-size: 14px !important;
+  }
+  .raizes-jogo .goal {
+    font-size: 11px !important;
+  }
+  .raizes-jogo .current-care {
+    font-size: 10px !important;
+  }
+  .raizes-jogo .actions button {
+    width: 68px !important;
+    height: 68px !important;
+    min-width: 68px !important;
+  }
+  .raizes-jogo .actions button > svg {
+    width: 39px !important;
+    height: 39px !important;
+  }
+  .raizes-jogo .ra-talk {
+    height: calc(100dvh - 42px) !important;
+    max-height: 300px !important;
+  }
+  .ra-talk-columns {
+    grid-template-columns: 45% minmax(0, 1fr) !important;
+  }
+  .ra-talk-copy p {
+    font-size: 14px !important;
+  }
+  .raizes-jogo .ra-talk > header {
+    padding-bottom: 5px;
+  }
+  .raizes-jogo .ra-talk h2 {
+    font-size: 22px !important;
+  }
+  .ra-world-icon {
+    width: 43px !important;
+    height: 43px !important;
+    min-width: 43px !important;
+    padding: 5px !important;
+  }
+  .raizes-jogo .top-actions {
+    gap: 7px !important;
+  }
+  .raizes-jogo .ra-tabs button {
+    min-height: 33px;
+    font-size: 10px;
+  }
+  .raizes-jogo .ra-phase-settings .ra-help {
+    font-size: 10px;
+  }
+  .raizes-jogo .ra-phase-settings .ra-setting {
+    min-height: 42px;
+  }
+  .raizes-jogo #message,
+  .raizes-jogo #flora-talk {
+    font-size: 11px !important;
+    max-width: min(360px, calc(100vw - 205px)) !important;
+  }
+}
+
+.raizes-jogo #conversa.ra-talk,
+.raizes-jogo #intro.ra-talk {
+  width: min(940px, calc(100vw - 32px)) !important;
+  max-width: min(940px, calc(100vw - 32px)) !important;
+  align-items: stretch !important;
+  gap: 8px !important;
+  padding: 14px 18px !important;
+  inset: auto 14px 18px !important;
+  margin-inline: auto !important;
+}
+.raizes-jogo .ra-talk > header {
+  width: 100%;
+  text-align: left;
+  padding: 0 0 7px !important;
+}
+.raizes-jogo .ra-talk footer {
+  width: 100%;
+  justify-content: space-between !important;
+}
+.raizes-jogo .ra-talk-columns {
+  flex: 1;
+  min-height: 0;
+  grid-template-columns: 43% minmax(0, 1fr) !important;
+}
+.raizes-jogo #conversa.ra-talk .ra-talk-copy p,
+.raizes-jogo #intro.ra-talk .ra-talk-copy p {
+  font-size: 17px !important;
+}
+.raizes-jogo .ra-talk-scene {
+  min-width: 0;
+  max-width: 100%;
+  height: calc(100% - 7px) !important;
+}
+.raizes-jogo .ra-talk .eyebrow {
+  font-size: 9px !important;
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .raizes-jogo #conversa.ra-talk,
+  .raizes-jogo #intro.ra-talk {
+    inset: auto 12px 12px !important;
+    width: calc(100vw - 28px) !important;
+    max-width: 840px !important;
+    height: min(280px, calc(100dvh - 28px)) !important;
+    padding: 10px 13px !important;
+    gap: 6px !important;
+  }
+  .raizes-jogo #conversa.ra-talk .ra-talk-copy p,
+  .raizes-jogo #intro.ra-talk .ra-talk-copy p {
+    font-size: 14px !important;
+  }
+  .raizes-jogo .ra-talk > header {
+    padding-bottom: 3px !important;
+  }
+  .raizes-jogo .ra-talk .eyebrow {
+    font-size: 7px !important;
+  }
+  .raizes-jogo .ra-talk footer button {
+    min-height: 38px !important;
+  }
+  .raizes-jogo .ra-talk-columns {
+    gap: 13px !important;
+  }
+}

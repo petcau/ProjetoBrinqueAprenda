@@ -1,0 +1,20 @@
+window.GuardiaoPlantasAtlas = {
+  file: "assets/paisagem-plantas.webp",
+  width: 1744,
+  height: 1140,
+  referenceHeight: 328.0,
+  frames: [
+    { bounds: [144, 204, 149, 164], pivot: [218.5, 368] },
+    { bounds: [525, 64, 258, 304], pivot: [654.0, 368] },
+    { bounds: [900, 22, 380, 346], pivot: [1090.0, 368] },
+    { bounds: [1324, 25, 404, 343], pivot: [1526.0, 368] },
+    { bounds: [134, 589, 169, 159], pivot: [218.5, 748] },
+    { bounds: [526, 443, 255, 305], pivot: [653.5, 748] },
+    { bounds: [890, 414, 399, 334], pivot: [1089.5, 748] },
+    { bounds: [1322, 420, 409, 328], pivot: [1526.5, 748] },
+    { bounds: [135, 943, 166, 185], pivot: [218.0, 1128] },
+    { bounds: [524, 800, 259, 328], pivot: [653.5, 1128] },
+    { bounds: [893, 773, 394, 355], pivot: [1090.0, 1128] },
+    { bounds: [1328, 773, 397, 355], pivot: [1526.5, 1128] },
+  ],
+};

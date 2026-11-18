@@ -1,0 +1,614 @@
+/* Materiais pintados e texto de verdade: a mesma identidade em toda a aventura. */
+.encanto-natural {
+  --encanto-green: url("assets/placa-verde.webp");
+  --encanto-title: url("assets/titulo.webp");
+  --encanto-paper: url("assets/pergaminho.webp");
+  --encanto-branch: url("assets/ramo.webp");
+  --encanto-ink: #482915;
+}
+.encanto-flora img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.encanto-natural.world-map .map-hotspot {
+  background: transparent var(--encanto-green) center / 100% 100% no-repeat !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 18px 23px !important;
+  min-height: 74px !important;
+  color: #fff4cd !important;
+  overflow: visible !important;
+  filter: drop-shadow(0 4px 3px #132c2e77);
+  transition:
+    scale 0.18s ease,
+    filter 0.18s ease;
+}
+.encanto-natural.world-map .map-hotspot > .number {
+  display: grid;
+  place-items: center;
+  z-index: 2;
+  top: -2px;
+  left: -3px;
+  width: 28px;
+  height: 28px;
+  background: #285e32 !important;
+  color: #fff3cb !important;
+  border: 2px solid #e8c878 !important;
+  border-radius: 50%;
+  box-shadow: 0 2px 3px #1c382c66 !important;
+  font:
+    400 20px / 1 Lilita,
+    system-ui;
+}
+.encanto-natural.world-map .map-hotspot strong {
+  color: #fff4d4;
+  font-size: clamp(14px, 1.45vw, 20px);
+  text-shadow: 0 2px 1px #123c1e;
+}
+.encanto-natural.world-map .map-hotspot[data-locked="true"] {
+  filter: saturate(0.67) drop-shadow(0 4px 3px #132c2e77);
+}
+.encanto-natural.world-map .map-hotspot:hover {
+  scale: 1.05;
+  filter: brightness(1.12) drop-shadow(0 5px 4px #132c2e88);
+}
+.encanto-natural.world-map .map-hotspot:active {
+  scale: 0.97;
+}
+.encanto-natural.world-map .map-hotspot[aria-current="step"] {
+  outline-color: #f9d87a;
+  outline-offset: 0;
+  border-radius: 22px !important;
+}
+.encanto-natural.world-map .journey-heading h1 {
+  background: transparent var(--encanto-green) center / 100% 100% no-repeat !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #fff4cf !important;
+  text-shadow: 0 2px 1px #173b22 !important;
+  padding: 23px 66px !important;
+  font-size: clamp(23px, 2.9vw, 37px);
+}
+.encanto-natural.world-map .map-flora {
+  width: 80px;
+  height: 82px;
+  right: 0;
+  top: -3px;
+  filter: drop-shadow(0 3px 2px #123a2840);
+}
+.encanto-natural.world-map .journey-heading .back,
+.encanto-natural.world-map #map-fullscreen,
+.encanto-natural.world-map
+  .map-bottom
+  :is(.map-current, .map-hint, .map-progress, .nature-button, .map-caption) {
+  border-color: #af7634 !important;
+  background-color: #224d2d !important;
+  color: #fff2cd !important;
+}
+.encanto-natural.world-map .journey-heading .back,
+.encanto-natural.world-map #map-fullscreen,
+.encanto-natural.world-map #map-pack {
+  background: transparent var(--encanto-green) center / 100% 100% no-repeat !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.encanto-natural.world-map .journey-summary > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 9px 17px;
+  background: transparent var(--encanto-green) center / 100% 100% no-repeat;
+  color: #fff2c9;
+  font:
+    400 14px / 1.2 Lilita,
+    system-ui;
+}
+.encanto-natural.world-map #journey-portrait {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+}
+.encanto-natural.world-map #journey-portrait svg {
+  display: block !important;
+  width: 100%;
+  height: 100%;
+}
+.encanto-natural.world-map #journey-fragments,
+.encanto-natural.world-map #map-explorer-help,
+.encanto-natural.world-map #map-final-replay {
+  display: inline-block;
+  padding: 7px 13px;
+  border: 2px solid #b8843b;
+  border-radius: 13px 5px;
+  background: #234f32;
+  color: #fff0c7;
+  box-shadow: inset 0 0 0 1px #e5bb6855;
+  text-decoration: none;
+  font-size: 11px;
+}
+.encanto-natural.world-map #map-explorer-help {
+  margin: 0;
+  padding-block: 5px;
+}
+.encanto-natural.world-map .island-caption {
+  margin-top: 2px;
+}
+.encanto-natural.world-map #map-pack .ui-icon {
+  display: block;
+  width: 26px;
+  height: 26px;
+}
+.encanto-natural.world-map #map-pack .ui-icon svg {
+  display: block !important;
+  width: 100%;
+  height: 100%;
+}
+.encanto-natural.world-map .map-bottom {
+  padding-top: 0;
+  pointer-events: none;
+}
+.encanto-natural.world-map .map-bottom :is(button, a) {
+  pointer-events: auto;
+}
+
+.encanto-natural #phase-dialog[open] {
+  display: grid;
+  grid-template-columns: 43% minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 0;
+  width: min(1120px, calc(100vw - 40px));
+  height: min(640px, calc(100dvh - 34px));
+  padding: 0;
+  border: 12px solid #b2762e;
+  border-image: var(--encanto-paper) 34 fill / 12px / 0 stretch;
+  border-radius: 16px;
+  overflow: visible;
+  background: #f7df9d;
+  color: var(--encanto-ink);
+  box-shadow: 0 12px 50px #071c24a0;
+}
+.encanto-natural #phase-dialog::before,
+.encanto-natural #phase-dialog::after {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  width: clamp(48px, 7vw, 88px);
+  height: clamp(48px, 7vw, 88px);
+  pointer-events: none;
+  background: var(--encanto-branch) left top / contain no-repeat;
+}
+.encanto-natural #phase-dialog::before {
+  top: -20px;
+  left: -20px;
+}
+.encanto-natural #phase-dialog::after {
+  bottom: -20px;
+  right: -20px;
+  rotate: 180deg;
+}
+.encanto-natural #phase-dialog .phase-scene {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  background: transparent var(--encanto-title) center / 100% 100% no-repeat;
+  padding: 17px 35px 20px;
+  margin: -4px -3px 5px;
+  text-align: center;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.encanto-natural #phase-dialog #phase-number {
+  display: block;
+  font:
+    400 clamp(16px, 2.2vw, 28px) / 1.1 Lilita,
+    system-ui;
+  letter-spacing: 0;
+  color: #5f371a;
+  margin: 0;
+  width: auto;
+  white-space: nowrap;
+}
+.encanto-natural #phase-dialog h2 {
+  margin: 0;
+  font:
+    400 clamp(24px, 3.4vw, 42px) / 1.1 Lilita,
+    system-ui;
+  color: #47230d;
+  text-shadow: 0 1px #fff2b5;
+  max-width: none;
+  text-align: center;
+}
+.encanto-natural #phase-dialog .phase-meeting {
+  grid-column: 1;
+  grid-row: 2;
+  padding: 12px 12px 16px;
+  border: 2px solid #b77935;
+  border-radius: 10px;
+  margin: 0 0 0 5px;
+  width: auto;
+  height: auto;
+  gap: 8px;
+  background:
+    linear-gradient(transparent 45%, #1d2b1eaa),
+    var(--meeting-background) center / cover;
+}
+.encanto-natural #phase-dialog .phase-meeting :is(.meeting-npc, .meeting-kai) {
+  margin: 0;
+  align-self: end;
+}
+.encanto-natural #phase-dialog :is(.meeting-npc, .meeting-kai) > :is(svg, img) {
+  height: clamp(120px, 36dvh, 320px);
+  width: 100%;
+  object-fit: contain;
+}
+.encanto-natural #phase-dialog :is(.meeting-npc, .meeting-kai) > span {
+  display: block;
+  padding: 5px 9px;
+  margin: 4px 2px 0;
+  border: 1px solid #c59444;
+  border-radius: 8px;
+  background: #f5dfa5;
+  font: 800 13px / 1.2 system-ui;
+  color: #4a3019;
+}
+.encanto-natural #phase-dialog .brief-profession {
+  display: block;
+  font: 600 10px / 1.25 system-ui;
+  margin-top: 2px;
+}
+.encanto-natural #phase-dialog .phase-information {
+  grid-row: 2;
+  grid-column: 2;
+  padding: 0 6px 0 15px;
+  scrollbar-color: #ae8445 #f4d897;
+  scrollbar-width: thin;
+  overscroll-behavior: contain;
+}
+.encanto-natural #phase-dialog .phase-copy {
+  padding: 0 5px 5px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.encanto-natural #phase-dialog .phase-copy :is(p, li) {
+  font: 650 clamp(13px, 1.25vw, 17px) / 1.4 system-ui;
+  color: #49301b;
+  margin: 0;
+}
+.encanto-natural #phase-dialog .phase-copy .phase-ally {
+  order: 4;
+  font-size: 11px;
+  color: #6d532b;
+  padding: 0 3px;
+}
+.encanto-natural #phase-dialog .brief-section {
+  padding: 0 8px 9px;
+  border-bottom: 1px solid #ae7c3a69;
+}
+.encanto-natural #phase-dialog .brief-label,
+.encanto-natural #phase-dialog .phase-copy .brief-label,
+.encanto-natural #phase-dialog .phase-loot > div > span {
+  display: inline-block;
+  position: relative;
+  margin: 0 0 6px;
+  padding: 5px 19px;
+  background: transparent var(--encanto-title) center / 100% 100% no-repeat;
+  font:
+    400 clamp(14px, 1.4vw, 19px) / 1.25 Lilita,
+    system-ui;
+  text-transform: uppercase;
+  letter-spacing: 0.1px;
+  color: #4a2a11;
+}
+.encanto-natural #phase-dialog #phase-goals {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.encanto-natural #phase-dialog #phase-goals li {
+  position: relative;
+  padding: 0 0 0 23px;
+  margin: 0 0 5px;
+}
+.encanto-natural #phase-dialog #phase-goals li::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 0.24em;
+  width: 14px;
+  height: 17px;
+  border-radius: 0 80% 0 80%;
+  rotate: 35deg;
+  background: linear-gradient(100deg, #76aa27 47%, #b2d653 50%, #438524 53%);
+  border: 1px solid #426a20;
+}
+.encanto-natural #phase-dialog .phase-loot {
+  margin: 0;
+  gap: 9px;
+}
+.encanto-natural #phase-dialog .phase-loot > div {
+  padding: 5px 7px 8px;
+  background: #f6dda15c;
+  border: 1px solid #bc8747;
+  border-radius: 13px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+.encanto-natural #phase-dialog .phase-loot > div > span {
+  padding: 4px 15px;
+  font-size: clamp(12px, 1.2vw, 16px);
+}
+.encanto-natural #phase-dialog .brief-loot-art {
+  display: flex;
+  width: 100%;
+  height: clamp(48px, 8.5dvh, 80px);
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.encanto-natural #phase-dialog .brief-loot-art > svg {
+  height: 100%;
+  width: min(70px, 30%);
+  overflow: hidden;
+  filter: drop-shadow(0 2px 2px #66401636);
+}
+.encanto-natural #phase-dialog .brief-loot-art > svg:only-child {
+  width: 80px;
+}
+.encanto-natural #phase-dialog .phase-loot strong {
+  font: 750 clamp(11px, 1.15vw, 15px) / 1.3 system-ui;
+  color: #49301b;
+}
+.encanto-natural #phase-dialog .phase-state {
+  order: 5;
+}
+.encanto-natural #phase-dialog .phase-actions {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 10px 7px 0;
+  background: none;
+}
+.encanto-natural #phase-dialog .phase-actions > button {
+  position: relative;
+  display: block;
+  inset: auto;
+  width: 100%;
+  height: auto;
+  min-height: 58px;
+  padding: 16px 25px;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0;
+  background: transparent var(--encanto-green) center / 100% 100% no-repeat !important;
+  color: #fff5d5 !important;
+  font:
+    400 clamp(16px, 1.9vw, 25px) / 1.15 Lilita,
+    system-ui !important;
+  text-shadow: 0 2px #193c20 !important;
+}
+.encanto-natural #phase-dialog .phase-actions > .brief-back {
+  background-image: var(--encanto-title) !important;
+  color: #4b2a13 !important;
+  text-shadow: 0 1px #fff3b7 !important;
+}
+.encanto-natural #phase-dialog button:focus-visible {
+  outline: 3px solid #216952;
+  outline-offset: 1px;
+}
+.encanto-natural #phase-dialog button:disabled {
+  filter: saturate(0.45);
+  opacity: 0.8;
+}
+
+/* Conversas curtas deitadas, com o cenário e o companheiro ainda à vista. */
+.encanto-natural :is(#intro, #conversa)[open] {
+  border: 10px solid #b2762e;
+  border-image: var(--encanto-paper) 34 fill / 10px / 0 stretch;
+  border-radius: 12px;
+}
+.encanto-natural .conversation-copy {
+  color: var(--encanto-ink);
+  background: none;
+}
+.encanto-natural :is(#intro, #conversa) h2 {
+  color: #4e2c17;
+}
+.encanto-natural :is(#intro, #conversa) p {
+  color: #49301b;
+}
+.encanto-natural :is(#intro, #conversa) .conversation-copy > button {
+  border: 0 !important;
+  background: transparent var(--encanto-green) center / 100% 100% no-repeat !important;
+  box-shadow: none !important;
+  min-height: 48px;
+  padding: 13px 28px;
+}
+.encanto-natural
+  :is(#message, #flora-talk, #toast, #dica, .care-notice, #flora-map-speech) {
+  border-color: #b78b43;
+  background: #f6e3b6;
+  color: #49331c;
+  box-shadow: 0 3px 12px #183b3330;
+}
+.encanto-natural .pause-flora {
+  object-fit: contain;
+}
+.encanto-natural .pause-flora img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.encanto-natural #menu-pausa .pause-heading > .pause-flora {
+  height: 94px;
+  width: 94px;
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .encanto-natural.world-map .map-hotspot {
+    min-height: 64px !important;
+    padding: 17px 20px !important;
+  }
+  .encanto-natural.world-map .map-hotspot strong {
+    font-size: 14px;
+  }
+  .encanto-natural.world-map .journey-heading h1 {
+    padding: 18px 60px !important;
+    font-size: 25px;
+  }
+  .encanto-natural.world-map .map-flora {
+    width: 68px;
+    height: 68px;
+    top: -3px;
+    right: -3px;
+  }
+  .encanto-natural #phase-dialog[open] {
+    width: calc(100vw - 34px);
+    height: calc(100dvh - 30px);
+    border-width: 9px;
+    border-image-width: 9px;
+  }
+  .encanto-natural #phase-dialog .phase-scene {
+    padding: 8px 30px 11px;
+    margin-bottom: 3px;
+  }
+  .encanto-natural #phase-dialog #phase-number {
+    font-size: 18px;
+    letter-spacing: 0;
+  }
+  .encanto-natural #phase-dialog h2 {
+    font-size: clamp(22px, 3.6vw, 30px);
+  }
+  .encanto-natural #phase-dialog .phase-information {
+    padding-left: 10px;
+  }
+  .encanto-natural #phase-dialog .phase-copy {
+    gap: 6px;
+  }
+  .encanto-natural #phase-dialog .phase-copy :is(p, li) {
+    font-size: 12px;
+    line-height: 1.35;
+  }
+  .encanto-natural #phase-dialog .brief-section {
+    padding: 0 4px 5px;
+  }
+  .encanto-natural #phase-dialog .brief-label,
+  .encanto-natural #phase-dialog .phase-copy .brief-label {
+    padding: 3px 16px;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  .encanto-natural #phase-dialog #phase-goals li {
+    margin-bottom: 3px;
+    padding-left: 20px;
+  }
+  .encanto-natural #phase-dialog #phase-goals li::before {
+    width: 11px;
+    height: 14px;
+  }
+  .encanto-natural #phase-dialog .phase-loot {
+    gap: 6px;
+  }
+  .encanto-natural #phase-dialog .phase-loot > div {
+    padding: 3px 5px 5px;
+  }
+  .encanto-natural #phase-dialog .phase-loot > div > span {
+    font-size: 12px;
+    padding: 3px 12px;
+    margin-bottom: 2px;
+  }
+  .encanto-natural #phase-dialog .brief-loot-art {
+    height: 34px;
+    margin-bottom: 2px;
+  }
+  .encanto-natural #phase-dialog .phase-loot strong {
+    font-size: 11px;
+  }
+  .encanto-natural #phase-dialog .phase-copy .phase-ally {
+    font-size: 10px;
+  }
+  .encanto-natural #phase-dialog .phase-meeting {
+    padding: 8px;
+  }
+  .encanto-natural
+    #phase-dialog
+    :is(.meeting-npc, .meeting-kai)
+    > :is(svg, img) {
+    height: min(42dvh, 180px);
+  }
+  .encanto-natural #phase-dialog :is(.meeting-npc, .meeting-kai) > span {
+    font-size: 11px;
+    margin-top: 2px;
+    padding: 4px;
+  }
+  .encanto-natural #phase-dialog .phase-actions {
+    padding-top: 5px;
+    gap: 10px;
+  }
+  .encanto-natural #phase-dialog .phase-actions > button {
+    min-height: 46px;
+    font-size: 17px !important;
+    padding: 13px 20px;
+  }
+}
+.encanto-natural.large-text #phase-dialog .phase-copy :is(p, li) {
+  font-size: 16px;
+}
+@media (orientation: landscape) and (max-height: 360px) {
+  .encanto-natural.world-map .journey-heading h1 {
+    font-size: 22px;
+    padding: 12px 56px !important;
+  }
+  .encanto-natural.world-map .map-flora {
+    width: 56px;
+    height: 56px;
+  }
+  .encanto-natural.world-map .map-hotspot {
+    min-height: 58px !important;
+    padding: 15px 19px !important;
+  }
+  .encanto-natural.world-map .map-hotspot strong {
+    font-size: 13px;
+  }
+  .encanto-natural.world-map .map-hotspot[data-phase="3"],
+  .encanto-natural.world-map .map-hotspot[data-phase="4"] {
+    top: 67%;
+  }
+  .encanto-natural.world-map .map-bottom {
+    padding-bottom: 5px;
+  }
+  .encanto-natural.world-map .journey-summary > span:first-child {
+    padding: 6px 12px;
+    min-height: 32px;
+    font-size: 12px;
+  }
+  .encanto-natural.world-map #journey-portrait {
+    width: 20px;
+    height: 20px;
+  }
+  .encanto-natural.world-map #map-explorer-help {
+    padding: 2px 9px;
+    border-width: 1px;
+    font-size: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .encanto-natural.world-map .map-hotspot {
+    transition: none;
+  }
+}
+.encanto-natural.reduce-motion.world-map .map-hotspot {
+  transition: none;
+}

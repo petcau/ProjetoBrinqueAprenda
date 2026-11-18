@@ -1,0 +1,276 @@
+/* Camada comum: diálogos fechados nunca participam do layout nem exibem pranchas. */
+dialog:not([open]) {
+  display: none !important;
+}
+[hidden] {
+  display: none !important;
+}
+#pausa .pause-mark {
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin: auto;
+}
+dialog svg,
+.ui-icon svg,
+.meeting-npc svg,
+.meeting-kai svg {
+  overflow: hidden !important;
+}
+body:not([data-game-ready="true"]) #jogo > :not(#cenario):not(#loading) {
+  visibility: hidden;
+}
+.story,
+.panel {
+  contain: layout style;
+}
+.story p {
+  overflow-wrap: anywhere;
+}
+.story footer {
+  flex-wrap: wrap;
+}
+#intro-portrait {
+  width: 76px;
+  height: 105px;
+  overflow: hidden;
+}
+#intro-portrait svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#intro[open] {
+  position: fixed;
+  inset: auto 12px max(17px, env(safe-area-inset-bottom));
+  margin: 0 auto;
+  width: min(540px, calc(100vw - 24px));
+  max-height: 45dvh;
+  grid-template-columns: 76px minmax(0, 1fr);
+  padding: 18px;
+  gap: 12px;
+  background: #f5efd6;
+  color: #355034;
+  border: 2px solid #95a86a;
+  border-radius: 22px 7px;
+}
+#intro h2 {
+  color: #3d5d35;
+  font-family: Lilita, Renascenca, system-ui;
+  font-weight: 400;
+  font-size: 24px;
+}
+#intro .eyebrow,
+#intro-count {
+  color: #63754c !important;
+}
+#intro p {
+  color: #3d5035;
+  margin: 7px 0;
+  font-size: 14px;
+  line-height: 1.45;
+}
+#intro::backdrop {
+  background: #153a211d;
+  backdrop-filter: none;
+}
+#intro footer .nature-button {
+  min-width: 120px;
+  min-height: 44px;
+  font-size: 13px;
+}
+.current-care {
+  color: #fff0ba;
+  font-size: 10px;
+  line-height: 1.25;
+  margin: 4px 0 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#jogo .mission:not(.expanded) .current-care {
+  grid-column: 1/-1;
+}
+#jump-action {
+  position: absolute;
+  right: 15px;
+  bottom: 158px;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-content: center;
+  z-index: 3;
+  font: 700 11px system-ui;
+  color: #fff1be;
+  touch-action: manipulation;
+}
+body[data-controls="keyboard"] #jump-action {
+  display: none !important;
+}
+body[data-phase="2"] #jump-action {
+  display: none;
+}
+#jump-action svg {
+  width: 25px;
+  height: 25px;
+  margin: 0 auto;
+}
+.care-notice {
+  position: fixed;
+  top: max(12px, env(safe-area-inset-top));
+  left: 50%;
+  translate: -50% 0;
+  z-index: 50;
+  max-width: min(370px, calc(100vw - 28px));
+  padding: 10px 17px;
+  background: #fff0c8;
+  color: #385232;
+  border: 1px solid #98aa69;
+  border-radius: 17px 5px;
+  box-shadow: 0 8px 30px #152d2433;
+  font: 600 12px/1.5 system-ui;
+  pointer-events: none;
+}
+#puzzle-feedback {
+  min-height: 2.5em;
+  color: #fff2bc;
+}
+#puzzle-feedback[data-correct="false"] {
+  color: #ffe0b2;
+}
+#puzzle-feedback[data-correct="true"] {
+  color: #c8edac;
+}
+#puzzle-options button {
+  min-height: 78px;
+  font-size: 13px;
+}
+#puzzle-options .ui-icon {
+  --icon-size: 32px;
+}
+#quiz-continue {
+  min-height: 44px;
+}
+@media (max-width: 700px) {
+  #intro[open] {
+    grid-template-columns: 59px minmax(0, 1fr);
+    gap: 9px;
+    padding: 13px;
+    max-height: 44dvh;
+  }
+  #intro-portrait {
+    width: 59px;
+    height: 86px;
+  }
+  #intro h2 {
+    font-size: 21px;
+    margin: 3px 0;
+  }
+  #intro p {
+    font-size: 13px;
+  }
+  #intro footer {
+    gap: 6px;
+  }
+  #intro footer .nature-button {
+    min-width: 110px;
+    margin: 4px 0 0;
+  }
+  .current-care {
+    font-size: 9px;
+  }
+  #jump-action {
+    bottom: 151px;
+    right: 13px;
+  }
+}
+@media (max-height: 500px) and (min-aspect-ratio: 4/3) {
+  #intro[open] {
+    max-height: 75dvh;
+    width: min(540px, 78vw);
+  }
+  #jump-action {
+    bottom: 139px;
+  }
+}
+
+@media (max-width: 700px) {
+  .care-notice {
+    top: auto;
+    bottom: 190px;
+    text-align: center;
+    max-width: calc(100vw - 35px);
+  }
+}
+/* O título ocupa uma única linha, deixando espaço para o objetivo sem aumentar o painel. */
+.mission:not(.expanded) h1 button {
+  gap: 4px;
+  min-height: 22px;
+}
+.mission:not(.expanded) h1 button .phase-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-left: 0;
+  font-family: inherit;
+}
+.mission:not(.expanded) h1 button > span:first-child {
+  margin-left: 0;
+  flex-shrink: 0;
+}
+.mission:not(.expanded) .water {
+  margin-top: 0;
+  padding-top: 3px;
+}
+@media (max-width: 700px) {
+  .mission:not(.expanded) .goal {
+    min-height: 23px;
+  }
+  .mission:not(.expanded) .current-care {
+    margin-top: 2px;
+    font-size: 8px;
+    line-height: 1.2;
+  }
+  .mission:not(.expanded) h1 {
+    font-size: 11px;
+  }
+}
+@media (max-height: 500px) and (min-aspect-ratio: 4/3) {
+  .mission:not(.expanded) .goal {
+    min-height: 23px;
+  }
+  .mission:not(.expanded) .current-care {
+    font-size: 8px;
+    line-height: 1.2;
+    margin-top: 2px;
+  }
+}
+/* Espaço para a folha decorativa do botão, sem ultrapassar a conversa no celular. */
+#intro footer {
+  padding-right: 20px;
+}
+@media (max-height: 500px) and (min-aspect-ratio: 4/3) {
+  .missions:not(.expanded) #goals {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px 8px;
+  }
+  .missions:not(.expanded) .goal {
+    display: inline-flex;
+    width: auto;
+    min-height: 23px;
+    border: 0;
+    padding: 2px 0;
+    margin: 0;
+  }
+  .missions:not(.expanded) .goal-label {
+    display: none;
+  }
+  .missions:not(.expanded) .current-care {
+    font-size: 8px;
+    line-height: 1.2;
+    margin-top: 2px;
+  }
+}

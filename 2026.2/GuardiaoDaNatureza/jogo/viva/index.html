@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#193b30" />
+    <title>Guardião da Natureza · Jornada de Kai</title>
+    <link rel="icon" href="../../assets/identidade-flora/favicon.ico" />
+    <link rel="stylesheet" href="ui.css?v=viva-1" />
+    <link rel="stylesheet" href="../raizes/orientacao.css?v=raizes-1" />
+    <link rel="stylesheet" href="acabamento.css?v=viva-1" />
+    <link rel="stylesheet" href="../brisa/brisa.css?v=brisa-1" />
+    <link rel="stylesheet" href="../bosque-vivo/bosque.css?v=bosque-1" />
+    <link rel="stylesheet" href="../mata-ilustrada/mata.css?v=mata-1" />
+    <link rel="stylesheet" href="../trilhas-vivas/trilhas.css?v=trilhas-1" />
+    <link rel="preload" as="image" href="assets/inicio.webp" fetchpriority="high" />
+    <script src="../encanto-natural/catalogo.js" defer></script>
+    <script src="../encanto-natural/audio.js" defer></script>
+    <script src="../sistemas/progresso.js" defer></script>
+    <script src="../jornada/fases.js" defer></script>
+    <script src="../novo-amanha/conteudo.js" defer></script>
+    <script src="../vida-em-equilibrio/conteudo.js" defer></script>
+    <script src="../encontros-da-floresta/atlas.js" defer></script>
+    <script src="../encontros-da-floresta/relicario.js" defer></script>
+    <script src="../cuidado-acessivel/otimizados.js" defer></script>
+    <script src="../raizes/atlas.js" defer></script>
+    <script src="../raizes/personagens.js" defer></script>
+    <script src="comum.js" defer></script>
+    <script src="atlas.js" defer></script>
+    <script src="arte.js" defer></script>
+    <script src="../vida-em-equilibrio/progresso.js" defer></script>
+    <script src="../vida-em-equilibrio/colecao.js" defer></script>
+    <script src="simbolos.js" defer></script>
+    <script src="../brisa/atlas.js?v=brisa-1" defer></script>
+    <script src="../brisa/artes.js?v=brisa-1" defer></script>
+    <script src="../brisa/ajustes.js?v=brisa-1" defer></script>
+    <script src="../bosque-vivo/atlas.js?v=bosque-1" defer></script>
+    <script src="../bosque-vivo/trajes.js?v=bosque-1" defer></script>
+    <script src="../trilhas-vivas/kai.js?v=trilhas-1" defer></script>
+    <script src="../bosque-vivo/mochila.js?v=bosque-1" defer></script>
+    <script src="../trilhas-vivas/transicoes.js?v=trilhas-1" defer></script>
+    <script src="../trilhas-vivas/folhas.js?v=trilhas-1" defer></script>
+    <script src="../bosque-vivo/cenario-atlas.js?v=bosque-1" defer></script>
+    <script src="../bosque-vivo/vegetacao.js?v=bosque-1" defer></script>
+    <script src="../bosque-vivo/pintura.js?v=bosque-1" defer></script>
+    <script src="../mata-ilustrada/atlas.js?v=mata-1" defer></script>
+    <script src="../mata-ilustrada/artes.js?v=mata-1" defer></script>
+    <script src="../mata-ilustrada/pintura.js?v=mata-1" defer></script>
+    <script src="../trilhas-vivas/arvores-atlas.js?v=trilhas-1" defer></script>
+    <script src="../trilhas-vivas/natureza.js?v=trilhas-1" defer></script>
+    <script src="../mata-ilustrada/layout.js?v=mata-1" defer></script>
+    <script src="../trilhas-vivas/disposicao.js?v=trilhas-1" defer></script>
+    <script src="../trilhas-vivas/mapa.js?v=trilhas-1" defer></script>
+    <script src="../bosque-vivo/fundo.js?v=bosque-1" defer></script>
+    <script src="../trilhas-vivas/menu.js?v=trilhas-1" defer></script>
+    <script src="../trilhas-vivas/carregamento.js?v=trilhas-1" defer></script>
+    <script src="../brisa/interacoes.js?v=brisa-1" defer></script>
+    <script src="../bosque-vivo/final.js?v=bosque-1" defer></script>
+    <script src="../revisao-paisagem/orientacao.js" defer></script>
+  </head>
+  <body>
+    <div class="backdrop" aria-hidden="true"></div>
+
+    <header class="shell-bar">
+      <button class="wood-button" id="back-home" type="button" hidden>
+        Voltar</button
+      ><button
+        class="icon-button"
+        type="button"
+        id="fs-toggle"
+        data-fullscreen
+        aria-label="Entrar em tela cheia"
+      ></button>
+    </header>
+    <main id="app">
+      <section
+        class="view home"
+        data-view="inicio"
+        aria-labelledby="game-title"
+      >
+        <div class="home-copy">
+          <div class="game-logo">
+            <img
+              class="logo-art"
+              src="../raizes/assets/titulo.webp"
+              width="1000"
+              height="667"
+              alt=""
+              fetchpriority="high"
+            />
+            <h1 id="game-title" class="visually-hidden">
+              GUARDIÃO<br /><span>DA NATUREZA</span>
+            </h1>
+            <p class="visually-hidden">Jornada de Kai</p>
+          </div>
+          <nav class="home-menu" aria-label="Menu principal">
+            <a href="#mapa" class="wood-button primary" id="play-game">JOGAR</a
+            ><a href="#sobre" class="wood-button" id="about-game"
+              >SOBRE O JOGO</a
+            >
+          </nav>
+        </div>
+        <p class="home-note">Cinco lugares. Um mundo para cuidar.</p>
+        <a
+          href="#configuracoes"
+          class="icon-button home-settings"
+          id="settings-game"
+          aria-label="Configurações"
+        ></a>
+      </section>
+      <section
+        class="view map-view"
+        data-view="mapa"
+        hidden
+        aria-labelledby="map-title"
+      >
+        <div class="island">
+          <div class="map-stage">
+            <svg
+              id="island-restoration"
+              viewBox="0 0 1000 563"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            ></svg>
+            <div id="map-hotspots"></div>
+            <svg
+              id="tree-restoration"
+              viewBox="0 0 1000 563"
+              aria-hidden="true"
+            ></svg
+            ><canvas
+              id="map-kai"
+              aria-label="Kai indica a região atual e segue até a Árvore Guardiã no encerramento"
+            ></canvas>
+          </div>
+        </div>
+        <header class="map-heading">
+          <div class="map-title-plaque">
+            <h1 id="map-title">MAPA DAS FASES</h1>
+            <canvas
+              id="map-flora"
+              aria-label="Flora pousa no título do mapa e pisca"
+            ></canvas>
+          </div>
+          <p id="flora-map-line" class="flora-line" role="status" hidden></p>
+        </header>
+        <button
+          type="button"
+          id="map-backpack"
+          class="brisa-map-pack"
+          aria-label="Mochila de Kai"
+          aria-haspopup="dialog"
+        ></button>
+        <footer class="map-footer">
+          <p id="map-current"></p>
+          <p id="map-fragments"></p>
+          <p id="tree-state">Árvore Guardiã enfraquecida</p>
+          <button type="button" id="map-reset" class="small-button" hidden>
+            Nova jornada</button
+          ><button type="button" id="replay-ending" class="small-button" hidden>
+            Rever final
+          </button>
+        </footer>
+      </section>
+      <section
+        class="view journal-view"
+        data-view="sobre"
+        hidden
+        aria-labelledby="about-title"
+      >
+        <div class="journal-shell">
+          <aside class="journal-friends">
+            <canvas
+              id="about-friends"
+              aria-label="Kai e Flora acompanham o diário"
+            ></canvas>
+            <p class="eyebrow">NOSSA AVENTURA</p>
+            <h2>Cada cuidado<br />cria raízes.</h2>
+            <p>Explore. Aprenda.<br />Cuide junto.</p>
+          </aside>
+          <div class="journal-main">
+            <header class="journal-heading">
+              <p class="eyebrow">O DIÁRIO DO GUARDIÃO</p>
+              <h1 id="about-title">Sobre o jogo</h1>
+            </header>
+            <div
+              class="ra-tabs about-tabs"
+              role="tablist"
+              aria-label="Sobre o jogo"
+            >
+              <button
+                type="button"
+                role="tab"
+                id="about-tab-historia"
+                data-about-tab="historia"
+                aria-selected="true"
+              >
+                História</button
+              ><button
+                type="button"
+                role="tab"
+                id="about-tab-comandos"
+                data-about-tab="comandos"
+                aria-selected="false"
+              >
+                Como jogar</button
+              ><button
+                type="button"
+                role="tab"
+                id="about-tab-missao"
+                data-about-tab="missao"
+                aria-selected="false"
+              >
+                Missão</button
+              ><button
+                type="button"
+                role="tab"
+                id="about-tab-natureza"
+                data-about-tab="natureza"
+                aria-selected="false"
+              >
+                Na natureza</button
+              ><button
+                type="button"
+                role="tab"
+                id="about-tab-equipe"
+                data-about-tab="equipe"
+                aria-selected="false"
+              >
+                Sobre Nós
+              </button>
+            </div>
+            <div class="journal-scroll" id="about-content" tabindex="0">
+              <article
+                role="tabpanel"
+                id="historia"
+                aria-labelledby="about-tab-historia"
+                data-about-panel="historia"
+              >
+                <p class="chapter">O CHAMADO DA ÁRVORE GUARDIÃ</p>
+                <h2>Uma ilha inteira<br />precisa de cuidado.</h2>
+                <p>
+                  A Árvore Guardiã enfraquece quando a natureza ao seu redor
+                  sofre. Kai e Flora partem para ajudar a floresta, os rios, os
+                  animais e as pessoas.
+                </p>
+                <p>
+                  Em cada região, um aliado ensina um novo cuidado. Cada cristal
+                  do colar guarda a lembrança dessa aprendizagem.
+                </p>
+                <blockquote>
+                  O verde retorna com as ações de todos.<br />A árvore floresce
+                  quando a ilha volta a viver.
+                </blockquote>
+              </article>
+              <article
+                role="tabpanel"
+                id="comandos"
+                aria-labelledby="about-tab-comandos"
+                data-about-panel="comandos"
+                hidden
+              >
+                <div class="how-grid">
+                  <div class="demo-scene">
+                    <canvas
+                      id="how-kai"
+                      tabindex="0"
+                      aria-label="Demonstração: use WASD ou setas para mover Kai e Enter para cuidar"
+                    ></canvas>
+                    <div
+                      id="demo-joystick"
+                      class="demo-joystick"
+                      tabindex="0"
+                      role="group"
+                      aria-label="Arraste para mover Kai"
+                    >
+                      <span class="demo-arrows" aria-hidden="true"
+                        >↑<br />←　→<br />↓</span
+                      ><i></i>
+                    </div>
+                    <button
+                      type="button"
+                      id="demo-action"
+                      aria-label="Demonstrar cuidado de Kai"
+                    ></button>
+                    <p id="demo-feedback">Arraste ou use as setas.</p>
+                  </div>
+                  <div>
+                    <h2>Um cuidado de cada vez.</h2>
+                    <dl class="command-list">
+                      <div>
+                        <dt>WASD / setas</dt>
+                        <dd>Mover em todas as direções.</dd>
+                      </div>
+                      <div>
+                        <dt>Enter</dt>
+                        <dd>Conversar, pegar, plantar e cuidar.</dd>
+                      </div>
+                      <div>
+                        <dt>Segurar Enter</dt>
+                        <dd>Usar a mangueira perto do fogo.</dd>
+                      </div>
+                      <div>
+                        <dt>B / Esc</dt>
+                        <dd>Mochila / pausa.</dd>
+                      </div>
+                    </dl>
+                    <p>
+                      No celular, use o joystick e os dois botões. A mochila e
+                      os ajustes abrem dentro da fase.
+                    </p>
+                  </div>
+                </div>
+              </article>
+              <article
+                role="tabpanel"
+                id="missao"
+                aria-labelledby="about-tab-missao"
+                data-about-panel="missao"
+                hidden
+              >
+                <div class="mission-intro">
+                  <div>
+                    <p class="chapter">CUIDAR É O VERDADEIRO PODER</p>
+                    <h2>Ajude Kai a salvar a natureza.</h2>
+                    <p>
+                      Proteja os animais, limpe os rios, plante e cuide dos
+                      espaços da comunidade. Cada região recuperada fortalece a
+                      Árvore Guardiã.
+                    </p>
+                  </div>
+                  <div
+                    id="about-necklace"
+                    role="img"
+                    aria-label="Colar de folha com cinco cristais"
+                  ></div>
+                </div>
+                <div class="five-care" id="five-care"></div>
+              </article>
+              <article
+                role="tabpanel"
+                id="natureza"
+                aria-labelledby="about-tab-natureza"
+                data-about-panel="natureza"
+                hidden
+              >
+                <h2>Conheça. Respeite. Cuide.</h2>
+                <div
+                  class="biome-tabs"
+                  role="group"
+                  aria-label="Biomas brasileiros"
+                  id="biome-tabs"
+                ></div>
+                <div class="nature-layout">
+                  <article class="biome-info">
+                    <h3 id="biome-title"></h3>
+                    <p id="biome-copy"></p>
+                    <p id="biome-friend"></p>
+                  </article>
+                  <aside class="nature-advice">
+                    <h3>Um cuidado para hoje</h3>
+                    <p id="nature-advice"></p>
+                    <button type="button" class="text-button" id="next-advice">
+                      Outra ideia
+                    </button>
+                  </aside>
+                </div>
+                <p class="adult-note">
+                  Fogo ou animal ferido? Afaste-se e peça ajuda a um adulto. No
+                  jogo, Kai age com a orientação dos aliados.
+                </p>
+              </article>
+              <article
+                role="tabpanel"
+                id="equipe"
+                aria-labelledby="about-tab-equipe"
+                data-about-panel="equipe"
+                hidden
+              >
+                <p class="chapter">SOBRE NÓS</p>
+                <h2>Um projeto para aprender cuidando.</h2>
+                <p>
+                  Projeto acadêmico da
+                  <strong>Universidade do Estado da Bahia — UNEB</strong>,
+                  desenvolvido na disciplina <strong>Web 1</strong>, com o apoio
+                  do <strong>Professor Peterson Lobato</strong>.
+                </p>
+                <div class="team-layout">
+                  <figure class="mentor-card">
+                    <canvas
+                      id="professor-portrait"
+                      aria-label="Retrato preservado do Professor Peterson Lobato"
+                    ></canvas>
+                    <figcaption>
+                      <strong>Professor Peterson Lobato</strong
+                      ><span>Orientação · UNEB · Web 1</span>
+                    </figcaption>
+                  </figure>
+                  <div class="team-roles">
+                    <article>
+                      <h3>Iuri Barroso Nascimento</h3>
+                      <p>Criação e gestão do projeto</p>
+                    </article>
+                    <article>
+                      <h3>Hicham Mohamed El Attar</h3>
+                      <p>Programação</p>
+                    </article>
+                    <article>
+                      <h3>Eric Nascimento</h3>
+                      <p>Programação</p>
+                    </article>
+                    <article>
+                      <h3>Natson Evangelista</h3>
+                      <p>Design</p>
+                    </article>
+                  </div>
+                </div>
+                <p class="team-thanks">
+                  Arte, programação e educação ambiental se encontram nesta
+                  aventura para crianças de 5 a 10 anos.
+                </p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        class="view settings-view"
+        data-view="configuracoes"
+        hidden
+        aria-labelledby="settings-title"
+      >
+        <div class="settings-shell">
+          <header class="journal-heading">
+            <p class="eyebrow">DO SEU JEITO</p>
+            <h1 id="settings-title">Configurações</h1>
+            <canvas
+              id="settings-flora"
+              aria-label="Flora observa os ajustes"
+            ></canvas>
+          </header>
+          <div class="settings-layout">
+            <aside class="settings-preview">
+              <canvas
+                id="settings-preview"
+                aria-label="Flora acompanha uma prévia dos efeitos da floresta"
+              ></canvas>
+              <div>
+                <p class="eyebrow">AJUSTE E EXPLORE</p>
+                <h2>Sua aventura,<br />do seu jeito.</h2>
+                <p id="settings-explainer">
+                  Escolha uma trilha suave e ajuste os sons da natureza.
+                </p>
+                <span id="settings-summary"></span>
+              </div>
+            </aside>
+            <div id="settings-form"></div>
+          </div>
+          <footer class="settings-footer">
+            <button type="button" class="text-button" id="defaults-settings">
+              Restaurar ajustes</button
+            ><button type="button" class="text-button" id="reset-journey">
+              Recomeçar jogo
+            </button>
+            <p>As escolhas ficam salvas neste navegador.</p>
+          </footer>
+        </div>
+      </section>
+    </main>
+    <dialog
+      id="phase-dialog"
+      class="ra-dialog phase-brief"
+      aria-labelledby="phase-title"
+    >
+      <header>
+        <p id="phase-number" class="eyebrow"></p>
+        <h2 id="phase-title"></h2>
+        <button
+          type="button"
+          id="close-phase"
+          class="icon-button"
+          aria-label="Fechar informações da fase"
+        ></button>
+      </header>
+      <div class="phase-columns">
+        <figure class="phase-scene">
+          <canvas
+            id="phase-conversation"
+            aria-label="Kai e o aliado se olham durante a conversa"
+          ></canvas>
+          <figcaption>
+            <strong id="phase-npc"></strong><span id="phase-job"></span>
+          </figcaption>
+        </figure>
+        <div class="phase-copy">
+          <section>
+            <h3>Situação</h3>
+            <p id="phase-situation"></p>
+          </section>
+          <section>
+            <h3>Objetivos</h3>
+            <ul id="phase-goals"></ul>
+          </section>
+          <div class="phase-loot">
+            <section>
+              <h3>Você recebe</h3>
+              <p id="phase-items"></p>
+            </section>
+            <section>
+              <h3>Recompensa</h3>
+              <div id="phase-reward"></div>
+              <p id="phase-reward-copy"></p>
+            </section>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <button type="button" class="wood-button" id="phase-back">
+          Voltar ao mapa</button
+        ><a id="start-phase" class="wood-button primary" href="#"
+          >Iniciar fase</a
+        >
+      </footer>
+    </dialog>
+    <aside id="island-finale-caption" hidden aria-live="polite">
+      <p class="eyebrow">O CORAÇÃO DA ILHA</p>
+      <h2 id="ending-title">Vamos até a Árvore Guardiã.</h2>
+      <p id="ending-line"></p>
+      <button type="button" id="ending-skip" class="text-button">
+        Concluir animação
+      </button>
+    </aside>
+    <dialog
+      id="final-credits"
+      class="ra-dialog forest-credits"
+      aria-labelledby="credits-title"
+    >
+      <p class="eyebrow">CADA CUIDADO FEZ A DIFERENÇA</p>
+      <h2 id="credits-title">A ilha voltou a florescer!</h2>
+      <div id="credits-necklace"></div>
+      <p>Criação e gestão · Iuri Barroso Nascimento</p>
+      <p>Programação · Hicham Mohamed El Attar e Eric Nascimento</p>
+      <p>Design · Natson Evangelista</p>
+      <p>Professor Peterson Lobato · UNEB · Web 1</p>
+      <div class="ra-dialog-actions">
+        <button type="button" id="ending-island">Voltar à ilha</button
+        ><button type="button" class="primary" id="ending-restart">
+          Jogar do início
+        </button>
+      </div>
+    </dialog>
+    <p id="raizes-status" role="status" hidden></p>
+  </body>
+</html>

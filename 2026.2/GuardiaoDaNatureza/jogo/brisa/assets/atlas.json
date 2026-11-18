@@ -1,0 +1,293 @@
+{
+  "interface": {
+    "file": "assets/interface.webp",
+    "width": 1100,
+    "height": 1059,
+    "frames": [
+      {
+        "name": "gear",
+        "bounds": [
+          19,
+          25,
+          239,
+          237
+        ]
+      },
+      {
+        "name": "bag",
+        "bounds": [
+          278,
+          8,
+          257,
+          256
+        ]
+      },
+      {
+        "name": "hose",
+        "bounds": [
+          556,
+          6,
+          261,
+          257
+        ]
+      },
+      {
+        "name": "hand",
+        "bounds": [
+          854,
+          7,
+          225,
+          256
+        ]
+      },
+      {
+        "name": "pause",
+        "bounds": [
+          10,
+          282,
+          256,
+          235
+        ]
+      },
+      {
+        "name": "full",
+        "bounds": [
+          300,
+          292,
+          250,
+          207
+        ]
+      },
+      {
+        "name": "watering",
+        "bounds": [
+          550,
+          278,
+          270,
+          235
+        ]
+      },
+      {
+        "name": "net",
+        "bounds": [
+          837,
+          276,
+          257,
+          245
+        ]
+      },
+      {
+        "name": "seeds",
+        "bounds": [
+          28,
+          536,
+          220,
+          247
+        ]
+      },
+      {
+        "name": "shovel",
+        "bounds": [
+          292,
+          530,
+          229,
+          255
+        ]
+      },
+      {
+        "name": "vest",
+        "bounds": [
+          550,
+          532,
+          265,
+          250
+        ]
+      },
+      {
+        "name": "lifevest",
+        "bounds": [
+          847,
+          534,
+          231,
+          246
+        ]
+      },
+      {
+        "name": "kit",
+        "bounds": [
+          15,
+          805,
+          247,
+          227
+        ]
+      },
+      {
+        "name": "rope",
+        "bounds": [
+          283,
+          810,
+          251,
+          228
+        ]
+      },
+      {
+        "name": "key",
+        "bounds": [
+          601,
+          796,
+          188,
+          242
+        ]
+      },
+      {
+        "name": "plant",
+        "bounds": [
+          852,
+          800,
+          221,
+          239
+        ]
+      }
+    ]
+  },
+  "botanica": {
+    "file": "assets/botanica.webp",
+    "width": 1100,
+    "height": 550,
+    "frames": [
+      {
+        "name": "folha-lima",
+        "bounds": [
+          21,
+          50,
+          224,
+          192
+        ]
+      },
+      {
+        "name": "folha-verde",
+        "bounds": [
+          321,
+          30,
+          207,
+          213
+        ]
+      },
+      {
+        "name": "folha-curva",
+        "bounds": [
+          572,
+          24,
+          239,
+          231
+        ]
+      },
+      {
+        "name": "folha-dourada",
+        "bounds": [
+          884,
+          54,
+          171,
+          174
+        ]
+      },
+      {
+        "name": "flor-rosa",
+        "bounds": [
+          28,
+          304,
+          224,
+          207
+        ]
+      },
+      {
+        "name": "flor-branca",
+        "bounds": [
+          290,
+          301,
+          243,
+          214
+        ]
+      },
+      {
+        "name": "petala-rosa",
+        "bounds": [
+          572,
+          325,
+          221,
+          164
+        ]
+      },
+      {
+        "name": "petala-pessego",
+        "bounds": [
+          872,
+          318,
+          198,
+          171
+        ]
+      }
+    ]
+  },
+  "comandos": {
+    "file": "assets/comandos.webp",
+    "width": 576,
+    "height": 384,
+    "frames": [
+      {
+        "name": "gear",
+        "bounds": [
+          14,
+          14,
+          164,
+          163
+        ]
+      },
+      {
+        "name": "bag",
+        "bounds": [
+          206,
+          14,
+          164,
+          163
+        ]
+      },
+      {
+        "name": "hose",
+        "bounds": [
+          398,
+          15,
+          164,
+          161
+        ]
+      },
+      {
+        "name": "hand",
+        "bounds": [
+          24,
+          206,
+          144,
+          164
+        ]
+      },
+      {
+        "name": "pause",
+        "bounds": [
+          206,
+          212,
+          164,
+          151
+        ]
+      },
+      {
+        "name": "full",
+        "bounds": [
+          398,
+          220,
+          164,
+          136
+        ]
+      }
+    ]
+  }
+}

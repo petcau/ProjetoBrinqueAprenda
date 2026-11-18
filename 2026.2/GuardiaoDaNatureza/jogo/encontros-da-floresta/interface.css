@@ -1,0 +1,733 @@
+/* Madeira em tamanho natural. As bordas crescem; folhas, grão e personagens não esticam. */
+.encontros-natureza {
+  --encontro-wood: url("assets/madeira.svg");
+  --encontro-leaves: url("assets/folhas.svg");
+  --encontro-paper: url("assets/papel.svg");
+  --encontro-text: #493320;
+}
+.encontros-natureza.world-map .map-hotspot,
+.encontros-natureza.world-map .map-hotspot[data-locked="true"],
+.encontros-natureza.world-map .journey-heading h1,
+.encontros-natureza.world-map .journey-heading .back,
+.encontros-natureza.world-map #map-fullscreen,
+.encontros-natureza.world-map #map-pack,
+.encontros-natureza.world-map .journey-summary > span:first-child {
+  background:
+    linear-gradient(#3d7043, #255335) padding-box,
+    var(--encontro-wood) border-box !important;
+  background-size:
+    auto,
+    192px 96px !important;
+  background-repeat: no-repeat, repeat !important;
+  border: 4px solid transparent !important;
+  border-radius: 14px !important;
+  box-shadow:
+    0 0 0 1px #634523,
+    inset 0 0 0 1px #caa86a88,
+    0 3px 5px #17332c44 !important;
+}
+.encontros-natureza.world-map .map-hotspot {
+  min-height: 64px !important;
+  padding: 10px 16px !important;
+}
+.encontros-natureza.world-map .map-hotspot[data-locked="true"] {
+  min-height: 64px !important;
+  padding: 10px 16px !important;
+}
+.encontros-natureza.world-map .map-hotspot strong {
+  font-size: clamp(14px, 1.4vw, 18px);
+  line-height: 1.15;
+}
+.encontros-natureza.world-map .map-hotspot::before {
+  content: none !important;
+}
+.encontros-natureza.world-map .map-hotspot .placa-folhas {
+  position: absolute;
+  right: -9px;
+  top: -13px;
+  width: 38px;
+  height: 34px;
+  background: var(--encontro-leaves) center/contain no-repeat;
+  pointer-events: none;
+}
+.encontros-natureza.world-map .map-hotspot > .number {
+  left: -9px;
+  top: -10px;
+}
+.encontros-natureza.world-map .journey-heading h1 {
+  padding: 14px 58px 14px 24px !important;
+  font-size: clamp(24px, 2.7vw, 34px);
+}
+.encontros-natureza.world-map .map-flora {
+  width: 70px;
+  height: 70px;
+  right: -7px;
+  top: -12px;
+}
+.encontros-natureza.world-map .journey-summary > span:first-child {
+  padding: 5px 12px;
+}
+.encontros-natureza.world-map #journey-fragments,
+.encontros-natureza.world-map #map-explorer-help,
+.encontros-natureza.world-map #map-final-replay {
+  border-color: #be9b5b;
+  border-radius: 10px;
+  background: #224d34;
+}
+
+.encontros-natureza #phase-dialog[open],
+.encontros-natureza :is(#intro, #conversa)[open] {
+  border: 8px solid transparent;
+  border-image: none !important;
+  background:
+    var(--encontro-paper) padding-box,
+    var(--encontro-wood) border-box;
+  background-size:
+    160px 160px,
+    192px 96px;
+  background-repeat: repeat;
+  border-radius: 20px;
+  box-shadow:
+    0 0 0 1px #735332,
+    inset 0 0 0 1px #e7c98a,
+    0 18px 50px #1027228c;
+}
+.encontros-natureza #phase-dialog[open] {
+  width: min(1020px, calc(100vw - 40px));
+  height: min(590px, calc(100dvh - 34px));
+  grid-template-columns: 43% minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 12px 16px;
+  padding: 14px;
+  overflow: visible;
+}
+.encontros-natureza #phase-dialog::before,
+.encontros-natureza #phase-dialog::after {
+  width: 45px;
+  height: 40px;
+  background: var(--encontro-leaves) center/contain no-repeat;
+  top: 1px;
+  left: 2px;
+  rotate: 0deg;
+}
+.encontros-natureza #phase-dialog::after {
+  top: auto;
+  left: auto;
+  right: 0;
+  bottom: 0;
+  rotate: 180deg;
+}
+.encontros-natureza #phase-dialog .phase-scene {
+  margin: 0;
+  padding: 0 25px 11px;
+  gap: 12px;
+  background: none !important;
+  border-bottom: 1px solid #ad88513b;
+  min-width: 0;
+}
+.encontros-natureza #phase-dialog #phase-number {
+  display: inline-block;
+  flex: none;
+  margin: 0;
+  padding: 5px 8px;
+  border-radius: 8px;
+  background: #d8b77e44;
+  font: 800 12px/1.2 system-ui;
+  letter-spacing: 0.6px;
+}
+.encontros-natureza #phase-dialog h2 {
+  font:
+    400 clamp(24px, 3vw, 33px) / 1.1 Lilita,
+    system-ui;
+  color: #42301d;
+  text-shadow: none;
+}
+.encontros-natureza #phase-dialog .phase-meeting {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-items: stretch;
+  justify-items: stretch;
+  gap: 8px;
+  grid-column: 1;
+  grid-row: 2;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid #ae9865;
+  border-radius: 14px;
+  background:
+    linear-gradient(#30443808, #18342666),
+    var(--meeting-background) center/cover;
+}
+.encontro-dupla {
+  position: relative;
+  grid-column: 1/-1;
+  grid-row: 1;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+}
+.encontro-dupla img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+}
+.encontro-piscada {
+  visibility: hidden;
+}
+dialog[open] .encontro-olhar {
+  animation: encontro-olhar 4.8s steps(1, end) infinite;
+}
+dialog[open] .encontro-piscada {
+  animation: encontro-piscada 4.8s steps(1, end) infinite;
+}
+@keyframes encontro-olhar {
+  0%,
+  91%,
+  97%,
+  100% {
+    visibility: visible;
+  }
+  92%,
+  96% {
+    visibility: hidden;
+  }
+}
+@keyframes encontro-piscada {
+  0%,
+  91%,
+  97%,
+  100% {
+    visibility: hidden;
+  }
+  92%,
+  96% {
+    visibility: visible;
+  }
+}
+.encontros-natureza
+  #phase-dialog
+  .phase-meeting.has-encontro
+  :is(.meeting-kai, .meeting-npc)
+  > :is(svg, img),
+.encontros-natureza
+  .conversation-art.has-encontro
+  :is(#retrato-carlos, #intro-portrait, .conversation-kai > svg) {
+  display: none !important;
+}
+.encontros-natureza #phase-dialog :is(.meeting-kai, .meeting-npc) {
+  grid-row: 2;
+  align-self: stretch;
+  display: grid;
+  min-width: 0;
+  margin: 0;
+}
+.encontros-natureza #phase-dialog .meeting-kai {
+  grid-column: 1;
+}
+.encontros-natureza #phase-dialog :is(.meeting-npc, .meeting-mascot) {
+  grid-column: 2;
+}
+.encontros-natureza #phase-dialog :is(.meeting-kai, .meeting-npc) > span {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 38px;
+  padding: 4px 8px;
+  margin: 0;
+  border: 1px solid #ae986f88;
+  border-radius: 8px;
+  background: #fff1cce8;
+  color: #483322;
+  font: 750 13px/1.2 system-ui;
+}
+.encontros-natureza #phase-dialog .brief-profession {
+  font-size: 10px;
+  line-height: 1.2;
+  margin-top: 3px;
+}
+.encontros-natureza #phase-dialog .phase-information {
+  padding: 0 2px 0 0;
+  min-width: 0;
+}
+.encontros-natureza #phase-dialog .phase-copy {
+  padding: 0 4px 0 0;
+  gap: 12px;
+}
+.encontros-natureza #phase-dialog .phase-copy :is(p, li) {
+  color: var(--encontro-text);
+  font: 600 clamp(13px, 1.2vw, 16px) / 1.45 system-ui;
+}
+.encontros-natureza #phase-dialog .brief-section {
+  padding: 0 0 9px;
+  border-bottom: 1px solid #af8b5544;
+}
+.encontros-natureza #phase-dialog .phase-copy .brief-label,
+.encontros-natureza #phase-dialog .phase-loot > div > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none !important;
+  margin: 0 0 7px;
+  padding: 0;
+  color: #54663d;
+  font: 850 12px/1.3 system-ui;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: 0;
+}
+.encontros-natureza #phase-dialog .brief-section .brief-label::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  flex: none;
+  background: var(--encontro-leaves) center/contain no-repeat;
+}
+.encontros-natureza #phase-dialog #phase-goals li {
+  margin: 0 0 5px;
+  padding: 0 0 0 20px;
+}
+.encontros-natureza #phase-dialog #phase-goals li::before {
+  top: 0.3em;
+  width: 10px;
+  height: 13px;
+}
+.encontros-natureza #phase-dialog .phase-loot {
+  gap: 10px;
+  margin: 0;
+}
+.encontros-natureza #phase-dialog .phase-loot > div {
+  padding: 10px;
+  border: 1px solid #bda57588;
+  border-radius: 12px;
+  background: #fffae4aa;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  justify-items: center;
+}
+.encontros-natureza #phase-dialog .phase-loot > div > span {
+  justify-content: center;
+  font-size: 11px;
+  margin: 0 0 6px;
+}
+.encontros-natureza #phase-dialog .brief-loot-art {
+  height: 82px;
+  gap: 10px;
+  margin: 0 0 6px;
+}
+.encontros-natureza #phase-dialog .brief-loot-art > svg {
+  width: min(78px, 40%);
+  height: 100%;
+  filter: drop-shadow(0 2px 2px #72532922);
+}
+.encontros-natureza #phase-dialog .brief-loot-art > .cristal-folha {
+  width: 74px;
+}
+.encontros-natureza #phase-dialog .phase-loot strong {
+  display: block;
+  min-height: 34px;
+  max-width: 100%;
+  color: #4b3828;
+  font: 700 13px/1.3 system-ui;
+  align-content: center;
+}
+.encontros-natureza #phase-dialog .phase-actions {
+  padding: 0;
+  gap: 14px;
+}
+.encontros-natureza #phase-dialog .phase-actions > button,
+.encontros-natureza :is(#intro, #conversa) :is(#intro-next, #conversa-avancar),
+.encontros-natureza #colar-continuar {
+  background:
+    linear-gradient(#4d8050, #2c5f3a) padding-box,
+    var(--encontro-wood) border-box !important;
+  background-size:
+    auto,
+    192px 96px !important;
+  background-repeat: no-repeat, repeat !important;
+  border: 4px solid transparent !important;
+  border-radius: 12px !important;
+  box-shadow:
+    0 0 0 1px #6d4e2c,
+    inset 0 0 0 1px #bbce8e55,
+    0 2px 3px #24432922 !important;
+  min-height: 48px;
+  padding: 8px 18px;
+  font: 800 15px/1.2 system-ui !important;
+  color: #fff7dc !important;
+  text-shadow: none !important;
+}
+.encontros-natureza #phase-dialog .phase-actions > .brief-back {
+  background:
+    linear-gradient(#eaddb5, #e1cfa3) padding-box,
+    var(--encontro-wood) border-box !important;
+  background-size:
+    auto,
+    192px 96px !important;
+  color: #4b3828 !important;
+}
+.encontros-natureza #phase-dialog .phase-actions > button:hover,
+.encontros-natureza #colar-continuar:hover {
+  filter: brightness(1.08);
+}
+
+.encontros-natureza :is(#intro, #conversa)[open] {
+  padding: 0;
+  overflow: hidden;
+}
+.encontros-natureza .conversation-art {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: minmax(0, 1fr) auto;
+  padding: 9px;
+  gap: 5px;
+  min-width: 0;
+  min-height: 0;
+}
+.encontros-natureza
+  .conversation-art
+  :is(.conversation-kai, .conversation-friend) {
+  grid-row: 2;
+  margin: 0;
+  display: block;
+  align-self: stretch;
+  min-width: 0;
+}
+.encontros-natureza .conversation-kai {
+  grid-column: 1;
+}
+.encontros-natureza .conversation-friend {
+  grid-column: 2;
+}
+.encontros-natureza .conversation-art figcaption {
+  margin: 0;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: #f9edcfec;
+  color: #4c3928;
+  font: 750 11px/1.2 system-ui;
+  min-height: 23px;
+  display: grid;
+  place-items: center;
+}
+.encontros-natureza .conversation-copy {
+  padding: 17px 20px;
+}
+.encontros-natureza :is(#intro, #conversa) h2 {
+  font-size: clamp(19px, 2.5vw, 25px);
+  line-height: 1.18;
+}
+.encontros-natureza :is(#intro, #conversa) .conversation-copy p {
+  font-size: 15px;
+  line-height: 1.45;
+}
+.encontros-natureza :is(#intro, #conversa) :is(.story-footer, footer) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.encontros-natureza .pack-amulet > svg {
+  object-fit: contain;
+}
+.encontros-natureza .pack-card > .cristal-folha {
+  width: 62px;
+  height: 82px;
+}
+.encontros-natureza .necklace-sprite {
+  background: none !important;
+  display: block;
+  width: 180px;
+  height: 220px;
+}
+.encontros-natureza .necklace-sprite svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.encontros-natureza .relicario-view {
+  overflow: visible;
+}
+
+.encontros-natureza .encontro-recompensa .colar-card {
+  width: min(800px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  height: min(540px, calc(100dvh - 32px));
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px 18px;
+  padding: 20px;
+  border: 7px solid transparent;
+  border-image: none !important;
+  border-radius: 20px;
+  overflow: hidden;
+  background:
+    var(--encontro-paper) padding-box,
+    var(--encontro-wood) border-box;
+  background-size:
+    160px 160px,
+    192px 96px;
+  color: #493620;
+}
+.encontros-natureza .encontro-recompensa .colar-card header {
+  grid-column: 1/-1;
+  grid-row: 1;
+}
+.encontros-natureza .encontro-recompensa .colar-eyebrow {
+  color: #687947;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+.encontros-natureza .encontro-recompensa .colar-card h2 {
+  font-size: 27px;
+  color: #4c3822;
+}
+.encontros-natureza .encontro-recompensa #colar-frase {
+  color: #665131;
+}
+.encontros-natureza .encontro-recompensa .colar-view {
+  grid-column: 1;
+  grid-row: 2;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-height: 340px;
+  overflow: hidden !important;
+  filter: drop-shadow(0 4px 3px #78603933);
+}
+.encontros-natureza .encontro-recompensa .colar-card footer {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  height: 100%;
+  min-height: 0;
+  justify-content: center;
+}
+.encontros-natureza .encontro-recompensa #colar-kai {
+  width: 100%;
+  max-width: 290px;
+  height: auto;
+  aspect-ratio: 300/160;
+  max-height: calc(100% - 48px);
+  object-fit: contain;
+}
+.encontros-natureza .encontro-recompensa .colar-card footer p {
+  max-width: none;
+  text-align: center;
+  color: #5e5636;
+  margin: 4px 0;
+}
+.encontros-natureza .encontro-recompensa #colar-contagem {
+  color: #395c3a;
+  text-shadow: none;
+}
+.encontros-natureza .encontro-recompensa #colar-continuar {
+  grid-column: 1/-1;
+  grid-row: 3;
+}
+.encontros-natureza #ending-necklace .relicario-view {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .encontros-natureza.world-map .journey-heading h1 {
+    padding: 11px 48px 11px 18px !important;
+    font-size: 24px;
+  }
+  .encontros-natureza.world-map .map-flora {
+    width: 60px;
+    height: 60px;
+    top: -12px;
+  }
+  .encontros-natureza.world-map .map-hotspot,
+  .encontros-natureza.world-map .map-hotspot[data-locked="true"] {
+    min-height: 58px !important;
+    padding: 9px 13px !important;
+    border-width: 3px !important;
+  }
+  .encontros-natureza.world-map .map-hotspot strong {
+    font-size: 13px;
+  }
+  .encontros-natureza.world-map .placa-folhas {
+    width: 30px;
+    height: 27px;
+  }
+  .encontros-natureza #phase-dialog[open] {
+    width: calc(100vw - 28px);
+    height: calc(100dvh - 24px);
+    padding: 9px;
+    border-width: 6px;
+    gap: 7px 10px;
+    border-radius: 15px;
+  }
+  .encontros-natureza #phase-dialog .phase-scene {
+    padding: 0 12px 8px;
+    gap: 9px;
+  }
+  .encontros-natureza #phase-dialog h2 {
+    font-size: 25px;
+  }
+  .encontros-natureza #phase-dialog #phase-number {
+    font-size: 10px;
+    padding: 4px 7px;
+  }
+  .encontros-natureza #phase-dialog .phase-meeting {
+    padding: 6px;
+    gap: 5px;
+    border-radius: 10px;
+  }
+  .encontros-natureza #phase-dialog :is(.meeting-kai, .meeting-npc) > span {
+    min-height: 31px;
+    padding: 4px;
+    font-size: 11px;
+  }
+  .encontros-natureza #phase-dialog .brief-profession {
+    font-size: 9px;
+    margin-top: 2px;
+  }
+  .encontros-natureza #phase-dialog .phase-copy {
+    gap: 7px;
+    padding-right: 2px;
+  }
+  .encontros-natureza #phase-dialog .phase-copy :is(p, li) {
+    font-size: 12px;
+    line-height: 1.35;
+  }
+  .encontros-natureza #phase-dialog .brief-section {
+    padding-bottom: 5px;
+  }
+  .encontros-natureza #phase-dialog .phase-copy .brief-label {
+    margin-bottom: 5px;
+    font-size: 10px;
+    letter-spacing: 0.4px;
+  }
+  .encontros-natureza #phase-dialog .brief-section .brief-label::before {
+    width: 14px;
+    height: 14px;
+  }
+  .encontros-natureza #phase-dialog #phase-goals li {
+    margin-bottom: 3px;
+    padding-left: 16px;
+  }
+  .encontros-natureza #phase-dialog #phase-goals li::before {
+    width: 8px;
+    height: 10px;
+  }
+  .encontros-natureza #phase-dialog .phase-loot {
+    gap: 7px;
+  }
+  .encontros-natureza #phase-dialog .phase-loot > div {
+    padding: 6px;
+  }
+  .encontros-natureza #phase-dialog .phase-loot > div > span {
+    font-size: 10px;
+    margin-bottom: 3px;
+  }
+  .encontros-natureza #phase-dialog .brief-loot-art {
+    height: 48px;
+    margin-bottom: 3px;
+    gap: 6px;
+  }
+  .encontros-natureza #phase-dialog .phase-loot strong {
+    min-height: 27px;
+    font-size: 11px;
+    line-height: 1.25;
+  }
+  .encontros-natureza #phase-dialog .phase-actions {
+    gap: 10px;
+  }
+  .encontros-natureza #phase-dialog .phase-actions > button {
+    min-height: 44px;
+    font-size: 14px !important;
+    padding: 7px 12px;
+  }
+  .encontros-natureza .conversation-copy {
+    padding: 12px 16px;
+  }
+  .encontros-natureza :is(#intro, #conversa) .conversation-copy p {
+    font-size: 14px;
+  }
+  .encontros-natureza .encontro-recompensa .colar-card {
+    padding: 12px;
+    gap: 7px 10px;
+  }
+  .encontros-natureza .encontro-recompensa .colar-card h2 {
+    font-size: 22px;
+  }
+  .encontros-natureza .encontro-recompensa #colar-kai {
+    max-width: 210px;
+  }
+  .encontros-natureza .encontro-recompensa #colar-contagem {
+    font-size: 23px;
+  }
+}
+@media (orientation: landscape) and (max-height: 360px) {
+  .encontros-natureza.world-map .journey-heading h1 {
+    padding: 9px 43px 9px 16px !important;
+    font-size: 22px;
+  }
+  .encontros-natureza.world-map .map-flora {
+    width: 50px;
+    height: 50px;
+  }
+  .encontros-natureza.world-map .map-hotspot,
+  .encontros-natureza.world-map .map-hotspot[data-locked="true"] {
+    min-height: 50px !important;
+    padding: 7px 12px !important;
+  }
+  .encontros-natureza #phase-dialog h2 {
+    font-size: 22px;
+  }
+  .encontros-natureza #phase-dialog .brief-loot-art {
+    height: 38px;
+  }
+  .encontros-natureza #phase-dialog .phase-copy {
+    gap: 5px;
+  }
+  .encontros-natureza .encontro-recompensa #colar-kai {
+    max-width: 165px;
+  }
+  .encontros-natureza .encontro-recompensa #colar-frase {
+    margin-top: 4px;
+    font-size: 11px;
+  }
+}
+.encontros-natureza.large-text #phase-dialog .phase-copy :is(p, li),
+.encontros-natureza.large-text :is(#intro, #conversa) .conversation-copy p {
+  font-size: 16px;
+}
+.encontros-natureza.reduce-motion .encontro-dupla img {
+  animation: none !important;
+}
+.encontros-natureza.reduce-motion .encontro-olhar {
+  visibility: visible;
+}
+.encontros-natureza.reduce-motion .encontro-piscada {
+  visibility: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  .encontro-dupla img {
+    animation: none !important;
+  }
+  .encontro-olhar {
+    visibility: visible;
+  }
+  .encontro-piscada {
+    visibility: hidden;
+  }
+}

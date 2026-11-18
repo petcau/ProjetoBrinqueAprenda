@@ -1,0 +1,475 @@
+.raizes-jogo .ra-legacy {
+  display: none !important;
+}
+.raizes-jogo .top-actions {
+  display: flex !important;
+  gap: 7px !important;
+  align-items: center;
+  top: max(12px, env(safe-area-inset-top)) !important;
+  right: max(12px, env(safe-area-inset-right)) !important;
+}
+.ra-world-icon {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  padding: 9px !important;
+  border: 3px solid #b4985c !important;
+  border-radius: 50% !important;
+  background: linear-gradient(#4b7447, #264d37) !important;
+  color: #fff0cb !important;
+  box-shadow: 0 2px 5px #183c3d66 !important;
+  display: grid !important;
+  place-items: center;
+  cursor: pointer;
+}
+.ra-world-icon svg {
+  width: 23px !important;
+  height: 23px !important;
+}
+.raizes-jogo .actions button {
+  border: 5px solid #a47a43 !important;
+  background: linear-gradient(#456f43, #244e37) !important;
+  color: #fff1c9 !important;
+  box-shadow:
+    0 2px 0 #4c3e26,
+    0 3px 8px #173c3655 !important;
+  border-radius: 50% !important;
+}
+.raizes-jogo .actions button > svg {
+  width: 39px !important;
+  height: 39px !important;
+}
+.raizes-jogo .actions button small {
+  font-size: 9px !important;
+  letter-spacing: 0.04em;
+  color: #fff0c8;
+}
+.raizes-jogo .mission,
+.raizes-jogo .missions {
+  background: #234e3de8 !important;
+  border: 3px solid #b0965d !important;
+  border-radius: 18px !important;
+  box-shadow: 0 2px 10px #193c3d55 !important;
+}
+.raizes-jogo .mission h1,
+.raizes-jogo .missions h1 {
+  font:
+    400 19px/1.1 Lilita,
+    system-ui;
+  color: #fff0cf;
+  text-shadow: none;
+}
+.raizes-jogo .goal {
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+}
+.raizes-jogo #toast,
+.raizes-jogo #dica,
+.raizes-jogo #message,
+.raizes-jogo #flora-talk {
+  border: 1px solid #a4a270 !important;
+  border-radius: 16px !important;
+  background: #f4e9c9ed !important;
+  color: #3d5639 !important;
+  font: 650 12px/1.35 system-ui !important;
+  box-shadow: 0 3px 12px #17372e44 !important;
+  max-width: min(390px, calc(100vw - 180px)) !important;
+}
+.raizes-jogo #toast:empty {
+  display: none !important;
+}
+.raizes-jogo #flora-talk .portrait,
+.raizes-jogo #flora-talk .sprite-flora {
+  display: none !important;
+}
+.raizes-jogo .care-notice {
+  display: none !important;
+}
+.ra-pause {
+  width: min(580px, calc(100vw - 32px));
+  padding: 22px 28px;
+  text-align: center;
+}
+.ra-pause > header {
+  position: relative;
+  padding: 5px 40px;
+}
+.ra-pause header canvas {
+  width: 100px;
+  height: 85px;
+  display: block;
+  margin: -2px auto 0;
+}
+.ra-pause h2 {
+  font: 400 31px Lilita;
+  margin: 7px 0;
+}
+.ra-pause .ra-pause-full {
+  position: absolute;
+  right: -12px;
+  top: -8px;
+  width: 40px;
+  height: 40px;
+}
+.ra-pause nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.ra-pause nav > [data-resume] {
+  grid-column: 1/-1;
+}
+.ra-pause p {
+  margin: 7px 0 18px;
+  font-size: 13px;
+}
+.ra-talk {
+  width: min(900px, calc(100vw - 32px)) !important;
+  height: min(350px, calc(100dvh - 30px)) !important;
+  padding: 15px 20px !important;
+  display: flex !important;
+  flex-direction: column;
+  border: 6px solid transparent !important;
+  background:
+    linear-gradient(#f5e9c8, #e5d9b5) padding-box,
+    var(--wood) border-box !important;
+  background-size:
+    auto,
+    192px 96px !important;
+  border-radius: 23px !important;
+  overflow: hidden !important;
+}
+.ra-talk > header {
+  flex: none;
+  border-bottom: 1px solid #baa572;
+  padding-bottom: 7px;
+}
+.ra-talk h2 {
+  font: 400 26px Lilita !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #385635 !important;
+}
+.ra-talk-columns {
+  display: grid;
+  grid-template-columns: 42% minmax(0, 1fr);
+  gap: 20px;
+  min-height: 0;
+  flex: 1;
+}
+.ra-talk-scene {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+.ra-talk-copy {
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  overflow: auto;
+}
+.ra-talk-copy p {
+  font: 650 clamp(14px, 1.6vw, 18px) / 1.55 system-ui !important;
+  color: #405637 !important;
+  margin: 8px 0 !important;
+}
+.ra-talk > footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex: none;
+}
+.ra-talk footer > span,
+.ra-talk footer > p {
+  font-size: 11px;
+  color: #71805a;
+}
+.ra-talk footer button {
+  min-width: 170px;
+  min-height: 43px !important;
+  margin: 0 !important;
+}
+.ra-talk .eyebrow {
+  color: #78845a;
+}
+.ra-pack {
+  width: min(850px, calc(100vw - 30px));
+  height: min(500px, calc(100dvh - 30px));
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.ra-pack > header,
+.ra-phase-settings > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: none;
+  margin-bottom: 10px;
+}
+.ra-pack h2,
+.ra-phase-settings h2 {
+  margin: 0;
+  font: 400 28px Lilita;
+}
+.ra-pack header button,
+.ra-phase-settings header button {
+  width: 40px;
+  height: 40px;
+}
+.ra-pack #pack-content {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+  scrollbar-width: thin;
+}
+.ra-pack #pack-status:empty {
+  display: none;
+}
+.ra-tool-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.ra-tool-grid article {
+  display: flex;
+  gap: 12px;
+  border: 1px solid #b9bb90;
+  background: #e4e4c1;
+  border-radius: 14px;
+  padding: 13px;
+}
+.ra-tool-grid svg {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  color: #56814a;
+}
+.ra-tool-grid h3,
+.ra-uniform h3 {
+  font-size: 15px;
+  margin: 0 0 6px;
+}
+.ra-tool-grid p,
+.ra-uniform p {
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 0;
+}
+.ra-tool-grid button {
+  min-height: 36px;
+  margin-top: 8px;
+  border: 1px solid #8a9c6c;
+  border-radius: 9px;
+  background: #416d42;
+  color: #fff1cf;
+  font-size: 11px;
+  padding: 6px 10px;
+}
+.ra-pack-necklace {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 25px;
+  align-items: center;
+}
+.ra-pack-necklace svg {
+  height: 240px;
+  width: 180px;
+  object-fit: contain;
+}
+.ra-pack-necklace h3 {
+  font: 400 28px Lilita;
+}
+.ra-pack-necklace p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.ra-uniform {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 15px;
+}
+.ra-uniform > svg {
+  width: 75px;
+  height: 75px;
+  color: #638446;
+  flex: none;
+}
+.ra-phase-settings {
+  width: min(780px, calc(100vw - 30px));
+  height: min(440px, calc(100dvh - 30px));
+  padding: 18px 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.phase-settings-form {
+  min-height: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.raizes-jogo dialog:not([open]) {
+  display: none !important;
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .ra-talk {
+    height: min(280px, calc(100dvh - 22px)) !important;
+    padding: 10px 14px !important;
+  }
+  .ra-talk h2 {
+    font-size: 23px !important;
+  }
+  .ra-talk .eyebrow {
+    font-size: 8px;
+  }
+  .ra-talk-columns {
+    gap: 14px;
+  }
+  .ra-talk-copy p {
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+  }
+  .ra-talk footer button {
+    min-width: 140px;
+    min-height: 39px !important;
+    font-size: 12px;
+  }
+  .ra-pause {
+    width: min(620px, calc(100vw - 30px));
+    padding: 14px 24px;
+  }
+  .ra-pause > header {
+    padding-right: 80px;
+    text-align: left;
+    padding-left: 0;
+  }
+  .ra-pause header canvas {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 75px;
+    height: 80px;
+    margin: 0;
+  }
+  .ra-pause h2 {
+    font-size: 27px;
+  }
+  .ra-pause .ra-pause-full {
+    right: -12px;
+    top: -7px;
+    width: 36px;
+    height: 36px;
+  }
+  .ra-pause .eyebrow {
+    font-size: 8px;
+  }
+  .ra-pause > p {
+    text-align: left;
+    font-size: 12px;
+    margin: 5px 0 14px;
+  }
+  .ra-pause nav {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+  .ra-pause nav > [data-resume] {
+    grid-column: auto;
+  }
+  .ra-pause nav > * {
+    font-size: 12px;
+    min-height: 44px;
+    padding: 8px 10px;
+  }
+  .ra-pack,
+  .ra-phase-settings {
+    padding: 12px 17px;
+  }
+  .ra-pack > header,
+  .ra-phase-settings > header {
+    margin-bottom: 7px;
+  }
+  .ra-pack h2,
+  .ra-phase-settings h2 {
+    font-size: 24px;
+  }
+  .ra-tool-grid {
+    gap: 8px;
+  }
+  .ra-tool-grid article {
+    padding: 9px;
+  }
+  .ra-tool-grid h3 {
+    font-size: 12px;
+  }
+  .ra-tool-grid p {
+    font-size: 10px;
+  }
+  .ra-tool-grid svg {
+    width: 32px;
+    height: 32px;
+  }
+  .ra-pack-necklace {
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 20px;
+  }
+  .ra-pack-necklace svg {
+    height: 185px;
+    width: 120px;
+  }
+  .ra-pack-necklace h3 {
+    font-size: 24px;
+  }
+  .ra-pack-necklace p {
+    font-size: 12px;
+  }
+}
+
+.raizes-jogo .ra-dialog h2 {
+  color: #385635 !important;
+  text-shadow: none !important;
+}
+.raizes-jogo .top-actions .action-symbol {
+  display: none !important;
+}
+.raizes-jogo .keyboard-legend {
+  max-width: calc(100vw - 30px);
+  font-size: 10px;
+  bottom: 10px;
+  left: 15px;
+  pointer-events: none;
+}
+.raizes-jogo #flora-talk {
+  bottom: 50px !important;
+}
+.ra-world-icon::after,
+.ra-world-icon::before {
+  content: none !important;
+}
+
+#ra-celebration {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.raizes-jogo .celebration-art {
+  height: 180px;
+  background: radial-gradient(ellipse, #d4ddb2, #8aa36b);
+  border-radius: 18px;
+}
+.raizes-jogo .completion {
+  color: #395735 !important;
+}
+.raizes-jogo .completion h2 {
+  color: #365b35 !important;
+  text-shadow: none !important;
+}
+@media (orientation: landscape) and(max-height:500px) {
+  .raizes-jogo .celebration-art {
+    height: 130px;
+  }
+}

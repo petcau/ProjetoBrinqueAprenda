@@ -1,0 +1,234 @@
+/* Ajustes do plano consolidado: toque confortável, informação curta e arte integral. */
+body[data-page="settings"] #preferences {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+body[data-page="settings"] .preference-card:has([data-control-mode]) {
+  order: -1;
+  border-color: #8eaa6b;
+  background: linear-gradient(120deg, #e1e8bc, #f4edce);
+}
+body[data-page="settings"] [data-control-mode] {
+  min-height: 52px;
+  font-size: 16px;
+  padding: 12px;
+  width: 100%;
+  max-width: 100%;
+}
+body[data-page="settings"] .setting-line {
+  min-height: 66px;
+}
+body[data-page="settings"] input[type="range"] {
+  min-height: 44px;
+  touch-action: pan-x;
+}
+body[data-page="settings"] .wood-panel {
+  min-width: 0;
+}
+body[data-page="settings"] [data-control-description] {
+  display: block;
+  color: #315737;
+  font-weight: 600;
+  margin-top: 10px;
+}
+body[data-page="settings"] .settings-scene {
+  min-height: 95px;
+}
+.journey-pack .pack-icon > svg {
+  width: 80px;
+  height: 88px;
+}
+.journey-pack .pack-card > svg {
+  flex: 0 0 72px;
+  width: 72px;
+  height: 80px;
+}
+.journey-pack .pack-card .pack-outfit {
+  width: 90px;
+  height: 120px;
+  flex-basis: 90px;
+}
+.journey-pack .pack-card[data-uniform] {
+  align-items: center;
+}
+.journey-pack .pack-label {
+  display: inline-block;
+  line-height: 1.4;
+}
+#puzzle-options button {
+  min-height: 90px;
+  touch-action: manipulation;
+}
+#puzzle-options button > svg {
+  width: 76px;
+  height: 84px;
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+#puzzle-feedback {
+  font-size: 13px;
+  line-height: 1.55;
+}
+.world-map .map-hotspot[data-phase="6"] {
+  left: 51%;
+  top: 49%;
+  --x: 51%;
+  --y: 49%;
+  z-index: 3;
+  width: clamp(128px, 17vw, 220px);
+}
+.world-map .map-hotspot[data-phase="6"] strong {
+  font-size: clamp(11px, 1.4vw, 18px);
+}
+.world-map .map-list ol {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+.world-map .map-hotspot[data-phase="6"][data-locked="true"] {
+  filter: saturate(0.65);
+}
+.world-map .map-hotspot[data-phase="6"].is-complete {
+  filter: drop-shadow(0 0 10px #e4f0aa77);
+}
+#story .story-compass {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin: 18px 0;
+}
+.story-compass span {
+  border: 1px solid #9fb277;
+  border-radius: 16px 4px;
+  background: #e4ebc8;
+  color: #47613a;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+#story .story-origin {
+  border-left: 3px solid #91a665;
+  padding: 8px 17px;
+  background: #e8e8c7;
+  border-radius: 0 16px 16px 0;
+}
+#controls .open-controls-demo {
+  min-height: 214px;
+}
+#controls .demo-clearing {
+  min-height: 185px;
+  overflow: visible;
+}
+#controls .demo-clearing #demo-kai {
+  width: 96px;
+  height: 139px;
+  left: calc(50% - 48px);
+  top: calc(50% - 65px);
+}
+#controls .demo-flora {
+  transform: scale(1.14);
+}
+#nature .nature-extra {
+  margin: 14px 0;
+  padding: 12px 15px;
+  border: 1px solid #adb888;
+  border-radius: 15px 5px;
+  background: #eff0d3;
+}
+#nature .nature-extra summary {
+  cursor: pointer;
+  min-height: 30px;
+  color: #405d35;
+  font-weight: 600;
+}
+#nature .biome-card {
+  padding: 16px;
+}
+#nature .biome-card p {
+  line-height: 1.5;
+}
+#nature .nature-mini-quiz {
+  margin: 14px 0;
+  padding: 15px;
+}
+#nature .nature-tip-card {
+  margin: 12px 0;
+}
+#team .student-card {
+  background:
+    radial-gradient(ellipse at 50% 75%, #d2dfaa80, transparent 65%),
+    repeating-linear-gradient(3deg, #fff0 0 11px, #b8ad7620 12px 13px), #f4edce;
+  border-color: #96a46e;
+  box-shadow: 0 5px 0 #9d8b5130;
+}
+#team .student-card header {
+  background: #e5e7be99;
+  border-radius: 15px 4px;
+  padding: 10px 12px;
+}
+#team .student-card .full-name {
+  color: #53643f;
+  line-height: 1.5;
+  font-size: 12px;
+}
+#team .team-duo-scene {
+  background: radial-gradient(ellipse at 48% 89%, #a9bd7890, transparent 65%);
+}
+#team .reference-label {
+  color: #456443;
+}
+@media (max-width: 700px) {
+  body[data-page="settings"] .panel-inner {
+    padding: 25px 18px;
+  }
+  body[data-page="settings"] .preference-card {
+    padding: 16px 12px;
+  }
+  body[data-page="settings"] .volume-line {
+    gap: 8px;
+  }
+  body[data-page="settings"] .setting-line label small {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .journey-pack .pack-icon > svg {
+    width: 63px;
+    height: 70px;
+  }
+  .journey-pack .pack-card > svg {
+    flex-basis: 62px;
+    width: 62px;
+    height: 69px;
+  }
+  .world-map .map-list {
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+  }
+  .world-map .map-list li {
+    scroll-snap-align: start;
+  }
+  .world-map .map-hotspot[data-phase="6"] {
+    left: 45%;
+    top: 47%;
+    width: 140px;
+  }
+  #controls .help-control-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  #controls .help-control-grid article {
+    padding: 12px;
+  }
+  #controls .help-control-grid p {
+    font-size: 11px;
+  }
+}
+@media (max-height: 500px) and (min-aspect-ratio: 4/3) {
+  .world-map .map-hotspot[data-phase="6"] {
+    top: 43%;
+    width: 125px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .world-map .map-hotspot[data-phase="6"].is-complete {
+    animation: none;
+  }
+}
