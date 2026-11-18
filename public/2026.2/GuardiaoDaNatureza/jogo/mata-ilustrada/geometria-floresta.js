@@ -6,44 +6,6 @@
   const geometry = window.GuardiaoMovimento;
   const reservoir = { x: 377, y: 356, rx: 43, ry: 28 };
   const trees = [...original.trees];
-  for (const [x, y] of [
-    [733, 459],
-    [775, 448],
-    [811, 478],
-    [715, 495],
-    [762, 500],
-    [804, 524],
-    [741, 537],
-    [108, 345],
-    [150, 329],
-    [195, 343],
-    [220, 382],
-    [193, 423],
-    [133, 407],
-    [94, 377],
-  ])
-    trees.push({ x, y, h: 105, frame: 0 });
-  for (let i = 0; i < 70; i++) {
-    const p = { x: 55 + ((i * 191.3) % 1170), y: 70 + ((i * 127.7) % 580) };
-    if (
-      original.inside(p, original.river) ||
-      original.fires.some((f) => original.distance(p, f) < 92)
-    )
-      continue;
-    if (
-      original.edges.some(
-        ([a, b, w]) =>
-          segment(p, original.nodes[a], original.nodes[b]) < w + 42,
-      )
-    )
-      continue;
-    if (
-      original.distance(p, { x: 245, y: 245 }) < 170 ||
-      trees.some((t) => original.distance(p, t) < 65)
-    )
-      continue;
-    trees.push({ ...p, h: 85 + (i % 4) * 12, frame: i % 2 });
-  }
   const obstacles = [
     ...GuardiaoElenco.actors(1)
       .filter((a) => a.solid)
@@ -197,17 +159,7 @@
         : inside(p, o.polygon) || geometry.polygonMargin(p, o.polygon) <= r,
     );
   }
-  const landmarks = MataLayout.landmarksFor(1).filter(
-    (p) =>
-      MataLayout.awayFromGoals(p, original) &&
-      walkable(p, Math.max(p.rx, p.ry) + 8) &&
-      Math.hypot(p.x - 286, p.y - 260) > p.rx + 20,
-  );
-  for (const p of landmarks)
-    obstacles.push({
-      name: p.id,
-      ellipse: { x: p.x, y: p.y, rx: p.rx, ry: p.ry },
-    });
+  const landmarks = [];
   let hazards = [];
   const clear = (p) =>
     !hazards.some(

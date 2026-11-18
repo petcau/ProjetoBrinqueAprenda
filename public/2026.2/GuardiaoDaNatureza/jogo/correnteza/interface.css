@@ -1,0 +1,95 @@
+#mochila-jornada .uniform-collection {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+#mochila-jornada .brisa-uniform .item-illustration {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#mochila-jornada .brisa-uniform .bosque-uniform {
+  width: 80px;
+  height: 112px;
+  max-width: 100%;
+  overflow: hidden;
+}
+#mochila-jornada .brisa-uniform.is-undiscovered .item-illustration {
+  opacity: 0.42;
+  filter: grayscale(0.85) brightness(0.62);
+}
+#mochila-jornada .brisa-uniform h3 {
+  font-size: 16px;
+  line-height: 1.15;
+}
+#mochila-jornada .brisa-uniform p {
+  font-size: 12px;
+  line-height: 1.3;
+}
+dialog#vitoria.reward-preview:not([open]) {
+  display: block !important;
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  z-index: 1500;
+  height: fit-content;
+  pointer-events: auto;
+}
+body:has(#vitoria.reward-preview)::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: #0a2927ba;
+  z-index: 1499;
+  pointer-events: auto;
+}
+#vitoria.reward-preview .resumo-acoes,
+#vitoria.reward-preview .resumo-nota {
+  visibility: hidden;
+}
+#vitoria.reward-preview .resumo-colar .colar-view {
+  opacity: 1 !important;
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  #mochila-jornada .uniform-collection {
+    gap: 8px;
+  }
+  #mochila-jornada .brisa-uniform {
+    padding: 10px;
+  }
+  #mochila-jornada .brisa-uniform .bosque-uniform {
+    height: 86px;
+    width: 65px;
+  }
+  #mochila-jornada .brisa-uniform h3 {
+    font-size: 13px;
+  }
+  #mochila-jornada .brisa-uniform p {
+    font-size: 10px;
+  }
+}
+
+#mochila-jornada .uniform-collection .brisa-uniform {
+  min-height: 0;
+  gap: 6px;
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  #mochila-jornada .uniform-collection .brisa-uniform {
+    padding: 8px;
+    gap: 5px;
+  }
+  #mochila-jornada .uniform-collection .item-illustration {
+    height: 67px;
+    flex: none;
+  }
+  #mochila-jornada .uniform-collection .bosque-uniform {
+    height: 67px;
+    width: 56px;
+  }
+  #mochila-jornada .uniform-collection .worn-label {
+    margin-top: 5px;
+    padding: 3px 6px;
+    font-size: 9px;
+  }
+}

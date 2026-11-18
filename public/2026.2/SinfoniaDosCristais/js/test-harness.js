@@ -29,10 +29,8 @@
       E.DialogueBox.advance();
       steps++;
     }
-    if (E?.TutorialModal?.isOpen) {
-      const done = E.TutorialModal.onDone;
-      E.TutorialModal.close();
-      if (typeof done === 'function') done();
+    while (E?.TutorialModal?.isOpen && steps < 40) {
+      E.TutorialModal.nextStep(true);
       steps++;
     }
     return steps > 0;
@@ -45,8 +43,15 @@
     }
     const pre = document.getElementById('preloaderScreen');
     if (pre) pre.remove();
+    window.CrystalOnboarding?.skipAll?.();
+    const splash = document.getElementById('unebSplashScreen');
+    if (splash) splash.hidden = true;
+    const wizard = document.getElementById('setupWizardScreen');
+    if (wizard) wizard.hidden = true;
+    const charScreen = document.getElementById('characterCreationScreen');
+    if (charScreen) charScreen.hidden = true;
     skipStory();
-    for (const id of ['settingsDialog', 'creditsDialog', 'exitDialog']) {
+    for (const id of ['settingsDialog', 'creditsDialog']) {
       const dlg = document.getElementById(id);
       if (dlg?.open) dlg.close();
     }
@@ -54,6 +59,7 @@
     if (E?.GameHUD) {
       E.GameHUD.paused = false;
       E.GameHUD.settingsOpen = false;
+      E.GameHUD.guideOpen = false;
     }
   }
 
@@ -88,7 +94,9 @@
       hud: {
         paused: Boolean(E?.GameHUD?.paused),
         muted: Boolean(E?.GameHUD?.muted),
-        settingsOpen: Boolean(E?.GameHUD?.settingsOpen)
+        settingsOpen: Boolean(E?.GameHUD?.settingsOpen),
+        godMode: Boolean(E?.GameHUD?.godMode),
+        mapLocked: Boolean(E?.GameHUD?.isMapLocked?.())
       },
       performance: window.CrystalPerformance?.report?.() || null,
       caveKaraoke: (() => {

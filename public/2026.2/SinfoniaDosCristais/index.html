@@ -8,14 +8,125 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/pixel.css?v=9">
+<link rel="stylesheet" href="css/pixel.css?v=10">
 <link rel="stylesheet" href="css/menu.css?v=7">
-<link rel="stylesheet" href="css/journey.css?v=8">
+<link rel="stylesheet" href="css/journey.css?v=9">
 <link rel="preload" as="audio" href="assets/audio/musica-menu.mp3" type="audio/mp3">
 <link rel="stylesheet" href="css/experience.css?v=12">
 <link rel="stylesheet" href="css/responsive.css?v=3">
 </head><body data-screen="home">
 <div id="preloaderScreen" class="preloader-screen" aria-label="Carregando recursos do jogo" role="status"><canvas id="preloaderCanvas" width="640" height="360" aria-hidden="true"></canvas></div>
+<div id="unebSplashScreen" class="uneb-splash-screen phase-fade-in" role="region" aria-label="Apresentação Institucional UNEB">
+  <div class="uneb-splash-content">
+    <img class="uneb-splash-logo" src="assets/credits/uneb-logo.png" alt="Brasão da Universidade do Estado da Bahia (UNEB)" draggable="false">
+    <p class="uneb-splash-text">Esse jogo foi feito por estudantes do curso de graduação Engenharia de Software da UNEB</p>
+  </div>
+</div>
+<div id="setupWizardScreen" class="setup-wizard-screen" role="dialog" aria-modal="true" aria-labelledby="wizardTitle" hidden>
+  <div class="setup-wizard-card crystal-settings-card">
+    <div class="crystal-card-prism-border" aria-hidden="true"></div>
+    <header class="crystal-settings-header">
+      <div class="crystal-card-gems" aria-hidden="true">
+        <span class="c-gem gem-cyan">◆</span>
+        <span class="c-gem gem-emerald">◆</span>
+        <span class="c-gem gem-paraiba">◆</span>
+        <span class="c-gem gem-opal">◆</span>
+      </div>
+      <span id="wizardStepIndicator" class="crystal-card-eyebrow">ETAPA 1 DE 2 • CONFIGURAÇÃO INICIAL</span>
+      <h2 id="wizardTitle" class="crystal-settings-title">Acessibilidade</h2>
+    </header>
+
+    <div id="wizardStepAccess" class="wizard-step" data-step="access">
+      <label class="setting-row"><input id="wizVoiceToggle" type="checkbox"><span>Narrador<small>Instruções e mensagens de navegação em voz</small></span></label>
+      <label class="setting-row"><input id="wizContrastToggle" type="checkbox"><span>Alto contraste<small>Realça bordas e textos da interface</small></span></label>
+      <label class="setting-row"><input id="wizMotionToggle" type="checkbox"><span>Reduzir movimentos<small>Sem tremores, giros ou animações intensas</small></span></label>
+      <label class="setting-row"><input id="wizAssistToggle" type="checkbox"><span>Ritmo tranquilo<small>Experiência contemplativa sem pressa</small></span></label>
+      <footer class="crystal-settings-footer wizard-footer">
+        <button type="button" id="wizardNextToAudioBtn" class="pixel-button crystal-close-btn">Avançar →</button>
+      </footer>
+    </div>
+
+    <div id="wizardStepAudio" class="wizard-step" data-step="audio" hidden>
+      <div class="setting-row wizard-audio-row">
+        <span>Música<small>Volume da trilha sonora e melodias</small></span>
+        <input id="wizMusicVolume" type="range" min="0" max="100" value="50" aria-label="Volume da Música">
+        <output id="wizMusicValue">50%</output>
+        <button type="button" id="wizTestMusicBtn" class="pixel-button crystal-btn-accent wizard-test-btn">♪ Teste de Som</button>
+      </div>
+      <div class="setting-row wizard-audio-row">
+        <span>Efeitos<small>Colisões, fusões e fragmentos de cristal</small></span>
+        <input id="wizFxVolume" type="range" min="0" max="100" value="50" aria-label="Volume dos Efeitos">
+        <output id="wizFxValue">50%</output>
+        <button type="button" id="wizTestSfxBtn" class="pixel-button crystal-btn-accent wizard-test-btn">✦ Teste de Som</button>
+      </div>
+      <div class="setting-row">
+        <span>Modo de Tela<small>Expande o jogo para ocupar toda a tela</small></span>
+        <button type="button" id="wizFullscreenBtn" class="pixel-button crystal-btn-accent">⛶ Ativar Tela Cheia</button>
+      </div>
+      <div class="setting-row wizard-framing-row">
+        <div class="wizard-framing-header">
+          <span>Ajustar Enquadramento da Tela<small>Posição Normal no meio; mais retraído à esquerda e mais afastado à direita</small></span>
+          <output id="wizFrameScaleValue">Normal (100%)</output>
+        </div>
+        <input id="wizFrameScale" type="range" min="80" max="120" step="5" value="100" aria-label="Ajustar Enquadramento da Tela">
+        <div class="wizard-scale-labels" aria-hidden="true">
+          <span>◀ Mais Retraído</span>
+          <span>● Normal (Meio)</span>
+          <span>Mais Afastado ▶</span>
+        </div>
+      </div>
+      <footer class="crystal-settings-footer wizard-footer wizard-footer-dual">
+        <button type="button" id="wizardBackToAccessBtn" class="pixel-button crystal-btn-accent">← Voltar</button>
+        <button type="button" id="wizardFinishBtn" class="pixel-button crystal-close-btn">Avançar →</button>
+      </footer>
+    </div>
+  </div>
+</div>
+<div id="characterCreationScreen" class="setup-wizard-screen character-creation-screen" role="dialog" aria-modal="true" aria-labelledby="characterCreationTitle" hidden>
+  <div class="setup-wizard-card crystal-settings-card character-creation-card">
+    <div class="crystal-card-prism-border" aria-hidden="true"></div>
+    <header class="crystal-settings-header">
+      <div class="crystal-card-gems" aria-hidden="true">
+        <span class="c-gem gem-cyan">◆</span>
+        <span class="c-gem gem-emerald">◆</span>
+        <span class="c-gem gem-paraiba">◆</span>
+        <span class="c-gem gem-opal">◆</span>
+      </div>
+      <span class="crystal-card-eyebrow">IDENTIFICAÇÃO DO AVENTUREIRO</span>
+      <h2 id="characterCreationTitle" class="crystal-settings-title">Quem vai guiar a Sinfonia?</h2>
+    </header>
+    <div class="character-creation-body">
+      <div class="character-name-field">
+        <label for="playerNameInput">Qual é o seu nome?</label>
+        <input id="playerNameInput" type="text" maxlength="24" placeholder="Digite seu nome..." autocomplete="off">
+        <small id="playerNameError" class="character-name-error" role="alert" hidden>Por favor, digite seu nome para começar a aventura!</small>
+      </div>
+      <div class="character-gender-section">
+        <span class="character-gender-prompt">Escolha seu personagem:</span>
+        <div class="character-gender-grid" role="radiogroup" aria-label="Escolha entre Menino e Menina">
+          <button type="button" id="genderBoyBtn" class="character-gender-card selected" data-gender="male" aria-pressed="true">
+            <div class="character-preview-box">
+              <canvas id="previewBoyCanvas" width="64" height="64"></canvas>
+            </div>
+            <strong class="character-gender-label">Menino</strong>
+            <span class="character-gender-badge">✦ Selecionado ✦</span>
+          </button>
+          <button type="button" id="genderGirlBtn" class="character-gender-card" data-gender="female" aria-pressed="false">
+            <div class="character-preview-box">
+              <canvas id="previewGirlCanvas" width="64" height="64"></canvas>
+            </div>
+            <strong class="character-gender-label">Menina</strong>
+            <span class="character-gender-badge">✦ Selecionado ✦</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <footer class="crystal-settings-footer wizard-footer wizard-footer-dual">
+      <button type="button" id="characterBackBtn" class="pixel-button crystal-btn-accent">← Voltar</button>
+      <button type="button" id="characterConfirmBtn" class="pixel-button crystal-close-btn">✦ Começar Aventura! ✦</button>
+    </footer>
+  </div>
+</div>
 <div id="orientationOverlay" class="orientation-overlay" role="dialog" aria-label="Gire o dispositivo para o modo paisagem" hidden>
   <div class="orientation-card">
     <div class="orientation-icon" aria-hidden="true">📱↻</div>
@@ -36,33 +147,74 @@
 <button id="continueButton" class="menu-choice" aria-label="Continuar"><img class="menu-btn-art" src="assets/story/interface/btn-continuar.png" alt="Continuar" draggable="false"><span class="visually-hidden">Continuar</span></button>
 <button data-settings class="menu-choice" aria-label="Opções"><img class="menu-btn-art" src="assets/story/interface/btn-opcoes.png" alt="Opções" draggable="false"><span class="visually-hidden">Opções</span></button>
 <button id="creditsButton" class="menu-choice" aria-label="Créditos"><img class="menu-btn-art" src="assets/story/interface/btn-creditos.png" alt="Créditos" draggable="false"><span class="visually-hidden">Créditos</span></button>
-<button id="exitButton" class="menu-choice menu-exit" aria-label="Sair"><img class="menu-btn-art" src="assets/story/interface/btn-sair.png" alt="Sair" draggable="false"><span class="visually-hidden">Sair</span></button>
 </nav></div><p class="visually-hidden" id="homeSave">Sua jornada começa com um pequeno brilho.</p>
 </section>
 <section id="map" class="screen map-screen" aria-labelledby="mapTitle" hidden>
 <div class="map-art" aria-hidden="true"></div><div class="map-shade" aria-hidden="true"></div>
-<header class="screen-bar"><button data-home class="square-button" aria-label="Voltar ao início">⌂</button><div><span class="eyebrow">A JORNADA ECOLÓGICA</span><h2 id="mapTitle">O caminho da luz</h2></div><button data-settings class="square-button" aria-label="Configurações">⚙</button></header>
+<header class="screen-bar"><button data-home class="square-button" aria-label="Voltar ao início">⌂</button><div><span class="eyebrow">A JORNADA ECOLÓGICA</span><h2 id="mapTitle">O caminho da luz</h2></div><div class="map-bar-actions"><button type="button" id="levelMenuBtn" class="pixel-button level-menu-trigger" aria-label="Abrir lista de fases">☰ Fases</button><button data-settings class="square-button" aria-label="Configurações">⚙</button></div></header>
 <div id="worldLabels" class="world-labels"></div><div class="route-wrap"><svg id="mapRoute" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true"></svg><div id="levelNodes"></div></div>
 <div class="map-caption" hidden><span id="mapProgress"></span><p>Escolha uma luz no caminho.</p></div>
 </section>
 <section id="game" class="screen game-screen" hidden></section>
 </main>
 <div id="feedback" class="toast" role="status" aria-live="polite"></div>
-<dialog id="settingsDialog" class="settings-dialog" aria-labelledby="settingsTitle"><form method="dialog">
-<div class="panel-title"><h2 id="settingsTitle">Configurações</h2><button class="square-button close" aria-label="Fechar configurações">×</button></div>
-<div class="settings-tabs" role="tablist" aria-label="Categoria"><button type="button" id="soundTab" role="tab" aria-selected="true" aria-controls="soundPanel">♪ Som</button><button type="button" id="accessTab" role="tab" aria-selected="false" aria-controls="accessPanel" tabindex="-1">◉ Acessibilidade</button></div>
-<div id="soundPanel" role="tabpanel" aria-labelledby="soundTab">
-<label class="setting-row"><span>Música<small>Notas, composição e vocal</small></span><input id="musicVolume" type="range" min="0" max="100" value="50"><output id="musicValue">50%</output></label>
-<label class="setting-row"><span>Efeitos<small>Colisões, fusões e fragmentos</small></span><input id="fxVolume" type="range" min="0" max="100" value="50"><output id="fxValue">50%</output></label>
-<button type="button" id="testSound" class="pixel-button">Ouvir um cristal</button></div>
-<div id="accessPanel" role="tabpanel" aria-labelledby="accessTab" hidden>
-<label class="setting-row"><input id="voiceToggle" type="checkbox"><span>Narrador<small>Instruções e mensagens de navegação</small></span></label>
-<label class="setting-row"><input id="contrastToggle" type="checkbox"><span>Alto contraste<small>Realça bordas e textos da interface</small></span></label>
-<label class="setting-row"><input id="motionToggle" type="checkbox"><span>Reduzir movimentos<small>Sem tremores, giros ou animações intensas</small></span></label>
-<label class="setting-row"><input id="assistToggle" type="checkbox"><span>Ritmo tranquilo<small>Experiência contemplativa sem pressa</small></span></label>
-<p class="keyboard-guide">Arraste cristais para somar, subtrair ou anular; toque em Citrinos e Água-Marinhas para dividir; pressione R para reiniciar a fase.</p></div>
-<footer class="settings-footer"><button class="square-button" aria-label="Voltar">←</button></footer><p id="fileStatus" role="status"></p>
-</form></dialog>
+<dialog id="settingsDialog" class="settings-dialog crystal-settings-dialog" aria-labelledby="settingsTitle">
+  <form method="dialog" class="crystal-settings-card">
+    <div class="crystal-card-prism-border" aria-hidden="true"></div>
+    <header class="crystal-settings-header">
+      <div class="crystal-card-gems" aria-hidden="true">
+        <span class="c-gem gem-cyan">◆</span>
+        <span class="c-gem gem-emerald">◆</span>
+        <span class="c-gem gem-paraiba">◆</span>
+        <span class="c-gem gem-opal">◆</span>
+      </div>
+      <div class="crystal-settings-title-row">
+        <h2 id="settingsTitle" class="crystal-settings-title">Configurações</h2>
+        <button class="square-button close crystal-close-x" aria-label="Fechar configurações">×</button>
+      </div>
+    </header>
+    <div class="settings-tabs" role="tablist" aria-label="Categoria">
+      <button type="button" id="soundTab" role="tab" aria-selected="true" aria-controls="soundPanel">♪ Som</button>
+      <button type="button" id="displayTab" role="tab" aria-selected="false" aria-controls="displayPanel" tabindex="-1">⛶ Tela</button>
+      <button type="button" id="accessTab" role="tab" aria-selected="false" aria-controls="accessPanel" tabindex="-1">◉ Acessibilidade</button>
+    </div>
+    <div id="soundPanel" role="tabpanel" aria-labelledby="soundTab">
+      <label class="setting-row"><span>Música<small>Notas, composição e vocal</small></span><input id="musicVolume" type="range" min="0" max="100" value="50"><output id="musicValue">50%</output></label>
+      <label class="setting-row"><span>Efeitos<small>Colisões, fusões e fragmentos</small></span><input id="fxVolume" type="range" min="0" max="100" value="50"><output id="fxValue">50%</output></label>
+      <div class="settings-action-row"><button type="button" id="testSound" class="pixel-button crystal-btn-accent">✦ Ouvir um Cristal ✦</button></div>
+    </div>
+    <div id="displayPanel" role="tabpanel" aria-labelledby="displayTab" hidden>
+      <label class="setting-row"><input id="fullscreenToggle" type="checkbox"><span>Tela Cheia<small>Expande o santuário para preencher toda a tela do dispositivo</small></span></label>
+      <div class="setting-row wizard-framing-row">
+        <div class="wizard-framing-header">
+          <span>Ajustar Enquadramento da Tela<small>Posição Normal no meio; mais retraído à esquerda e mais afastado à direita</small></span>
+          <output id="frameScaleValue">Normal (100%)</output>
+        </div>
+        <input id="frameScaleSlider" type="range" min="80" max="120" step="5" value="100" aria-label="Ajustar Enquadramento da Tela">
+        <div class="wizard-scale-labels" aria-hidden="true">
+          <span>◀ Mais Retraído</span>
+          <span>● Normal (Meio)</span>
+          <span>Mais Afastado ▶</span>
+        </div>
+      </div>
+      <div class="settings-action-row">
+        <button type="button" id="fullscreenButton" class="pixel-button crystal-btn-accent">⛶ Alternar Tela Cheia</button>
+      </div>
+    </div>
+    <div id="accessPanel" role="tabpanel" aria-labelledby="accessTab" hidden>
+      <label class="setting-row"><input id="voiceToggle" type="checkbox"><span>Narrador<small>Instruções e mensagens de navegação</small></span></label>
+      <label class="setting-row"><input id="contrastToggle" type="checkbox"><span>Alto contraste<small>Realça bordas e textos da interface</small></span></label>
+      <label class="setting-row"><input id="motionToggle" type="checkbox"><span>Reduzir movimentos<small>Sem tremores, giros ou animações intensas</small></span></label>
+      <label class="setting-row"><input id="assistToggle" type="checkbox"><span>Ritmo tranquilo<small>Experiência contemplativa sem pressa</small></span></label>
+      <label class="setting-row"><input id="godModeToggle" type="checkbox"><span>Modo Livre (God Mode)<small>Libera todas as fases e ferramentas infinitas no celular e no PC</small></span></label>
+      <p class="keyboard-guide">Arraste cristais para somar, subtrair ou anular; toque em Citrinos e Água-Marinhas para dividir; pressione R para reiniciar a fase; pressione F para alternar Tela Cheia.</p>
+    </div>
+    <footer class="settings-footer crystal-settings-footer">
+      <button class="pixel-button crystal-close-btn" aria-label="Voltar">✦ Voltar ao Santuário ✦</button>
+    </footer>
+    <p id="fileStatus" role="status"></p>
+  </form>
+</dialog>
 <dialog id="creditsDialog" class="crystal-credits-dialog" aria-labelledby="creditsTitle">
   <form method="dialog" class="crystal-credits-card">
     <div class="crystal-card-prism-border" aria-hidden="true"></div>
@@ -124,19 +276,46 @@
     </footer>
   </form>
 </dialog>
-<dialog id="exitDialog"><form method="dialog" class="result-card"><h2>Até a próxima nota!</h2><p>Seu progresso foi guardado neste navegador. Você pode fechar esta aba.</p><button class="pixel-button">Continuar aqui</button></form></dialog>
-<script src="js/true-pixel-engine.js?v=24"></script>
+<dialog id="levelListDialog" class="settings-dialog crystal-settings-dialog crystal-levels-dialog" aria-labelledby="levelListTitle">
+  <form method="dialog" class="crystal-settings-card crystal-levels-card">
+    <div class="crystal-card-prism-border" aria-hidden="true"></div>
+    <header class="crystal-settings-header">
+      <div class="crystal-card-gems" aria-hidden="true">
+        <span class="c-gem gem-cyan">◆</span>
+        <span class="c-gem gem-emerald">◆</span>
+        <span class="c-gem gem-paraiba">◆</span>
+        <span class="c-gem gem-opal">◆</span>
+      </div>
+      <div class="crystal-settings-title-row">
+        <h2 id="levelListTitle" class="crystal-settings-title">Seleção de Fases</h2>
+        <button id="levelListCloseBtn" class="square-button close crystal-close-x" aria-label="Fechar seleção de fases">×</button>
+      </div>
+    </header>
+    <div class="level-list-godmode-bar">
+      <div class="level-list-godmode-info">
+        <strong>Modo Livre (God Mode)</strong>
+        <small>Desbloqueia todas as 21 fases e ferramentas infinitas</small>
+      </div>
+      <button type="button" id="levelListGodModeBtn" class="pixel-button crystal-btn-accent level-godmode-btn" aria-pressed="false">⚡ Ativar God Mode</button>
+    </div>
+    <div id="levelListContainer" class="crystal-card-body level-list-body"></div>
+    <footer class="settings-footer crystal-settings-footer">
+      <button class="pixel-button crystal-close-btn" aria-label="Voltar ao Mapa">✦ Voltar ao Mapa ✦</button>
+    </footer>
+  </form>
+</dialog>
+<script src="js/true-pixel-engine.js?v=25"></script>
 <script src="js/preloader.js?v=4"></script>
 <script src="js/true-pixel-cave.js?v=24"></script>
-<script src="js/true-pixel-worlds.js?v=7"></script>
+<script src="js/true-pixel-worlds.js?v=8"></script>
 <script src="js/final-phase.js?v=2"></script>
 <script src="js/performance.js"></script>
 <script src="js/campaign.js?v=7"></script>
 <script src="js/campaign-current.js?v=3"></script>
 <script src="js/rules.js"></script>
 <script src="js/audio.js?v=16"></script>
-<script src="js/journey-map.js?v=4"></script>
-<script src="js/app.js?v=15"></script>
+<script src="js/journey-map.js?v=5"></script>
+<script src="js/app.js?v=16"></script>
 <script src="js/menu.js?v=15"></script>
 <script src="js/test-harness.js?v=4"></script>
 </body></html>

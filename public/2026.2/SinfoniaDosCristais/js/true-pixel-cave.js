@@ -113,29 +113,39 @@
     return c;
   }
 
-  // Paleta Owlboy pictórica quente e suave (warm muted tones, sem neon agressivo nem bordas pretas)
-  const GEM_SPRITES = {
-    white_pure: buildHiBitGem('quartz', {
+  // Paleta Owlboy pictórica quente e suave (cristais sombrios preservam a cor equivalente em tom denso/corrompido)
+  const GEM_PALETTES = {
+    white_pure: {
       W: '#ffffff', H: '#e3f4f7', L: '#a8d8e6', M: '#6caac4', D: '#437794', K: '#294c66'
-    }),
-    white_shadow: buildHiBitGem('quartz', {
-      W: '#b8a6d9', H: '#8572ab', L: '#5e4d82', M: '#413361', D: '#2a1f42', K: '#1a122b'
-    }),
-    rose_pure: buildHiBitGem('quartz', {
+    },
+    white_shadow: {
+      W: '#d8f3fa', H: '#9ad0e3', L: '#5b9bb8', M: '#386c8a', D: '#1f425c', K: '#2a123d'
+    },
+    rose_pure: {
       W: '#fff2f5', H: '#f7cad8', L: '#e396b1', M: '#bf6588', D: '#8c3f60', K: '#59223b'
-    }),
-    rose_shadow: buildHiBitGem('quartz', {
-      W: '#cfa3c4', H: '#96688c', L: '#6e4666', M: '#4d2d47', D: '#331a2e', K: '#1f0e1c'
-    }),
-    opal_pure: buildHiBitGem('opal', {
+    },
+    rose_shadow: {
+      W: '#ffe0eb', H: '#eba0bc', L: '#c45e86', M: '#8f355b', D: '#591936', K: '#2d0b2e'
+    },
+    opal_pure: {
       W: '#fff6cc', H: '#f7c97e', L: '#e68a49', M: '#c45131', D: '#8c2d1f', K: '#541812'
-    }),
-    opal_shadow: buildHiBitGem('opal', {
-      W: '#c99b8f', H: '#8f5d52', L: '#693c34', M: '#4a2620', D: '#301512', K: '#1c0b09'
-    }),
-    flash: buildHiBitGem('quartz', {
+    },
+    opal_shadow: {
+      W: '#ffe8b8', H: '#e89e54', L: '#c45e28', M: '#8c3314', D: '#54180b', K: '#2b0924'
+    },
+    flash: {
       W: '#ffffff', H: '#ffffff', L: '#ffffff', M: '#ffffff', D: '#e8f6ff', K: '#b8ecff'
-    })
+    }
+  };
+
+  const GEM_SPRITES = {
+    white_pure: buildHiBitGem('quartz', GEM_PALETTES.white_pure),
+    white_shadow: buildHiBitGem('quartz', GEM_PALETTES.white_shadow),
+    rose_pure: buildHiBitGem('quartz', GEM_PALETTES.rose_pure),
+    rose_shadow: buildHiBitGem('quartz', GEM_PALETTES.rose_shadow),
+    opal_pure: buildHiBitGem('opal', GEM_PALETTES.opal_pure),
+    opal_shadow: buildHiBitGem('opal', GEM_PALETTES.opal_shadow),
+    flash: buildHiBitGem('quartz', GEM_PALETTES.flash)
   };
 
   const SHARD_ROWS = [
@@ -195,10 +205,14 @@
   function drawCrystalPiece(ctx, piece, t) {
     if (!piece || piece.broken || piece.value <= 0) return;
 
-    // 100% ESTÁTICO por padrão: só treme quando a Opala de Fogo está próxima ou em rejeição de cor!
     const isTrembling = Boolean(piece.trembling) || Boolean(piece.rejectUntil && t < piece.rejectUntil);
     const [tx, ty] = ActorAnimator.getCrystalTrembleOffset(t, isTrembling, ctx, piece.x, piece.y);
-    const x = RH(piece.x + tx), y = RH(piece.y + ty);
+    const idle = ActorAnimator.getCrystalIdleAnim(piece, t);
+    const x = RH(piece.x + tx), y = RH(piece.y + ty + idle.bobY);
+
+    if (piece.shadow) {
+      ActorAnimator.drawShadowCrystalAura(ctx, x, y, t, idle.phase, 11.5);
+    }
 
     if (piece.dragging) {
       drawRing(ctx, R(x), R(y), 14, '#e6cf9c');
@@ -218,21 +232,27 @@
     const gw = spr.width * 0.5, gh = spr.height * 0.5;
     ctx.drawImage(spr, RH(x - gw / 2), RH(y - gh / 2), gw, gh);
 
+    if (idle.sparkleActive) {
+      P1(ctx, R(x + idle.sparkleCorner * 4), R(y - 5), piece.shadow ? '#d8b4fe' : '#ffffff');
+    }
+
     // Desenha as unidades como bolinhas luminosas FORA do cristal em um arco acima dele
     const val = clamp(piece.value || 1, 1, 6);
     const orbCoords = EXTERNAL_ORB_ARCS[val] || EXTERNAL_ORB_ARCS[1];
     const recentlyChanged = Boolean(piece.lastValChangeAt && (t - piece.lastValChangeAt) < 0.28);
 
-    const coreCol = piece.shadow ? '#f3e0ff' : '#fffdf2';
+    const coreCol = piece.shadow
+      ? (piece.type === 'rose' ? '#ffe0eb' : (piece.type === 'opal' ? '#ffe8b8' : '#e0f7ff'))
+      : '#fffdf2';
     const midCol = piece.shadow
-      ? (piece.type === 'rose' ? '#cfa3c4' : '#9b84c4')
+      ? (piece.type === 'rose' ? '#d46a92' : (piece.type === 'opal' ? '#d97538' : '#68b0c9'))
       : piece.type === 'opal'
         ? '#f7b259'
         : piece.type === 'rose'
           ? '#f29bb8'
           : '#7fd4e6';
-    const rimCol = piece.shadow ? '#1f142e' : (piece.type === 'opal' ? '#4a1912' : (piece.type === 'rose' ? '#4f1e35' : '#1e3a4d'));
-    const linkCol = piece.shadow ? '#6e5794' : (piece.type === 'opal' ? '#e68a49' : (piece.type === 'rose' ? '#d97a9c' : '#569bb0'));
+    const rimCol = piece.shadow ? '#240b36' : (piece.type === 'opal' ? '#4a1912' : (piece.type === 'rose' ? '#4f1e35' : '#1e3a4d'));
+    const linkCol = piece.shadow ? '#7e22ce' : (piece.type === 'opal' ? '#e68a49' : (piece.type === 'rose' ? '#d97a9c' : '#569bb0'));
 
     // Filamento energético suave conectando o arco de bolinhas externas ao topo do cristal
     ctx.fillStyle = linkCol;
@@ -251,6 +271,26 @@
     }
   }
 
+  function getDynamicEquationRadius(eq, members = []) {
+    if (!eq) return { rx: 30, ry: 20 };
+    let count = 0;
+    if (Array.isArray(members)) {
+      count = members.length;
+    } else if (typeof members === 'number') {
+      count = members;
+    } else if (eq.memberCount !== undefined) {
+      count = eq.memberCount;
+    }
+    const isReceptive = Boolean(eq.expanded || eq.dropHover || eq.removeHover);
+    const spacing = (eq.expanded || isReceptive) ? 24 : 18;
+    const halfSpan = count > 1 ? ((count - 1) * spacing) * 0.5 : 0;
+    const baseRx = isReceptive ? 46 : 30;
+    const baseRy = isReceptive ? 28 : 20;
+    const rx = Math.max(baseRx, Math.round(halfSpan + (isReceptive ? 26 : 20)));
+    const ry = Math.max(baseRy, count >= 3 ? (isReceptive ? 30 : 24) : baseRy);
+    return { rx, ry };
+  }
+
   // ============================================================================
   // AURA EXPANSÍVEL DA EQUAÇÃO CRISTALINA EM LOOP (Estilo Pictórico Owlboy)
   // Inclui conexões luminosas entre os cristais internos e destaque de encaixe!
@@ -259,8 +299,7 @@
     if (!eq || eq.broken) return;
     const f12 = Math.floor(t * SPRITE_FPS);
     const isReceptive = Boolean(eq.expanded || eq.dropHover || eq.removeHover);
-    const rx = isReceptive ? 46 : 29;
-    const ry = isReceptive ? 26 : 18;
+    const { rx, ry } = getDynamicEquationRadius(eq, members);
     const cx = R(eq.x), cy = R(eq.y);
 
     if (isReceptive) {
@@ -286,8 +325,9 @@
         ? '#c45131'
         : (eq.shadow ? '#5e4d82' : (eq.expanded ? '#5e96ab' : '#8c7248'));
 
-    for (let a = 0; a < 76; a++) {
-      const ang = (a / 76) * Math.PI * 2;
+    const numDots = Math.max(76, Math.round(rx * 1.8));
+    for (let a = 0; a < numDots; a++) {
+      const ang = (a / numDots) * Math.PI * 2;
       const wave = Math.sin(ang * 4 + f12 * 0.6) * (isReceptive ? 1.2 : 0.7);
       const px = R(cx + Math.cos(ang) * (rx + wave));
       const py = R(cy + Math.sin(ang) * (ry + wave * 0.6));
@@ -2604,7 +2644,8 @@
     waveRadius: 0,
     waveActive: false,
 
-    // Controle do Show Musical da Fase 5 (O Sussurro da Fada)
+    // Controle do Show Musical da Fase 5 (O Sussurro da Fada) e BGM da Caverna
+    regularAudio: null,
     musicAudio: null,
     musicalTime: 0,
     _lastAudioTime: null,
@@ -2621,6 +2662,8 @@
     draggedPiece: null,
     equationPointer: null,
     magneticAnim: null,
+    equationShockEffect: null,
+    ghostHandAnim: null,
 
     opalDrainTimer: 0,
     opalStepInterval: 0.55,
@@ -2660,10 +2703,14 @@
       GameHUD.onMuteChange = (muted, effMus) => {
         const vol = effMus !== undefined ? effMus : (muted ? 0 : GameHUD.musicVol / 100);
         const inMusical = this.phase === 'musical_part1_shadows' || this.phase === 'musical_part2_bright';
+        const inRegularCave = this.isActiveGame() && this.currentLevel >= 1 && this.currentLevel <= 4;
 
         if (this.musicAudio) {
           this.musicAudio.muted = !!muted || vol <= 0;
-          this.musicAudio.volume = vol;
+          this.musicAudio._fadeTargetVol = vol;
+          if (!this.musicAudio._fadingIn) {
+            this.musicAudio.volume = vol;
+          }
           if (inMusical) {
             if (muted || vol <= 0 || GameHUD.paused || GameHUD.settingsOpen) {
               try { this.musicAudio.pause(); } catch (_) {}
@@ -2673,19 +2720,68 @@
           }
         }
 
+        if (this.regularAudio) {
+          this.regularAudio.muted = !!muted || vol <= 0;
+          this.regularAudio._fadeTargetVol = vol;
+          if (!this.regularAudio._fadingIn) {
+            this.regularAudio.volume = vol;
+          }
+          if (!inRegularCave || inMusical || muted || vol <= 0 || GameHUD.paused || GameHUD.settingsOpen) {
+            try { this.regularAudio.pause(); } catch (_) {}
+          } else if (this.regularAudio.paused) {
+            try { this.regularAudio.play().catch(() => {}); } catch (_) {}
+          }
+        }
+
         if (global.CrystalMenuAudio && global.CrystalMenuAudio.track) {
           const menuTr = global.CrystalMenuAudio.track;
           menuTr.muted = !!muted || vol <= 0;
-          menuTr.volume = vol;
-          if (inMusical || muted || vol <= 0 || GameHUD.paused || GameHUD.settingsOpen || !this.isActiveGame()) {
+          menuTr._fadeTargetVol = vol;
+          if (!menuTr._fadingIn) {
+            menuTr.volume = vol;
+          }
+          if (this.isActiveGame()) {
             try { menuTr.pause(); } catch (_) {}
-          } else if (this.running && menuTr.paused && this.isActiveGame()) {
-            try { menuTr.play().catch(() => {}); } catch (_) {}
           }
         }
       };
 
       GameHUD.syncAudio();
+    },
+
+    playRegularBgm() {
+      try {
+        if (this.musicAudio) {
+          try { this.musicAudio.pause(); } catch (_) {}
+        }
+        global.CrystalAudio?.stopAllMusic?.(this.regularAudio);
+        global.CrystalMenuAudio?.pause?.();
+        if (!this.regularAudio) {
+          this.regularAudio = new Audio('assets/audio/musica-menu.mp3');
+          this.regularAudio.loop = true;
+          this.regularAudio.preload = 'auto';
+          global.CrystalAudio?.setupSeamlessLoop?.(this.regularAudio, { loopStart: 3.2, loopEndOffset: 0.6, fadeMs: 320 });
+        }
+        const effMus = GameHUD.muted ? 0 : clamp(GameHUD.musicVol / 100, 0, 1);
+        this.regularAudio.muted = GameHUD.muted || effMus <= 0;
+        const startOffset = 3.2;
+        if (this.regularAudio.paused || !Number.isFinite(this.regularAudio.currentTime) || this.regularAudio.currentTime < 2.5) {
+          if (global.CrystalAudio?.fadeInTrack) {
+            global.CrystalAudio.fadeInTrack(this.regularAudio, effMus, 650, startOffset);
+          } else {
+            try { this.regularAudio.currentTime = startOffset; } catch (_) {}
+            this.regularAudio.volume = effMus;
+          }
+          if (!GameHUD.muted && effMus > 0) {
+            this.regularAudio.play().catch(() => {});
+          }
+        } else {
+          this.regularAudio._fadeTargetVol = effMus;
+          if (!this.regularAudio._fadingIn) {
+            this.regularAudio.volume = effMus;
+          }
+        }
+      } catch (_) {}
     },
 
     isActiveGame() {
@@ -2750,6 +2846,9 @@
       };
       GameHUD.paused = false;
       GameHUD.settingsOpen = false;
+      GameHUD.guideOpen = false;
+      GameHUD.onUseAbility1 = () => this.triggerGhostHandHint();
+      if (typeof GameHUD.resetAbilityCharges === 'function') GameHUD.resetAbilityCharges();
       GameHUD.syncAudio();
     },
 
@@ -2759,9 +2858,13 @@
       if (typeof TutorialModal.close === 'function') TutorialModal.close();
       GameHUD.paused = false;
       GameHUD.settingsOpen = false;
+      GameHUD.guideOpen = false;
+      if (typeof GameHUD.resetAbilityCharges === 'function') GameHUD.resetAbilityCharges();
       this.draggedPiece = null;
       this.equationPointer = null;
       this.magneticAnim = null;
+      this.equationShockEffect = null;
+      this.ghostHandAnim = null;
       this.clearTrembleStates();
       this.shards = [];
       this.cushionAlpha = 0;
@@ -2808,6 +2911,7 @@
         this.lastNow = (typeof performance !== 'undefined' ? performance.now() : 0);
         requestAnimationFrame((now) => this.loop(now));
       }
+      this.playRegularBgm();
     },
 
     ensureCanvas() {
@@ -2854,7 +2958,8 @@
       const vw = typeof window !== 'undefined' && window.innerWidth ? Math.max(320, window.innerWidth) : 320;
       const vh = typeof window !== 'undefined' && window.innerHeight ? Math.max(180, window.innerHeight) : 180;
       const isMapIris = this.phase === 'map_iris_in' || global.TruePixelWorlds?.phase === 'map_iris_in';
-      const scale = isMapIris ? Math.max(vw / W, vh / H) : Math.min(vw / W, vh / H);
+      const userFrameScale = isMapIris ? 1 : clamp(Number(global.CrystalFrameScale) || 1, 0.8, 1.2);
+      const scale = (isMapIris ? Math.max(vw / W, vh / H) : Math.min(vw / W, vh / H)) * userFrameScale;
       const roundFn = isMapIris ? Math.ceil : Math.round;
       cv.style.width = roundFn(W * scale) + 'px';
       cv.style.height = roundFn(H * scale) + 'px';
@@ -2869,10 +2974,24 @@
       };
     },
 
+    getEquationRadius(eq, memberCountOrList) {
+      if (memberCountOrList === undefined) {
+        if (eq?.memberCount !== undefined && eq.memberCount > 0) {
+          memberCountOrList = eq.memberCount;
+        } else if (Array.isArray(this.pieces)) {
+          const piecesInEq = this.pieces.filter((p) => !p.broken && p.value > 0 && p.inEquation === (eq?.shadow ? 'shadow' : 'pure')).length;
+          memberCountOrList = piecesInEq || eq?.memberCount || 0;
+        } else {
+          memberCountOrList = eq?.memberCount || 0;
+        }
+      }
+      return getDynamicEquationRadius(eq, memberCountOrList);
+    },
+
     isInsideEquationAura(eq, x, y, allowReception = false) {
       if (!eq || eq.broken) return false;
-      const rx = (eq.expanded || allowReception) ? 48 : 30;
-      const ry = (eq.expanded || allowReception) ? 28 : 18;
+      const testEq = allowReception ? { ...eq, expanded: true } : eq;
+      const { rx, ry } = this.getEquationRadius(testEq);
       const dx = (x - eq.x) / rx, dy = (y - eq.y) / ry;
       return dx * dx + dy * dy <= 1.08;
     },
@@ -2920,7 +3039,7 @@
         // Botão para avançar/concluir durante o show musical caso o jogador queira pular ou tocar no ritmo
         if (this.phase === 'musical_part1_shadows' || this.phase === 'musical_part2_bright') {
           const sb = this.skipMusicalBtnRect;
-          if (x >= sb.x && x <= sb.x + sb.w && y >= sb.y && y <= sb.y + sb.h) {
+          if (GameHUD.godMode && x >= sb.x && x <= sb.x + sb.w && y >= sb.y && y <= sb.y + sb.h) {
             GameHUD.playSfx('click');
             this.finishMusicalShow();
             return;
@@ -2997,6 +3116,11 @@
         if (!pt) return;
         const { x, y } = this.toLogicalCoords(pt.clientX, pt.clientY);
 
+        if (TutorialModal.isOpen && typeof TutorialModal.handlePointerMove === 'function') {
+          TutorialModal.handlePointerMove(x, y);
+          return;
+        }
+
         if (this.draggedPiece) {
           if (this.phase !== 'gameplay' || this.draggedPiece.broken || this.draggedPiece.value <= 0) {
             this.draggedPiece.dragging = false;
@@ -3032,6 +3156,11 @@
 
       const onUp = () => {
         if (!this.running || this.phase === 'map_iris_in' || this.phase === 'map_active') return;
+
+        if (TutorialModal.isOpen && typeof TutorialModal.handlePointerUp === 'function') {
+          TutorialModal.handlePointerUp(0, 0);
+          return;
+        }
 
         if (this.isHoldingSpace) {
           this.isHoldingSpace = false;
@@ -3088,6 +3217,18 @@
 
         if (e.code === 'Space' || e.key === ' ' || e.code === 'Enter' || e.key === 'Enter') {
           if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+          if (DialogueBox.isOpen) {
+            e.preventDefault();
+            GameHUD.playSfx('click');
+            DialogueBox.advance();
+            return;
+          }
+          if (TutorialModal.isOpen) {
+            e.preventDefault();
+            if (typeof TutorialModal.isPageLocked === 'function' && TutorialModal.isPageLocked()) return;
+            TutorialModal.nextStep();
+            return;
+          }
           if (this.phase === 'celebrate_complete' || this.phase === 'world_celebrate_complete') {
             e.preventDefault();
             GameHUD.playSfx('click');
@@ -3107,6 +3248,7 @@
           if (this.phase === 'musical_vignette') {
             e.preventDefault();
             if (this.vignetteCard === 1) {
+              if (!GameHUD.godMode && this.phaseTime < 3.6) return;
               this.vignetteCard = 2;
               this.vignettePracticeTime = 0;
               CaveRhythmKaraoke.resetPractice();
@@ -3472,6 +3614,7 @@
     layoutEquationPieces(eq, tag) {
       if (!eq || eq.broken) return;
       const members = this.pieces.filter(p => !p.broken && p.value > 0 && p.inEquation === tag);
+      eq.memberCount = members.length;
       const spacing = eq.expanded ? 24 : 18;
       const halfSpan = members.length > 1 ? ((members.length - 1) * spacing) * 0.5 : 0;
       if (this.phase !== 'equation_magnetic') {
@@ -3522,6 +3665,7 @@
         this.lastNow = performance.now();
         requestAnimationFrame((now) => this.loop(now));
       }
+      this.playRegularBgm();
     },
 
     startFase2(onFinish = null) {
@@ -3564,6 +3708,7 @@
         this.lastNow = performance.now();
         requestAnimationFrame((now) => this.loop(now));
       }
+      this.playRegularBgm();
     },
 
     startFase5(onFinish = null) {
@@ -3607,8 +3752,10 @@
     handleVignetteClick(x, y) {
       const cx = 24, cy = 18, cw = 272, ch = 152;
       if (this.vignetteCard === 1) {
+        const isLocked = !GameHUD.godMode && (this.phaseTime < 3.6);
         const b = { x: cx + cw - 92, y: cy + ch - 20, w: 82, h: 15 };
         if (x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) {
+          if (isLocked) return;
           GameHUD.playSfx('click');
           this.vignetteCard = 2;
           this.vignettePracticeTime = 0;
@@ -3632,6 +3779,25 @@
         this.isHoldingSpace = true;
         CaveRhythmKaraoke.onInput(true, false, this.vignettePracticeTime, true);
       }
+    },
+
+    getRhythmDemoInputState(pt) {
+      const words = CaveRhythmKaraoke.practicePhrase?.words || [
+        { t: 0.8 },
+        { t: 1.8 },
+        { t: 2.8 },
+        { t: 3.8, holdDuration: 1.4 }
+      ];
+      const holdWord = words[3];
+      const holdStart = holdWord ? (holdWord.t - 0.08) : 3.72;
+      const holdEnd = holdWord ? (holdWord.t + (holdWord.holdDuration || 1.4)) : 5.2;
+      const isHold = pt >= holdStart && pt <= holdEnd;
+      const isBeat = !isHold && words.some((w, idx) => idx < 3 && Math.abs(pt - w.t) <= 0.22);
+      const pressed = isBeat || isHold;
+      const label = isHold
+        ? 'SEGURE AGORA!'
+        : (isBeat ? 'APERTE AGORA!' : 'Observe o círculo fechar...');
+      return { isBeat, isHold, pressed, label };
     },
 
     renderMusicalVignette(ctx, tq) {
@@ -3664,21 +3830,62 @@
         const ringR = Math.round(18 * (1 - demT) + 5 * demT);
         drawRing(ctx, prevBox.x + 196, prevBox.y + 10, ringR, '#7aeaff');
 
-        let ty = cy + 68;
-        ty += drawPixelText(ctx, 'A Fada das Gemas canta o renascimento da Caverna!', cx + 12, ty, '#ffea31', '#000000', cw - 24, 9) + 4;
-        ty += drawPixelText(ctx, '• A bolinha salta de palavra em palavra no compasso.', cx + 12, ty, '#ffea31', '#000000', cw - 24, 9) + 3;
-        ty += drawPixelText(ctx, '• No fechamento do círculo, aperte ESPAÇO ou TOQUE!', cx + 12, ty, '#ffea31', '#000000', cw - 24, 9) + 3;
-        ty += drawPixelText(ctx, '• Em notas longas, SEGURE para sustentar!', cx + 12, ty, '#ffea31', '#000000', cw - 24, 9) + 3;
+        const vText = '{cyan:A Fada das Gemas} canta a {gold:harmonia da Caverna}!\n' +
+          '• A bolinha {green:salta de palavra em palavra} no compasso musical.\n' +
+          '• No {gold:fechamento do círculo}, aperte {cyan:ESPAÇO} ou {cyan:TOQUE}!\n' +
+          '• Em notas longas, {pink:SEGURE} para sustentar a melodia!';
+        drawJustifiedPixelText(ctx, vText, cx + 12, cy + 66, cw - 24, 11, '#ffea31', '#000000');
+
+        // Barra de progresso de leitura infantil no card 1
+        const barX = cx + 12;
+        const barY = cy + ch - 15;
+        const barW = cw - 114;
+        const barH = 5;
+        const vDuration = 3.6;
+        const ratio = Math.max(0, Math.min(1, (this.phaseTime || 0) / vDuration));
+        const isLocked = !GameHUD.godMode && ratio < 1;
+
+        ctx.fillStyle = '#0f1422';
+        ctx.fillRect(barX - 1, barY - 1, barW + 2, barH + 2);
+        ctx.fillStyle = '#1c2438';
+        ctx.fillRect(barX, barY, barW, barH);
+
+        const fillW = Math.round(barW * ratio);
+        if (fillW > 0) {
+          ctx.fillStyle = ratio >= 1 ? '#fbbf24' : '#38bdf8';
+          ctx.fillRect(barX, barY, fillW, barH);
+          ctx.fillStyle = ratio >= 1 ? '#fff6a0' : '#a5f3fc';
+          ctx.fillRect(barX, barY, fillW, 1);
+          if (ratio < 1) {
+            P1(ctx, barX + fillW - 1, barY + 1, '#ffffff');
+            P1(ctx, barX + fillW - 1, barY + 2, '#ffffff');
+            P1(ctx, barX + fillW - 1, barY + 3, '#ffffff');
+          } else {
+            drawStar(ctx, barX + fillW - 2, barY + 2, 2, '#ffffff', '#fbbf24');
+          }
+        }
 
         const b = { x: cx + cw - 92, y: cy + ch - 20, w: 82, h: 15 };
-        ctx.fillStyle = '#14111c';
-        ctx.fillRect(b.x - 1, b.y - 1, b.w + 2, b.h + 2);
-        ctx.fillStyle = '#2b689c';
-        ctx.fillRect(b.x, b.y, b.w, b.h);
-        ctx.fillStyle = '#92e8ff';
-        ctx.fillRect(b.x, b.y, b.w, 1);
-        ctx.fillRect(b.x, b.y + b.h - 1, b.w, 1);
-        drawPixelTextCentered(ctx, 'Treinar >', b.x + b.w / 2, b.y + 3, '#ffffff', '#000000', b.w - 4, 8);
+        if (isLocked) {
+          ctx.fillStyle = '#0f1422';
+          ctx.fillRect(b.x - 1, b.y - 1, b.w + 2, b.h + 2);
+          ctx.fillStyle = '#1b2334';
+          ctx.fillRect(b.x, b.y, b.w, b.h);
+          ctx.fillStyle = '#2d3b54';
+          ctx.fillRect(b.x, b.y, b.w, 1);
+          ctx.fillRect(b.x, b.y + b.h - 1, b.w, 1);
+          drawPixelTextCentered(ctx, 'Treinar >', b.x + b.w / 2, b.y + 4, '#6b7d9b', '#000000', b.w - 4, 8);
+        } else {
+          const pulse = (Math.floor(tq * 4) & 1) ? 1 : 0;
+          ctx.fillStyle = '#14111c';
+          ctx.fillRect(b.x - 1, b.y - 1, b.w + 2, b.h + 2);
+          ctx.fillStyle = '#2b689c';
+          ctx.fillRect(b.x, b.y, b.w, b.h);
+          ctx.fillStyle = pulse ? '#ffe887' : '#92e8ff';
+          ctx.fillRect(b.x, b.y, b.w, 1);
+          ctx.fillRect(b.x, b.y + b.h - 1, b.w, 1);
+          drawPixelTextCentered(ctx, 'Treinar >', b.x + b.w / 2, b.y + 4, '#ffffff', '#000000', b.w - 4, 8);
+        }
       } else {
         drawPixelText(ctx, 'Treino Livre de Ritmo', cx + 10, cy + 6, '#ffea31', '#000000', 160, 9);
         drawPixelText(ctx, 'Página 2/2 • Sem penalidade', cx + 10, cy + 6, '#fff66b', '#000000', cw - 20, 9, 'right');
@@ -3692,15 +3899,65 @@
           ctx,
           'Aperte ESPAÇO / Botão ao fechar o círculo e SEGURE em "harmonia!"',
           cx + cw / 2,
-          cy + 78,
+          cy + 75,
           '#ffea31',
           '#000000',
           cw - 20,
           9
         );
 
-        if (typeof E.isMobileOrTouch === 'function' && E.isMobileOrTouch() && typeof E.drawVirtualTouchButton === 'function') {
-          E.drawVirtualTouchButton(ctx, { x: cx + R((cw - 108) / 2), y: cy + 94, w: 108, h: 18 }, '⎵ ESPAÇO / SEGURAR', Boolean(this.isHoldingSpace));
+        const demo = this.getRhythmDemoInputState(this.vignettePracticeTime);
+        const activeCol = demo.isHold ? '#fbbf24' : (demo.isBeat ? '#4ade80' : '#92e8ff');
+        const isMob = typeof E.isMobileOrTouch === 'function' && E.isMobileOrTouch();
+
+        if (isMob && typeof E.drawVirtualTouchButton === 'function') {
+          const btnRect = { x: cx + R((cw - 116) / 2) - 18, y: cy + 92, w: 116, h: 18 };
+          const btnText = demo.isHold ? '⎵ SEGURE!' : (demo.isBeat ? '⎵ APERTE!' : '⎵ ESPAÇO / SEGURAR');
+          E.drawVirtualTouchButton(ctx, btnRect, btnText, Boolean(this.isHoldingSpace || demo.pressed));
+
+          // Mãozinha pixel art animada pressionando o botão no tempo certo
+          const hx = btnRect.x + btnRect.w - 18;
+          const hy = btnRect.y + (demo.pressed ? 8 : 3);
+          if (demo.pressed) {
+            drawRing(ctx, hx + 2, btnRect.y + 9, demo.isHold ? 11 : 8, activeCol);
+          }
+          ctx.fillStyle = '#241510';
+          ctx.fillRect(hx - 1, hy - 1, 9, 10);
+          ctx.fillStyle = '#ffdbac';
+          ctx.fillRect(hx, hy, 7, 8);
+          ctx.fillRect(hx + 2, hy - 3, 2, 3); // dedo indicador pressionando
+          drawPixelText(ctx, demo.isHold ? 'SEGURE!' : (demo.isBeat ? 'TOQUE!' : 'NO RITMO'), btnRect.x + btnRect.w + 6, cy + 97, activeCol, '#000000', 54, 8);
+        } else {
+          // Demonstração no PC: Tecla [ ESPAÇO ] + Mouse sendo pressionados em sincronia
+          const kx = cx + 16;
+          const ky = cy + 91 + (demo.pressed ? 2 : 0);
+          const kw = 66, kh = 15;
+          // Base 3D da tecla
+          ctx.fillStyle = '#0f1422';
+          ctx.fillRect(kx - 1, cy + 91, kw + 2, kh + 3);
+          ctx.fillStyle = demo.pressed ? (demo.isHold ? '#b45309' : '#15803d') : '#2a3654';
+          ctx.fillRect(kx, ky, kw, kh);
+          ctx.fillStyle = demo.pressed ? activeCol : '#92e8ff';
+          ctx.fillRect(kx, ky, kw, 1);
+          ctx.fillRect(kx, ky + kh - 1, kw, 1);
+          drawPixelTextCentered(ctx, 'ESPAÇO', kx + kw / 2, ky + 4, '#ffffff', '#000000', kw - 4, 8);
+
+          // Ícone do Mouse com botão esquerdo destacando no clique/hold
+          const mx = cx + 90;
+          const my = cy + 89 + (demo.pressed ? 1 : 0);
+          ctx.fillStyle = '#14192b';
+          ctx.fillRect(mx - 1, my - 1, 16, 20);
+          ctx.fillStyle = '#cbd5e1';
+          ctx.fillRect(mx, my, 14, 18);
+          ctx.fillStyle = demo.pressed ? activeCol : '#64748b';
+          ctx.fillRect(mx + 1, my + 1, 5, 7); // botão esquerdo
+          ctx.fillStyle = '#64748b';
+          ctx.fillRect(mx + 8, my + 1, 5, 7); // botão direito
+          if (demo.pressed) {
+            drawRing(ctx, mx + 3, my + 4, demo.isHold ? 9 : 7, activeCol);
+          }
+
+          drawPixelText(ctx, demo.label, cx + 114, cy + 95, activeCol, '#000000', cw - 126, 9);
         }
 
         const bReset = { x: cx + 10, y: cy + ch - 20, w: 88, h: 15 };
@@ -3757,6 +4014,7 @@
         this.lastNow = performance.now();
         requestAnimationFrame((now) => this.loop(now));
       }
+      this.playRegularBgm();
     },
 
     openFase4IntroDialogue() {
@@ -3824,6 +4082,10 @@
       this.ordemActor.state = 'back_silhouette';
 
       try {
+        if (this.regularAudio) {
+          try { this.regularAudio.pause(); } catch (_) {}
+        }
+        global.CrystalAudio?.stopAllMusic?.(this.musicAudio);
         if (global.CrystalMenuAudio) {
           global.CrystalMenuAudio.pause?.();
         }
@@ -3835,10 +4097,15 @@
           this.musicAudio.preload = 'auto';
         }
         GameHUD.syncAudio();
-        this.musicAudio.currentTime = 0;
         const effMus = GameHUD.muted ? 0 : clamp(GameHUD.musicVol / 100, 0, 1);
         this.musicAudio.muted = GameHUD.muted || effMus <= 0;
-        this.musicAudio.volume = effMus;
+        if (global.CrystalAudio?.fadeInTrack) {
+          this.musicAudio.currentTime = 0.15;
+          global.CrystalAudio.fadeInTrack(this.musicAudio, effMus, 450, 0.15);
+        } else {
+          this.musicAudio.currentTime = 0.15;
+          this.musicAudio.volume = effMus;
+        }
         if (!GameHUD.muted && GameHUD.musicVol > 0) {
           this.musicAudio.play().catch(() => {});
         }
@@ -3846,6 +4113,9 @@
     },
 
     stopMusicAudio() {
+      if (this.regularAudio) {
+        try { this.regularAudio.pause(); } catch (_) {}
+      }
       if (this.musicAudio) {
         try { this.musicAudio.pause(); } catch (_) {}
       }
@@ -3882,7 +4152,22 @@
         {
           speaker: 'Ordem',
           portrait: 'portrait_ordem',
-          text: 'Agora devemos ir para a Floresta restaurar a próxima gema!'
+          text: 'Há muito tempo, a Grande Sinfonia unia todos os cristais em uma canção pura que dava vida e equilíbrio ao nosso mundo.'
+        },
+        {
+          speaker: 'Ordem',
+          portrait: 'portrait_ordem',
+          text: 'Mas uma dissonância sombria espalhou o silêncio pelos biomas e fragmentou a melodia ancestral.'
+        },
+        {
+          speaker: 'Ordem',
+          portrait: 'portrait_ordem',
+          text: 'Para restaurar a harmonia completa, precisamos reunir as quatro Gemas Primordiais no topo do nosso brasão!'
+        },
+        {
+          speaker: 'Ordem',
+          portrait: 'portrait_ordem',
+          text: 'A próxima Gema Primordial está na Floresta da Guardiã Araci. Vamos seguir juntos para lá!'
         }
       ], () => {
         // Corta para a animação de conclusão de fase MAIS ANIMADA que o comum (última fase do mundo)
@@ -4009,6 +4294,8 @@
       this.pureEquation = null;
       this.shadowEquation = null;
       this.magneticAnim = null;
+      this.equationShockEffect = null;
+      this.ghostHandAnim = null;
 
       if (level === 1) {
         this.totalSteps = 1;
@@ -4037,6 +4324,7 @@
             { id: 'f2_e3_op3', type: 'opal', value: 3, shadow: false, x: 116, y: 118 },
             { id: 'f2_e3_s2', type: 'white', value: 2, shadow: true, x: 212, y: 96 }
           ];
+          TutorialModal.open(StandardTutorialCards.FASE2_LEFTOVER);
         }
       } else if (level === 3) {
         this.totalSteps = 3;
@@ -4115,6 +4403,136 @@
           this.layoutEquationPieces(this.shadowEquation, 'shadow');
         }
       }
+    },
+
+    /** Calcula o próximo passo válido da fase atual sem alterar nenhum cristal real. */
+    computeNextGhostStep() {
+      const active = (this.pieces || []).filter(p => !p.broken && p.value > 0);
+      if (active.length === 0) return null;
+
+      const visType = (p) => (p.type === 'opal' ? 'opal' : (p.shadow ? 'shadow' : (p.type === 'white' ? 'pure' : p.type)));
+      const dragHint = (src, dst, label) => ({
+        kind: 'drag',
+        fromX: src.x,
+        fromY: src.y,
+        toX: dst.x,
+        toY: dst.y,
+        pieceId: src.id,
+        pieceType: visType(src),
+        pieceValue: src.value,
+        label
+      });
+
+      const freePure = active.filter(p => !p.shadow && !p.inEquation);
+      const freeShadow = active.filter(p => p.shadow && !p.inEquation);
+      const freeQuartz = freePure.filter(p => p.type !== 'opal');
+      const freeOpals = freePure.filter(p => p.type === 'opal');
+
+      // 1. Anulação direta: puro livre + sombrio livre compatível
+      for (const p of freeQuartz) {
+        const match = freeShadow.find(s => s.type === p.type && s.value === p.value);
+        if (match) return dragHint(p, match, 'Anular cristais!');
+      }
+
+      // 2. Soma de dois puros livres da mesma cor que já iguala um sombrio livre
+      for (let i = 0; i < freeQuartz.length; i++) {
+        for (let j = i + 1; j < freeQuartz.length; j++) {
+          const a = freeQuartz[i], b = freeQuartz[j];
+          if (a.type === b.type && freeShadow.some(s => s.type === a.type && s.value === a.value + b.value)) {
+            return dragHint(a, b, 'Fundir cristais!');
+          }
+        }
+      }
+
+      // 3. Opala livre subtraindo cristal livre
+      if (freeOpals.length > 0 && freeQuartz.length > 0) {
+        const opal = freeOpals[0];
+        let target = freeQuartz.find(q => freeShadow.some(s => s.type === q.type && q.value > s.value));
+        if (!target) target = freeQuartz.find(q => q.value >= 2) || freeQuartz[0];
+        if (target) return dragHint(opal, target, 'Subtrair com Opala!');
+      }
+
+      // 4. Equação Cristalina (Fases 3 e 4)
+      if (this.pureEquation && !this.pureEquation.broken && this.shadowEquation && !this.shadowEquation.broken) {
+        const pureEq = active.filter(p => !p.shadow && p.inEquation === 'pure');
+        const shadowEq = active.filter(p => p.shadow && p.inEquation === 'shadow');
+        const sumByType = (arr, t) => arr.filter(p => p.type === t).reduce((s, p) => s + p.value, 0);
+
+        const freeExtra = freePure.find(p => {
+          if (p.type === 'opal') return freeShadow.length === 0 || pureEq.length > 0;
+          return !freeShadow.some(s => s.type === p.type) && sumByType(pureEq, p.type) < sumByType(shadowEq, p.type);
+        });
+        if (freeExtra && (freeShadow.length === 0 || !freeQuartz.some(q => freeShadow.some(s => s.type === q.type)))) {
+          return {
+            kind: 'drag',
+            fromX: freeExtra.x,
+            fromY: freeExtra.y,
+            toX: this.pureEquation.x,
+            toY: this.pureEquation.y,
+            pieceId: freeExtra.id,
+            pieceType: visType(freeExtra),
+            pieceValue: freeExtra.value,
+            label: 'Colocar na equação!'
+          };
+        }
+
+        if (!this.pureEquation.expanded) {
+          return {
+            kind: 'tap',
+            fromX: this.pureEquation.x,
+            fromY: this.pureEquation.y,
+            toX: this.pureEquation.x,
+            toY: this.pureEquation.y,
+            pieceId: null,
+            pieceType: 'pure',
+            pieceValue: 1,
+            label: 'Toque para expandir!'
+          };
+        }
+
+        const eqOpals = pureEq.filter(p => p.type === 'opal');
+        const eqQuartz = pureEq.filter(p => p.type !== 'opal');
+        if (eqOpals.length > 0 && eqQuartz.length > 0) {
+          const opal = eqOpals[0];
+          const target = eqQuartz.find(q => sumByType(pureEq, q.type) > sumByType(shadowEq, q.type)) || eqQuartz[0];
+          return dragHint(opal, target, 'Subtrair na equação!');
+        }
+
+        for (let i = 0; i < eqQuartz.length; i++) {
+          for (let j = i + 1; j < eqQuartz.length; j++) {
+            if (eqQuartz[i].type === eqQuartz[j].type) {
+              return dragHint(eqQuartz[i], eqQuartz[j], 'Somar na equação!');
+            }
+          }
+        }
+      }
+
+      // 5. Fallback: fundir dois puros livres da mesma cor ou mover puro até sombrio
+      for (let i = 0; i < freeQuartz.length; i++) {
+        for (let j = i + 1; j < freeQuartz.length; j++) {
+          if (freeQuartz[i].type === freeQuartz[j].type) {
+            return dragHint(freeQuartz[i], freeQuartz[j], 'Fundir cristais!');
+          }
+        }
+      }
+      if (freePure.length > 0 && freeShadow.length > 0) {
+        return dragHint(freePure[0], freeShadow[0], 'Mover cristal!');
+      }
+      return null;
+    },
+
+    /** Dispara a animação fantasma de dica do próximo passo sem mutar peças reais. */
+    triggerGhostHandHint() {
+      if (this.phase !== 'gameplay' || TutorialModal.isOpen || DialogueBox.isOpen) return false;
+      const step = this.computeNextGhostStep();
+      if (!step) return false;
+      this.ghostHandAnim = {
+        ...step,
+        t: 0,
+        duration: step.kind === 'tap' ? 1.8 : 2.2
+      };
+      GameHUD.playSfx('Select');
+      return true;
     },
 
     spawnShatter(cx, cy, setKey, count = 12) {
@@ -4439,6 +4857,7 @@
         this.phase = 'next_step_pause';
         this.phaseTime = 0;
       } else if (this.currentLevel === 4) {
+        global.CrystalApp?.syncProgress?.([1, 2, 3, 4], 5);
         this.phase = 'ceiling_crystal_shatter';
         this.phaseTime = 0;
         this.ceilingCrystalFlash = true;
@@ -4577,9 +4996,12 @@
     },
 
     update(dt) {
-      if (GameHUD.paused || GameHUD.settingsOpen) {
+      if (GameHUD.paused || GameHUD.settingsOpen || GameHUD.guideOpen) {
         if (this.musicAudio && !this.musicAudio.paused) {
           try { this.musicAudio.pause(); } catch (_) {}
+        }
+        if (this.regularAudio && !this.regularAudio.paused) {
+          try { this.regularAudio.pause(); } catch (_) {}
         }
         return;
       }
@@ -4597,6 +5019,25 @@
       this.phaseTime += dt;
       IrisTransition.update(dt);
       DialogueBox.update(dt);
+      if (this.phase === 'tutorial' && !TutorialModal.isOpen) {
+        this.phase = 'gameplay';
+        this.phaseTime = 0;
+      }
+      if (this.equationShockEffect) {
+        this.equationShockEffect.elapsed += dt;
+        if (this.equationShockEffect.elapsed >= this.equationShockEffect.duration) {
+          this.equationShockEffect = null;
+        }
+      }
+      if (this.ghostHandAnim) {
+        this.ghostHandAnim.t += dt;
+        if (this.ghostHandAnim.t >= (this.ghostHandAnim.duration || 2.2)) {
+          this.ghostHandAnim = null;
+        }
+      }
+      if (this.regularAudio && !this.regularAudio.paused) {
+        global.CrystalAudio?.checkSeamlessLoop?.(this.regularAudio);
+      }
 
       if (this.obstacleDecay < this.targetObstacleDecay) {
         this.obstacleDecay = Math.min(this.targetObstacleDecay, this.obstacleDecay + dt * 1.4);
@@ -4664,14 +5105,21 @@
           this.openFase4IntroDialogue();
         }
       } else if (this.phase === 'equation_magnetic' && this.magneticAnim) {
-        const p = easeInOut(clamp(this.phaseTime / 0.75, 0, 1));
         const m = this.magneticAnim;
-        this.pureEquation.x = R(m.pStartX + (m.midX - 10 - m.pStartX) * p);
-        this.pureEquation.y = R(m.pStartY + (m.midY - m.pStartY) * p);
-        this.shadowEquation.x = R(m.sStartX + (m.midX + 10 - m.sStartX) * p);
-        this.shadowEquation.y = R(m.sStartY + (m.midY - m.sStartY) * p);
+        const st = ActorAnimator.computeEquationMagneticState(m, this.phaseTime);
+        this.pureEquation.x = st.pureX;
+        this.pureEquation.y = st.pureY;
+        this.shadowEquation.x = st.shadowX;
+        this.shadowEquation.y = st.shadowY;
         this.layoutEquationPieces(this.pureEquation, 'pure');
         this.layoutEquationPieces(this.shadowEquation, 'shadow');
+
+        if (st.isImpactShock && !m.shockTriggered) {
+          m.shockTriggered = true;
+          this.equationShockEffect = { x: m.midX, y: m.midY, elapsed: 0, duration: 0.48 };
+          this.spawnShatter(m.midX, m.midY, 'pure', 8);
+          this.spawnShatter(m.midX, m.midY, 'shadow', 8);
+        }
 
         if (this.phaseTime >= 0.78) {
           this.pureEquation.broken = true;
@@ -4691,6 +5139,7 @@
           if (remainingShadows) {
             this.phase = 'gameplay';
             this.phaseTime = 0;
+            this.triggerDefeatIfImpossible();
           } else {
             this.onStepCleared(m.midX, m.midY);
           }
@@ -5147,7 +5596,13 @@
       this.composeBackground();
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.putImageData(BG_IMAGE, 0, 0);
-      ctx.setTransform(2, 0, 0, 2, 0, 0);
+      let shakeX = 0, shakeY = 0;
+      if (this.phase === 'equation_magnetic' && this.magneticAnim) {
+        const magSt = ActorAnimator.computeEquationMagneticState(this.magneticAnim, this.phaseTime);
+        shakeX = magSt.shakeX;
+        shakeY = magSt.shakeY;
+      }
+      ctx.setTransform(2, 0, 0, 2, shakeX * 2, shakeY * 2);
 
       // Na saída para a Floresta, mantém o panorama aberto à direita
       if (this.phase === 'post_musical_ordem_dlg' || this.phase === 'world_celebrate_complete' || this.phase === 'walk_to_forest_exit') {
@@ -5227,13 +5682,6 @@
         this.phase === 'defeat_pause' ||
         this.phase === 'game_over'
       ) {
-        if (this.phase === 'equation_magnetic' && this.pureEquation && this.shadowEquation) {
-          const f12 = Math.floor(tq * 12);
-          for (let x = this.pureEquation.x; x <= this.shadowEquation.x; x += 3) {
-            P1(ctx, x, this.pureEquation.y + ((x + f12) & 1 ? -1 : 1), '#ffffff');
-          }
-        }
-
         const pureEqMembers = this.pieces.filter(p => !p.broken && p.value > 0 && p.inEquation === 'pure');
         const shadowEqMembers = this.pieces.filter(p => !p.broken && p.value > 0 && p.inEquation === 'shadow');
         drawEquationAura(ctx, this.pureEquation, tq, pureEqMembers);
@@ -5242,16 +5690,24 @@
         for (const p of this.pieces) {
           drawCrystalPiece(ctx, p, tq);
         }
+
+        if (this.phase === 'equation_magnetic' && this.magneticAnim) {
+          ActorAnimator.drawEquationMagneticShock(ctx, this.pureEquation, this.shadowEquation, this.magneticAnim, this.phaseTime, tq);
+        }
       }
 
       this.drawShards(ctx);
+      if (this.equationShockEffect) {
+        ActorAnimator.drawEquationShockwave(ctx, this.equationShockEffect, tq);
+      }
 
+      ctx.setTransform(2, 0, 0, 2, 0, 0);
       // HUD Superior Completo (Título da Fase, Etapa + Botões de Pause, Recomeçar, Mudo e Configurações)
       const inMusical = this.phase === 'musical_part1_shadows' || this.phase === 'musical_part2_bright';
       GameHUD.renderTopBar(ctx, this.currentLevel, this.currentStep, this.totalSteps, inMusical);
 
-      // Botão Pular >> no topo durante o show musical, enquadrado ao lado dos 4 botões do HUD
-      if (inMusical) {
+      // Botão Pular >> no topo durante o show musical, visível apenas no God Mode
+      if (inMusical && GameHUD.godMode) {
         const sb = this.skipMusicalBtnRect;
         ctx.fillStyle = '#3d2b24';
         ctx.fillRect(sb.x, sb.y, sb.w, sb.h);
@@ -5267,6 +5723,10 @@
         this.renderMusicalVignette(ctx, tq);
       }
 
+      if (this.phase === 'gameplay' && this.ghostHandAnim && typeof E.drawGhostHandHint === 'function') {
+        E.drawGhostHandHint(ctx, this.ghostHandAnim, tq);
+      }
+
       DialogueBox.render(ctx, tq);
       TutorialModal.render(ctx, tq);
 
@@ -5278,8 +5738,8 @@
         this.drawGameOverOverlay(ctx);
       }
 
-      // Modais interativos de Pause e Configurações sobre a cena
-      GameHUD.renderModals(ctx);
+      // Modais interativos de Pause, Guia e Configurações sobre a cena
+      GameHUD.renderModals(ctx, tq);
 
       IrisTransition.render(ctx);
     },
@@ -5334,6 +5794,7 @@
     hookPlayButton();
   }
 
+  CaveChapter1.GEM_PALETTES = GEM_PALETTES;
   CaveChapter1.CaveRhythmKaraoke = CaveRhythmKaraoke;
   global.CaveChapter1 = CaveChapter1;
 })(typeof window !== 'undefined' ? window : globalThis);

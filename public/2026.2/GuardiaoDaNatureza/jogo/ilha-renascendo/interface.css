@@ -1,0 +1,27 @@
+.map-view,
+.map-view .island::before,
+body[data-map-restored="true"] .map-view,
+body[data-map-restored="true"] .map-view .island::before {
+  background-image:
+    linear-gradient(#163b4e55, #163b4e55),
+    var(--island-poster, url("../mapa-ferido/assets/mapa-antes.webp"));
+}
+body[data-island-stage="1"] {
+  --island-poster: url("assets/etapa-1.webp");
+}
+body[data-island-stage="2"] {
+  --island-poster: url("assets/etapa-2.webp");
+}
+body[data-island-stage="3"] {
+  --island-poster: url("assets/etapa-3.webp");
+}
+body[data-island-stage="4"] {
+  --island-poster: url("assets/etapa-4.webp");
+}
+body[data-island-stage="5"] {
+  --island-poster: url("assets/etapa-5.webp");
+}
+#living-island {
+  object-fit: contain;
+  image-rendering: auto;
+}

@@ -1,6 +1,6 @@
 /* Composição em paisagem; arte preservada sem esticar os personagens. */
 .backdrop {
-  background-image: url("assets/inicio.webp");
+  background-image: url("../arte-viva/assets/inicio.webp");
   background-position: center;
   background-size: cover;
 }

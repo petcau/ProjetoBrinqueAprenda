@@ -2,12 +2,16 @@
   'use strict';
   const $ = id => document.getElementById(id);
   const KEY = 'crystal-campaign-v4';
-  const defaults = { music: 0.5, fx: 0.5, voice: false, contrast: false, motion: false, assist: false };
+  const defaults = { music: 0.5, fx: 0.5, voice: false, contrast: false, motion: false, assist: false, frameScale: 1 };
   let settings = { ...defaults };
   let completed = [];
   let records = {};
   let current = 1;
   let hasSave = false;
+  let setupCompleted = false;
+  let playerName = '';
+  let playerGender = 'male';
+  let characterCreated = false;
   let screen = 'home';
   let toastTimer = null;
 
@@ -17,6 +21,10 @@
   } catch {}
   if (save) {
     settings = { ...defaults, ...cleanSettings(save.settings) };
+    setupCompleted = Boolean(save.setupCompleted);
+    playerName = typeof save.playerName === 'string' ? save.playerName.trim() : '';
+    playerGender = save.playerGender === 'female' ? 'female' : 'male';
+    characterCreated = Boolean(save.characterCreated);
     const loadedCompleted = cleanProgress(save.completed);
     const loadedRecords = save.records && typeof save.records === 'object' ? save.records : {};
     const isUnverifiedDefaultDump = loadedCompleted.length === 20 && Object.keys(loadedRecords).length === 0 && !save.hasSave;
@@ -42,6 +50,11 @@
     for (const k of ['voice', 'contrast', 'motion', 'assist']) {
       if (typeof s?.[k] === 'boolean') out[k] = s[k];
     }
+    if (Number.isFinite(s?.frameScale)) {
+      let fs = Number(s.frameScale);
+      if (fs > 2) fs = fs / 100;
+      out.frameScale = Math.round(Math.max(0.8, Math.min(1.2, fs)) * 100) / 100;
+    }
     return out;
   }
 
@@ -51,9 +64,14 @@
       : [];
   }
 
+  function isGodModeActive() {
+    return Boolean(window.TruePixelEngine?.GameHUD?.godMode);
+  }
+
   function unlocked() {
     let n = 1;
     while (completed.includes(n) && n < 20) n++;
+    if (n === 20 && completed.includes(20)) return 21;
     return n;
   }
 
@@ -79,7 +97,18 @@
 
   function persist() {
     try {
-      localStorage.setItem(KEY, JSON.stringify({ version: 4, settings, completed, current, records, hasSave }));
+      localStorage.setItem(KEY, JSON.stringify({
+        version: 4,
+        settings,
+        completed,
+        current,
+        records,
+        hasSave,
+        setupCompleted,
+        playerName,
+        playerGender,
+        characterCreated
+      }));
       return true;
     } catch {
       return false;
@@ -92,9 +121,10 @@
       $('mapProgress').textContent = done20 + ' / 20 fases restauradas';
     }
     if ($('homeSave')) {
+      const prefix = playerName ? `${playerName}, ` : '';
       $('homeSave').textContent = done20
-        ? done20 + ' de 20 fases restauradas. Seu caminho está salvo.'
-        : 'Sua jornada começa com um pequeno brilho.';
+        ? `${prefix}${done20} de 20 fases restauradas. Seu caminho está salvo.`
+        : `${prefix}sua jornada começa com um pequeno brilho.`;
     }
   }
 
@@ -102,9 +132,28 @@
     window.TruePixelEngine?.DialogueBox?.syncSocketsFromCompleted?.(completed);
   }
 
+  function formatFrameScaleLabel(scale) {
+    const pct = Math.round((Number(scale) || 1) * 100);
+    if (pct === 100) return 'Normal (100%)';
+    if (pct < 100) return 'Retraído (' + pct + '%)';
+    return 'Afastado (' + pct + '%)';
+  }
+
   function applySettings() {
     document.body.classList.toggle('high-contrast', settings.contrast);
     document.body.classList.toggle('reduce-motion', settings.motion);
+
+    window.TruePixelEngine?.setPlayerProfile?.({
+      name: playerName || 'Protagonista',
+      gender: playerGender
+    });
+
+    const fs = Math.round(Math.max(0.8, Math.min(1.2, Number(settings.frameScale) || 1)) * 100) / 100;
+    settings.frameScale = fs;
+    window.CrystalFrameScale = fs;
+    document.documentElement?.style?.setProperty?.('--game-frame-scale', String(fs));
+    window.CaveChapter1?.fitCanvas?.(window.CaveChapter1?.canvas);
+    window.TruePixelWorlds?.fitCanvas?.(window.TruePixelWorlds?.canvas);
 
     const hud = window.TruePixelEngine?.GameHUD;
     if (hud) {
@@ -128,16 +177,37 @@
       ['voiceToggle', 'voice'],
       ['contrastToggle', 'contrast'],
       ['motionToggle', 'motion'],
-      ['assistToggle', 'assist']
+      ['assistToggle', 'assist'],
+      ['wizVoiceToggle', 'voice'],
+      ['wizContrastToggle', 'contrast'],
+      ['wizMotionToggle', 'motion'],
+      ['wizAssistToggle', 'assist']
     ]) {
       const el = $(id);
       if (el) el.checked = settings[k];
     }
     for (const k of ['music', 'fx']) {
+      const pct = Math.round(settings[k] * 100);
       const slider = $(k + 'Volume');
       const out = $(k + 'Value');
-      if (slider) slider.value = String(Math.round(settings[k] * 100));
-      if (out) out.textContent = Math.round(settings[k] * 100) + '%';
+      if (slider) slider.value = String(pct);
+      if (out) out.textContent = pct + '%';
+
+      const wSlider = $(k === 'music' ? 'wizMusicVolume' : 'wizFxVolume');
+      const wOut = $(k === 'music' ? 'wizMusicValue' : 'wizFxValue');
+      if (wSlider) wSlider.value = String(pct);
+      if (wOut) wOut.textContent = pct + '%';
+    }
+
+    const scalePct = String(Math.round(fs * 100));
+    const scaleLabel = formatFrameScaleLabel(fs);
+    for (const sId of ['wizFrameScale', 'frameScaleSlider']) {
+      const sEl = $(sId);
+      if (sEl) sEl.value = scalePct;
+    }
+    for (const oId of ['wizFrameScaleValue', 'frameScaleValue']) {
+      const oEl = $(oId);
+      if (oEl) oEl.textContent = scaleLabel;
     }
   }
 
@@ -149,6 +219,7 @@
       unlocked: unlocked(),
       records,
       reduced: settings.motion,
+      godMode: isGodModeActive(),
       start: startFromMap,
       notify
     });
@@ -189,12 +260,18 @@
     }
   }
 
-  function isLockedLevel() {
-    return false;
+  function isLockedLevel(levelId) {
+    if (isGodModeActive()) return false;
+    if (completed.includes(levelId)) return false;
+    if (levelId === 21) {
+      return ![5, 10, 15, 20].every(id => completed.includes(id));
+    }
+    return levelId > unlocked();
   }
 
   function startLevel(id) {
     const levelId = Math.min(21, Math.max(1, Number(id) || 1));
+    CrystalOnboarding?.skipAll?.();
     if (isLockedLevel(levelId)) {
       notify(
         levelId === 21
@@ -210,6 +287,7 @@
     window.TruePixelWorlds?.stopMusicAudio?.();
     window.CrystalJourney?.close?.();
     syncTruePixelSockets();
+    window.TruePixelEngine?.GameHUD?.resetAbilityCharges?.();
 
     current = levelId;
     hasSave = true;
@@ -299,9 +377,117 @@
     }
   }
 
+  function syncFullscreenUI() {
+    const isFull = Boolean(window.TruePixelEngine?.GameHUD?.isFullscreen?.());
+    const btn = $('fullscreenButton');
+    if (btn) btn.textContent = isFull ? '🗗 Sair da Tela Cheia' : '⛶ Alternar Tela Cheia';
+    const wizBtn = $('wizFullscreenBtn');
+    if (wizBtn) wizBtn.textContent = isFull ? '🗗 Sair da Tela Cheia' : '⛶ Ativar Tela Cheia';
+    const toggle = $('fullscreenToggle');
+    if (toggle) toggle.checked = isFull;
+  }
+
+  function syncGodModeUI() {
+    const active = isGodModeActive();
+    const gmToggle = $('godModeToggle');
+    if (gmToggle) gmToggle.checked = active;
+    const gmBtn = $('levelListGodModeBtn');
+    if (gmBtn) {
+      gmBtn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      gmBtn.textContent = active ? '⚡ God Mode: ATIVO (Desativar)' : '⚡ Ativar God Mode';
+    }
+    if ($('levelListDialog')?.open) {
+      renderLevelList();
+    }
+  }
+
+  function renderLevelList() {
+    const container = $('levelListContainer');
+    if (!container) return;
+    container.replaceChildren();
+    const gm = isGodModeActive();
+    const unl = unlocked();
+    const levels = window.CrystalCampaign?.levels || [];
+    const groups = [
+      { title: 'Caverna dos Cristais', world: 0, filter: l => l.world === 0 && l.id <= 5 },
+      { title: 'Floresta Amazônica', world: 1, filter: l => l.world === 1 },
+      { title: 'Rio das Águas Claras', world: 2, filter: l => l.world === 2 },
+      { title: 'Caatinga Dourada', world: 3, filter: l => l.world === 3 },
+      { title: 'Santuário Final', world: 0, filter: l => l.id === 21 }
+    ];
+    for (const g of groups) {
+      const items = levels.filter(g.filter);
+      if (!items.length) continue;
+      const section = document.createElement('section');
+      section.className = 'level-list-world-group';
+      const heading = document.createElement('h3');
+      heading.className = 'level-list-world-title';
+      heading.textContent = g.title;
+      const grid = document.createElement('div');
+      grid.className = 'level-list-grid';
+      for (const level of items) {
+        const isDone = completed.includes(level.id);
+        const locked = !gm && !isDone && (
+          level.id === 21
+            ? ![5, 10, 15, 20].every(id => completed.includes(id))
+            : level.id > unl
+        );
+        const rec = records[level.id];
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'level-list-item';
+        if (isDone) card.classList.add('done');
+        if (level.id === current) card.classList.add('current');
+        if (locked) card.classList.add('locked');
+        card.setAttribute('aria-disabled', locked ? 'true' : 'false');
+
+        const top = document.createElement('div');
+        top.className = 'level-list-item-top';
+        const num = document.createElement('span');
+        num.textContent = level.id === 21 ? '★ Final' : `Fase ${level.id}`;
+        const badge = document.createElement('span');
+        badge.textContent = isDone ? '✓ Concluída' : (locked ? '🔒 Bloqueada' : '▶ Jogar');
+        top.append(num, badge);
+
+        const title = document.createElement('div');
+        title.className = 'level-list-item-name';
+        title.textContent = level.name;
+
+        const stars = document.createElement('div');
+        stars.className = 'level-list-item-stars';
+        const count = rec?.stars || 0;
+        stars.textContent = Array.from({ length: 3 }, (_, i) => i < count ? '★' : '☆').join('');
+
+        card.append(top, title, stars);
+        card.onclick = () => {
+          if (locked) {
+            notify(level.id === 21
+              ? 'Reúna as quatro gemas ou ative o God Mode acima para abrir a fase final.'
+              : 'Conclua as fases anteriores ou ative o God Mode acima para testar livremente.');
+            return;
+          }
+          $('levelListDialog')?.close?.();
+          startFromMap(level.id);
+        };
+        grid.append(card);
+      }
+      section.append(heading, grid);
+      container.append(section);
+    }
+  }
+
+  function openLevelList() {
+    persist();
+    syncGodModeUI();
+    renderLevelList();
+    $('levelListDialog')?.showModal?.();
+  }
+
   function openSettings() {
     persist();
     if ($('fileStatus')) $('fileStatus').textContent = '';
+    syncFullscreenUI();
+    syncGodModeUI();
     $('settingsDialog')?.showModal();
   }
 
@@ -334,24 +520,78 @@
   // Bind UI dialogs & settings controls
   $('settingsDialog')?.addEventListener('close', () => persist());
 
-  for (const tab of ['sound', 'access']) {
+  const allTabs = ['sound', 'display', 'access'];
+  for (let i = 0; i < allTabs.length; i++) {
+    const tab = allTabs[i];
     const tabBtn = $(tab + 'Tab');
     if (!tabBtn) continue;
     tabBtn.onclick = () => {
-      for (const t of ['sound', 'access']) {
+      for (const t of allTabs) {
         $(t + 'Tab')?.setAttribute('aria-selected', String(t === tab));
         if ($(t + 'Tab')) $(t + 'Tab').tabIndex = t === tab ? 0 : -1;
         if ($(t + 'Panel')) $(t + 'Panel').hidden = t !== tab;
       }
     };
     tabBtn.onkeydown = e => {
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
         e.preventDefault();
-        const other = tab === 'sound' ? 'access' : 'sound';
-        $(other + 'Tab')?.click();
-        $(other + 'Tab')?.focus();
+        const nextIdx = e.key === 'ArrowRight' ? (i + 1) % allTabs.length : (i - 1 + allTabs.length) % allTabs.length;
+        const nextTab = allTabs[nextIdx];
+        $(nextTab + 'Tab')?.click();
+        $(nextTab + 'Tab')?.focus();
       }
     };
+  }
+
+  if ($('fullscreenButton')) {
+    $('fullscreenButton').onclick = async () => {
+      await window.TruePixelEngine?.GameHUD?.toggleFullscreen?.();
+      syncFullscreenUI();
+    };
+  }
+  if ($('fullscreenToggle')) {
+    $('fullscreenToggle').onchange = async () => {
+      await window.TruePixelEngine?.GameHUD?.toggleFullscreen?.();
+      syncFullscreenUI();
+    };
+  }
+  ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(evt => {
+    if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
+      document.addEventListener(evt, syncFullscreenUI);
+    }
+  });
+
+  if ($('levelMenuBtn')) {
+    $('levelMenuBtn').onclick = openLevelList;
+  }
+  if ($('levelListGodModeBtn')) {
+    $('levelListGodModeBtn').onclick = () => {
+      window.TruePixelEngine?.GameHUD?.toggleGodMode?.();
+      syncGodModeUI();
+    };
+  }
+  if ($('godModeToggle')) {
+    $('godModeToggle').onchange = (e) => {
+      window.TruePixelEngine?.GameHUD?.setGodMode?.(Boolean(e.target.checked));
+      syncGodModeUI();
+    };
+  }
+
+  // Gesto secreto de 5 toques rápidos para alternar God Mode no mobile
+  for (const secretEl of [$('mapTitle'), $('gameTitle')]) {
+    if (!secretEl) continue;
+    let tapCount = 0;
+    let tapResetTimer = null;
+    secretEl.addEventListener('pointerdown', () => {
+      tapCount++;
+      clearTimeout(tapResetTimer);
+      tapResetTimer = setTimeout(() => { tapCount = 0; }, 2200);
+      if (tapCount >= 5) {
+        tapCount = 0;
+        window.TruePixelEngine?.GameHUD?.toggleGodMode?.();
+        syncGodModeUI();
+      }
+    });
   }
 
   document.querySelectorAll('[data-settings]').forEach(b => {
@@ -365,7 +605,11 @@
     ['voiceToggle', 'voice'],
     ['contrastToggle', 'contrast'],
     ['motionToggle', 'motion'],
-    ['assistToggle', 'assist']
+    ['assistToggle', 'assist'],
+    ['wizVoiceToggle', 'voice'],
+    ['wizContrastToggle', 'contrast'],
+    ['wizMotionToggle', 'motion'],
+    ['wizAssistToggle', 'assist']
   ]) {
     const el = $(id);
     if (!el) continue;
@@ -377,8 +621,13 @@
     };
   }
 
-  for (const k of ['music', 'fx']) {
-    const el = $(k + 'Volume');
+  for (const [id, k] of [
+    ['musicVolume', 'music'],
+    ['fxVolume', 'fx'],
+    ['wizMusicVolume', 'music'],
+    ['wizFxVolume', 'fx']
+  ]) {
+    const el = $(id);
     if (!el) continue;
     el.oninput = e => {
       settings[k] = Number(e.target.value) / 100;
@@ -387,20 +636,45 @@
     };
   }
 
-  if ($('testSound')) $('testSound').onclick = () => window.CrystalAudio?.shatter?.();
-  if ($('creditsButton')) $('creditsButton').onclick = () => $('creditsDialog')?.showModal();
-  if ($('exitButton')) {
-    $('exitButton').onclick = () => {
-      const ok = persist();
-      const p = $('exitDialog')?.querySelector('p');
-      if (p) {
-        p.textContent = ok
-          ? 'Seu progresso foi guardado neste navegador. Você pode fechar esta aba com segurança.'
-          : 'O navegador não permitiu salvar o progresso. Ele será perdido ao fechar esta aba.';
+  for (const id of ['wizFrameScale', 'frameScaleSlider']) {
+    const el = $(id);
+    if (!el) continue;
+    el.oninput = e => {
+      const pct = Number(e.target.value);
+      if (Number.isFinite(pct)) {
+        settings.frameScale = Math.round(Math.max(0.8, Math.min(1.2, pct / 100)) * 100) / 100;
+        applySettings();
+        persist();
       }
-      $('exitDialog')?.showModal();
     };
   }
+
+  if ($('wizFullscreenBtn')) {
+    $('wizFullscreenBtn').onclick = async () => {
+      await window.TruePixelEngine?.GameHUD?.toggleFullscreen?.();
+      syncFullscreenUI();
+    };
+  }
+  if ($('wizTestMusicBtn')) {
+    $('wizTestMusicBtn').onclick = () => {
+      unlockAudio();
+      window.CrystalAudio?.setVolume?.(settings.music);
+      if (typeof window.CrystalAudio?.chime === 'function') window.CrystalAudio.chime(2);
+      else window.CrystalAudio?.shatter?.();
+      window.CrystalMenuAudio?.setVolume?.(settings.music);
+      window.CrystalMenuAudio?.play?.();
+    };
+  }
+  if ($('wizTestSfxBtn')) {
+    $('wizTestSfxBtn').onclick = () => {
+      unlockAudio();
+      window.CrystalAudio?.setVolume?.(settings.fx);
+      window.CrystalAudio?.shatter?.();
+    };
+  }
+
+  if ($('testSound')) $('testSound').onclick = () => window.CrystalAudio?.shatter?.();
+  if ($('creditsButton')) $('creditsButton').onclick = () => $('creditsDialog')?.showModal();
   if ($('newGameButton')) {
     $('newGameButton').onclick = startNewGame;
   }
@@ -479,12 +753,345 @@
     }, { passive: false });
   }
 
+  const CrystalOnboarding = {
+    splashActive: true,
+    splashPhase: 'fade-in',
+    wizardActive: false,
+    wizardStep: 'access',
+    characterScreenActive: false,
+    selectedGender: playerGender,
+    loadingTransitionActive: false,
+    onCharacterCreation: null,
+    _previewRaf: 0,
+    _timers: [],
+
+    clearTimers() {
+      while (this._timers.length) {
+        clearTimeout(this._timers.pop());
+      }
+    },
+
+    stopPreviewLoop() {
+      if (this._previewRaf && typeof cancelAnimationFrame === 'function') {
+        cancelAnimationFrame(this._previewRaf);
+      }
+      this._previewRaf = 0;
+    },
+
+    renderCharacterPreviews(now = 0) {
+      const E = window.TruePixelEngine;
+      if (!E?.SpriteBank) return;
+      const frameIdx = Math.floor((now / 1000) * 6) % 4;
+      for (const [id, actorKey] of [
+        ['previewBoyCanvas', 'protagonist_male'],
+        ['previewGirlCanvas', 'protagonist_female']
+      ]) {
+        const cv = $(id);
+        const actor = E.SpriteBank[actorKey];
+        const spr = actor?.idle?.[frameIdx] || actor?.idle?.[0];
+        if (cv && typeof cv.getContext === 'function' && spr) {
+          const ctx = cv.getContext('2d');
+          if (ctx) {
+            ctx.imageSmoothingEnabled = false;
+            ctx.clearRect?.(0, 0, cv.width || 64, cv.height || 64);
+            ctx.drawImage?.(spr, 0, 0, cv.width || 64, cv.height || 64);
+          }
+        }
+      }
+    },
+
+    startPreviewLoop() {
+      this.stopPreviewLoop();
+      const tick = (now) => {
+        if (!this.characterScreenActive) {
+          this._previewRaf = 0;
+          return;
+        }
+        this.renderCharacterPreviews(now);
+        if (typeof requestAnimationFrame === 'function') {
+          this._previewRaf = requestAnimationFrame(tick);
+        }
+      };
+      this.renderCharacterPreviews(0);
+      if (typeof requestAnimationFrame === 'function') {
+        this._previewRaf = requestAnimationFrame(tick);
+      }
+    },
+
+    startSplash() {
+      this.clearTimers();
+      this.splashActive = true;
+      this.splashPhase = 'fade-in';
+      const el = $('unebSplashScreen');
+      if (el) {
+        el.hidden = false;
+        el.classList?.remove?.('phase-hold', 'phase-fade-out');
+        el.classList?.add?.('phase-fade-in');
+      }
+      this._timers.push(setTimeout(() => {
+        if (!this.splashActive) return;
+        this.splashPhase = 'hold';
+        const s = $('unebSplashScreen');
+        if (s) {
+          s.classList?.remove?.('phase-fade-in');
+          s.classList?.add?.('phase-hold');
+        }
+      }, 900));
+      this._timers.push(setTimeout(() => {
+        if (!this.splashActive) return;
+        this.splashPhase = 'fade-out';
+        const s = $('unebSplashScreen');
+        if (s) {
+          s.classList?.remove?.('phase-hold', 'phase-fade-in');
+          s.classList?.add?.('phase-fade-out');
+        }
+      }, 2400));
+      this._timers.push(setTimeout(() => {
+        if (this.splashActive) this.finishSplash();
+      }, 3150));
+    },
+
+    finishSplash() {
+      this.clearTimers();
+      this.splashActive = false;
+      this.splashPhase = 'done';
+      const el = $('unebSplashScreen');
+      if (el) {
+        el.hidden = true;
+        el.classList?.remove?.('phase-fade-in', 'phase-hold', 'phase-fade-out');
+      }
+      if (!setupCompleted) {
+        this.openWizard('access');
+      } else if (!characterCreated) {
+        this.openCharacterCreation();
+      } else {
+        const targetBtn = ($('continueButton') && hasSave) ? $('continueButton') : ($('newGameButton') || $('playButton'));
+        targetBtn?.focus?.();
+      }
+    },
+
+    openWizard(step = 'access') {
+      this.wizardActive = true;
+      const wiz = $('setupWizardScreen');
+      if (wiz) wiz.hidden = false;
+      applySettings();
+      syncFullscreenUI();
+      this.goToStep(step);
+    },
+
+    goToStep(step) {
+      this.wizardStep = step;
+      const ind = $('wizardStepIndicator');
+      const title = $('wizardTitle');
+      if (step === 'access') {
+        if (ind) ind.textContent = 'ETAPA 1 DE 2 • CONFIGURAÇÃO INICIAL';
+        if (title) title.textContent = 'Acessibilidade';
+      } else {
+        if (ind) ind.textContent = 'ETAPA 2 DE 2 • ÁUDIO E TELA';
+        if (title) title.textContent = 'Configuração de Áudio e Vídeo';
+      }
+      if ($('wizardStepAccess')) $('wizardStepAccess').hidden = step !== 'access';
+      if ($('wizardStepAudio')) $('wizardStepAudio').hidden = step !== 'audio';
+    },
+
+    advanceWizard() {
+      if (this.wizardStep === 'access') {
+        this.goToStep('audio');
+      } else {
+        this.completeWizard();
+      }
+    },
+
+    backWizard() {
+      if (this.wizardStep === 'audio') {
+        this.goToStep('access');
+      }
+    },
+
+    completeWizard() {
+      setupCompleted = true;
+      applySettings();
+      persist();
+      this.wizardActive = false;
+      this.wizardStep = 'character';
+      const wiz = $('setupWizardScreen');
+      if (wiz) wiz.hidden = true;
+      if (typeof this.onCharacterCreation === 'function') {
+        this.onCharacterCreation();
+      } else {
+        this.openCharacterCreation();
+      }
+    },
+
+    openCharacterCreation() {
+      this.characterScreenActive = true;
+      this.wizardStep = 'character';
+      const screenEl = $('characterCreationScreen');
+      if (screenEl) screenEl.hidden = false;
+      const nameInput = $('playerNameInput');
+      if (nameInput) {
+        nameInput.value = playerName || '';
+        nameInput.focus?.();
+      }
+      if ($('playerNameError')) $('playerNameError').hidden = true;
+      this.selectGender(this.selectedGender || playerGender || 'male');
+      this.startPreviewLoop();
+    },
+
+    selectGender(gender) {
+      this.selectedGender = gender === 'female' ? 'female' : 'male';
+      const boyBtn = $('genderBoyBtn');
+      const girlBtn = $('genderGirlBtn');
+      if (boyBtn) {
+        boyBtn.classList?.toggle?.('selected', this.selectedGender === 'male');
+        boyBtn.setAttribute?.('aria-pressed', String(this.selectedGender === 'male'));
+      }
+      if (girlBtn) {
+        girlBtn.classList?.toggle?.('selected', this.selectedGender === 'female');
+        girlBtn.setAttribute?.('aria-pressed', String(this.selectedGender === 'female'));
+      }
+      const typedName = String($('playerNameInput')?.value ?? '').trim();
+      window.TruePixelEngine?.setPlayerProfile?.({
+        name: typedName || playerName || 'Protagonista',
+        gender: this.selectedGender
+      });
+    },
+
+    backFromCharacter() {
+      this.stopPreviewLoop();
+      this.characterScreenActive = false;
+      if ($('characterCreationScreen')) $('characterCreationScreen').hidden = true;
+      this.openWizard('audio');
+    },
+
+    confirmCharacter() {
+      const nameInput = $('playerNameInput');
+      const rawName = String(nameInput?.value ?? playerName ?? '').trim();
+      if (!rawName) {
+        if ($('playerNameError')) $('playerNameError').hidden = false;
+        nameInput?.focus?.();
+        return false;
+      }
+      if ($('playerNameError')) $('playerNameError').hidden = true;
+      playerName = rawName;
+      playerGender = this.selectedGender === 'female' ? 'female' : 'male';
+      characterCreated = true;
+      setupCompleted = true;
+      applySettings();
+      updateProgressLabels();
+      persist();
+      this.stopPreviewLoop();
+      this.characterScreenActive = false;
+      if ($('characterCreationScreen')) $('characterCreationScreen').hidden = true;
+      this.startLoadingIntoGame();
+      return true;
+    },
+
+    startLoadingIntoGame() {
+      this.clearTimers();
+      this.wizardStep = 'loading';
+      this.loadingTransitionActive = true;
+      if (!$('preloaderScreen') && typeof window.AssetPreloader?.ensureDOM === 'function') {
+        window.AssetPreloader.ensureDOM();
+      }
+      const pre = $('preloaderScreen');
+      if (pre) {
+        pre.hidden = false;
+        if (pre.style) {
+          pre.style.transition = 'opacity 0.25s ease';
+          pre.style.opacity = '1';
+        }
+      }
+      if (window.AssetPreloader) {
+        window.AssetPreloader.active = true;
+        window.AssetPreloader.fadingOut = false;
+        window.AssetPreloader.ready = false;
+        window.AssetPreloader.loadedCount = window.AssetPreloader.totalCount || 17;
+        window.AssetPreloader.smoothRatio = 1;
+        window.AssetPreloader.currentLabel = `Preparando a aventura de ${playerName}...`;
+        window.AssetPreloader.startLoop?.();
+      }
+      this._timers.push(setTimeout(() => {
+        if (this.loadingTransitionActive) this.completeLoadingTransition();
+      }, 600));
+    },
+
+    completeLoadingTransition() {
+      this.clearTimers();
+      this.loadingTransitionActive = false;
+      this.wizardStep = 'done';
+      if (window.AssetPreloader) {
+        window.AssetPreloader.active = false;
+        window.AssetPreloader.fadingOut = true;
+      }
+      const pre = $('preloaderScreen');
+      if (pre) {
+        pre.hidden = true;
+        pre.remove?.();
+      }
+      startNewGame();
+    },
+
+    skipAll() {
+      this.clearTimers();
+      this.stopPreviewLoop();
+      this.splashActive = false;
+      this.splashPhase = 'done';
+      this.wizardActive = false;
+      this.characterScreenActive = false;
+      this.loadingTransitionActive = false;
+      if ($('unebSplashScreen')) $('unebSplashScreen').hidden = true;
+      if ($('setupWizardScreen')) $('setupWizardScreen').hidden = true;
+      if ($('characterCreationScreen')) $('characterCreationScreen').hidden = true;
+    }
+  };
+  window.CrystalOnboarding = CrystalOnboarding;
+
+  if ($('unebSplashScreen')) $('unebSplashScreen').onclick = () => CrystalOnboarding.finishSplash();
+  if ($('wizardNextToAudioBtn')) $('wizardNextToAudioBtn').onclick = () => CrystalOnboarding.advanceWizard();
+  if ($('wizardBackToAccessBtn')) $('wizardBackToAccessBtn').onclick = () => CrystalOnboarding.backWizard();
+  if ($('wizardFinishBtn')) $('wizardFinishBtn').onclick = () => CrystalOnboarding.completeWizard();
+  if ($('genderBoyBtn')) $('genderBoyBtn').onclick = () => CrystalOnboarding.selectGender('male');
+  if ($('genderGirlBtn')) $('genderGirlBtn').onclick = () => CrystalOnboarding.selectGender('female');
+  if ($('characterBackBtn')) $('characterBackBtn').onclick = () => CrystalOnboarding.backFromCharacter();
+  if ($('characterConfirmBtn')) $('characterConfirmBtn').onclick = () => CrystalOnboarding.confirmCharacter();
+  if ($('playerNameInput')) {
+    $('playerNameInput').oninput = () => {
+      if ($('playerNameError')) $('playerNameError').hidden = true;
+    };
+    $('playerNameInput').onkeydown = (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        CrystalOnboarding.confirmCharacter();
+      }
+    };
+  }
+
   syncTruePixelSockets();
   applySettings();
+  if (window.TruePixelEngine?.GameHUD) {
+    window.TruePixelEngine.GameHUD.onGodModeChange = (active) => {
+      if (screen === 'map') renderMap();
+      syncGodModeUI();
+      notify(active ? 'God Mode ativado: Mapa livre e habilidades infinitas!' : 'God Mode desativado.');
+    };
+    try {
+      const params = typeof window !== 'undefined' && window.location?.search
+        ? new URLSearchParams(window.location.search)
+        : null;
+      const urlGod = params?.get('godmode') ?? params?.get('god') ?? params?.get('gm');
+      if (urlGod === '1' || urlGod === 'true') {
+        window.TruePixelEngine.GameHUD.setGodMode?.(true, true);
+      }
+    } catch {}
+    window.TruePixelEngine.GameHUD.syncGodModeBadge?.();
+    syncGodModeUI();
+  }
   renderMap();
   updateProgressLabels();
   window.CrystalMenuAudio?.setVolume?.(settings.music);
   window.CrystalMenuAudio?.autoStart?.();
+  CrystalOnboarding.startSplash();
 
   window.CrystalApp = {
     goto,
@@ -495,6 +1102,16 @@
     syncProgress,
     notify,
     openSettings,
+    openLevelList,
+    get godMode() {
+      return isGodModeActive();
+    },
+    setGodMode(val) {
+      return window.TruePixelEngine?.GameHUD?.setGodMode?.(val, true);
+    },
+    toggleGodMode() {
+      return window.TruePixelEngine?.GameHUD?.toggleGodMode?.();
+    },
     unlockAll() {
       completed = Array.from({ length: 20 }, (_, i) => i + 1);
       for (const id of completed) {
@@ -511,8 +1128,22 @@
         records: { ...records },
         current,
         hasSave,
+        setupCompleted,
+        playerName: playerName || 'Protagonista',
+        playerGender,
+        characterCreated,
         screen,
-        settings: { ...settings }
+        godMode: isGodModeActive(),
+        infiniteAbilities: isGodModeActive(),
+        settings: { ...settings },
+        onboarding: {
+          splashActive: CrystalOnboarding.splashActive,
+          splashPhase: CrystalOnboarding.splashPhase,
+          wizardActive: CrystalOnboarding.wizardActive,
+          wizardStep: CrystalOnboarding.wizardStep,
+          characterScreenActive: CrystalOnboarding.characterScreenActive,
+          loadingTransitionActive: CrystalOnboarding.loadingTransitionActive
+        }
       };
     }
   };

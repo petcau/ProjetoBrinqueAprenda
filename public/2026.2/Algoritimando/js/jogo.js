@@ -109,11 +109,33 @@
     tela.style.setProperty('--img', situacao.fundo ? `url("${situacao.fundo}")` : 'none');
     tela.style.setProperty('--cor', situacao.cor || '#8c6d4a');
     tela.classList.toggle('sem-fundo', !situacao.fundo);
+    document.getElementById('btn-cena-cheia').hidden = !situacao.fundo;
 
     montarFase();
     irPara('fase');
     focarPrimeiraCarta();
   }
+
+  /* ---------------- a cena em tela cheia ----------------
+     A imagem de fundo do chamado (a criança, o robô e o balão com o
+     pedido) inteira, sem o tabuleiro por cima. Fecha tocando em
+     qualquer lugar, no botão ou com Esc. */
+  const cenaCheia = document.getElementById('cena-cheia');
+  const btnCenaCheia = document.getElementById('btn-cena-cheia');
+  function abrirCenaCheia() {
+    if (!situacao || !situacao.fundo) return;
+    cenaCheia.querySelector('.cena-cheia-imagem').style.backgroundImage = `url("${situacao.fundo}")`;
+    cenaCheia.classList.add('on');
+    document.getElementById('btn-cena-fechar').focus({ preventScroll: true });
+  }
+  function fecharCenaCheia() {
+    if (!cenaCheia.classList.contains('on')) return;
+    cenaCheia.classList.remove('on');
+    btnCenaCheia.focus({ preventScroll: true });
+  }
+  btnCenaCheia.addEventListener('click', abrirCenaCheia);
+  cenaCheia.addEventListener('click', fecharCenaCheia);
+  document.addEventListener('keydown', ev => { if (ev.key === 'Escape') fecharCenaCheia(); });
 
   function focarPrimeiraCarta() {
     const primeira = fila.querySelector('.carta');
@@ -138,6 +160,8 @@
 
     // um espaço numerado por passo, todos vazios; até 4 por linha
     tela.style.setProperty('--colunas', Math.min(f.passos.length, 4));
+    // celular deitado: duas cartas por fileira (ver style.css)
+    tela.style.setProperty('--fileiras', Math.ceil(f.passos.length / 2));
     grade.textContent = '';
     f.passos.forEach((_, i) => {
       const li = document.createElement('li');
@@ -179,19 +203,23 @@
   /* Fase completa sem erro: grava o avanço e mostra a lição. */
   function aoConcluirFase() {
     const ganhas = erros === 0 ? 3 : erros === 1 ? 2 : 1;
+    // a dica de prêmio é só da primeira vez: rejogar um nível já
+    // concluído não pode virar fonte de dicas sem fim
+    const primeiraVez = !(progresso.niveis[indiceFase] > 0);
     progresso.niveis[indiceFase] = Math.max(progresso.niveis[indiceFase] || 0, ganhas);
     // rejogar um nível antigo nunca faz o chamado voltar atrás
     progresso.fase = Math.max(progresso.fase, indiceFase + 1);
     Progresso.gravar(chave, progresso);
     atualizarEstrelas();
 
-    Perfil.dados.dicas += 1;
+    const dicasGanhas = primeiraVez ? 1 : 0;
+    Perfil.dados.dicas += dicasGanhas;
     const ultima = indiceFase + 1 >= situacao.fases.length;
     // chamado do professor não entra na conta da promoção
     if (ultima && !chave.startsWith('prof:')) Perfil.dados.concluidos[situacao.id] = true;
     Perfil.gravar();
 
-    const premio = { estrelas: ganhas, dicas: 1 };
+    const premio = { estrelas: ganhas, dicas: dicasGanhas };
     document.querySelectorAll('#licao .gStars').forEach(e => { e.textContent = contadorNum.textContent; });
     rosto.src = ROSTO.dica;
     // a espera deixa a criança ver a última carta assentar; o som de

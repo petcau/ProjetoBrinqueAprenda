@@ -3,7 +3,7 @@
 
    menu → abertura (4 quadros) → crachá do agente → central de
    chamados → fase (jogo.js) → lição (conclusao.js) → … → central
-   → promoção a Agente (os 4 chamados originais) → central →
+   → promoção a Agente (metade dos chamados, quaisquer) → central →
    promoção a Agente Sênior (os 8 chamados) → tela final.
 
    Cada tela é uma <section class="screen"> do index.html; só uma
@@ -35,10 +35,10 @@
   }
   window.irPara = irPara;
 
-  /* Os 6 agentes: o número é o P.avatar. Cada um tem o retrato
+  /* Os agentes: o número é o P.avatar. Cada um tem o retrato
      (img/avN.webp), a cena de promoção (img/promoN.webp) e o corpo
-     inteiro recortado para a tela final. */
-  const CORPO = ['menina', 'menino', 'afro-menina', 'afro-menino', 'latina', 'latino'];
+     inteiro recortado para a tela final. O 6 é o agente secreto. */
+  const CORPO = ['menina', 'menino', 'afro-menina', 'afro-menino', 'latina', 'latino', 'secreto'];
 
   const avatarSrc = () => `img/av${P.avatar}.webp`;
 
@@ -63,16 +63,29 @@
     if (ev.target instanceof HTMLImageElement) ev.preventDefault();
   });
 
-  /* ---------------- celular deitado ----------------
-     O aviso "vire o celular em pé" aparece por CSS (style.css) só em
-     tela deitada e baixa. Dispensado, não volta até fechar a aba. */
-  const CHAVE_GIRAR = 'algoritimando-deitado';
   const palco = $('#stage');
-  try { if (sessionStorage.getItem(CHAVE_GIRAR) === '1') palco.classList.add('deitado-ok'); } catch { /* sem memória */ }
-  $('#bGirarSeguir').onclick = () => {
-    palco.classList.add('deitado-ok');
-    try { sessionStorage.setItem(CHAVE_GIRAR, '1'); } catch { /* sem memória */ }
-  };
+
+  /* ---------------- Esc fecha a janela aberta ----------------
+     Vale para todas as janelas (.modal): fecha a que está por cima e
+     devolve o foco ao botão que a abriu. A lição e a cena em tela
+     cheia já tratam o Esc por conta própria. */
+  let antesDaJanela = null;
+  new MutationObserver(mudancas => {
+    for (const m of mudancas) {
+      if (!m.target.classList.contains('modal')) continue;
+      const abriu = m.target.classList.contains('on') && !(m.oldValue || '').split(' ').includes('on');
+      if (abriu && !m.target.contains(document.activeElement)) antesDaJanela = document.activeElement;
+    }
+  }).observe(palco, { subtree: true, attributes: true, attributeFilter: ['class'], attributeOldValue: true });
+  document.addEventListener('keydown', ev => {
+    if (ev.key !== 'Escape') return;
+    const abertas = $$('.modal.on:not(.cena-cheia)');
+    if (!abertas.length) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    abertas[abertas.length - 1].classList.remove('on');
+    if (antesDaJanela && document.contains(antesDaJanela)) antesDaJanela.focus({ preventScroll: true });
+  }, true);
 
   /* ---------------- menu ---------------- */
 
@@ -97,12 +110,13 @@
     irPara('story');
   };
 
-  /* Reiniciar apaga o progresso, o perfil e os protótipos jogados;
-     os ajustes de som ficam. Pede confirmação, porque não tem volta. */
+  /* Reiniciar apaga o progresso, o perfil, os protótipos jogados e o
+     agente secreto; os ajustes de som ficam. Pede confirmação, porque
+     não tem volta. */
   $('#bReiniciar').onclick = () => $('#reiniciar').classList.add('on');
   $('#bReiniciarNao').onclick = () => $('#reiniciar').classList.remove('on');
   $('#bReiniciarSim').onclick = () => {
-    ['algoritimando-progresso', 'algoritimando-perfil', 'algoritimando-montagem'].forEach(k => {
+    ['algoritimando-progresso', 'algoritimando-perfil', 'algoritimando-montagem', CHAVE_SEGREDO].forEach(k => {
       try { localStorage.removeItem(k); } catch { /* sem memória: nada a apagar */ }
     });
     location.reload();
@@ -118,14 +132,41 @@
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'chip som-atalho';
-    b.title = 'Sons';
-    b.setAttribute('aria-label', 'Ajustar os sons');
+    b.title = 'Configurações';
+    b.setAttribute('aria-label', 'Configurações: sons e tela cheia');
     b.innerHTML = ICONE_SOM;
     const depois = topo.querySelector('.chip.who') || topo.querySelector('.chip.home');
     if (depois) depois.after(b); else topo.prepend(b);
     Som.abrirMenuBotao(b, true);
   });
   $('#bSonsFechar').onclick = () => $('#sons').classList.remove('on');
+
+  /* Tela cheia (no painel de configurações): usa a Fullscreen API do
+     navegador. Onde ela não existe (iPhone), a linha não aparece. O
+     botão acompanha o estado real: sair com Esc também atualiza. */
+  const raiz = document.documentElement;
+  const emTelaCheia = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+  const podeTelaCheia = !!(raiz.requestFullscreen || raiz.webkitRequestFullscreen);
+  function mostrarTelaCheia() {
+    const sim = emTelaCheia();
+    const b = $('#bTelaCheia');
+    b.textContent = sim ? 'Ligada' : 'Desligada';
+    b.setAttribute('aria-pressed', String(sim));
+    b.classList.toggle('mudo', !sim);
+  }
+  $('#linhaTelaCheia').hidden = !podeTelaCheia;
+  $('#bTelaCheia').onclick = () => {
+    try {
+      if (emTelaCheia()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+      else {
+        const pedido = (raiz.requestFullscreen || raiz.webkitRequestFullscreen).call(raiz);
+        if (pedido && pedido.catch) pedido.catch(() => {});
+      }
+    } catch { /* o navegador recusou: o jogo segue como está */ }
+  };
+  document.addEventListener('fullscreenchange', mostrarTelaCheia);
+  document.addEventListener('webkitfullscreenchange', mostrarTelaCheia);
+  mostrarTelaCheia();
   $('#bHow').onclick = () => $('#how').classList.add('on');
   $('#bHowClose').onclick = () => $('#how').classList.remove('on');
   $$('[data-home]').forEach(b => { b.onclick = irParaMenu; });
@@ -170,6 +211,7 @@
     $('#badgeName').textContent = nome;
     $('#badgeFace').src = avatarSrc();
     $('#badgeCargo').textContent = CARGOS[cargo()];
+    $('#cracha').classList.toggle('secreto', P.avatar === '6');
     $$('#badgeEstrelas img').forEach((e, k) => e.classList.toggle('on', k <= cargo()));
     // os selos das ideias: os conquistados acesos, os outros apagados
     const selos = $('#badgeSelos');
@@ -207,6 +249,65 @@
     };
   });
   $('#nameIn').oninput = e => atualizarCracha(e.target.value.trim());
+
+  /* Agente secreto (só para quem sabe): 10 toques SEGUIDOS na
+     terceira estrela do crachá revelam o 7º agente na escolha. A
+     estrela não reage a nada (nem brilho, nem cursor de clique), e
+     uma pausa maior que INTERVALO_SEGREDO entre dois toques zera a
+     contagem: ninguém chega lá sem querer. O segredo fica guardado
+     neste aparelho até o progresso ser reiniciado (esquecerSegredo). */
+  const CHAVE_SEGREDO = 'algoritimando-segredo';
+  const TOQUES_SEGREDO = 10;
+  const INTERVALO_SEGREDO = 600;   // ms entre um toque e o próximo
+  let toquesSegredo = 0;
+  let ultimoToque = 0;
+  function segredoAberto() {
+    try { return localStorage.getItem(CHAVE_SEGREDO) === '1'; } catch { return false; }
+  }
+  function mostrarSecreto(animar) {
+    const b = $('.avatar-secreto');
+    b.hidden = false;
+    $('.avatars').classList.add('com-secreto');
+    if (animar) {
+      b.classList.add('revela');
+      b.addEventListener('animationend', () => b.classList.remove('revela'), { once: true });
+    }
+  }
+  if (segredoAberto() || P.avatar === '6') mostrarSecreto(false);
+
+  /* Recomeçar o jogo também fecha o segredo: o agente secreto some da
+     escolha e, se era o escolhido, volta o primeiro agente. */
+  function esquecerSegredo() {
+    try { localStorage.removeItem(CHAVE_SEGREDO); } catch { /* nada a apagar */ }
+    $('.avatar-secreto').hidden = true;
+    $('.avatars').classList.remove('com-secreto');
+    if (P.avatar === '6') {
+      P.avatar = '0';
+      Perfil.gravar();
+      $$('.avatar').forEach(x => x.classList.toggle('sel', x.dataset.a === P.avatar));
+      atualizarCracha(P.nome);
+      atualizarTopo();
+    }
+  }
+  const estrelaSegredo = $$('#badgeEstrelas img')[2];
+  estrelaSegredo.addEventListener('click', () => {
+    if (!$('.avatar-secreto').hidden) return;
+    const agora = Date.now();
+    toquesSegredo = agora - ultimoToque <= INTERVALO_SEGREDO ? toquesSegredo + 1 : 1;
+    ultimoToque = agora;
+    if (toquesSegredo < TOQUES_SEGREDO) return;
+    toquesSegredo = 0;
+    try { localStorage.setItem(CHAVE_SEGREDO, '1'); } catch { /* fica só nesta visita */ }
+    // o momento especial: a cena dourada com o som de mistério
+    $('#segredo').classList.add('on');
+    Som.segredo();
+    $('#bSegredoOk').focus({ preventScroll: true });
+  });
+  $('#bSegredoOk').onclick = () => {
+    $('#segredo').classList.remove('on');
+    mostrarSecreto(true);
+    $('.avatar-secreto').click();
+  };
   $('#bConfirm').onclick = () => {
     P.comecou = true;
     P.nome = $('#nameIn').value.trim().slice(0, 14) || 'Agente';
@@ -219,16 +320,27 @@
   const feitosDe = lista => lista.filter(s => P.concluidos[s.id]).length;
   const faltamDe = lista => lista.length - feitosDe(lista);
 
-  /* Os chamados que contam para a PRÓXIMA promoção: os originais
-     enquanto a criança é Estagiária, todos depois disso. */
-  const daProximaPromocao = () => (cargo() === 0 ? SITUACOES_BASE : cargo() === 1 ? SITUACOES : []);
+  /* As promoções contam QUALQUER chamado concluído, sem separar os
+     originais dos novos: Agente com metade dos chamados, Agente
+     Sênior com todos. */
+  const META_AGENTE = () => Math.ceil(SITUACOES.length / 2);
+  const faltamParaProxima = () => (cargo() === 0 ? Math.max(0, META_AGENTE() - feitosDe(SITUACOES))
+    : cargo() === 1 ? faltamDe(SITUACOES) : 0);
 
   /* A promoção que já foi conquistada e ainda não foi mostrada. */
   function promocaoPendente() {
-    if (!P.promovido && faltamDe(SITUACOES_BASE) === 0) return 'agente';
+    if (!P.promovido && feitosDe(SITUACOES) >= META_AGENTE()) return 'agente';
     if (P.promovido && !P.senior && faltamDe(SITUACOES) === 0) return 'senior';
     return null;
   }
+
+  /* O começo do jogo: o sanduíche vem primeiro, para dar um início e
+     uma direção. Até ele ser concluído, o mapa fica na sombra e só a
+     Casa pode ser tocada (e, nela, só o sanduíche). Quem já tinha
+     concluído outro chamado antes desta regra não é trancado. */
+  const PRIMEIRO = 'sanduiche';
+  const cidadeLiberada = () => !!P.concluidos[PRIMEIRO] || feitosDe(SITUACOES) > 0;
+  const lugarDoPrimeiro = () => (SITUACOES.find(s => s.id === PRIMEIRO) || {}).area;
 
   /* Para onde ir depois de um chamado: a promoção, se houver uma
      esperando; senão, a central. */
@@ -279,22 +391,40 @@
     const mapa = document.createElement('div');
     mapa.className = 'mapa-miolo';
     quadro.append(mapa);
+    const liberada = cidadeLiberada();
+    quadro.classList.toggle('trancado', !liberada);
+    if (!liberada) {
+      // a sombra: um círculo de luz sobre a Casa e o resto escuro
+      const foco = document.createElement('span');
+      foco.className = 'mapa-foco';
+      foco.setAttribute('aria-hidden', 'true');
+      foco.style.setProperty('--x', FOCO_PRIMEIRO.x + '%');
+      foco.style.setProperty('--y', FOCO_PRIMEIRO.y + '%');
+      mapa.append(foco);
+    }
     for (const lugar of LUGARES) {
       const lista = doLugar(lugar.id);
       if (!lista.length) continue;
       const feitos = lista.filter(s => P.concluidos[s.id]).length;
       const botao = document.createElement('button');
       botao.type = 'button';
-      // brilha o lugar que ainda tem chamado da próxima promoção
-      const alvo = lista.some(s => !P.concluidos[s.id] && daProximaPromocao().includes(s));
-      botao.className = 'lugar' + (feitos === lista.length ? ' feito' : '') + (alvo ? ' alvo' : '');
+      const trancado = !liberada && lugar.id !== lugarDoPrimeiro();
+      // brilha o lugar que ainda tem chamado por fazer (todos contam
+      // para a promoção); antes do sanduíche, só a Casa brilha
+      const alvo = !trancado && cargo() < 2 && lista.some(s => !P.concluidos[s.id]);
+      botao.className = 'lugar' + (feitos === lista.length ? ' feito' : '') + (alvo ? ' alvo' : '') +
+        (trancado ? ' trancado' : '') + (!liberada && !trancado ? ' primeiro' : '');
+      if (trancado) {
+        botao.disabled = true;
+        botao.tabIndex = -1;
+      }
       // a posição vai em variáveis: no celular o mapa é mais alto e
       // corta as laterais da imagem, e o CSS refaz a conta do "left"
       botao.style.setProperty('--x', lugar.x + '%');
       botao.style.setProperty('--y', lugar.y + '%');
-      botao.setAttribute('aria-label',
-        `${lugar.nome}: ${feitos} de ${lista.length} ${lista.length === 1 ? 'chamado concluído' : 'chamados concluídos'}` +
-        (alvo ? '. Conta para a sua promoção' : ''));
+      botao.setAttribute('aria-label', trancado
+        ? `${lugar.nome}: abre depois do sanduíche`
+        : `${lugar.nome}: ${feitos} de ${lista.length} ${lista.length === 1 ? 'chamado concluído' : 'chamados concluídos'}`);
       botao.innerHTML = `<span class="lugar-rosto"><img alt=""></span>
         <span class="lugar-nome"></span><span class="lugar-conta"></span>`;
       rosto(botao.querySelector('img'), lugar.rosto);
@@ -303,11 +433,37 @@
       botao.onclick = () => abrirLugar(lugar);
       mapa.append(botao);
     }
-    // começa centrado (no PC não rola, então não muda nada)
+    // indicador de arrastar: só aparece quando o mapa é maior que a
+    // tela (celular) e some quando a criança arrasta pela primeira vez
+    const arraste = document.createElement('div');
+    arraste.className = 'mapa-arraste';
+    arraste.setAttribute('aria-hidden', 'true');
+    arraste.innerHTML = `<span class="mapa-arraste-dica">
+        <svg viewBox="0 0 48 24"><path d="M4 12h40M4 12l6-6M4 12l6 6M44 12l-6-6M44 12l-6 6"/></svg>
+        Arraste para ver a cidade</span>`;
+    quadro.prepend(arraste);
+    // começa centrado (no PC não rola, então não muda nada); antes do
+    // sanduíche, começa na Casa, que fica na beira esquerda
     requestAnimationFrame(() => {
-      quadro.scrollLeft = (quadro.scrollWidth - quadro.clientWidth) / 2;
+      quadro.scrollLeft = liberada ? (quadro.scrollWidth - quadro.clientWidth) / 2 : 0;
+      const rola = quadro.scrollWidth > quadro.clientWidth + 4;
+      arraste.hidden = !rola || !liberada || jaArrastou;
+      const esconder = () => {
+        jaArrastou = true;
+        arraste.hidden = true;
+      };
+      // o scrollLeft acima também dispara "scroll": só vale o da criança
+      setTimeout(() => {
+        quadro.addEventListener('scroll', esconder, { once: true, passive: true });
+      }, 300);
+      quadro.addEventListener('pointerdown', esconder, { once: true, passive: true });
     });
   }
+  let jaArrastou = false;
+
+  /* centro da luz sobre a Casa, em % da imagem do mapa (a casa e o
+     alfinete dela cabem no círculo) */
+  const FOCO_PRIMEIRO = { x: 12, y: 18 };
 
   function abrirLugar(lugar) {
     const modal = $('#local');
@@ -317,6 +473,12 @@
     lista.textContent = '';
     doLugar(lugar.id).forEach(s => lista.append(cartaoDeChamado(s, SITUACOES.indexOf(s))));
     modal.classList.add('on');
+    if (!emProgresso && !cidadeLiberada()) {
+      const aviso = document.createElement('p');
+      aviso.className = 'local-aviso';
+      aviso.textContent = 'Comece pelo sanduíche. Depois, a cidade toda se abre!';
+      lista.prepend(aviso);
+    }
   }
   $('#local .local-fechar').onclick = () => $('#local').classList.remove('on');
 
@@ -326,6 +488,7 @@
     const prog = Progresso.ler(chave);
     const feito = emProgresso ? prog.fase >= s.fases.length : !!P.concluidos[s.id];
     const emAndamento = prog.fase > 0 && prog.fase < s.fases.length;
+    const espera = !emProgresso && !cidadeLiberada() && s.id !== PRIMEIRO;
 
     const cartao = document.createElement('div');
     cartao.className = 'call' + (feito ? ' done' : '');
@@ -385,8 +548,19 @@
       botao.classList.add('rejogar');
       botao.textContent = 'Jogar de novo ›';
       botao.title = 'Escolher um nível para jogar de novo';
+    } else if (espera) {
+      botao.textContent = 'Depois do sanduíche';
     } else {
       botao.textContent = emAndamento ? 'Continuar ›' : 'Atender ›';
+    }
+    if (espera) {
+      // trancado até o sanduíche: aparece, mas não abre
+      cartao.classList.add('call-espera');
+      cartao.setAttribute('aria-disabled', 'true');
+      cartao.setAttribute('aria-label', `${s.titulo}: abre depois do sanduíche`);
+      botao.tabIndex = -1;
+      botao.setAttribute('aria-hidden', 'true');
+      return cartao;
     }
     // o cartão inteiro abre o chamado; o botão fica só como sinal
     // visual do que vai acontecer (e não recebe foco separado)
@@ -430,7 +604,7 @@
     desenharMapa();
     // uma barra só, com todos os chamados; embaixo, o próximo objetivo
     const n = feitosDe(SITUACOES), total = SITUACOES.length;
-    const faltam = faltamDe(daProximaPromocao());
+    const faltam = faltamParaProxima();
     const proximo = CARGOS[cargo() + 1];
     $('#bRestart').hidden = n < total;
     $('#progTxt').textContent = `${n} de ${total}`;
@@ -440,8 +614,9 @@
       : 'Você é Agente Sênior!';
     $('#bIdeias').hidden = !SITUACOES.some(s => s.selo);
     $('#hubMsg').textContent = mensagem ||
-      (n === 0 ? 'Toque num lugar do mapa para ver os chamados de lá. Os lugares que brilham contam para a sua promoção.'
-        : proximo ? `Ótimo trabalho! ${plural(faltam, 'Falta 1 chamado', 'Faltam # chamados')} para você virar ${proximo}. São os lugares que brilham no mapa.`
+      (!cidadeLiberada() ? 'Seu primeiro chamado é na Casa: ajude a fazer um sanduíche. Depois, a cidade toda se abre!'
+        : n === 0 ? 'Toque num lugar do mapa para ver os chamados de lá. Todo chamado concluído conta para a sua promoção.'
+        : proximo ? `Ótimo trabalho! ${plural(faltam, 'Falta 1 chamado', 'Faltam # chamados')} para você virar ${proximo}. Pode ser qualquer um do mapa.`
         : 'Todos os chamados concluídos! Você pode jogar qualquer um de novo.');
     irPara('hub');
   }
@@ -453,6 +628,8 @@
       central(`Protótipo "${s.titulo}" concluído!`, true);
     } else if (!SITUACOES.includes(s)) {
       central(`Chamado do professor "${s.titulo}" concluído!`);
+    } else if (s.id === PRIMEIRO && feitosDe(SITUACOES) === 1) {
+      seguir('Você liberou a cidade! Agora escolha qualquer lugar do mapa.');
     } else {
       seguir(s.selo
         ? `Chamado "${s.titulo}" concluído! O selo "${s.selo.nome}" está no seu crachá.`
@@ -525,9 +702,9 @@
     Som.vitoria();
   }
 
-  /* Depois da promoção: se a outra já está esperando (quem jogou os
-     novos antes dos originais vira Agente e Sênior de uma vez), ela
-     vem em seguida. A "Missão cumprida" é só de quem concluiu tudo;
+  /* Depois da promoção: se a outra já está esperando (perfil antigo
+     que já tinha tudo concluído vira Agente e Sênior de uma vez),
+     ela vem em seguida. A "Missão cumprida" é só de quem concluiu tudo;
      quem virou Agente volta ao mapa, que ainda tem chamados. */
   $('#bPromoNext').onclick = () => {
     const pendente = promocaoPendente();
@@ -584,6 +761,7 @@
   function recomecar() {
     SITUACOES.forEach(s => Progresso.apagar(s.id));
     Perfil.recomecar();
+    esquecerSegredo();
     central(`Novos chamados chegando! Boa sorte, ${P.nome}!`);
   }
   $('#bAgain').onclick = recomecar;

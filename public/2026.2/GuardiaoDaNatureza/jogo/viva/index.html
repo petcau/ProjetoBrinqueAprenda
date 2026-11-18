@@ -9,57 +9,79 @@
     <meta name="theme-color" content="#193b30" />
     <title>Guardião da Natureza · Jornada de Kai</title>
     <link rel="icon" href="../../assets/identidade-flora/favicon.ico" />
-    <link rel="stylesheet" href="ui.css?v=viva-1" />
+    <link rel="stylesheet" href="ui.css?v=arte-1" />
     <link rel="stylesheet" href="../raizes/orientacao.css?v=raizes-1" />
-    <link rel="stylesheet" href="acabamento.css?v=viva-1" />
+    <link rel="stylesheet" href="acabamento.css?v=arte-1" />
     <link rel="stylesheet" href="../brisa/brisa.css?v=brisa-1" />
     <link rel="stylesheet" href="../bosque-vivo/bosque.css?v=bosque-1" />
     <link rel="stylesheet" href="../mata-ilustrada/mata.css?v=mata-1" />
     <link rel="stylesheet" href="../trilhas-vivas/trilhas.css?v=trilhas-1" />
-    <link rel="preload" as="image" href="assets/inicio.webp" fetchpriority="high" />
-    <script src="../encanto-natural/catalogo.js" defer></script>
-    <script src="../encanto-natural/audio.js" defer></script>
-    <script src="../sistemas/progresso.js" defer></script>
-    <script src="../jornada/fases.js" defer></script>
-    <script src="../novo-amanha/conteudo.js" defer></script>
-    <script src="../vida-em-equilibrio/conteudo.js" defer></script>
-    <script src="../encontros-da-floresta/atlas.js" defer></script>
-    <script src="../encontros-da-floresta/relicario.js" defer></script>
-    <script src="../cuidado-acessivel/otimizados.js" defer></script>
-    <script src="../raizes/atlas.js" defer></script>
-    <script src="../raizes/personagens.js" defer></script>
-    <script src="comum.js" defer></script>
-    <script src="atlas.js" defer></script>
-    <script src="arte.js" defer></script>
-    <script src="../vida-em-equilibrio/progresso.js" defer></script>
-    <script src="../vida-em-equilibrio/colecao.js" defer></script>
-    <script src="simbolos.js" defer></script>
-    <script src="../brisa/atlas.js?v=brisa-1" defer></script>
-    <script src="../brisa/artes.js?v=brisa-1" defer></script>
-    <script src="../brisa/ajustes.js?v=brisa-1" defer></script>
-    <script src="../bosque-vivo/atlas.js?v=bosque-1" defer></script>
-    <script src="../bosque-vivo/trajes.js?v=bosque-1" defer></script>
-    <script src="../trilhas-vivas/kai.js?v=trilhas-1" defer></script>
-    <script src="../bosque-vivo/mochila.js?v=bosque-1" defer></script>
-    <script src="../trilhas-vivas/transicoes.js?v=trilhas-1" defer></script>
-    <script src="../trilhas-vivas/folhas.js?v=trilhas-1" defer></script>
-    <script src="../bosque-vivo/cenario-atlas.js?v=bosque-1" defer></script>
-    <script src="../bosque-vivo/vegetacao.js?v=bosque-1" defer></script>
-    <script src="../bosque-vivo/pintura.js?v=bosque-1" defer></script>
-    <script src="../mata-ilustrada/atlas.js?v=mata-1" defer></script>
-    <script src="../mata-ilustrada/artes.js?v=mata-1" defer></script>
-    <script src="../mata-ilustrada/pintura.js?v=mata-1" defer></script>
-    <script src="../trilhas-vivas/arvores-atlas.js?v=trilhas-1" defer></script>
-    <script src="../trilhas-vivas/natureza.js?v=trilhas-1" defer></script>
-    <script src="../mata-ilustrada/layout.js?v=mata-1" defer></script>
-    <script src="../trilhas-vivas/disposicao.js?v=trilhas-1" defer></script>
-    <script src="../trilhas-vivas/mapa.js?v=trilhas-1" defer></script>
-    <script src="../bosque-vivo/fundo.js?v=bosque-1" defer></script>
-    <script src="../trilhas-vivas/menu.js?v=trilhas-1" defer></script>
-    <script src="../trilhas-vivas/carregamento.js?v=trilhas-1" defer></script>
-    <script src="../brisa/interacoes.js?v=brisa-1" defer></script>
-    <script src="../bosque-vivo/final.js?v=bosque-1" defer></script>
-    <script src="../revisao-paisagem/orientacao.js" defer></script>
+    <link
+      rel="preload"
+      as="image"
+      href="../arte-viva/assets/inicio.webp"
+      fetchpriority="high"
+    />
+    <script src="../brisa-suave/compilados/viva-30923108c036.js" defer data-guardiao-bundle="true"></script>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <link rel="stylesheet" href="../brisa-suave/interface.css?v=suave-1" />
+    <link rel="stylesheet" href="../arte-viva/interface.css?v=controles-1" />
+    <link rel="stylesheet" href="../mapa-ferido/interface.css?v=ferido-1" />
+    <link rel="stylesheet" href="../rio-claro/interface.css?v=rio-1" />
+    <link rel="stylesheet" href="../correnteza/interface.css?v=1" />
+    <link rel="stylesheet" href="../ilha-renascendo/interface.css?v=1" />
+    <link rel="stylesheet" href="../clareira/interface.css?v=1" />
   </head>
   <body>
     <div class="backdrop" aria-hidden="true"></div>
@@ -145,8 +167,8 @@
               aria-label="Flora pousa no título do mapa e pisca"
             ></canvas>
           </div>
-          <p id="flora-map-line" class="flora-line" role="status" hidden></p>
         </header>
+        <p id="flora-map-line" class="flora-line" role="status" hidden></p>
         <button
           type="button"
           id="map-backpack"
@@ -177,9 +199,9 @@
               id="about-friends"
               aria-label="Kai e Flora acompanham o diário"
             ></canvas>
-            <p class="eyebrow">NOSSA AVENTURA</p>
-            <h2>Cada cuidado<br />cria raízes.</h2>
-            <p>Explore. Aprenda.<br />Cuide junto.</p>
+            <p class="eyebrow">COMPANHEIROS DE AVENTURA</p>
+            <h2>Kai e Flora,<br />sempre juntos.</h2>
+            <p>Um mundo para descobrir.<br />Muitos amigos para cuidar.</p>
           </aside>
           <div class="journal-main">
             <header class="journal-heading">
@@ -449,8 +471,8 @@
                 aria-label="Flora acompanha uma prévia dos efeitos da floresta"
               ></canvas>
               <div>
-                <p class="eyebrow">AJUSTE E EXPLORE</p>
-                <h2>Sua aventura,<br />do seu jeito.</h2>
+                <p class="eyebrow">UM MOMENTO NA FLORESTA</p>
+                <h2>Um jeito tranquilo<br />de explorar.</h2>
                 <p id="settings-explainer">
                   Escolha uma trilha suave e ajuste os sons da natureza.
                 </p>

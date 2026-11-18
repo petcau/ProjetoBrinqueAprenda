@@ -655,63 +655,12 @@
     }
   }
   function updateFlora(dt) {
-    flora.elapsed += dt;
-    if (stage === "recompensa") {
-      flora.mode = "comemorando";
-      flora.x += (player.x + 36 - flora.x) * Math.min(1, dt * 5);
-      flora.y += (player.y - 78 - flora.y) * Math.min(1, dt * 5);
-      return;
-    }
-    const resting =
-      !player.moving &&
-      ui.jump <= 0 &&
-      !spraying &&
-      !healing &&
-      equipping === 0 &&
-      stage !== "entrega" &&
-      player.idle > 2.5;
-    if (resting && flora.mode === "voando") {
-      flora.mode = "aproximando";
-      flora.elapsed = 0;
-    }
-    if (!resting && ["aproximando", "pousando", "ombro"].includes(flora.mode)) {
-      flora.mode = "decolando";
-      flora.elapsed = 0;
-    }
-    const shoulder = {
-      x: player.x + (player.direction >= 3 && player.direction <= 5 ? 15 : -15),
-      y: player.y - 42,
-    };
-    if (["aproximando", "pousando", "ombro"].includes(flora.mode)) {
-      flora.x += (shoulder.x - flora.x) * Math.min(1, dt * 5);
-      flora.y += (shoulder.y - flora.y) * Math.min(1, dt * 5);
-      if (flora.mode === "aproximando" && W.distance(flora, shoulder) < 2) {
-        flora.mode = "pousando";
-        flora.elapsed = 0;
-      }
-      if (flora.mode === "pousando" && flora.elapsed > 0.45) {
-        flora.mode = "ombro";
-        flora.elapsed = 0;
-      }
-      if (flora.mode === "ombro") Object.assign(flora, shoulder);
-    } else {
-      const next = route[0],
-        lead = next
-          ? {
-              x: (next.x - player.x) / Math.max(1, W.distance(player, next)),
-              y: (next.y - player.y) / Math.max(1, W.distance(player, next)),
-            }
-          : { x: -0.5, y: 0 };
-      const to = healing
-        ? { x: healing.x - 15, y: healing.y - 60 }
-        : { x: player.x + lead.x * 52, y: player.y - 71 + lead.y * 25 };
-      flora.x += (to.x - flora.x) * Math.min(1, dt * 5);
-      flora.y += (to.y - flora.y) * Math.min(1, dt * 5);
-      if (flora.mode === "decolando" && flora.elapsed > 0.3) {
-        flora.mode = "voando";
-        flora.elapsed = 0;
-      }
-    }
+    FloraCompanheira.update(flora, player, dt, {
+      phase: 1,
+      busy: spraying || healing || equipping > 0 || stage === "entrega",
+      reward: stage === "recompensa" || stage === "concluido",
+      jump: ui.height(),
+    });
   }
   function update(dt) {
     ui.update(dt);
@@ -1107,6 +1056,14 @@
       p.y - (a.stage === "voltando" && a.id === "passaro" ? 11 : 0),
       a.height,
       { flip: a.stage === "voltando" && a.facingRight },
+    );
+    GuardiaoCuidados.draw(
+      ctx,
+      a,
+      uiTime,
+      reduced(),
+      a.stage === "tratando" ? 1 - healTime / 1.6 : 0,
+      player,
     );
     if (a.stage === "ferido") {
       ring(p.x, p.y, "#e8c68a", 15);
@@ -1644,6 +1601,7 @@
   const activeSheets = Object.keys(ATLAS.sheets).filter(
       (name) =>
         ![
+          "kai-repouso",
           "kai-cuidados",
           "kai-caminhada",
           "kai-livre",
@@ -1666,6 +1624,7 @@
     colar.load(),
     art.load(),
     equipmentReady,
+    world.ready,
   ])
     .then((result) => {
       environment = new window.FlorestaAmbiente(sprites, result[1], result[2]);

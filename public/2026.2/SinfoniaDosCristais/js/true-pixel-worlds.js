@@ -103,46 +103,62 @@
     return c;
   }
 
-  const GEM_SPRITES = {
-    white_pure: buildHiBitWorldGem('quartz', {
+  const GEM_PALETTES = {
+    white_pure: {
       W: '#ffffff', H: '#e3f4f7', L: '#a8d8e6', M: '#6caac4', D: '#437794', K: '#294c66'
-    }),
-    white_shadow: buildHiBitWorldGem('quartz', {
-      W: '#b8a6d9', H: '#8572ab', L: '#5e4d82', M: '#413361', D: '#2a1f42', K: '#1a122b'
-    }),
-    rose_pure: buildHiBitWorldGem('quartz', {
+    },
+    white_shadow: {
+      W: '#d8f3fa', H: '#9ad0e3', L: '#5b9bb8', M: '#386c8a', D: '#1f425c', K: '#2a123d'
+    },
+    rose_pure: {
       W: '#fff2f5', H: '#f7cad8', L: '#e396b1', M: '#bf6588', D: '#8c3f60', K: '#59223b'
-    }),
-    rose_shadow: buildHiBitWorldGem('quartz', {
-      W: '#cfa3c4', H: '#96688c', L: '#6e4666', M: '#4d2d47', D: '#331a2e', K: '#1f0e1c'
-    }),
-    opal_pure: buildHiBitWorldGem('opal', {
+    },
+    rose_shadow: {
+      W: '#ffe0eb', H: '#eba0bc', L: '#c45e86', M: '#8f355b', D: '#591936', K: '#2d0b2e'
+    },
+    opal_pure: {
       W: '#fff6cc', H: '#f7c97e', L: '#e68a49', M: '#c45131', D: '#8c2d1f', K: '#541812'
-    }),
-    opal_shadow: buildHiBitWorldGem('opal', {
-      W: '#c99b8f', H: '#8f5d52', L: '#693c34', M: '#4a2620', D: '#301512', K: '#1c0b09'
-    }),
-    citrine_pure: buildHiBitWorldGem('citrine', {
+    },
+    opal_shadow: {
+      W: '#ffe8b8', H: '#e89e54', L: '#c45e28', M: '#8c3314', D: '#54180b', K: '#2b0924'
+    },
+    citrine_pure: {
       W: '#fffbe0', H: '#f7df86', L: '#e6b84c', M: '#c48a2b', D: '#8c5a18', K: '#54320b'
-    }),
-    citrine_shadow: buildHiBitWorldGem('citrine', {
-      W: '#d6c49c', H: '#9c865e', L: '#705d3d', M: '#4f4028', D: '#332818', K: '#1f170d'
-    }),
-    aqua_pure: buildHiBitWorldGem('aqua', {
+    },
+    citrine_shadow: {
+      W: '#fff3ba', H: '#e6c34c', L: '#bf9024', M: '#875e12', D: '#523408', K: '#291230'
+    },
+    aqua_pure: {
       W: '#edffff', H: '#b8f5f2', L: '#6bd4db', M: '#3ca1b0', D: '#236c7a', K: '#133f4a'
-    }),
-    aqua_shadow: buildHiBitWorldGem('aqua', {
-      W: '#a6cad4', H: '#6e93a1', L: '#4c6a78', M: '#334957', D: '#20303b', K: '#121d26'
-    }),
-    emerald_core: buildHiBitWorldGem('quartz', {
+    },
+    aqua_shadow: {
+      W: '#c9faf7', H: '#6cd4d0', L: '#399ca1', M: '#1f6970', D: '#103e45', K: '#221038'
+    },
+    emerald_core: {
       W: '#ecffea', H: '#b2f09e', L: '#7ec456', M: '#4b943b', D: '#2c6324', K: '#183b14'
-    }),
-    emerald_pure: buildHiBitWorldGem('quartz', {
+    },
+    emerald_pure: {
       W: '#ecffea', H: '#b2f09e', L: '#7ec456', M: '#4b943b', D: '#2c6324', K: '#183b14'
-    }),
-    shadow_bomb: buildHiBitWorldGem('quartz', {
+    },
+    shadow_bomb: {
       W: '#6d2e82', H: '#451859', L: '#2c0c3b', M: '#1e0529', D: '#12021c', K: '#0a0010'
-    })
+    }
+  };
+
+  const GEM_SPRITES = {
+    white_pure: buildHiBitWorldGem('quartz', GEM_PALETTES.white_pure),
+    white_shadow: buildHiBitWorldGem('quartz', GEM_PALETTES.white_shadow),
+    rose_pure: buildHiBitWorldGem('quartz', GEM_PALETTES.rose_pure),
+    rose_shadow: buildHiBitWorldGem('quartz', GEM_PALETTES.rose_shadow),
+    opal_pure: buildHiBitWorldGem('opal', GEM_PALETTES.opal_pure),
+    opal_shadow: buildHiBitWorldGem('opal', GEM_PALETTES.opal_shadow),
+    citrine_pure: buildHiBitWorldGem('citrine', GEM_PALETTES.citrine_pure),
+    citrine_shadow: buildHiBitWorldGem('citrine', GEM_PALETTES.citrine_shadow),
+    aqua_pure: buildHiBitWorldGem('aqua', GEM_PALETTES.aqua_pure),
+    aqua_shadow: buildHiBitWorldGem('aqua', GEM_PALETTES.aqua_shadow),
+    emerald_core: buildHiBitWorldGem('quartz', GEM_PALETTES.emerald_core),
+    emerald_pure: buildHiBitWorldGem('quartz', GEM_PALETTES.emerald_pure),
+    shadow_bomb: buildHiBitWorldGem('quartz', GEM_PALETTES.shadow_bomb)
   };
 
   const SHARD_ROWS = [
@@ -199,10 +215,10 @@
   function getOrbPalette(piece) {
     if (piece.shadow) {
       return {
-        core: '#f3e0ff',
-        mid: piece.type === 'rose' ? '#cfa3c4' : (piece.type === 'citrine' ? '#c9b489' : (piece.type === 'aqua' ? '#8eb8c7' : '#9b84c4')),
-        rim: '#1f142e',
-        link: '#6e5794'
+        core: piece.type === 'rose' ? '#ffe0eb' : (piece.type === 'opal' ? '#ffe8b8' : (piece.type === 'citrine' ? '#fff3ba' : (piece.type === 'aqua' ? '#c9faf7' : '#e0f7ff'))),
+        mid: piece.type === 'rose' ? '#d46a92' : (piece.type === 'opal' ? '#d97538' : (piece.type === 'citrine' ? '#e6c34c' : (piece.type === 'aqua' ? '#399ca1' : '#68b0c9'))),
+        rim: '#240b36',
+        link: '#7e22ce'
       };
     }
     if (piece.type === 'opal') return { core: '#fffdf2', mid: '#f7b259', rim: '#4a1912', link: '#e68a49' };
@@ -282,17 +298,6 @@
     const highContrast = typeof document !== 'undefined' && document.body?.classList?.contains('high-contrast');
     const f12 = Math.floor(t * SPRITE_FPS);
     const cx = R(x), cy = R(y);
-
-    // Aura sombria externa inconfundível para formas-alvo sombrias (sem apagar as cores reais da borda/núcleo)
-    if (isShadow) {
-      const pulse = (f12 & 1) ? 13 : 12;
-      drawRing(ctx, cx, cy, pulse, '#7e22ce');
-      drawRing(ctx, cx, cy, pulse + 1, '#3b0764');
-      for (let k = 0; k < 4; k++) {
-        const ang = (k / 4) * Math.PI * 2 + f12 * 0.15;
-        P1(ctx, R(cx + Math.cos(ang) * (pulse + 1)), R(cy + Math.sin(ang) * (pulse + 1)), '#d8b4fe');
-      }
-    }
 
     const rot = Number(piece.rotAngle) || 0;
     const hasRot = Math.abs(rot) > 0.01 && typeof ctx.save === 'function' && typeof ctx.rotate === 'function';
@@ -492,6 +497,66 @@
     const mainCol = isRejected ? '#ef4444' : (node.hover ? '#ffffff' : '#FBBF24');
     const subCol = isRejected ? '#fca5a5' : '#D97706';
 
+    // Quando o 1º cristal já foi colocado no molde, desenha a BORDA da forma na cor e valor dele,
+    // deixando o interior oco com contorno elétrico pulsante aguardando o 2º cristal!
+    if (node.borderType) {
+      const bPal = getShapeTone(node.borderType, false);
+      if (node.shape === 'square' || node.shape === 'rectangle') {
+        const hw = node.shape === 'rectangle' ? 11 : 8;
+        const hh = node.shape === 'rectangle' ? 7 : 8;
+        ctx.fillStyle = bPal.rim;
+        ctx.fillRect(cx - hw - 1, cy - hh - 1, (hw + 1) * 2, (hh + 1) * 2);
+        ctx.fillStyle = bPal.mid;
+        ctx.fillRect(cx - hw, cy - hh, hw * 2, hh * 2);
+        ctx.fillStyle = bPal.hi;
+        ctx.fillRect(cx - hw, cy - hh, hw * 2, 2);
+        ctx.fillRect(cx - hw, cy - hh, 2, hh * 2);
+        ctx.fillStyle = bPal.lo;
+        ctx.fillRect(cx - hw, cy + hh - 2, hw * 2, 2);
+        ctx.fillRect(cx + hw - 2, cy - hh, 2, hh * 2);
+        const iw = hw - 3, ih = hh - 3;
+        ctx.fillStyle = node.hover ? '#2b2240' : '#141022';
+        ctx.fillRect(cx - iw, cy - ih, iw * 2, ih * 2);
+      } else if (node.shape === 'triangle') {
+        const h = 15;
+        for (let row = 0; row < h; row++) {
+          const py = cy - 7 + row;
+          const hw = Math.max(1, R((row / (h - 1)) * 9));
+          ctx.fillStyle = bPal.rim;
+          ctx.fillRect(cx - hw - 1, py, (hw + 1) * 2 + 1, 1);
+          for (let dx = -hw; dx <= hw; dx++) {
+            const isBorder = row < 3 || row >= h - 3 || Math.abs(dx) >= hw - 2;
+            if (isBorder) {
+              ctx.fillStyle = dx < -2 ? bPal.hi : (dx > 2 ? bPal.lo : bPal.mid);
+            } else {
+              ctx.fillStyle = node.hover ? '#2b2240' : '#141022';
+            }
+            ctx.fillRect(cx + dx, py, 1, 1);
+          }
+        }
+      } else if (node.shape === 'trapezoid') {
+        for (let dy = -7; dy <= 7; dy++) {
+          const tRatio = (dy + 7) / 14;
+          const hw = R(5 + tRatio * 5);
+          ctx.fillStyle = bPal.rim;
+          ctx.fillRect(cx - hw - 1, cy + dy, (hw + 1) * 2 + 1, 1);
+          for (let dx = -hw; dx <= hw; dx++) {
+            const isBorder = dy <= -5 || dy >= 5 || Math.abs(dx) >= hw - 2;
+            if (isBorder) {
+              ctx.fillStyle = dx < -2 ? bPal.hi : (dx > 2 ? bPal.lo : bPal.mid);
+            } else {
+              ctx.fillStyle = node.hover ? '#2b2240' : '#141022';
+            }
+            ctx.fillRect(cx + dx, cy + dy, 1, 1);
+          }
+        }
+      }
+      if (node.firstValue > 0) {
+        const orbPal = getOrbPalette({ type: node.borderType, shadow: false });
+        drawOrbsForValue(ctx, cx, cy, node.firstValue, orbPal, false);
+      }
+    }
+
     const plotPerimeter = (px, py, idx) => {
       if (((idx + f18) % 3) !== 0 || node.hover || isRejected) {
         P1(ctx, px, py, ((idx + f18) & 1) ? mainCol : subCol);
@@ -590,10 +655,16 @@
 
   function drawCrystalPiece(ctx, piece, t, isSelected = false, isTutorialHighlight = false) {
     if (!piece || piece.broken || piece.value <= 0) return;
+    if (piece.inMoldId && !piece.dragging) return;
 
     const isTrembling = Boolean(piece.trembling) || Boolean(piece.rejectUntil && t < piece.rejectUntil);
     const [tx, ty] = ActorAnimator.getCrystalTrembleOffset(t, isTrembling, ctx, piece.x, piece.y);
-    const x = RH(piece.x + tx), y = RH(piece.y + ty);
+    const idle = ActorAnimator.getCrystalIdleAnim(piece, t);
+    const x = RH(piece.x + tx), y = RH(piece.y + ty + idle.bobY);
+
+    if (piece.shadow) {
+      ActorAnimator.drawShadowCrystalAura(ctx, x, y, t, idle.phase, piece.shape ? 13 : 11.5);
+    }
 
     if (isTutorialHighlight && !piece.shadow) {
       const pulseR = 14 + (Math.floor(t * 8) & 1) * 2;
@@ -617,6 +688,9 @@
       const spr = getPieceSprite(piece);
       const gw = spr.width * 0.5, gh = spr.height * 0.5;
       ctx.drawImage(spr, RH(x - gw / 2), RH(y - gh / 2), gw, gh);
+      if (idle.sparkleActive) {
+        P1(ctx, R(x + idle.sparkleCorner * 4), R(y - 5), piece.shadow ? '#d8b4fe' : '#ffffff');
+      }
     }
 
     // Selo dourado-esmeralda caso o cristal já tenha sido abençoado pelo Altar de Esmeralda
@@ -658,7 +732,7 @@
     if (!fp || fp.broken) return;
     const f12 = Math.floor(t * SPRITE_FPS);
     const fx = R(fp.x), fy = R(fp.y);
-    const fw = fp.w || 64, fh = fp.h || 76;
+    const fw = fp.w || 74, fh = fp.h || 78;
     const halfW = R(fw * 0.5), halfH = R(fh * 0.5);
     const isGlowing = Boolean(fp.glowing);
     const glowWave = Math.sin(t * 8) * 0.5 + 0.5;
@@ -697,20 +771,20 @@
     // Receptores / slots para Topo e Fundo (em cima e embaixo)
     const topHov = Boolean(fp.topHover);
     ctx.fillStyle = topHov ? '#2c425e' : (isGlowing ? '#381c3e' : '#1c2838');
-    ctx.fillRect(fx - halfW + 4, fy - halfH + 4, fw - 8, halfH - 6);
+    ctx.fillRect(fx - halfW + 4, fy - halfH + 4, fw - 8, halfH - 10);
     if (topHov) {
       ctx.strokeStyle = '#6fe4f5';
       ctx.lineWidth = 1;
-      ctx.strokeRect(fx - halfW + 4.5, fy - halfH + 4.5, fw - 9, halfH - 7);
+      ctx.strokeRect(fx - halfW + 4.5, fy - halfH + 4.5, fw - 9, halfH - 11);
     }
 
     const botHov = Boolean(fp.bottomHover);
     ctx.fillStyle = botHov ? '#2c425e' : (isGlowing ? '#381c3e' : '#1c2838');
-    ctx.fillRect(fx - halfW + 4, fy + 2, fw - 8, halfH - 6);
+    ctx.fillRect(fx - halfW + 4, fy + 7, fw - 8, halfH - 11);
     if (botHov) {
       ctx.strokeStyle = '#6fe4f5';
       ctx.lineWidth = 1;
-      ctx.strokeRect(fx - halfW + 4.5, fy + 2.5, fw - 9, halfH - 7);
+      ctx.strokeRect(fx - halfW + 4.5, fy + 7.5, fw - 9, halfH - 12);
     }
 
     // Barra de fração centralizada
@@ -751,12 +825,31 @@
     }
   }
 
+  function getDynamicEquationRadius(eq, members = []) {
+    if (!eq) return { rx: 30, ry: 20 };
+    let count = 0;
+    if (Array.isArray(members)) {
+      count = members.length;
+    } else if (typeof members === 'number') {
+      count = members;
+    } else if (eq.memberCount !== undefined) {
+      count = eq.memberCount;
+    }
+    const isReceptive = Boolean(eq.expanded || eq.dropHover || eq.removeHover);
+    const spacing = (eq.expanded || isReceptive) ? 24 : 18;
+    const halfSpan = count > 1 ? ((count - 1) * spacing) * 0.5 : 0;
+    const baseRx = isReceptive ? 46 : 30;
+    const baseRy = isReceptive ? 28 : 20;
+    const rx = Math.max(baseRx, Math.round(halfSpan + (isReceptive ? 26 : 20)));
+    const ry = Math.max(baseRy, count >= 3 ? (isReceptive ? 30 : 24) : baseRy);
+    return { rx, ry };
+  }
+
   function drawEquationAura(ctx, eq, t, members = []) {
     if (!eq || eq.broken) return;
     const f12 = Math.floor(t * SPRITE_FPS);
     const isReceptive = Boolean(eq.expanded || eq.dropHover || eq.removeHover);
-    const rx = isReceptive ? 46 : 29;
-    const ry = isReceptive ? 26 : 18;
+    const { rx, ry } = getDynamicEquationRadius(eq, members);
     const cx = R(eq.x), cy = R(eq.y);
 
     if (isReceptive) {
@@ -782,8 +875,9 @@
         ? '#c45131'
         : (eq.shadow ? '#5e4d82' : (eq.expanded ? '#5e96ab' : '#8c7248'));
 
-    for (let a = 0; a < 76; a++) {
-      const ang = (a / 76) * Math.PI * 2;
+    const numDots = Math.max(76, Math.round(rx * 1.8));
+    for (let a = 0; a < numDots; a++) {
+      const ang = (a / numDots) * Math.PI * 2;
       const wave = Math.sin(ang * 4 + f12 * 0.6) * (isReceptive ? 1.2 : 0.7);
       const px = R(cx + Math.cos(ang) * (rx + wave));
       const py = R(cy + Math.sin(ang) * (ry + wave * 0.6));
@@ -895,7 +989,7 @@
     if (!flashMode && actorSet && actorSet.back_silhouette) {
       const silSpr = actorSet.back_silhouette[0];
       x.globalAlpha = 0.85;
-      x.drawImage(silSpr, cx - 24, 14);
+      x.drawImage(silSpr, cx - Math.round(silSpr.width / 2), 14);
       x.globalAlpha = 1.0;
 
       const crackPaths = [
@@ -955,7 +1049,7 @@
     const f12 = Math.floor(t * SPRITE_FPS);
     const maxH = R((1 - decayRatio) * 94);
     if (maxH <= 2) return;
-    const baseX = 258, baseY = 142;
+    const baseX = 282, baseY = 142;
 
     const pal = biomeKey === 'forest'
       ? { k0: '#211814', k1: '#3b2a21', k2: '#573f31', vein: '#7ec456' }
@@ -983,7 +1077,7 @@
 
   function drawAncientSanctuaryGate(ctx, sealRatio, openRatio, t) {
     const f12 = Math.floor(t * SPRITE_FPS);
-    const gx = 248, gy = 26, gw = 58, gh = 116;
+    const gx = 274, gy = 26, gw = 58, gh = 116;
 
     // Se o portão está se abrindo, revela o Panorama Radiante dos 4 Biomas ao fundo!
     if (openRatio > 0.02) {
@@ -1561,36 +1655,36 @@
         ],
         3: [
           {
-            emeraldAltar: { x: 152, y: 108 },
+            emeraldAltar: { x: 156, y: 108 },
             pieces: [
-              { id: 'fo3_1_c', type: 'citrine', value: 4, shadow: false, x: 92, y: 78 },
-              { id: 'fo3_1_q', type: 'white', value: 2, shadow: false, x: 92, y: 114 },
-              { id: 'fo3_1_s1', type: 'citrine', value: 4, shadow: true, x: 216, y: 66 },
-              { id: 'fo3_1_s2', type: 'citrine', value: 2, shadow: true, x: 216, y: 96 },
-              { id: 'fo3_1_s3', type: 'white', value: 4, shadow: true, x: 216, y: 122 }
+              { id: 'fo3_1_c', type: 'citrine', value: 4, shadow: false, x: 74, y: 78 },
+              { id: 'fo3_1_q', type: 'white', value: 2, shadow: false, x: 74, y: 114 },
+              { id: 'fo3_1_s1', type: 'citrine', value: 4, shadow: true, x: 238, y: 66 },
+              { id: 'fo3_1_s2', type: 'citrine', value: 2, shadow: true, x: 238, y: 96 },
+              { id: 'fo3_1_s3', type: 'white', value: 4, shadow: true, x: 238, y: 122 }
             ]
           },
           {
-            pureEq: { x: 120, y: 74, expanded: false },
-            shadowEq: { x: 210, y: 74, expanded: false },
+            pureEq: { x: 92, y: 66, expanded: false },
+            shadowEq: { x: 236, y: 66, expanded: false },
             pieces: [
-              { id: 'fo3_2_c', type: 'citrine', value: 4, shadow: false, x: 92, y: 114 },
-              { id: 'fo3_2_r', type: 'rose', value: 3, shadow: false, x: 138, y: 114 },
-              { id: 'fo3_2_sc1', type: 'citrine', value: 2, shadow: true, x: 202, y: 74, inEquation: 'shadow' },
-              { id: 'fo3_2_sr1', type: 'rose', value: 3, shadow: true, x: 220, y: 74, inEquation: 'shadow' },
-              { id: 'fo3_2_sc2', type: 'citrine', value: 2, shadow: true, x: 212, y: 116 }
+              { id: 'fo3_2_c', type: 'citrine', value: 4, shadow: false, x: 72, y: 114 },
+              { id: 'fo3_2_r', type: 'rose', value: 3, shadow: false, x: 124, y: 114 },
+              { id: 'fo3_2_sc1', type: 'citrine', value: 2, shadow: true, x: 226, y: 66, inEquation: 'shadow' },
+              { id: 'fo3_2_sr1', type: 'rose', value: 3, shadow: true, x: 246, y: 66, inEquation: 'shadow' },
+              { id: 'fo3_2_sc2', type: 'citrine', value: 2, shadow: true, x: 236, y: 116 }
             ]
           },
           {
-            emeraldAltar: { x: 150, y: 114 },
-            pureEq: { x: 116, y: 72, expanded: false },
-            shadowEq: { x: 210, y: 72, expanded: false },
+            emeraldAltar: { x: 162, y: 114 },
+            pureEq: { x: 92, y: 66, expanded: false },
+            shadowEq: { x: 236, y: 66, expanded: false },
             pieces: [
-              { id: 'fo3_3_q', type: 'white', value: 2, shadow: false, x: 88, y: 114 },
+              { id: 'fo3_3_q', type: 'white', value: 2, shadow: false, x: 68, y: 114 },
               { id: 'fo3_3_c', type: 'citrine', value: 4, shadow: false, x: 116, y: 114 },
-              { id: 'fo3_3_sq', type: 'white', value: 4, shadow: true, x: 202, y: 72, inEquation: 'shadow' },
-              { id: 'fo3_3_sc', type: 'citrine', value: 2, shadow: true, x: 220, y: 72, inEquation: 'shadow' },
-              { id: 'fo3_3_sl', type: 'citrine', value: 2, shadow: true, x: 214, y: 116 }
+              { id: 'fo3_3_sq', type: 'white', value: 4, shadow: true, x: 226, y: 66, inEquation: 'shadow' },
+              { id: 'fo3_3_sc', type: 'citrine', value: 2, shadow: true, x: 246, y: 66, inEquation: 'shadow' },
+              { id: 'fo3_3_sl', type: 'citrine', value: 2, shadow: true, x: 236, y: 116 }
             ]
           }
         ],
@@ -1604,28 +1698,28 @@
             ]
           },
           {
-            emeraldAltar: { x: 148, y: 114 },
-            pureEq: { x: 114, y: 78, expanded: false },
-            shadowEq: { x: 212, y: 78, expanded: false },
+            emeraldAltar: { x: 162, y: 114 },
+            pureEq: { x: 92, y: 66, expanded: false },
+            shadowEq: { x: 236, y: 66, expanded: false },
             pieces: [
-              { id: 'fo4_2_c', type: 'citrine', value: 6, shadow: false, x: 88, y: 116 },
-              { id: 'fo4_2_r', type: 'rose', value: 2, shadow: false, x: 116, y: 116 },
-              { id: 'fo4_2_sc', type: 'citrine', value: 3, shadow: true, x: 204, y: 78, inEquation: 'shadow' },
-              { id: 'fo4_2_sr', type: 'rose', value: 4, shadow: true, x: 222, y: 78, inEquation: 'shadow' },
-              { id: 'fo4_2_sl', type: 'citrine', value: 3, shadow: true, x: 216, y: 116 }
+              { id: 'fo4_2_c', type: 'citrine', value: 6, shadow: false, x: 70, y: 114 },
+              { id: 'fo4_2_r', type: 'rose', value: 2, shadow: false, x: 114, y: 114 },
+              { id: 'fo4_2_sc', type: 'citrine', value: 3, shadow: true, x: 226, y: 66, inEquation: 'shadow' },
+              { id: 'fo4_2_sr', type: 'rose', value: 4, shadow: true, x: 246, y: 66, inEquation: 'shadow' },
+              { id: 'fo4_2_sl', type: 'citrine', value: 3, shadow: true, x: 236, y: 116 }
             ]
           },
           {
-            emeraldAltar: { x: 146, y: 116 },
-            pureEq: { x: 112, y: 78, expanded: false },
-            shadowEq: { x: 212, y: 78, expanded: false },
+            emeraldAltar: { x: 162, y: 114 },
+            pureEq: { x: 92, y: 66, expanded: false },
+            shadowEq: { x: 236, y: 66, expanded: false },
             pieces: [
-              { id: 'fo4_3_c', type: 'citrine', value: 4, shadow: false, x: 82, y: 114 },
-              { id: 'fo4_3_q', type: 'white', value: 3, shadow: false, x: 106, y: 114 },
-              { id: 'fo4_3_o', type: 'opal', value: 1, shadow: false, x: 126, y: 98 },
-              { id: 'fo4_3_sc', type: 'citrine', value: 4, shadow: true, x: 204, y: 78, inEquation: 'shadow' },
-              { id: 'fo4_3_sq', type: 'white', value: 2, shadow: true, x: 222, y: 78, inEquation: 'shadow' },
-              { id: 'fo4_3_sl', type: 'citrine', value: 2, shadow: true, x: 216, y: 116 }
+              { id: 'fo4_3_c', type: 'citrine', value: 4, shadow: false, x: 68, y: 114 },
+              { id: 'fo4_3_q', type: 'white', value: 3, shadow: false, x: 96, y: 114 },
+              { id: 'fo4_3_o', type: 'opal', value: 1, shadow: false, x: 124, y: 94 },
+              { id: 'fo4_3_sc', type: 'citrine', value: 4, shadow: true, x: 226, y: 66, inEquation: 'shadow' },
+              { id: 'fo4_3_sq', type: 'white', value: 2, shadow: true, x: 246, y: 66, inEquation: 'shadow' },
+              { id: 'fo4_3_sl', type: 'citrine', value: 2, shadow: true, x: 236, y: 116 }
             ]
           }
         ],
@@ -1736,100 +1830,100 @@
       levels: {
         1: [
           {
-            fractionPlatform: { x: 154, y: 104, resultType: 'aqua', resultValue: 1 },
+            fractionPlatform: { x: 154, y: 96, resultType: 'aqua', resultValue: 1 },
             pieces: [
               { id: 'ri1_1_top', type: 'aqua', value: 2, shadow: false, inFraction: 'top' },
-              { id: 'ri1_1_free', type: 'aqua', value: 2, shadow: false, x: 88, y: 104 },
-              { id: 'ri1_1_s', type: 'aqua', value: 1, shadow: true, x: 226, y: 104 }
+              { id: 'ri1_1_free', type: 'aqua', value: 2, shadow: false, x: 74, y: 96 },
+              { id: 'ri1_1_s', type: 'aqua', value: 1, shadow: true, x: 236, y: 96 }
             ]
           },
           {
-            fractionPlatform: { x: 154, y: 104, resultType: 'aqua', resultValue: 1 },
+            fractionPlatform: { x: 154, y: 96, resultType: 'aqua', resultValue: 1 },
             pieces: [
               { id: 'ri1_2_top', type: 'aqua', value: 4, shadow: false, inFraction: 'top' },
-              { id: 'ri1_2_free1', type: 'aqua', value: 2, shadow: false, x: 82, y: 84 },
-              { id: 'ri1_2_free2', type: 'aqua', value: 2, shadow: false, x: 82, y: 124 },
-              { id: 'ri1_2_s', type: 'aqua', value: 1, shadow: true, x: 226, y: 104 }
+              { id: 'ri1_2_free1', type: 'aqua', value: 2, shadow: false, x: 74, y: 80 },
+              { id: 'ri1_2_free2', type: 'aqua', value: 2, shadow: false, x: 74, y: 114 },
+              { id: 'ri1_2_s', type: 'aqua', value: 1, shadow: true, x: 236, y: 96 }
             ]
           }
         ],
         2: [
           {
-            fractionPlatform: { x: 154, y: 104, resultType: 'aqua', resultValue: 1 },
+            fractionPlatform: { x: 154, y: 96, resultType: 'aqua', resultValue: 1 },
             pieces: [
-              { id: 'ri2_1_a4', type: 'aqua', value: 4, shadow: false, x: 84, y: 80 },
-              { id: 'ri2_1_a2a', type: 'aqua', value: 2, shadow: false, x: 84, y: 108 },
-              { id: 'ri2_1_a2b', type: 'aqua', value: 2, shadow: false, x: 84, y: 134 },
-              { id: 'ri2_1_s', type: 'aqua', value: 1, shadow: true, x: 226, y: 104 }
+              { id: 'ri2_1_a4', type: 'aqua', value: 4, shadow: false, x: 74, y: 76 },
+              { id: 'ri2_1_a2a', type: 'aqua', value: 2, shadow: false, x: 74, y: 100 },
+              { id: 'ri2_1_a2b', type: 'aqua', value: 2, shadow: false, x: 74, y: 124 },
+              { id: 'ri2_1_s', type: 'aqua', value: 1, shadow: true, x: 236, y: 96 }
             ]
           },
           {
-            fractionPlatform: { x: 154, y: 104, resultType: 'aqua', resultValue: 1 },
+            fractionPlatform: { x: 154, y: 96, resultType: 'aqua', resultValue: 1 },
             pieces: [
               { id: 'ri2_2_top', type: 'aqua', value: 3, shadow: false, inFraction: 'top' },
               { id: 'ri2_2_bot', type: 'aqua', value: 1, shadow: false, inFraction: 'bottom' },
-              { id: 'ri2_2_free', type: 'aqua', value: 2, shadow: false, x: 84, y: 104 },
-              { id: 'ri2_2_s', type: 'aqua', value: 1, shadow: true, x: 226, y: 104 }
+              { id: 'ri2_2_free', type: 'aqua', value: 2, shadow: false, x: 74, y: 96 },
+              { id: 'ri2_2_s', type: 'aqua', value: 1, shadow: true, x: 236, y: 96 }
             ]
           },
           {
-            fractionPlatform: { x: 154, y: 104, resultType: 'white', resultValue: 1 },
+            fractionPlatform: { x: 154, y: 96, resultType: 'white', resultValue: 1 },
             pieces: [
               { id: 'ri2_3_top', type: 'white', value: 2, shadow: false, inFraction: 'top' },
-              { id: 'ri2_3_free_w2', type: 'white', value: 2, shadow: false, x: 84, y: 88 },
-              { id: 'ri2_3_free_w1', type: 'white', value: 1, shadow: false, x: 84, y: 124 },
-              { id: 'ri2_3_s', type: 'white', value: 2, shadow: true, x: 226, y: 104 }
+              { id: 'ri2_3_free_w2', type: 'white', value: 2, shadow: false, x: 74, y: 84 },
+              { id: 'ri2_3_free_w1', type: 'white', value: 1, shadow: false, x: 74, y: 116 },
+              { id: 'ri2_3_s', type: 'white', value: 2, shadow: true, x: 236, y: 96 }
             ]
           }
         ],
         3: [
           {
-            fractionPlatform: { x: 144, y: 110, resultType: 'aqua', resultValue: 1 },
-            pureEq: { x: 106, y: 66, expanded: false },
-            shadowEq: { x: 220, y: 78, expanded: false },
+            fractionPlatform: { x: 168, y: 88, resultType: 'aqua', resultValue: 1 },
+            pureEq: { x: 88, y: 64, expanded: false },
+            shadowEq: { x: 242, y: 64, expanded: false },
             pieces: [
               { id: 'ri3_1_top', type: 'aqua', value: 3, shadow: false, inFraction: 'top' },
-              { id: 'ri3_1_a3', type: 'aqua', value: 3, shadow: false, x: 84, y: 98 },
-              { id: 'ri3_1_q2', type: 'white', value: 2, shadow: false, x: 84, y: 124 },
-              { id: 'ri3_1_sa', type: 'aqua', value: 1, shadow: true, x: 210, y: 78, inEquation: 'shadow' },
-              { id: 'ri3_1_sq', type: 'white', value: 2, shadow: true, x: 230, y: 78, inEquation: 'shadow' }
+              { id: 'ri3_1_a3', type: 'aqua', value: 3, shadow: false, x: 68, y: 114 },
+              { id: 'ri3_1_q2', type: 'white', value: 2, shadow: false, x: 108, y: 114 },
+              { id: 'ri3_1_sa', type: 'aqua', value: 1, shadow: true, x: 232, y: 64, inEquation: 'shadow' },
+              { id: 'ri3_1_sq', type: 'white', value: 2, shadow: true, x: 252, y: 64, inEquation: 'shadow' }
             ]
           },
           {
-            fractionPlatform: { x: 144, y: 110, resultType: 'aqua', resultValue: 1 },
-            emeraldAltar: { x: 92, y: 116 },
-            pureEq: { x: 106, y: 66, expanded: false },
-            shadowEq: { x: 220, y: 78, expanded: false },
+            fractionPlatform: { x: 168, y: 88, resultType: 'aqua', resultValue: 1 },
+            emeraldAltar: { x: 64, y: 114 },
+            pureEq: { x: 90, y: 64, expanded: false },
+            shadowEq: { x: 242, y: 64, expanded: false },
             pieces: [
               { id: 'ri3_2_top', type: 'aqua', value: 2, shadow: false, inFraction: 'top' },
-              { id: 'ri3_2_a2', type: 'aqua', value: 2, shadow: false, x: 76, y: 92 },
-              { id: 'ri3_2_q2', type: 'white', value: 2, shadow: false, x: 112, y: 92 },
-              { id: 'ri3_2_sa', type: 'aqua', value: 2, shadow: true, x: 210, y: 78, inEquation: 'shadow' },
-              { id: 'ri3_2_sq', type: 'white', value: 2, shadow: true, x: 230, y: 78, inEquation: 'shadow' }
+              { id: 'ri3_2_a2', type: 'aqua', value: 2, shadow: false, x: 94, y: 114 },
+              { id: 'ri3_2_q2', type: 'white', value: 2, shadow: false, x: 122, y: 114 },
+              { id: 'ri3_2_sa', type: 'aqua', value: 2, shadow: true, x: 232, y: 64, inEquation: 'shadow' },
+              { id: 'ri3_2_sq', type: 'white', value: 2, shadow: true, x: 252, y: 64, inEquation: 'shadow' }
             ]
           }
         ],
         4: [
           {
-            fractionPlatform: { x: 154, y: 104, resultType: 'white', resultValue: 1 },
+            fractionPlatform: { x: 154, y: 96, resultType: 'white', resultValue: 1 },
             pieces: [
               { id: 'ri4_1_top', type: 'white', value: 4, shadow: false, inFraction: 'top' },
-              { id: 'ri4_1_q5', type: 'white', value: 5, shadow: false, x: 84, y: 84 },
-              { id: 'ri4_1_o1', type: 'opal', value: 1, shadow: false, x: 84, y: 122 },
-              { id: 'ri4_1_s', type: 'white', value: 1, shadow: true, x: 226, y: 104 }
+              { id: 'ri4_1_q5', type: 'white', value: 5, shadow: false, x: 74, y: 84 },
+              { id: 'ri4_1_o1', type: 'opal', value: 1, shadow: false, x: 74, y: 118 },
+              { id: 'ri4_1_s', type: 'white', value: 1, shadow: true, x: 236, y: 96 }
             ]
           },
           {
-            fractionPlatform: { x: 144, y: 112, resultType: 'aqua', resultValue: 1 },
-            pureEq: { x: 106, y: 66, expanded: false },
-            shadowEq: { x: 220, y: 78, expanded: false },
+            fractionPlatform: { x: 168, y: 88, resultType: 'aqua', resultValue: 1 },
+            pureEq: { x: 88, y: 64, expanded: false },
+            shadowEq: { x: 242, y: 64, expanded: false },
             pieces: [
               { id: 'ri4_2_top', type: 'aqua', value: 4, shadow: false, inFraction: 'top' },
-              { id: 'ri4_2_a4', type: 'aqua', value: 4, shadow: false, x: 76, y: 94 },
-              { id: 'ri4_2_q3', type: 'white', value: 3, shadow: false, x: 112, y: 94 },
-              { id: 'ri4_2_o1', type: 'opal', value: 1, shadow: false, x: 94, y: 122 },
-              { id: 'ri4_2_sa', type: 'aqua', value: 1, shadow: true, x: 210, y: 78, inEquation: 'shadow' },
-              { id: 'ri4_2_sq', type: 'white', value: 2, shadow: true, x: 230, y: 78, inEquation: 'shadow' }
+              { id: 'ri4_2_a4', type: 'aqua', value: 4, shadow: false, x: 70, y: 114 },
+              { id: 'ri4_2_q3', type: 'white', value: 3, shadow: false, x: 96, y: 114 },
+              { id: 'ri4_2_o1', type: 'opal', value: 1, shadow: false, x: 122, y: 114 },
+              { id: 'ri4_2_sa', type: 'aqua', value: 1, shadow: true, x: 232, y: 64, inEquation: 'shadow' },
+              { id: 'ri4_2_sq', type: 'white', value: 2, shadow: true, x: 252, y: 64, inEquation: 'shadow' }
             ]
           }
         ],
@@ -1878,7 +1972,7 @@
           { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Mas eu explico no caminho... Veja só, tem uns cristais ali! Quebre eles!', pointRight: true }
         ],
         2: [
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Veja as linhas elétricas nas rochas! Quando dois cristais se unem, eles moldam quadriláteros sagrados!' }
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Veja os moldes elétricos nas rochas! Arraste dois cristais direto para dentro do molde: o 1º cria a borda e o 2º preenche o interior!' }
         ],
         3: [
           { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'As formas cristalinas também se atraem! Una duas formas prontas para revelar polígonos ainda maiores!' }
@@ -1970,48 +2064,45 @@
             ]
           }
         ],
-        // FASE 2 (Nó 17): Quadriláteros & A Ordem dos Fatores
+        // FASE 2 (Nó 17): Quadriláteros & A Ordem dos Fatores (Preenchimento Direto no Molde Elétrico)
         2: [
           {
-            // Etapa 1: Quartzo Branco (2) + Quartzo Rosa (2) + Quadrado Elétrico (exige valores iguais e respeita ordem borda/núcleo)
-            pureEq: { x: 102, y: 74, expanded: false },
+            // Etapa 1: Quartzo Branco (2) + Quartzo Rosa (2) direto no Quadrado Elétrico (1º = borda, 2º = interior)
             electricShapes: [
-              { id: 'ca2_1_es', shape: 'square', x: 158, y: 96 }
+              { id: 'ca2_1_es', shape: 'square', x: 160, y: 94 }
             ],
             pieces: [
-              { id: 'ca2_1_q', type: 'white', value: 2, shadow: false, x: 84, y: 114 },
-              { id: 'ca2_1_r', type: 'rose', value: 2, shadow: false, x: 118, y: 114 },
-              { id: 'ca2_1_ss', type: 'white', value: 4, shadow: true, shape: 'square', borderType: 'white', coreType: 'rose', x: 216, y: 96 }
+              { id: 'ca2_1_q', type: 'white', value: 2, shadow: false, x: 78, y: 78 },
+              { id: 'ca2_1_r', type: 'rose', value: 2, shadow: false, x: 78, y: 112 },
+              { id: 'ca2_1_ss', type: 'white', value: 4, shadow: true, shape: 'square', borderType: 'white', coreType: 'rose', x: 234, y: 94 }
             ]
           },
           {
-            // Etapa 2: Quartzo Branco (3) + Opala (6) + Retângulo Elétrico (exige valores diferentes: Base != Altura)
+            // Etapa 2: Quartzo Branco (3) + Opala (6) direto no Retângulo Elétrico (exige valores diferentes: Base != Altura)
             stepTutorial: 'CAATINGA_RECTANGLE',
             disableOpalDrain: true,
-            pureEq: { x: 102, y: 74, expanded: false },
             electricShapes: [
-              { id: 'ca2_2_er', shape: 'rectangle', x: 158, y: 96 }
+              { id: 'ca2_2_er', shape: 'rectangle', x: 160, y: 94 }
             ],
             pieces: [
-              { id: 'ca2_2_q', type: 'white', value: 3, shadow: false, x: 84, y: 114 },
-              { id: 'ca2_2_o', type: 'opal', value: 6, shadow: false, x: 118, y: 114 },
-              { id: 'ca2_2_sr', type: 'white', value: 9, shadow: true, shape: 'rectangle', borderType: 'white', coreType: 'opal', x: 216, y: 96 }
+              { id: 'ca2_2_q', type: 'white', value: 3, shadow: false, x: 78, y: 78 },
+              { id: 'ca2_2_o', type: 'opal', value: 6, shadow: false, x: 78, y: 112 },
+              { id: 'ca2_2_sr', type: 'white', value: 9, shadow: true, shape: 'rectangle', borderType: 'white', coreType: 'opal', x: 234, y: 94 }
             ]
           },
           {
-            // Etapa 3: Trapézio Elétrico + Círculo Elétrico em síntese combinada
+            // Etapa 3: Trapézio Elétrico + Círculo Elétrico em preenchimento direto
             stepTutorial: 'CAATINGA_TRAPEZOID',
-            pureEq: { x: 102, y: 68, expanded: false },
             electricShapes: [
-              { id: 'ca2_3_et', shape: 'trapezoid', x: 156, y: 78 },
-              { id: 'ca2_3_ec', shape: 'circle', x: 156, y: 116 }
+              { id: 'ca2_3_et', shape: 'trapezoid', x: 160, y: 74 },
+              { id: 'ca2_3_ec', shape: 'circle', x: 160, y: 114 }
             ],
             pieces: [
-              { id: 'ca2_3_c', type: 'citrine', value: 2, shadow: false, x: 82, y: 102 },
-              { id: 'ca2_3_a', type: 'aqua', value: 4, shadow: false, x: 112, y: 102 },
-              { id: 'ca2_3_r', type: 'rose', value: 3, shadow: false, x: 96, y: 122 },
-              { id: 'ca2_3_st', type: 'citrine', value: 6, shadow: true, shape: 'trapezoid', borderType: 'citrine', coreType: 'aqua', x: 216, y: 78 },
-              { id: 'ca2_3_sc', type: 'rose', value: 3, shadow: true, shape: 'circle', borderType: 'rose', coreType: 'rose', x: 216, y: 116 }
+              { id: 'ca2_3_c', type: 'citrine', value: 2, shadow: false, x: 74, y: 54 },
+              { id: 'ca2_3_a', type: 'aqua', value: 4, shadow: false, x: 74, y: 82 },
+              { id: 'ca2_3_r', type: 'rose', value: 3, shadow: false, x: 74, y: 114 },
+              { id: 'ca2_3_st', type: 'citrine', value: 6, shadow: true, shape: 'trapezoid', borderType: 'citrine', coreType: 'aqua', x: 234, y: 74 },
+              { id: 'ca2_3_sc', type: 'rose', value: 3, shadow: true, shape: 'circle', borderType: 'rose', coreType: 'rose', x: 234, y: 114 }
             ]
           }
         ],
@@ -2020,39 +2111,37 @@
           {
             // Etapa 1: Quadrado + Quadrado -> Encaixe gerando Retângulo Cristalino -> Anula Retângulo Cristalino Sombrio
             pieces: [
-              { id: 'ca3_1_sq1', type: 'citrine', value: 4, shadow: false, shape: 'square', borderType: 'citrine', coreType: 'rose', x: 94, y: 80 },
+              { id: 'ca3_1_sq1', type: 'citrine', value: 4, shadow: false, shape: 'square', borderType: 'citrine', coreType: 'rose', x: 94, y: 78 },
               { id: 'ca3_1_sq2', type: 'citrine', value: 4, shadow: false, shape: 'square', borderType: 'citrine', coreType: 'rose', x: 94, y: 114 },
-              { id: 'ca3_1_sr', type: 'citrine', value: 8, shadow: true, shape: 'rectangle', borderType: 'citrine', coreType: 'rose', joinedSquares: true, x: 214, y: 96 }
+              { id: 'ca3_1_sr', type: 'citrine', value: 8, shadow: true, shape: 'rectangle', borderType: 'citrine', coreType: 'rose', joinedSquares: true, x: 232, y: 94 }
             ]
           },
           {
-            // Etapa 2: Síntese de Triângulo via cristais + conexão com Trapézio existente -> Forma Pentágono -> Anula Pentágono Sombrio
-            pureEq: { x: 98, y: 68, expanded: false },
+            // Etapa 2: Síntese direta de Triângulo no Molde + conexão com Trapézio existente -> Forma Pentágono -> Anula Pentágono Sombrio
             electricShapes: [
-              { id: 'ca3_2_etr', shape: 'triangle', x: 148, y: 78 }
+              { id: 'ca3_2_etr', shape: 'triangle', x: 146, y: 72 }
             ],
             pieces: [
-              { id: 'ca3_2_q', type: 'white', value: 2, shadow: false, x: 82, y: 104 },
-              { id: 'ca3_2_r', type: 'rose', value: 2, shadow: false, x: 112, y: 104 },
-              { id: 'ca3_2_trap', type: 'citrine', value: 5, shadow: false, shape: 'trapezoid', borderType: 'citrine', coreType: 'aqua', x: 148, y: 116 },
-              { id: 'ca3_2_sp', type: 'citrine', value: 9, shadow: true, shape: 'pentagon', borderType: 'citrine', coreType: 'white', upperType: 'white', lowerType: 'aqua', triBorder: 'white', triCore: 'rose', trapBorder: 'citrine', trapCore: 'aqua', x: 216, y: 96 }
+              { id: 'ca3_2_q', type: 'white', value: 2, shadow: false, x: 74, y: 58 },
+              { id: 'ca3_2_r', type: 'rose', value: 2, shadow: false, x: 74, y: 90 },
+              { id: 'ca3_2_trap', type: 'citrine', value: 5, shadow: false, shape: 'trapezoid', borderType: 'citrine', coreType: 'aqua', x: 146, y: 114 },
+              { id: 'ca3_2_sp', type: 'citrine', value: 9, shadow: true, shape: 'pentagon', borderType: 'citrine', coreType: 'white', upperType: 'white', lowerType: 'aqua', triBorder: 'white', triCore: 'rose', trapBorder: 'citrine', trapCore: 'aqua', x: 234, y: 94 }
             ]
           },
           {
-            // Etapa 3: Fusão de cristais + Quadrado Elétrico + Tesselação em cadeia
-            pureEq: { x: 98, y: 68, expanded: false },
+            // Etapa 3: Fusão de cristais + Quadrado Elétrico direto + Tesselação em cadeia
             electricShapes: [
-              { id: 'ca3_3_es', shape: 'square', x: 148, y: 78 },
-              { id: 'ca3_3_ec', shape: 'circle', x: 148, y: 116 }
+              { id: 'ca3_3_es', shape: 'square', x: 158, y: 74 },
+              { id: 'ca3_3_ec', shape: 'circle', x: 158, y: 116 }
             ],
             pieces: [
-              { id: 'ca3_3_q1', type: 'white', value: 1, shadow: false, x: 76, y: 98 },
-              { id: 'ca3_3_q2', type: 'white', value: 1, shadow: false, x: 98, y: 98 },
-              { id: 'ca3_3_r', type: 'rose', value: 2, shadow: false, x: 120, y: 98 },
-              { id: 'ca3_3_sq2', type: 'white', value: 4, shadow: false, shape: 'square', borderType: 'white', coreType: 'rose', x: 112, y: 120 },
-              { id: 'ca3_3_c', type: 'citrine', value: 3, shadow: false, x: 82, y: 120 },
-              { id: 'ca3_3_sr', type: 'white', value: 8, shadow: true, shape: 'rectangle', borderType: 'white', coreType: 'rose', joinedSquares: true, x: 216, y: 78 },
-              { id: 'ca3_3_sc', type: 'citrine', value: 3, shadow: true, shape: 'circle', borderType: 'citrine', coreType: 'citrine', x: 216, y: 116 }
+              { id: 'ca3_3_q1', type: 'white', value: 1, shadow: false, x: 68, y: 56 },
+              { id: 'ca3_3_q2', type: 'white', value: 1, shadow: false, x: 96, y: 56 },
+              { id: 'ca3_3_r', type: 'rose', value: 2, shadow: false, x: 82, y: 84 },
+              { id: 'ca3_3_sq2', type: 'white', value: 4, shadow: false, shape: 'square', borderType: 'white', coreType: 'rose', x: 112, y: 116 },
+              { id: 'ca3_3_c', type: 'citrine', value: 3, shadow: false, x: 74, y: 116 },
+              { id: 'ca3_3_sr', type: 'white', value: 8, shadow: true, shape: 'rectangle', borderType: 'white', coreType: 'rose', joinedSquares: true, x: 234, y: 74 },
+              { id: 'ca3_3_sc', type: 'citrine', value: 3, shadow: true, shape: 'circle', borderType: 'citrine', coreType: 'citrine', x: 234, y: 116 }
             ]
           }
         ],
@@ -2240,6 +2329,7 @@
     camPanY: 0,
     shellGame: null,
     shellCalmBtnRect: { x: 8, y: 23, w: 98, h: 14 },
+    forestNinjaComboBadgeRect: { x: 230, y: 23, w: 62, h: 14 },
     emeraldAltar: null,
     pureEquation: null,
     shadowEquation: null,
@@ -2250,16 +2340,18 @@
     dragMovedDist: 0,
     equationPointer: null,
     magneticAnim: null,
+    equationShockEffect: null,
+    ghostHandAnim: null,
     opalDrainTimer: 0,
     opalStepInterval: 0.42,
     shards: [],
 
     SOLID_MIN_DIST: 18,
     ANNUL_CONTACT_DIST: 19,
-    STAGE_MIN_X: 62,
-    STAGE_MAX_X: 242,
-    STAGE_MIN_Y: 42,
-    STAGE_MAX_Y: 125,
+    STAGE_MIN_X: 46,
+    STAGE_MAX_X: 270,
+    STAGE_MIN_Y: 38,
+    STAGE_MAX_Y: 126,
 
     completeBtnRect: { x: 108, y: 115, w: 104, h: 15 },
     skipMusicalBtnRect: { x: 92, y: 2, w: 58, h: 16 },
@@ -2315,7 +2407,8 @@
       const vw = typeof window !== 'undefined' && window.innerWidth ? Math.max(320, window.innerWidth) : 320;
       const vh = typeof window !== 'undefined' && window.innerHeight ? Math.max(180, window.innerHeight) : 180;
       const isMapIris = this.phase === 'map_iris_in' || global.CaveChapter1?.phase === 'map_iris_in';
-      const scale = isMapIris ? Math.max(vw / W, vh / H) : Math.min(vw / W, vh / H);
+      const userFrameScale = isMapIris ? 1 : clamp(Number(global.CrystalFrameScale) || 1, 0.8, 1.2);
+      const scale = (isMapIris ? Math.max(vw / W, vh / H) : Math.min(vw / W, vh / H)) * userFrameScale;
       const roundFn = isMapIris ? Math.ceil : Math.round;
       cv.style.width = roundFn(W * scale) + 'px';
       cv.style.height = roundFn(H * scale) + 'px';
@@ -2339,6 +2432,9 @@
       this.phase = 'map_active';
       this.running = false;
       this._inLoop = false;
+      this.shellGame = null;
+      this.riverMelody = null;
+      this.forestNinja = null;
       if (this._rafId) {
         if (typeof cancelAnimationFrame === 'function') {
           cancelAnimationFrame(this._rafId);
@@ -2426,7 +2522,10 @@
         }
         if (this.regularAudio) {
           this.regularAudio.muted = !!muted || vol <= 0;
-          this.regularAudio.volume = vol;
+          this.regularAudio._fadeTargetVol = vol;
+          if (!this.regularAudio._fadingIn) {
+            this.regularAudio.volume = vol;
+          }
           if (!inSpecial) {
             if (muted || vol <= 0 || GameHUD.paused || GameHUD.settingsOpen) {
               try { this.regularAudio.pause(); } catch (_) {}
@@ -2441,6 +2540,9 @@
 
       GameHUD.paused = false;
       GameHUD.settingsOpen = false;
+      GameHUD.guideOpen = false;
+      GameHUD.onUseAbility1 = () => this.triggerGhostHandHint();
+      if (typeof GameHUD.resetAbilityCharges === 'function') GameHUD.resetAbilityCharges();
       GameHUD.syncAudio();
     },
 
@@ -2500,6 +2602,11 @@
       this.floatingBanners = [];
       this.selectedPiece = null;
       this.shellGame = null;
+      this.riverMelody = null;
+      this.forestNinja = null;
+      this.fractionPlatform = null;
+      this.equationShockEffect = null;
+      this.ghostHandAnim = null;
       this.camPanY = (this.worldKey === 'caatinga' && this.currentLevel === 1) ? -14 : 0;
       this.emeraldAltar = null;
       this.pureEquation = null;
@@ -2520,11 +2627,11 @@
         this.ordemCompanion.state = 'walk';
         this.ordemCompanion.flipX = false;
       } else {
-        this.protag.x = 30;
+        this.protag.x = 22;
         this.protag.y = 142;
         this.protag.state = 'idle';
         this.ordemCompanion.visible = true;
-        this.ordemCompanion.x = 48;
+        this.ordemCompanion.x = 38;
         this.ordemCompanion.y = 142;
         this.ordemCompanion.state = 'idle';
         this.ordemCompanion.flipX = false;
@@ -2553,10 +2660,14 @@
       this.stopRegularBgm();
       GameHUD.paused = false;
       GameHUD.settingsOpen = false;
+      GameHUD.guideOpen = false;
+      if (typeof GameHUD.resetAbilityCharges === 'function') GameHUD.resetAbilityCharges();
       this.draggedPiece = null;
       this.dragStartPos = null;
       this.equationPointer = null;
       this.magneticAnim = null;
+      this.equationShockEffect = null;
+      this.ghostHandAnim = null;
       this.clearTrembleStates();
       this.shards = [];
       this.waveActive = false;
@@ -2599,11 +2710,11 @@
       this.floatingBanners = [];
       this.camPanY = 0;
       this.currentStep = 1;
-      this.protag.x = 30;
+      this.protag.x = 22;
       this.protag.y = 142;
       this.protag.state = 'idle';
       this.ordemCompanion.visible = true;
-      this.ordemCompanion.x = 48;
+      this.ordemCompanion.x = 38;
       this.ordemCompanion.y = 142;
       this.ordemCompanion.state = 'idle';
 
@@ -2634,8 +2745,16 @@
       this.currentStep = clamp(stepNum, 1, this.totalSteps);
       const stepDef = stepList[this.currentStep - 1];
 
+      if (this.currentLevel < 5 && this.worldKey !== 'sanctuary') {
+        this.shellGame = null;
+        this.riverMelody = null;
+        this.forestNinja = null;
+      }
+
       this.opalDrainTimer = 0;
       this.magneticAnim = null;
+      this.equationShockEffect = null;
+      this.ghostHandAnim = null;
       this.selectedPiece = null;
       this.tessellationPreview = null;
       this.tutorialHighlightId = stepDef.tutorialHighlightId || null;
@@ -2646,10 +2765,10 @@
       this.fractionPlatform = stepDef.fractionPlatform ? {
         x: stepDef.fractionPlatform.x,
         y: stepDef.fractionPlatform.y,
-        topY: stepDef.fractionPlatform.y - 18,
-        bottomY: stepDef.fractionPlatform.y + 18,
-        w: stepDef.fractionPlatform.w || 64,
-        h: stepDef.fractionPlatform.h || 52,
+        topY: stepDef.fractionPlatform.y - 25,
+        bottomY: stepDef.fractionPlatform.y + 25,
+        w: stepDef.fractionPlatform.w || 74,
+        h: stepDef.fractionPlatform.h || 78,
         resultType: stepDef.fractionPlatform.resultType || 'aqua',
         resultValue: stepDef.fractionPlatform.resultValue || 1,
         glowing: false,
@@ -2668,7 +2787,10 @@
         y: es.y,
         used: false,
         barrierUntil: 0,
-        hover: false
+        hover: false,
+        firstPieceId: null,
+        borderType: null,
+        firstValue: 0
       }));
       this.pieces = (stepDef.pieces || []).map((p) => ({
         id: p.id,
@@ -2678,6 +2800,8 @@
         boosted: Boolean(p.boosted),
         inEquation: p.inEquation || null,
         inFraction: p.inFraction || null,
+        inMoldId: p.inMoldId || null,
+        restorableEquation: null,
         shape: p.shape || null,
         borderType: p.borderType || null,
         coreType: p.coreType || null,
@@ -2722,6 +2846,9 @@
         if (cards && cards.length) {
           this.phase = 'tutorial';
           TutorialModal.open(cards, () => {
+            if (!this.pieces || this.pieces.length === 0) {
+              this.setupStep(this.currentStep || 1);
+            }
             this.phase = 'gameplay';
             this.phaseTime = 0;
           }, true);
@@ -2752,6 +2879,9 @@
         if (cards && cards.length) {
           this.phase = 'tutorial';
           TutorialModal.open(cards, () => {
+            if (!this.pieces || this.pieces.length === 0) {
+              this.setupStep(this.currentStep || 1);
+            }
             this.phase = 'gameplay';
             this.phaseTime = 0;
           }, true);
@@ -2797,10 +2927,24 @@
       }
     },
 
+    getEquationRadius(eq, memberCountOrList) {
+      if (memberCountOrList === undefined) {
+        if (eq?.memberCount !== undefined && eq.memberCount > 0) {
+          memberCountOrList = eq.memberCount;
+        } else if (Array.isArray(this.pieces)) {
+          const piecesInEq = this.pieces.filter((p) => !p.broken && p.value > 0 && p.inEquation === (eq?.shadow ? 'shadow' : 'pure')).length;
+          memberCountOrList = piecesInEq || eq?.memberCount || 0;
+        } else {
+          memberCountOrList = eq?.memberCount || 0;
+        }
+      }
+      return getDynamicEquationRadius(eq, memberCountOrList);
+    },
+
     isInsideEquationAura(eq, x, y, allowReception = false) {
       if (!eq || eq.broken) return false;
-      const rx = (eq.expanded || allowReception) ? 48 : 30;
-      const ry = (eq.expanded || allowReception) ? 28 : 18;
+      const testEq = allowReception ? { ...eq, expanded: true } : eq;
+      const { rx, ry } = this.getEquationRadius(testEq);
       const dx = (x - eq.x) / rx, dy = (y - eq.y) / ry;
       return dx * dx + dy * dy <= 1.08;
     },
@@ -2847,7 +2991,7 @@
 
     isCompatibleShadowTarget(purePiece, candidate, px = purePiece.x, py = purePiece.y) {
       if (this.phase !== 'gameplay') return false;
-      if (!purePiece || purePiece.shadow || purePiece.broken || purePiece.value <= 0) return false;
+      if (!purePiece || purePiece.shadow || purePiece.broken || purePiece.value <= 0 || purePiece.inMoldId) return false;
       if (!candidate || !candidate.shadow || candidate.broken || candidate.value <= 0 || candidate.inEquation) return false;
       if (
         purePiece.inEquation === 'pure' &&
@@ -2930,8 +3074,9 @@
     },
 
     trySplitCrystalOnTap(piece) {
-      if (!piece || piece.shadow || piece.broken || piece.inFraction || piece.value < 2 || piece.value % 2 !== 0) return false;
+      if (!piece || piece.shadow || piece.broken || piece.inFraction || piece.inMoldId || piece.value < 2 || piece.value % 2 !== 0) return false;
       if (piece.type !== 'citrine' && piece.type !== 'aqua') return false;
+      if (this.selectedPiece === piece) this.selectedPiece = null;
 
       const half = piece.value / 2;
       piece.value = half;
@@ -3025,13 +3170,13 @@
               other.broken ||
               other.value <= 0 ||
               other.inFraction ||
+              other.inMoldId ||
               this.isCompatibleShadowTarget(piece, other, nx, ny)
             ) {
               continue;
             }
             const canFormEq = !piece.shape && !other.shape && piece.type !== 'opal' && other.type !== 'opal' &&
-              !other.shadow && (piece.type !== other.type || other.inEquation === 'pure') &&
-              (this.pureEquation || this.shadowEquation || (this.electricShapes && this.electricShapes.length > 0));
+              !other.shadow && Boolean(this.pureEquation || this.shadowEquation);
             const effMinD = ((piece.shape && other.shape && this.getTessellationMatch(other, piece)) || canFormEq) ? 10 : minD;
             const dx = nx - other.x;
             const dy = ny - other.y;
@@ -3065,12 +3210,11 @@
         let valid = true;
         for (let i = 0; i < this.pieces.length; i++) {
           const other = this.pieces[i];
-          if (other === piece || other.broken || other.value <= 0 || other.inFraction || this.isCompatibleShadowTarget(piece, other, nx, ny)) {
+          if (other === piece || other.broken || other.value <= 0 || other.inFraction || other.inMoldId || this.isCompatibleShadowTarget(piece, other, nx, ny)) {
             continue;
           }
           const canFormEq = !piece.shape && !other.shape && piece.type !== 'opal' && other.type !== 'opal' &&
-            !other.shadow && (piece.type !== other.type || other.inEquation === 'pure') &&
-            (this.pureEquation || this.shadowEquation || (this.electricShapes && this.electricShapes.length > 0));
+            !other.shadow && Boolean(this.pureEquation || this.shadowEquation);
           const effMinD = ((piece.shape && other.shape && this.getTessellationMatch(other, piece)) || canFormEq) ? 10 : minD;
           if (Math.hypot(nx - other.x, ny - other.y) < effMinD - 0.04) {
             valid = false;
@@ -3086,6 +3230,8 @@
 
         if (this.checkEmeraldAltarBlessing(piece)) {
           if (piece.broken || this.phase !== 'gameplay') return { annulled: true };
+          this.triggerDefeatIfImpossible();
+          if (this.phase !== 'gameplay') return { annulled: true };
         }
 
         if (!piece.shape && !piece.inEquation && this.electricShapes && this.electricShapes.length > 0) {
@@ -3163,19 +3309,19 @@
       for (let iter = 0; iter < 6; iter++) {
         for (let i = 0; i < this.pieces.length; i++) {
           const p = this.pieces[i];
-          if (p.broken || p.value <= 0 || p.shadow || p.inEquation) continue;
+          if (p.broken || p.value <= 0 || p.shadow || p.inEquation || p.inFraction || p.inMoldId) continue;
           p.x = clamp(p.x, this.STAGE_MIN_X, this.STAGE_MAX_X);
           p.y = clamp(p.y, this.STAGE_MIN_Y, this.STAGE_MAX_Y);
           for (let j = 0; j < this.pieces.length; j++) {
             if (i === j) continue;
             const o = this.pieces[j];
-            if (o.broken || o.value <= 0) continue;
+            if (o.broken || o.value <= 0 || o.inMoldId) continue;
             const dx = p.x - o.x, dy = p.y - o.y;
             const d = Math.hypot(dx, dy);
             if (d < minD) {
               const ux = d > 1e-4 ? dx / d : 0;
               const uy = d > 1e-4 ? dy / d : -1;
-              if (!o.shadow && !o.inEquation) {
+              if (!o.shadow && !o.inEquation && !o.inFraction && !o.inMoldId) {
                 const push = (minD - d) * 0.5;
                 p.x = clamp(p.x + ux * push, this.STAGE_MIN_X, this.STAGE_MAX_X);
                 p.y = clamp(p.y + uy * push, this.STAGE_MIN_Y, this.STAGE_MAX_Y);
@@ -3194,6 +3340,7 @@
     layoutEquationPieces(eq, tag) {
       if (!eq || eq.broken) return;
       const members = this.pieces.filter((p) => !p.broken && p.value > 0 && p.inEquation === tag);
+      eq.memberCount = members.length;
       const spacing = eq.expanded ? 24 : 18;
       const halfSpan = members.length > 1 ? ((members.length - 1) * spacing) * 0.5 : 0;
       if (this.phase !== 'equation_magnetic') {
@@ -3251,6 +3398,10 @@
         this.clearTrembleStates();
         return;
       }
+      if (this.electricShapes && this.electricShapes.some((es) => !es.used && Math.hypot(dp.x - es.x, dp.y - es.y) <= 22)) {
+        this.clearTrembleStates();
+        return;
+      }
 
       let activeOpal = null;
       let activeTarget = null;
@@ -3258,7 +3409,7 @@
 
       if (dp.type === 'opal') {
         for (const p of this.pieces) {
-          if (p !== dp && !p.broken && !p.shadow && !p.shape && p.inEquation !== 'pure' && p.value > 0 && p.type !== 'opal') {
+          if (p !== dp && !p.broken && !p.shadow && !p.shape && !p.inMoldId && p.inEquation !== 'pure' && p.value > 0 && p.type !== 'opal') {
             const d = Math.hypot(dp.x - p.x, dp.y - p.y);
             if (d <= bestDist) {
               bestDist = d;
@@ -3269,7 +3420,7 @@
         }
       } else {
         for (const p of this.pieces) {
-          if (p !== dp && !p.broken && !p.shadow && !p.shape && p.inEquation !== 'pure' && p.value > 0 && p.type === 'opal') {
+          if (p !== dp && !p.broken && !p.shadow && !p.shape && !p.inMoldId && p.inEquation !== 'pure' && p.value > 0 && p.type === 'opal') {
             const d = Math.hypot(dp.x - p.x, dp.y - p.y);
             if (d <= bestDist) {
               bestDist = d;
@@ -3372,6 +3523,7 @@
         joinedSquares: Boolean(p.joinedSquares),
         subTriangles: p.subTriangles || 0,
         sourceNodeId: p.sourceNodeId || null,
+        restorableEquation: p.restorableEquation ? { ...p.restorableEquation } : null,
         components: p.components ? p.components.map((c) => ({ ...c })) : null
       };
     },
@@ -3398,11 +3550,11 @@
         };
       }
 
-      // 2. 1 Trapézio + 1 Triângulo -> Pentágono (gira suavemente 360° e encaixa o Triângulo no topo do Trapézio)
+      // 2. 1 Trapézio + 1 Triângulo -> Pentágono (gira 180° de cabeça para baixo para indicar encaixe com o trapézio)
       if ((s1 === 'trapezoid' && s2 === 'triangle') || (s1 === 'triangle' && s2 === 'trapezoid')) {
         return {
           resultShape: 'pentagon',
-          targetRotAngle: Math.PI * 2,
+          targetRotAngle: Math.PI,
           label: 'TRIÂNGULO + TRAPÉZIO = PENTÁGONO'
         };
       }
@@ -3509,10 +3661,83 @@
       return false;
     },
 
+    _finalizeMoldEquationState(eqSnap) {
+      const remaining = this.pieces.filter((k) => !k.broken && !k.shadow && k.value > 0 && k.inEquation === 'pure');
+      if (remaining.length === 0 && eqSnap) {
+        this.pureEquation = null;
+        return eqSnap;
+      }
+      if (this.pureEquation && !this.pureEquation.broken) {
+        this.layoutEquationPieces(this.pureEquation, 'pure');
+      }
+      return null;
+    },
+
+    ejectCrystalFromMold(piece, keepPosition = false) {
+      if (!piece || !piece.inMoldId) return false;
+      const node = (this.electricShapes || []).find((es) => es.id === piece.inMoldId);
+      piece.inMoldId = null;
+      if (node && node.firstPieceId === piece.id) {
+        node.firstPieceId = null;
+        node.borderType = null;
+        node.firstValue = 0;
+        node.hover = false;
+      }
+      if (!keepPosition) {
+        if (piece.restorableEquation && (!this.pureEquation || this.pureEquation.broken)) {
+          const re = piece.restorableEquation;
+          piece.restorableEquation = null;
+          this.pureEquation = {
+            x: re.x,
+            y: re.y,
+            expanded: Boolean(re.expanded),
+            broken: false,
+            dropHover: false,
+            removeHover: false
+          };
+          piece.inEquation = 'pure';
+          this.layoutEquationPieces(this.pureEquation, 'pure');
+        } else if (node) {
+          piece.restorableEquation = null;
+          const candidates = [
+            [-26, 26],
+            [-26, -26],
+            [26, -26],
+            [26, 26],
+            [-28, 0]
+          ];
+          let chosenX = clamp(node.x - 26, this.STAGE_MIN_X, this.STAGE_MAX_X);
+          let chosenY = clamp(node.y + 26, this.STAGE_MIN_Y, this.STAGE_MAX_Y);
+          for (const [ox, oy] of candidates) {
+            const cx = clamp(node.x + ox, this.STAGE_MIN_X, this.STAGE_MAX_X);
+            const cy = clamp(node.y + oy, this.STAGE_MIN_Y, this.STAGE_MAX_Y);
+            const nearMold = (this.electricShapes || []).some((es) => !es.used && Math.hypot(cx - es.x, cy - es.y) < 25);
+            const nearPiece = this.pieces.some((k) => k !== piece && !k.broken && k.value > 0 && Math.hypot(cx - k.x, cy - k.y) < 18);
+            if (!nearMold && !nearPiece) {
+              chosenX = cx;
+              chosenY = cy;
+              break;
+            }
+          }
+          piece.x = chosenX;
+          piece.y = chosenY;
+          this.resolveFreeCrystalCollisions();
+        }
+      } else {
+        piece.restorableEquation = null;
+      }
+      GameHUD.playSfx('equationRemove');
+      return true;
+    },
+
     tryEnterElectricShapeNode(node, candidatePieces = []) {
       if (!node || node.used) return false;
       const validList = candidatePieces.filter((p) => p && !p.broken && !p.shadow && p.value > 0);
       if (validList.length === 0) return false;
+
+      const eqSnap = (validList.some((p) => p.inEquation === 'pure') && this.pureEquation && !this.pureEquation.broken)
+        ? { x: this.pureEquation.x, y: this.pureEquation.y, expanded: Boolean(this.pureEquation.expanded) }
+        : null;
 
       if (node.shape === 'circle') {
         // O Círculo aceita apenas 1 elemento cristalino unitário
@@ -3527,45 +3752,92 @@
         p.components = [snap];
         p.sourceNodeId = node.id;
         p.inEquation = null;
+        p.inMoldId = null;
         p.x = node.x;
         p.y = node.y;
         p.lastValChangeAt = this.t;
         node.used = true;
         node.hover = false;
+        node.firstPieceId = null;
+        node.borderType = null;
+        node.firstValue = 0;
         if (this.tutorialHighlightId === p.id) this.tutorialHighlightId = null;
+        const hiddenEq = this._finalizeMoldEquationState(eqSnap);
+        if (hiddenEq) p.restorableEquation = hiddenEq;
         this.spawnFloatingBanner('circle', node.x, node.y);
         this.spawnShatter(node.x, node.y, SHARD_SPR[p.type] ? p.type : 'pure', 10);
-        if (this.pureEquation && !this.pureEquation.broken) {
-          this.layoutEquationPieces(this.pureEquation, 'pure');
-        }
         const hit = this.findTouchingCompatibleShadow(p, p.x, p.y);
         if (hit) this.triggerImmediateAnnulment(p, hit);
         return true;
       }
 
-      // Regra das Barreiras Elétricas (Seção 2.2): todas as demais formas exigem ESTRITAMENTE 2 ELEMENTOS conectados
-      if (validList.length !== 2 || validList[0].shape || validList[1].shape) {
+      const existingFirst = node.firstPieceId
+        ? this.pieces.find((k) => k.id === node.firstPieceId && !k.broken && k.inMoldId === node.id)
+        : null;
+
+      // Novo fluxo intuitivo: preenchimento direto sequencial (1º cristal = BORDA, 2º cristal = INTERIOR)
+      if (validList.length === 1) {
+        const incoming = validList[0];
+        if (incoming.shape) {
+          return this.rejectAtElectricShape(node, [incoming]);
+        }
+
+        if (!existingFirst) {
+          const prevEqSnap = (incoming.inEquation === 'pure' && this.pureEquation && !this.pureEquation.broken)
+            ? { x: this.pureEquation.x, y: this.pureEquation.y, expanded: Boolean(this.pureEquation.expanded) }
+            : null;
+          incoming.inEquation = null;
+          incoming.inMoldId = node.id;
+          incoming.x = node.x;
+          incoming.y = node.y;
+          node.firstPieceId = incoming.id;
+          node.borderType = incoming.type;
+          node.firstValue = incoming.value;
+          node.hover = false;
+          if (this.selectedPiece === incoming) this.selectedPiece = null;
+          const hiddenEq = this._finalizeMoldEquationState(prevEqSnap);
+          if (hiddenEq) incoming.restorableEquation = hiddenEq;
+          GameHUD.playSfx('equationInsert');
+          this.spawnShatter(node.x, node.y, SHARD_SPR[incoming.type] ? incoming.type : 'pure', 6);
+          return true;
+        }
+
+        if (incoming === existingFirst) {
+          incoming.x = node.x;
+          incoming.y = node.y;
+          return true;
+        }
+
+        const combinedEqSnap = eqSnap || existingFirst.restorableEquation || null;
+        return this._consolidateMoldPair(node, existingFirst, incoming, combinedEqSnap);
+      }
+
+      // Compatibilidade quando 2 elementos conectados (ex: via Equação Cristalina) entram juntos no molde
+      if (validList.length !== 2 || validList[0].shape || validList[1].shape || existingFirst) {
         return this.rejectAtElectricShape(node, validList);
       }
 
       const ordered = validList.slice().sort((a, b) => a.x - b.x);
-      const first = ordered[0], second = ordered[1];
+      return this._consolidateMoldPair(node, ordered[0], ordered[1], eqSnap, ordered);
+    },
 
+    _consolidateMoldPair(node, first, second, eqSnap = null, rejectPair = null) {
       if (node.shape === 'square' && first.value !== second.value) {
-        return this.rejectAtElectricShape(node, ordered);
+        return this.rejectAtElectricShape(node, rejectPair || [second]);
       }
       if (node.shape === 'rectangle' && first.value === second.value) {
-        return this.rejectAtElectricShape(node, ordered);
+        return this.rejectAtElectricShape(node, rejectPair || [second]);
       }
 
       const snap1 = this.snapshotPiece(first);
       const snap2 = this.snapshotPiece(second);
       first.shape = node.shape;
-      first.borderType = first.type; // 1º elemento define a cor da borda externa
-      first.coreType = second.type;  // 2º elemento define a cor do núcleo interno
+      first.borderType = first.type; // 1º cristal define a BORDA
+      first.coreType = second.type;  // 2º cristal define o INTERIOR
       first.value = first.value + second.value;
       first.components = [snap1, snap2];
       first.sourceNodeId = node.id;
+      first.inMoldId = null;
       first.inEquation = null;
       first.x = node.x;
       first.y = node.y;
@@ -3573,11 +3845,18 @@
 
       second.broken = true;
       second.inEquation = null;
+      second.inMoldId = null;
       node.used = true;
       node.hover = false;
+      node.firstPieceId = null;
+      node.borderType = null;
+      node.firstValue = 0;
 
-      if (this.pureEquation && !this.pureEquation.broken) {
-        this.layoutEquationPieces(this.pureEquation, 'pure');
+      const hiddenEq = this._finalizeMoldEquationState(eqSnap);
+      if (hiddenEq) {
+        first.restorableEquation = hiddenEq;
+      } else if (eqSnap && (!this.pureEquation || this.pureEquation.broken)) {
+        first.restorableEquation = eqSnap;
       }
 
       this.spawnFloatingBanner(node.shape, node.x, node.y);
@@ -3716,9 +3995,15 @@
 
       const ox = piece.x, oy = piece.y;
       const comps = piece.components;
+      const restEq = piece.restorableEquation ? { ...piece.restorableEquation } : null;
       if (piece.sourceNodeId) {
         const srcNode = this.electricShapes.find((es) => es.id === piece.sourceNodeId);
-        if (srcNode) srcNode.used = false;
+        if (srcNode) {
+          srcNode.used = false;
+          srcNode.firstPieceId = null;
+          srcNode.borderType = null;
+          srcNode.firstValue = 0;
+        }
       }
 
       const c0 = comps[0];
@@ -3739,21 +4024,26 @@
       piece.rotAngle = 0;
       piece.targetRotAngle = 0;
       piece.sourceNodeId = c0.sourceNodeId || null;
+      piece.restorableEquation = c0.restorableEquation ? { ...c0.restorableEquation } : null;
       piece.components = c0.components ? c0.components.map((c) => ({ ...c })) : null;
       piece.inEquation = null;
+      piece.inMoldId = null;
       piece.x = clamp(ox - (comps.length > 1 ? 14 : 20), this.STAGE_MIN_X, this.STAGE_MAX_X);
       piece.y = oy;
       piece.lastValChangeAt = this.t;
 
+      let secondPiece = null;
       if (comps.length > 1) {
         const c1 = comps[1];
-        this.pieces.push({
+        secondPiece = {
           id: `${piece.id}_dis_${Math.floor(this.t * 1000)}_${this.pieces.length}`,
           type: c1.type,
           value: c1.value,
           shadow: false,
           boosted: Boolean(c1.boosted),
           inEquation: null,
+          inMoldId: null,
+          restorableEquation: c1.restorableEquation ? { ...c1.restorableEquation } : null,
           shape: c1.shape || null,
           borderType: c1.borderType || null,
           coreType: c1.coreType || null,
@@ -3772,11 +4062,27 @@
           lastValChangeAt: this.t,
           x: clamp(ox + 14, this.STAGE_MIN_X, this.STAGE_MAX_X),
           y: oy
-        });
+        };
+        this.pieces.push(secondPiece);
+      }
+
+      if (restEq) {
+        this.pureEquation = {
+          x: restEq.x,
+          y: restEq.y,
+          expanded: Boolean(restEq.expanded),
+          broken: false,
+          dropHover: false,
+          removeHover: false
+        };
+        piece.inEquation = 'pure';
+        if (secondPiece) secondPiece.inEquation = 'pure';
+        this.layoutEquationPieces(this.pureEquation, 'pure');
+      } else {
+        this.resolveFreeCrystalCollisions();
       }
 
       GameHUD.playSfx('equationRemove');
-      this.resolveFreeCrystalCollisions();
       return true;
     },
 
@@ -3806,6 +4112,211 @@
           p.inEquation = null;
         }
       }
+    },
+
+    /** Calcula o próximo passo válido na fase atual dos Mundos 2–5 sem alterar nenhum cristal real. */
+    computeNextGhostStep() {
+      const active = (this.pieces || []).filter((p) => !p.broken && p.value > 0);
+      if (active.length === 0 && !(this.fractionPlatform && !this.fractionPlatform.broken)) return null;
+
+      const visType = (p) => (p.type === 'opal' ? 'opal' : (p.shadow ? 'shadow' : (p.type === 'white' ? 'pure' : p.type)));
+      const dragHint = (src, tx, ty, label) => ({
+        kind: 'drag',
+        fromX: src.x,
+        fromY: src.y,
+        toX: tx,
+        toY: ty,
+        pieceId: src.id,
+        pieceType: visType(src),
+        pieceValue: src.value,
+        pieceShape: src.shape || null,
+        label
+      });
+      const tapHint = (x, y, pieceId, pieceType, pieceValue, label) => ({
+        kind: 'tap',
+        fromX: x,
+        fromY: y,
+        toX: x,
+        toY: y,
+        pieceId: pieceId || null,
+        pieceType: pieceType || 'pure',
+        pieceValue: pieceValue || 1,
+        label
+      });
+
+      // 1. Plataforma de Fração pronta para dividir ao meio
+      const fp = this.fractionPlatform;
+      if (fp && !fp.broken && fp.glowing) {
+        return tapHint(fp.x, fp.y, null, 'aqua', fp.resultValue || 1, 'Toque para dividir!');
+      }
+
+      const canManipulatePure = (p) => (
+        !p.shadow &&
+        !p.inFraction &&
+        !p.inMoldId &&
+        (!p.inEquation || !this.pureEquation || this.pureEquation.expanded)
+      );
+      const freePure = active.filter((p) => !p.shadow && !p.inEquation && !p.inFraction && !p.inMoldId);
+      const freeShadow = active.filter((p) => p.shadow && !p.inEquation);
+
+      // 2. Anulação direta entre cristal puro manipulável e sombrio livre compatível
+      for (const p of active) {
+        if (!canManipulatePure(p)) continue;
+        for (const s of freeShadow) {
+          if (this.isCompatibleShadowTarget(p, s, s.x, s.y)) {
+            return dragHint(p, s.x, s.y, 'Anular cristais!');
+          }
+        }
+      }
+
+      // 3. Preencher Plataforma de Fração ainda não equilibrada
+      if (fp && !fp.broken && !fp.glowing) {
+        const fracCandidate = freePure.find((p) => !p.shape && p.type !== 'opal');
+        if (fracCandidate) {
+          const destY = (fp.topSum === 0 || fp.topSum < fp.bottomSum) ? fp.topY : fp.bottomY;
+          return dragHint(fracCandidate, fp.x, destY, 'Preencher fração!');
+        }
+      }
+
+      // 4. Tesselação entre formas geométricas já esculpidas
+      const shapedPure = freePure.filter((p) => Boolean(p.shape));
+      for (let i = 0; i < shapedPure.length; i++) {
+        for (let j = i + 1; j < shapedPure.length; j++) {
+          if (typeof this.getTessellationMatch === 'function' && this.getTessellationMatch(shapedPure[i], shapedPure[j])) {
+            return dragHint(shapedPure[j], shapedPure[i].x, shapedPure[i].y, 'Unir formas!');
+          }
+        }
+      }
+
+      // 5. Moldes Elétricos da Caatinga
+      const openMolds = (this.electricShapes || []).filter((es) => !es.used);
+      if (openMolds.length > 0) {
+        const unshapedFree = freePure.filter((p) => !p.shape);
+        for (const es of openMolds) {
+          let candidate = null;
+          if (es.firstPieceId) {
+            if (es.shape === 'square') {
+              candidate = unshapedFree.find((p) => p.value === es.firstValue);
+            } else if (es.shape === 'rectangle') {
+              candidate = unshapedFree.find((p) => p.value !== es.firstValue);
+            } else {
+              candidate = unshapedFree[0];
+            }
+          } else {
+            // Prioriza cristal que já casa diretamente com um sombrio dessa forma ou valor
+            candidate = unshapedFree.find((p) => freeShadow.some((s) => s.shape === es.shape && s.value === p.value)) || unshapedFree[0];
+          }
+          if (candidate) {
+            return dragHint(candidate, es.x, es.y, 'Encaixar no molde!');
+          }
+        }
+      }
+
+      // 6. Citrino / Água-Marinha par divisível por toque
+      const splitCandidate = freePure.find((p) => (
+        !p.shape &&
+        (p.type === 'citrine' || p.type === 'aqua') &&
+        p.value >= 2 &&
+        p.value % 2 === 0 &&
+        !freeShadow.some((s) => !s.shape && s.type === p.type && s.value === p.value)
+      ));
+      if (splitCandidate) {
+        return tapHint(splitCandidate.x, splitCandidate.y, splitCandidate.id, visType(splitCandidate), splitCandidate.value, 'Toque para dividir!');
+      }
+
+      // 7. Altar Esmeralda (multiplicação x2)
+      if (this.emeraldAltar) {
+        const freeQuartz = freePure.filter((p) => !p.shape && p.type !== 'opal' && !p.boosted);
+        const altarTarget = freeQuartz.find((p) => freeShadow.some((s) => s.type === p.type && s.value === p.value * 2)) || freeQuartz[0];
+        if (altarTarget) {
+          return dragHint(altarTarget, this.emeraldAltar.x, this.emeraldAltar.y, 'Multiplicar no altar!');
+        }
+      }
+
+      // 8. Opala livre subtraindo cristal livre
+      const freeOpals = freePure.filter((p) => !p.shape && p.type === 'opal');
+      const freeNonOpals = freePure.filter((p) => !p.shape && p.type !== 'opal');
+      if (freeOpals.length > 0 && freeNonOpals.length > 0) {
+        const target = freeNonOpals.find((q) => freeShadow.some((s) => s.type === q.type && q.value > s.value)) ||
+          freeNonOpals.find((q) => q.value >= 2) ||
+          freeNonOpals[0];
+        return dragHint(freeOpals[0], target.x, target.y, 'Subtrair com Opala!');
+      }
+
+      // 9. Equação Cristalina
+      if (this.pureEquation && !this.pureEquation.broken && this.shadowEquation && !this.shadowEquation.broken) {
+        const pureEq = active.filter((p) => !p.shadow && p.inEquation === 'pure');
+        const shadowEq = active.filter((p) => p.shadow && p.inEquation === 'shadow');
+        const sumByType = (arr, t) => arr.filter((p) => p.type === t).reduce((s, p) => s + p.value, 0);
+
+        const freeForEq = freePure.find((p) => {
+          if (p.shape) return false;
+          if (p.type === 'opal') return freeShadow.length === 0;
+          return !freeShadow.some((s) => s.type === p.type) && sumByType(pureEq, p.type) < sumByType(shadowEq, p.type);
+        });
+        if (freeForEq) {
+          return dragHint(freeForEq, this.pureEquation.x, this.pureEquation.y, 'Colocar na equação!');
+        }
+
+        if (!this.pureEquation.expanded) {
+          return tapHint(this.pureEquation.x, this.pureEquation.y, null, 'pure', 1, 'Toque para expandir!');
+        }
+
+        const eqOpals = pureEq.filter((p) => p.type === 'opal');
+        const eqQuartz = pureEq.filter((p) => p.type !== 'opal');
+        if (eqOpals.length > 0 && eqQuartz.length > 0) {
+          const target = eqQuartz.find((q) => sumByType(pureEq, q.type) > sumByType(shadowEq, q.type)) || eqQuartz[0];
+          return dragHint(eqOpals[0], target.x, target.y, 'Subtrair na equação!');
+        }
+        for (let i = 0; i < eqQuartz.length; i++) {
+          for (let j = i + 1; j < eqQuartz.length; j++) {
+            if (eqQuartz[i].type === eqQuartz[j].type && (eqQuartz[i].value + eqQuartz[j].value) <= 6) {
+              return dragHint(eqQuartz[i], eqQuartz[j].x, eqQuartz[j].y, 'Somar na equação!');
+            }
+          }
+        }
+      }
+
+      // 10. Fusão de puros da mesma cor ou fallback para Citrino/Água par restante
+      for (let i = 0; i < freeNonOpals.length; i++) {
+        for (let j = i + 1; j < freeNonOpals.length; j++) {
+          const a = freeNonOpals[i], b = freeNonOpals[j];
+          if (a.type === b.type && (a.value + b.value) <= 6) {
+            return dragHint(a, b.x, b.y, 'Fundir cristais!');
+          }
+        }
+      }
+      const anySplit = freePure.find((p) => !p.shape && (p.type === 'citrine' || p.type === 'aqua') && p.value >= 2 && p.value % 2 === 0);
+      if (anySplit) {
+        return tapHint(anySplit.x, anySplit.y, anySplit.id, visType(anySplit), anySplit.value, 'Toque para dividir!');
+      }
+      if (freePure.length > 0 && freeShadow.length > 0) {
+        return dragHint(freePure[0], freeShadow[0].x, freeShadow[0].y, 'Mover cristal!');
+      }
+      return null;
+    },
+
+    /** Dispara a animação fantasma de dica do próximo passo nos Mundos 2–5 sem mutar peças reais. */
+    triggerGhostHandHint() {
+      if (
+        this.phase !== 'gameplay' ||
+        TutorialModal.isOpen ||
+        DialogueBox.isOpen ||
+        this.forestNinja ||
+        this.riverMelody ||
+        this.shellGame
+      ) {
+        return false;
+      }
+      const step = this.computeNextGhostStep();
+      if (!step) return false;
+      this.ghostHandAnim = {
+        ...step,
+        t: 0,
+        duration: step.kind === 'tap' ? 1.8 : 2.2
+      };
+      GameHUD.playSfx('Select');
+      return true;
     },
 
     updateFractionPlatformState() {
@@ -3874,6 +4385,35 @@
       this.triggerDefeatIfImpossible();
     },
 
+    _mergeSameColorPieces(target, source) {
+      if (!target || !source || target === source || target.broken || source.broken) return false;
+      if (target.shadow || source.shadow || target.shape || source.shape) return false;
+      if (target.inFraction || source.inFraction || target.type === 'opal' || source.type === 'opal') return false;
+      if (target.type !== source.type || (target.value + source.value) > 6) return false;
+
+      target.value += source.value;
+      target.boosted = Boolean(target.boosted || source.boosted);
+      target.lastValChangeAt = this.t;
+      const keepInEq = target.inEquation === 'pure' ||
+        Boolean(this.pureEquation && !this.pureEquation.broken && this.isInsideEquationAura(this.pureEquation, target.x, target.y, true));
+      if (keepInEq && this.pureEquation && !this.pureEquation.broken) {
+        target.inEquation = 'pure';
+      }
+      source.broken = true;
+      source.inEquation = null;
+      if (this.selectedPiece === source) this.selectedPiece = null;
+      GameHUD.playSfx(target.type === 'rose' ? 'roseMerge' : 'quartzMerge');
+      this.spawnShatter(target.x, target.y, SHARD_SPR[target.type] ? target.type : 'pure', 8);
+      if (this.pureEquation && !this.pureEquation.broken) {
+        this.layoutEquationPieces(this.pureEquation, 'pure');
+      } else {
+        this.resolveFreeCrystalCollisions();
+      }
+      const mergedHit = this.findTouchingCompatibleShadow(target, target.x, target.y);
+      if (mergedHit) this.triggerImmediateAnnulment(target, mergedHit);
+      return true;
+    },
+
     checkPieceDrop(dropped) {
       if (!dropped || dropped.broken || dropped.value <= 0) return;
 
@@ -3884,15 +4424,22 @@
       this.checkEmeraldAltarBlessing(dropped);
       if (dropped.broken || this.phase !== 'gameplay') return;
 
-      // -1. Entrada na Plataforma de Fração do Rio (Topo ou Embaixo)
+      // -1. Entrada na Plataforma de Fração do Rio (zona contínua em toda a área da plataforma)
       if (this.fractionPlatform && !this.fractionPlatform.broken && !dropped.inFraction) {
         const fp = this.fractionPlatform;
-        const overTop = Math.abs(dropped.x - fp.x) <= fp.w * 0.5 && Math.abs(dropped.y - fp.topY) <= 16;
-        const overBottom = Math.abs(dropped.x - fp.x) <= fp.w * 0.5 && Math.abs(dropped.y - fp.bottomY) <= 16;
+        const inFracBody = Math.abs(dropped.x - fp.x) <= (fp.w * 0.5 + 8) && Math.abs(dropped.y - fp.y) <= (fp.h * 0.5 + 10);
         // Opala de Fogo não entra na fração: ela subtrai do cristal que está lá dentro.
-        if ((overTop || overBottom) && dropped.type !== 'opal') {
+        if (inFracBody && dropped.type !== 'opal') {
+          let targetSlot;
+          if (dropped.y < fp.y - 4) {
+            targetSlot = 'top';
+          } else if (dropped.y > fp.y + 4) {
+            targetSlot = 'bottom';
+          } else {
+            targetSlot = ((fp.topPieces?.length || 0) > 0 && (fp.bottomPieces?.length || 0) === 0) ? 'bottom' : (dropped.y < fp.y ? 'top' : 'bottom');
+          }
           const wasInPureEq = dropped.inEquation === 'pure';
-          dropped.inFraction = overTop ? 'top' : 'bottom';
+          dropped.inFraction = targetSlot;
           dropped.inEquation = null;
           if (wasInPureEq && this.pureEquation && !this.pureEquation.broken) {
             const members = this.pieces.filter((p) => !p.broken && !p.shadow && p.value > 0 && p.inEquation === 'pure');
@@ -3902,7 +4449,7 @@
               this.layoutEquationPieces(this.pureEquation, 'pure');
             }
           }
-          const targetList = overTop ? fp.topPieces : fp.bottomPieces;
+          const targetList = targetSlot === 'top' ? fp.topPieces : fp.bottomPieces;
           if (!targetList.includes(dropped)) targetList.push(dropped);
           this.layoutFractionPieces();
           this.updateFractionPlatformState();
@@ -3917,7 +4464,11 @@
           if (!es.used && Math.hypot(dropped.x - es.x, dropped.y - es.y) <= 22) {
             if (dropped.inEquation === 'pure' && this.pureEquation && !this.pureEquation.broken) {
               const members = this.pieces.filter((p) => !p.broken && !p.shadow && p.value > 0 && p.inEquation === 'pure');
-              this.tryEnterElectricShapeNode(es, members);
+              if (members.length === 2 && es.shape !== 'circle') {
+                this.tryEnterElectricShapeNode(es, members);
+              } else {
+                this.tryEnterElectricShapeNode(es, [dropped]);
+              }
             } else {
               this.tryEnterElectricShapeNode(es, [dropped]);
             }
@@ -3944,9 +4495,46 @@
         }
       }
 
+      // 1.5 Fusão direta por proximidade com outro cristal puro da mesma cor (inclusive dentro da Equação Cristalina!)
+      if (!dropped.shape && dropped.type !== 'opal') {
+        for (const other of this.pieces) {
+          if (
+            other !== dropped &&
+            !other.broken &&
+            !other.shadow &&
+            !other.shape &&
+            !other.inFraction &&
+            !other.inMoldId &&
+            other.value > 0 &&
+            other.type === dropped.type &&
+            Math.hypot(dropped.x - other.x, dropped.y - other.y) <= 24
+          ) {
+            if (other.value + dropped.value <= 6) {
+              this._mergeSameColorPieces(other, dropped);
+              return;
+            }
+          }
+        }
+      }
+
       // 2. Adição ou reordenação na Equação Cristalina (priorizada quando solto dentro da aura receptiva)
       if (this.pureEquation && !this.pureEquation.broken) {
         if (this.isInsideEquationAura(this.pureEquation, dropped.x, dropped.y, true)) {
+          if (!dropped.shape && dropped.type !== 'opal') {
+            const sameCol = this.pieces.find((p) =>
+              p !== dropped &&
+              !p.broken &&
+              !p.shadow &&
+              !p.shape &&
+              p.value > 0 &&
+              p.inEquation === 'pure' &&
+              p.type === dropped.type &&
+              (p.value + dropped.value) <= 6
+            );
+            if (sameCol && this._mergeSameColorPieces(sameCol, dropped)) {
+              return;
+            }
+          }
           if (dropped.inEquation !== 'pure') {
             dropped.inEquation = 'pure';
             GameHUD.playSfx('equationInsert');
@@ -3977,12 +4565,14 @@
             !other.broken &&
             !other.shadow &&
             !other.shape &&
+            !other.inFraction &&
+            !other.inMoldId &&
             other.value > 0 &&
             other.type !== 'opal' &&
             Math.hypot(dropped.x - other.x, dropped.y - other.y) <= 24
           ) {
-            if (other.type !== dropped.type || other.inEquation === 'pure') {
-              if (this.pureEquation || this.shadowEquation || (this.electricShapes && this.electricShapes.length > 0)) {
+            if (other.type !== dropped.type) {
+              if (this.pureEquation || this.shadowEquation) {
                 const eq = this.ensurePureEquation((dropped.x + other.x) * 0.5, (dropped.y + other.y) * 0.5);
                 other.inEquation = 'pure';
                 dropped.inEquation = 'pure';
@@ -4007,17 +4597,7 @@
               this.resolveFreeCrystalCollisions();
               return;
             }
-            other.value += dropped.value;
-            other.boosted = Boolean(other.boosted && dropped.boosted);
-            other.lastValChangeAt = this.t;
-            dropped.broken = true;
-            GameHUD.playSfx(other.type === 'rose' ? 'roseMerge' : 'quartzMerge');
-            this.spawnShatter(other.x, other.y, SHARD_SPR[other.type] ? other.type : 'pure', 8);
-            if (this.pureEquation && !this.pureEquation.broken) {
-              this.layoutEquationPieces(this.pureEquation, 'pure');
-            }
-            const mergedHit = this.findTouchingCompatibleShadow(other, other.x, other.y);
-            if (mergedHit) this.triggerImmediateAnnulment(other, mergedHit);
+            this._mergeSameColorPieces(other, dropped);
             return;
           }
         }
@@ -4029,6 +4609,139 @@
         const shadowTarget = this.findTouchingCompatibleShadow(dropped, dropped.x, dropped.y);
         if (shadowTarget) this.triggerImmediateAnnulment(dropped, shadowTarget);
       }
+    },
+
+    _computeColorMinDrainBFS(color, initPieces, targets, hasAltar, maxOpalDrain) {
+      const canSplit = color === 'citrine' || color === 'aqua';
+      const sortedTargets = targets.slice().sort((a, b) => b - a);
+
+      const matchesTargets = (pieces) => {
+        if (pieces.length < sortedTargets.length) return false;
+        const vals = pieces.map((p) => p.v);
+        const used = new Array(vals.length).fill(false);
+        const dfs = (tIdx) => {
+          if (tIdx >= sortedTargets.length) return true;
+          const need = sortedTargets[tIdx];
+          for (let i = 0; i < vals.length; i++) {
+            if (!used[i] && vals[i] === need) {
+              used[i] = true;
+              if (dfs(tIdx + 1)) return true;
+              used[i] = false;
+            }
+          }
+          return false;
+        };
+        return dfs(0);
+      };
+
+      const normalize = (arr) => arr.slice().sort((a, b) => (a.v - b.v) || (a.b - b.b));
+      const stateKey = (arr) => arr.map((p) => `${p.v}${p.b}`).join(',');
+
+      const start = normalize(initPieces);
+      if (matchesTargets(start)) return 0;
+
+      const bestDrain = new Map();
+      const buckets = Array.from({ length: maxOpalDrain + 1 }, () => []);
+      const startKey = stateKey(start);
+      bestDrain.set(startKey, 0);
+      buckets[0].push(start);
+
+      let visitedCount = 0;
+      const MAX_STATES = 3000;
+
+      const pushState = (nextArr, drainCost) => {
+        if (drainCost > maxOpalDrain) return false;
+        const norm = normalize(nextArr);
+        if (matchesTargets(norm)) return true;
+        const key = stateKey(norm);
+        const prev = bestDrain.get(key);
+        if (prev !== undefined && prev <= drainCost) return false;
+        bestDrain.set(key, drainCost);
+        buckets[drainCost].push(norm);
+        return false;
+      };
+
+      for (let d = 0; d <= maxOpalDrain; d++) {
+        const q = buckets[d];
+        for (let head = 0; head < q.length; head++) {
+          const cur = q[head];
+          const curKey = stateKey(cur);
+          if (bestDrain.get(curKey) < d) continue;
+          visitedCount++;
+          if (visitedCount > MAX_STATES) {
+            return d;
+          }
+
+          // 1. Altar de Esmeralda (dobra 1 única vez peças <= 3)
+          if (hasAltar) {
+            let lastPair = '';
+            for (let i = 0; i < cur.length; i++) {
+              const p = cur[i];
+              const pk = `${p.v},${p.b}`;
+              if (pk === lastPair) continue;
+              lastPair = pk;
+              if (!p.b && p.v * 2 <= 6) {
+                const next = cur.slice();
+                next[i] = { v: p.v * 2, b: 1 };
+                if (pushState(next, d)) return d;
+              }
+            }
+          }
+
+          // 2. Divisão (Citrina e Água-Marinha pares)
+          if (canSplit && cur.length < 8) {
+            let lastPair = '';
+            for (let i = 0; i < cur.length; i++) {
+              const p = cur[i];
+              const pk = `${p.v},${p.b}`;
+              if (pk === lastPair) continue;
+              lastPair = pk;
+              if (p.v >= 2 && p.v % 2 === 0) {
+                const next = cur.slice();
+                const half = p.v / 2;
+                next.splice(i, 1, { v: half, b: p.b }, { v: half, b: p.b });
+                if (pushState(next, d)) return d;
+              }
+            }
+          }
+
+          // 3. Soma / Fusão entre duas peças da mesma cor (v1 + v2 <= 6)
+          const seenMergePairs = new Set();
+          for (let i = 0; i < cur.length; i++) {
+            for (let j = i + 1; j < cur.length; j++) {
+              const a = cur[i], b = cur[j];
+              if (a.v + b.v > 6) continue;
+              const mKey = `${a.v}${a.b}+${b.v}${b.b}`;
+              if (seenMergePairs.has(mKey)) continue;
+              seenMergePairs.add(mKey);
+              const next = [];
+              for (let k = 0; k < cur.length; k++) {
+                if (k !== i && k !== j) next.push(cur[k]);
+              }
+              next.push({ v: a.v + b.v, b: (a.b || b.b) ? 1 : 0 });
+              if (pushState(next, d)) return d;
+            }
+          }
+
+          // 4. Dreno de Opala de Fogo (-1 unidade de valor >= 2)
+          if (d < maxOpalDrain) {
+            let lastPair = '';
+            for (let i = 0; i < cur.length; i++) {
+              const p = cur[i];
+              const pk = `${p.v},${p.b}`;
+              if (pk === lastPair) continue;
+              lastPair = pk;
+              if (p.v >= 2) {
+                const next = cur.slice();
+                next[i] = { v: p.v - 1, b: p.b };
+                if (pushState(next, d + 1)) return d + 1;
+              }
+            }
+          }
+        }
+      }
+
+      return Infinity;
     },
 
     isStepStillSolvable() {
@@ -4043,22 +4756,31 @@
         return true;
       }
 
+      const pureOpals = pures.filter((p) => p.type === 'opal');
+      const shadowOpals = shadows.filter((s) => s.type === 'opal');
+      if (shadowOpals.length > pureOpals.length) return false;
+      const totalPureOpal = pureOpals.reduce((a, b) => a + b.value, 0);
+      const reqShadowOpal = shadowOpals.reduce((a, b) => a + b.value, 0);
+      if (totalPureOpal < reqShadowOpal) return false;
+
+      const maxOpalDrain = this.disableOpalDrain ? 0 : (totalPureOpal - reqShadowOpal);
       const hasAltar = Boolean(this.emeraldAltar);
+      let totalMinDrainNeeded = 0;
+
       for (const color of ['white', 'rose', 'citrine', 'aqua']) {
-        const sSum = shadows.filter((s) => s.type === color).reduce((a, b) => a + b.value, 0);
-        if (sSum === 0) continue;
-        const pList = pures.filter((p) => p.type === color);
-        if (pList.length === 0) return false;
-        const maxPureSum = pList.reduce((sum, p) => {
-          if (!hasAltar || p.boosted) return sum + p.value;
-          // Se puder dividir antes de passar no Altar (ex: Citrino/Água 4 -> 2+2 -> 4+4 = 8), considera o teto real
-          if ((color === 'citrine' || color === 'aqua') && p.value >= 2 && p.value % 2 === 0) {
-            return sum + p.value * 2;
-          }
-          return sum + (p.value * 2 <= 6 ? p.value * 2 : p.value);
-        }, 0);
-        if (maxPureSum < sSum) return false;
+        const targets = shadows.filter((s) => s.type === color).map((s) => s.value);
+        if (targets.length === 0) continue;
+        const initPieces = pures
+          .filter((p) => p.type === color)
+          .map((p) => ({ v: p.value, b: p.boosted ? 1 : 0 }));
+        if (initPieces.length === 0) return false;
+
+        const minDrain = this._computeColorMinDrainBFS(color, initPieces, targets, hasAltar, maxOpalDrain);
+        if (!Number.isFinite(minDrain)) return false;
+        totalMinDrainNeeded += minDrain;
+        if (totalMinDrainNeeded > maxOpalDrain) return false;
       }
+
       return true;
     },
 
@@ -4362,11 +5084,48 @@
           }
         }
       } else if (this.phase === 'shell_game_victory') {
-        if (this.phaseTime >= 2.2) {
-          this.shellGame = null;
-          this.startMusicalShow();
+        sg.victoryTimer = (sg.victoryTimer || 0) + dt;
+        const vicT = Math.max(this.phaseTime, sg.victoryTimer);
+        if (vicT >= 2.2) {
+          this.finishShellGameVictory();
         }
       }
+    },
+
+    finishShellGameVictory() {
+      this.shellGame = null;
+      this.stopMusicAudio();
+      this.stopRegularBgm();
+      const spec = this.getSpec();
+      const syncInfo = spec.nodeSyncByLevel[this.currentLevel];
+      if (syncInfo) {
+        global.CrystalApp?.syncProgress?.(syncInfo.ids, syncInfo.next);
+      }
+      this.obstacleDecay = 1;
+      this.giantCrystalBroken = true;
+      this.waveActive = true;
+      this.waveRadius = 300;
+      this.phase = 'post_musical_dlg';
+      this.phaseTime = 0;
+      this.protag.x = 68;
+      this.protag.state = 'idle';
+      this.ordemCompanion.x = 96;
+      this.ordemCompanion.state = 'idle';
+      this.guardianActor.visible = true;
+      this.guardianActor.x = 152;
+      this.guardianActor.y = 142;
+      this.guardianActor.state = 'idle';
+      this.guardianActor.flipX = true;
+
+      DialogueBox.sockets.caatinga = true;
+      const lines = (spec.postDialogues && spec.postDialogues[5]) || [];
+      DialogueBox.open(lines, () => {
+        this.phase = 'world_celebrate_complete';
+        this.phaseTime = 0;
+        this.protag.state = 'celebrate';
+        this.ordemCompanion.state = 'celebrate';
+        this.guardianActor.state = 'celebrate';
+      });
     },
 
     drawShellGame(ctx, tq) {
@@ -4838,8 +5597,8 @@
 
         currentStage: 1, // 1 a 4
         totalStages: 4,
-        stageDuration: 30.0, // ~30 segundos por etapa
-        stageTimeRemaining: 30.0,
+        stageDuration: 20.0, // 20 segundos por etapa
+        stageTimeRemaining: 20.0,
 
         strikes: 0,
         maxStrikes: 3,
@@ -4847,6 +5606,11 @@
         score: 0,
         pureCuts: 0,
         maxCombo: 0,
+        comboMultiplier: 1,
+        lastCombo: 0,
+        comboTimer: 0,
+        comboVisualRings: [],
+        comboSparkles: [],
 
         spawnTimer: 0.8,
 
@@ -5147,13 +5911,25 @@
       fn.strokePureCuts++;
       fn.strokeCrystals.push(crystal);
 
-      // Mecânica de combo caso corte 2, 3 ou 4 cristais de uma vez
+      // Mecânica de combo clássica: acerto múltiplo de 2, 3 ou 4 cristais simultâneos / no mesmo golpe
       if (fn.strokePureCuts >= 2) {
-        fn.score += fn.strokePureCuts * 5;
-        fn.maxCombo = Math.max(fn.maxCombo, fn.strokePureCuts);
-        const comboTxt = `COMBO X${fn.strokePureCuts}!`;
+        const comboCount = Math.min(fn.strokePureCuts, 4);
+        fn.score += comboCount * 10;
+        fn.maxCombo = Math.max(fn.maxCombo, comboCount);
+        fn.comboMultiplier = comboCount;
+        fn.lastCombo = comboCount;
+        fn.comboTimer = 2.4;
+
+        const comboTxt = `COMBO X${comboCount}!`;
         const avgX = fn.strokeCrystals.reduce((acc, c) => acc + c.x, 0) / fn.strokeCrystals.length;
         const avgY = fn.strokeCrystals.reduce((acc, c) => acc + c.y, 0) / fn.strokeCrystals.length;
+
+        const bannerColors = {
+          2: { bg: '#064e3b', border: '#10b981', text: '#ffea31', star: '#fbbf24' },
+          3: { bg: '#065f46', border: '#34d399', text: '#67e8f9', star: '#38bdf8' },
+          4: { bg: '#4c1d95', border: '#a855f7', text: '#fde047', star: '#f43f5e' }
+        };
+        const colScheme = bannerColors[comboCount] || bannerColors[2];
 
         fn.activeComboBanner = {
           text: comboTxt,
@@ -5161,11 +5937,43 @@
           y: avgY - 14,
           scale: 1.5,
           alpha: 1.0,
-          timer: 1.4,
-          count: fn.strokePureCuts
+          timer: 1.5,
+          count: comboCount,
+          colors: colScheme
         };
+
+        // Efeito visual chamativo: anéis de choque expansivos e partículas luminosas em tela
+        fn.comboVisualRings = fn.comboVisualRings || [];
+        fn.comboVisualRings.push({
+          x: avgX,
+          y: avgY,
+          r: 6,
+          maxR: 32 + comboCount * 14,
+          color: colScheme.border,
+          alpha: 1.0
+        });
+
+        fn.comboSparkles = fn.comboSparkles || [];
+        const numParticles = 8 + comboCount * 6;
+        for (let p = 0; p < numParticles; p++) {
+          const ang = (p / numParticles) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
+          const spd = 35 + Math.random() * 55;
+          fn.comboSparkles.push({
+            x: avgX,
+            y: avgY,
+            vx: Math.cos(ang) * spd,
+            vy: Math.sin(ang) * spd,
+            life: 0.7 + Math.random() * 0.4,
+            maxLife: 1.0,
+            color: p % 2 === 0 ? colScheme.text : colScheme.star
+          });
+        }
+
+        // Tremor sutil e impactante de tela proporcional ao combo
+        fn.shakeTimer = 0.12 + comboCount * 0.06;
+
         if (global.CrystalAudio?.comboChime) {
-          global.CrystalAudio.comboChime(fn.strokePureCuts);
+          global.CrystalAudio.comboChime(comboCount);
         } else {
           GameHUD.playSfx('reward');
         }
@@ -5234,6 +6042,34 @@
 
       if (fn.shakeTimer > 0) fn.shakeTimer = Math.max(0, fn.shakeTimer - dt);
 
+      // Temporizador do badge de combo no canto superior direito
+      if (fn.comboTimer > 0) {
+        fn.comboTimer -= dt;
+        if (fn.comboTimer <= 0) {
+          fn.comboMultiplier = 1;
+        }
+      }
+
+      // Atualiza anéis e partículas de choque do combo
+      if (fn.comboVisualRings && fn.comboVisualRings.length) {
+        for (let i = fn.comboVisualRings.length - 1; i >= 0; i--) {
+          const ring = fn.comboVisualRings[i];
+          ring.r += 65 * dt;
+          ring.alpha = Math.max(0, 1 - ring.r / ring.maxR);
+          if (ring.r >= ring.maxR) fn.comboVisualRings.splice(i, 1);
+        }
+      }
+      if (fn.comboSparkles && fn.comboSparkles.length) {
+        for (let i = fn.comboSparkles.length - 1; i >= 0; i--) {
+          const spk = fn.comboSparkles[i];
+          spk.x += spk.vx * dt;
+          spk.y += spk.vy * dt;
+          spk.vy += 45 * dt;
+          spk.life -= dt;
+          if (spk.life <= 0) fn.comboSparkles.splice(i, 1);
+        }
+      }
+
       // Atualiza banner de combo
       if (fn.activeComboBanner) {
         fn.activeComboBanner.timer -= dt;
@@ -5249,7 +6085,7 @@
       const curTime = typeof performance !== 'undefined' ? performance.now() / 1000 : 0;
       fn.bladeTrail = fn.bladeTrail.filter((pt) => curTime - pt.time < 0.18);
 
-      // Contagem regressiva da etapa (~30 segundos)
+      // Contagem regressiva da etapa (20 segundos)
       fn.stageTimeRemaining -= dt;
       if (fn.stageTimeRemaining <= 0) {
         fn.stageTimeRemaining = 0;
@@ -5586,49 +6422,102 @@
         ctx.restore();
       }
 
+      // Efeitos de impacto visual do combo (anéis de choque luminosos e partículas)
+      if (fn.comboVisualRings && fn.comboVisualRings.length) {
+        for (const ring of fn.comboVisualRings) {
+          ctx.save();
+          ctx.globalAlpha = clamp(ring.alpha, 0, 1);
+          drawRing(ctx, ring.x, ring.y, R(ring.r), ring.color || '#fbbf24');
+          ctx.restore();
+        }
+      }
+      if (fn.comboSparkles && fn.comboSparkles.length) {
+        for (const spk of fn.comboSparkles) {
+          ctx.save();
+          ctx.globalAlpha = clamp(spk.life / spk.maxLife, 0, 1);
+          drawStar(ctx, spk.x, spk.y, 2, '#ffffff', spk.color || '#fde047');
+          ctx.restore();
+        }
+      }
+
       ctx.restore();
 
-      // 4. Barra Superior do Desafio: Etapa / Tempo 30s / Pontuação visível da criança
+      // 4. Barra Superior do Desafio: Etapa / Tempo 20s / Pontuação / Indicador de Combo em Destaque
       const barBox = { x: 24, y: 22, w: 272, h: 16 };
       drawParchmentBox(ctx, barBox.x, barBox.y, barBox.w, barBox.h);
 
       // Etapa (1 a 4)
-      drawPixelText(ctx, `Etapa ${fn.currentStage}/4`, barBox.x + 8, barBox.y + 4, '#ffffff', '#000000', 64, 8);
+      drawPixelText(ctx, `Etapa ${fn.currentStage}/4`, barBox.x + 6, barBox.y + 4, '#ffffff', '#000000', 50, 8);
 
-      // Tempo de 30 segundos
+      // Tempo de 20 segundos
       const secLeft = Math.max(0, Math.ceil(fn.stageTimeRemaining));
-      const timeCol = secLeft <= 5 ? '#ff4d4d' : '#ffea31';
-      drawPixelTextCentered(ctx, `Tempo: ${secLeft}s`, 154, barBox.y + 4, timeCol, '#000000', 76, 8);
+      const timeCol = secLeft <= 4 ? '#ff4d4d' : '#ffea31';
+      drawPixelTextCentered(ctx, `Tempo: ${secLeft}s`, 104, barBox.y + 4, timeCol, '#000000', 58, 8);
 
-      // Barra fina de progresso dos 30s
+      // Barra fina de progresso dos 20s
       const timeFrac = clamp(fn.stageTimeRemaining / fn.stageDuration, 0, 1);
       ctx.fillStyle = '#4ade80';
-      ctx.fillRect(126, barBox.y + 13, R(56 * timeFrac), 2);
+      ctx.fillRect(80, barBox.y + 13, R(48 * timeFrac), 2);
 
       // Exibição visível da pontuação da criança
-      drawPixelText(ctx, `Pontos: ${fn.score}`, barBox.x + barBox.w - 86, barBox.y + 4, '#92e8ff', '#000000', 78, 8, 'right');
+      drawPixelText(ctx, `Pts: ${fn.score}`, 148, barBox.y + 4, '#92e8ff', '#000000', 48, 8);
+
+      // Indicador/Contador de Combo em Destaque no Canto Superior Direito (x: 230..292)
+      this.forestNinjaComboBadgeRect = { x: 230, y: barBox.y + 1, w: 62, h: 14 };
+      const cbRect = this.forestNinjaComboBadgeRect;
+      const isComboActive = fn.comboTimer > 0 && fn.comboMultiplier >= 2;
+      ctx.save();
+      if (isComboActive) {
+        const bgCol = fn.comboMultiplier >= 4 ? '#581c87' : (fn.comboMultiplier === 3 ? '#065f46' : '#854d0e');
+        const borderCol = fn.comboMultiplier >= 4 ? '#d8b4fe' : (fn.comboMultiplier === 3 ? '#6ee7b7' : '#fde047');
+        const textCol = fn.comboMultiplier >= 4 ? '#fef08a' : (fn.comboMultiplier === 3 ? '#a7f3d0' : '#fef9c3');
+        ctx.fillStyle = bgCol;
+        ctx.fillRect(cbRect.x - 1, cbRect.y - 1, cbRect.w + 2, cbRect.h + 2);
+        ctx.fillStyle = borderCol;
+        ctx.fillRect(cbRect.x, cbRect.y, cbRect.w, 1);
+        ctx.fillRect(cbRect.x, cbRect.y + cbRect.h - 1, cbRect.w, 1);
+        ctx.fillRect(cbRect.x, cbRect.y, 1, cbRect.h);
+        ctx.fillRect(cbRect.x + cbRect.w - 1, cbRect.y, 1, cbRect.h);
+
+        const comboLabel = `COMBO ${fn.comboMultiplier}x!`;
+        drawPixelTextCentered(ctx, comboLabel, cbRect.x + cbRect.w / 2, cbRect.y + 3, textCol, '#000000', cbRect.w - 4, 8);
+        drawStar(ctx, cbRect.x + 5, cbRect.y + 7, 2, '#ffffff', borderCol);
+        drawStar(ctx, cbRect.x + cbRect.w - 5, cbRect.y + 7, 2, '#ffffff', borderCol);
+      } else {
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(cbRect.x, cbRect.y, cbRect.w, cbRect.h);
+        ctx.fillStyle = '#475569';
+        ctx.fillRect(cbRect.x, cbRect.y, cbRect.w, 1);
+        ctx.fillRect(cbRect.x, cbRect.y + cbRect.h - 1, cbRect.w, 1);
+        ctx.fillRect(cbRect.x, cbRect.y, 1, cbRect.h);
+        ctx.fillRect(cbRect.x + cbRect.w - 1, cbRect.y, 1, cbRect.h);
+        const comboLabel = fn.maxCombo >= 2 ? `MAX: ${fn.maxCombo}x` : 'COMBO: 1x';
+        drawPixelTextCentered(ctx, comboLabel, cbRect.x + cbRect.w / 2, cbRect.y + 3, '#94a3b8', '#000000', cbRect.w - 4, 8);
+      }
+      ctx.restore();
 
       // 5. Banner de COMBO (COMBO X2!, COMBO X3!, COMBO X4!)
       if (fn.activeComboBanner) {
         const cb = fn.activeComboBanner;
-        const bw = 92, bh = 18;
+        const bw = 96, bh = 18;
         const bx = R(cb.x - bw / 2), by = R(cb.y - bh / 2);
         ctx.save();
         ctx.globalAlpha = clamp(cb.timer / 0.35, 0, 1);
 
-        // Caixa temática de combo
-        ctx.fillStyle = '#064e3b';
+        const col = cb.colors || { bg: '#064e3b', border: '#10b981', text: '#ffea31', star: '#fbbf24' };
+        // Caixa temática de combo com efeito visual brilhante
+        ctx.fillStyle = col.bg;
         ctx.fillRect(bx - 1, by - 1, bw + 2, bh + 2);
-        ctx.fillStyle = '#065f46';
-        ctx.fillRect(bx, by, bw, bh);
-        ctx.fillStyle = '#10b981';
+        ctx.fillStyle = col.border;
         ctx.fillRect(bx, by, bw, 1);
         ctx.fillRect(bx, by + bh - 1, bw, 1);
+        ctx.fillRect(bx, by, 1, bh);
+        ctx.fillRect(bx + bw - 1, by, 1, bh);
 
         // Texto do combo
-        drawPixelTextCentered(ctx, cb.text, bx + bw / 2, by + 4, '#ffea31', '#000000', bw - 10, 10);
-        drawStar(ctx, bx + 10, by + 9, 3, '#ffffff', '#fbbf24');
-        drawStar(ctx, bx + bw - 10, by + 9, 3, '#ffffff', '#fbbf24');
+        drawPixelTextCentered(ctx, cb.text, bx + bw / 2, by + 4, col.text, '#000000', bw - 10, 10);
+        drawStar(ctx, bx + 10, by + 9, 3, '#ffffff', col.star);
+        drawStar(ctx, bx + bw - 10, by + 9, 3, '#ffffff', col.star);
         ctx.restore();
       }
 
@@ -5926,12 +6815,27 @@
           this.regularAudio._src = src;
           this.regularAudio.loop = true;
           this.regularAudio.preload = 'auto';
+          global.CrystalAudio?.setupSeamlessLoop?.(this.regularAudio, { loopStart: 0.25, loopEndOffset: 0.48, fadeMs: 280 });
+        }
+        if (!this.regularAudio._seamlessLoopConfig) {
+          global.CrystalAudio?.setupSeamlessLoop?.(this.regularAudio, { loopStart: 0.25, loopEndOffset: 0.48, fadeMs: 280 });
         }
         const effMus = GameHUD.muted ? 0 : clamp(GameHUD.musicVol / 100, 0, 1);
         this.regularAudio.muted = GameHUD.muted || effMus <= 0;
-        this.regularAudio.volume = effMus;
-        if (!GameHUD.muted && GameHUD.musicVol > 0 && this.regularAudio.paused) {
-          this.regularAudio.play().catch(() => {});
+        if (this.regularAudio.paused) {
+          if (global.CrystalAudio?.fadeInTrack) {
+            global.CrystalAudio.fadeInTrack(this.regularAudio, effMus, 500, 0.25);
+          } else {
+            this.regularAudio.volume = effMus;
+          }
+          if (!GameHUD.muted && GameHUD.musicVol > 0) {
+            this.regularAudio.play().catch(() => {});
+          }
+        } else {
+          this.regularAudio._fadeTargetVol = effMus;
+          if (!this.regularAudio._fadingIn && !this.regularAudio._loopFadingOut) {
+            this.regularAudio.volume = effMus;
+          }
         }
       } catch (_) {}
     },
@@ -6044,6 +6948,9 @@
       IrisTransition.active = false;
       IrisTransition.onDone = null;
       this._exitIrisStarted = false;
+      this.shellGame = null;
+      this.riverMelody = null;
+      this.forestNinja = null;
       this.phase = 'walk_to_world_exit';
       this.phaseTime = 0;
       this.protag.state = 'walk';
@@ -6064,8 +6971,13 @@
       global.CrystalMenuAudio?.pause?.();
       GameHUD.paused = false;
       GameHUD.settingsOpen = false;
+      GameHUD.guideOpen = false;
+      if (typeof GameHUD.resetAbilityCharges === 'function') GameHUD.resetAbilityCharges();
       this.draggedPiece = null;
       this.equationPointer = null;
+      this.shellGame = null;
+      this.riverMelody = null;
+      this.forestNinja = null;
       this.clearTrembleStates();
 
       const spec = this.getSpec();
@@ -6208,7 +7120,7 @@
 
         if (this.phase === 'musical_part1_shadows' || this.phase === 'musical_part2_bright') {
           const sb = this.skipMusicalBtnRect;
-          if (x >= sb.x && x <= sb.x + sb.w && y >= sb.y && y <= sb.y + sb.h) {
+          if (GameHUD.godMode && x >= sb.x && x <= sb.x + sb.w && y >= sb.y && y <= sb.y + sb.h) {
             GameHUD.playSfx('click');
             this.finishMusicalShow();
             return;
@@ -6235,8 +7147,48 @@
           return;
         }
 
+        if (
+          this.selectedPiece &&
+          !this.selectedPiece.broken &&
+          !this.selectedPiece.shadow &&
+          !this.selectedPiece.shape &&
+          !this.selectedPiece.inMoldId &&
+          this.electricShapes &&
+          this.electricShapes.length > 0
+        ) {
+          for (const es of this.electricShapes) {
+            if (!es.used && Math.hypot(x - es.x, y - es.y) <= 20) {
+              const sel = this.selectedPiece;
+              this.selectedPiece = null;
+              this.tryEnterElectricShapeNode(es, [sel]);
+              if (this.phase === 'gameplay') {
+                this.checkEquationSolved();
+                this.triggerDefeatIfImpossible();
+              }
+              return;
+            }
+          }
+        }
+
         const eq = this.pureEquation;
         const clickedInEq = this.isInsideEquationAura(eq, x, y);
+
+        // Prioridade 1: cristais livres fora da equação (evita que a aura compacta da equação roube o clique)
+        for (let i = this.pieces.length - 1; i >= 0; i--) {
+          const p = this.pieces[i];
+          if (!p.shadow && !p.broken && p.value > 0 && !p.inFraction && !p.inEquation && Math.hypot(x - p.x, y - p.y) <= 16) {
+            GameHUD.playSfx(p.type === 'opal' ? 'opalGrab' : (p.type === 'rose' ? 'roseGrab' : 'quartzGrab'));
+            this.draggedPiece = p;
+            this.dragStartPos = { x, y };
+            this.dragMovedDist = 0;
+            p.dragging = true;
+            const immediateHit = this.findTouchingCompatibleShadow(p, p.x, p.y);
+            if (immediateHit) {
+              this.triggerImmediateAnnulment(p, immediateHit);
+            }
+            return;
+          }
+        }
 
         if (eq && !eq.broken && !eq.expanded && clickedInEq) {
           this.equationPointer = { startX: x, startY: y, origX: eq.x, origY: eq.y, moved: false };
@@ -6268,10 +7220,15 @@
 
       const onMove = (e) => {
         if (!this.running || this.phase === 'map_iris_in' || this.phase === 'map_active') return;
-        if (GameHUD.paused || GameHUD.settingsOpen) return;
+        if (GameHUD.paused || GameHUD.settingsOpen || GameHUD.guideOpen) return;
         const pt = e.touches ? e.touches[0] : e;
         if (!pt) return;
         const { x, y } = this.toLogicalCoords(pt.clientX, pt.clientY);
+
+        if (TutorialModal.isOpen && typeof TutorialModal.handlePointerMove === 'function') {
+          TutorialModal.handlePointerMove(x, y);
+          return;
+        }
 
         if (this.phase === 'forest_ninja_vignette' && this.forestNinja?.vignetteCard === 2) {
           this.handleForestNinjaPointerMove(x, y);
@@ -6292,13 +7249,27 @@
           if (this.dragStartPos) {
             this.dragMovedDist = Math.max(this.dragMovedDist, Math.hypot(x - this.dragStartPos.x, y - this.dragStartPos.y));
           }
+          if (this.draggedPiece.inMoldId && this.electricShapes) {
+            const srcMold = this.electricShapes.find((es) => es.id === this.draggedPiece.inMoldId);
+            if (!srcMold || Math.hypot(x - srcMold.x, y - srcMold.y) > 18) {
+              this.ejectCrystalFromMold(this.draggedPiece, true);
+            }
+          }
           const res = this.moveDraggedPieceWithCollision(this.draggedPiece, x, y);
           if (res && res.annulled) return;
 
-          if (this.draggedPiece && this.fractionPlatform && !this.fractionPlatform.broken) {
+          if (this.draggedPiece && this.fractionPlatform && !this.fractionPlatform.broken && !this.draggedPiece.inFraction && this.draggedPiece.type !== 'opal') {
             const fp = this.fractionPlatform;
-            fp.topHover = Math.abs(this.draggedPiece.x - fp.x) <= fp.w * 0.5 && Math.abs(this.draggedPiece.y - fp.topY) <= 16;
-            fp.bottomHover = Math.abs(this.draggedPiece.x - fp.x) <= fp.w * 0.5 && Math.abs(this.draggedPiece.y - fp.bottomY) <= 16;
+            const dp = this.draggedPiece;
+            const inFrac = Math.abs(dp.x - fp.x) <= (fp.w * 0.5 + 8) && Math.abs(dp.y - fp.y) <= (fp.h * 0.5 + 10);
+            if (inFrac) {
+              const forceBottom = Math.abs(dp.y - fp.y) <= 4 && (fp.topPieces?.length || 0) > 0 && (fp.bottomPieces?.length || 0) === 0;
+              fp.topHover = !forceBottom && dp.y < fp.y;
+              fp.bottomHover = forceBottom || dp.y >= fp.y;
+            } else {
+              fp.topHover = false;
+              fp.bottomHover = false;
+            }
           }
           if (this.draggedPiece && this.pureEquation && !this.pureEquation.broken) {
             const overEq = this.isInsideEquationAura(this.pureEquation, this.draggedPiece.x, this.draggedPiece.y, true);
@@ -6332,6 +7303,11 @@
       const onUp = () => {
         if (!this.running || this.phase === 'map_iris_in' || this.phase === 'map_active') return;
 
+        if (TutorialModal.isOpen && typeof TutorialModal.handlePointerUp === 'function') {
+          TutorialModal.handlePointerUp(0, 0);
+          return;
+        }
+
         if (this.phase === 'forest_ninja_vignette' && this.forestNinja?.vignetteCard === 2) {
           this.handleForestNinjaPointerUp();
           return;
@@ -6350,9 +7326,34 @@
         }
 
         if (this.equationPointer && this.pureEquation && !this.pureEquation.broken) {
+          const tapX = this.equationPointer.startX;
+          const tapY = this.equationPointer.startY;
           const wasTap = !this.equationPointer.moved;
           this.equationPointer = null;
           if (wasTap) {
+            let splittableInEq = null;
+            let bestSplitDist = 16;
+            if (this.phase === 'gameplay') {
+              for (const cand of this.pieces) {
+                if (
+                  !cand.shadow && !cand.broken && !cand.shape &&
+                  cand.value >= 2 && cand.value % 2 === 0 &&
+                  (cand.type === 'citrine' || cand.type === 'aqua') &&
+                  cand.inEquation === 'pure'
+                ) {
+                  const d = Math.hypot(tapX - cand.x, tapY - cand.y);
+                  if (d <= bestSplitDist) {
+                    bestSplitDist = d;
+                    splittableInEq = cand;
+                  }
+                }
+              }
+            }
+            if (splittableInEq) {
+              this.pureEquation.expanded = true;
+              this.trySplitCrystalOnTap(splittableInEq);
+              return;
+            }
             this.pureEquation.expanded = !this.pureEquation.expanded;
             GameHUD.playSfx(this.pureEquation.expanded ? 'equationExpand' : 'equationCollapse');
             this.layoutEquationPieces(this.pureEquation, 'pure');
@@ -6381,7 +7382,7 @@
 
         if (this.draggedPiece) {
           const p = this.draggedPiece;
-          const wasQuickTap = this.dragMovedDist < 5;
+          const wasQuickTap = this.dragMovedDist < 8;
           p.dragging = false;
           this.draggedPiece = null;
           this.dragStartPos = null;
@@ -6393,12 +7394,17 @@
           if (p.broken || p.value <= 0 || this.phase !== 'gameplay') return;
 
           if (wasQuickTap) {
+            if (p.inMoldId) {
+              this.ejectCrystalFromMold(p);
+              this.selectedPiece = null;
+              return;
+            }
             if (this.tryDisassembleShapeOnTap(p)) {
-              if (this.selectedPiece === p) this.selectedPiece = null;
+              this.selectedPiece = null;
               return;
             }
             if (this.trySplitCrystalOnTap(p)) {
-              if (this.selectedPiece === p) this.selectedPiece = null;
+              this.selectedPiece = null;
               return;
             }
             if (this.selectedPiece === p) {
@@ -6416,7 +7422,16 @@
                 }
                 return;
               }
-              if (this.pureEquation || this.shadowEquation || (this.electricShapes && this.electricShapes.length > 0)) {
+              if (!prev.shape && !p.shape && prev.type === p.type && p.type !== 'opal' && (prev.value + p.value) <= 6) {
+                if (this._mergeSameColorPieces(p, prev)) {
+                  if (this.phase === 'gameplay') {
+                    this.checkEquationSolved();
+                    this.triggerDefeatIfImpossible();
+                  }
+                  return;
+                }
+              }
+              if (this.pureEquation || this.shadowEquation) {
                 const eq = this.ensurePureEquation((prev.x + p.x) * 0.5, (prev.y + p.y) * 0.5);
                 prev.inEquation = 'pure';
                 p.inEquation = 'pure';
@@ -6446,6 +7461,7 @@
       };
 
       const onKeyDown = (e) => {
+        if (!this.running || this.phase === 'map_iris_in' || this.phase === 'map_active') return;
         if (e.key === 'r' || e.key === 'R') {
           if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
           if (this.isActiveGame()) {
@@ -6463,6 +7479,18 @@
 
         if (e.code === 'Space' || e.key === ' ' || e.code === 'Enter' || e.key === 'Enter') {
           if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+          if (DialogueBox.isOpen) {
+            e.preventDefault();
+            GameHUD.playSfx('click');
+            DialogueBox.advance();
+            return;
+          }
+          if (TutorialModal.isOpen) {
+            e.preventDefault();
+            if (typeof TutorialModal.isPageLocked === 'function' && TutorialModal.isPageLocked()) return;
+            TutorialModal.nextStep();
+            return;
+          }
           if (this.phase === 'celebrate_complete' || this.phase === 'world_celebrate_complete') {
             e.preventDefault();
             GameHUD.playSfx('click');
@@ -6515,7 +7543,7 @@
     // UPDATE & RENDER LOOP
     // ==========================================================================
     update(dt) {
-      if (GameHUD.paused || GameHUD.settingsOpen) {
+      if (GameHUD.paused || GameHUD.settingsOpen || GameHUD.guideOpen) {
         if (this.musicAudio && !this.musicAudio.paused) {
           try { this.musicAudio.pause(); } catch (_) {}
         }
@@ -6538,6 +7566,36 @@
       this.phaseTime += dt;
       IrisTransition.update(dt);
       DialogueBox.update(dt);
+      if (this.phase === 'tutorial' && !TutorialModal.isOpen) {
+        if (this.shellGame) {
+          this.phase = 'shell_game_show';
+        } else if (this.riverMelody) {
+          this.phase = 'river_melody_game';
+        } else if (this.forestNinja) {
+          this.phase = 'forest_ninja_vignette';
+        } else {
+          if (!this.pieces || this.pieces.length === 0) {
+            this.setupStep(this.currentStep || 1);
+          }
+          this.phase = 'gameplay';
+        }
+        this.phaseTime = 0;
+      }
+      if (this.equationShockEffect) {
+        this.equationShockEffect.elapsed += dt;
+        if (this.equationShockEffect.elapsed >= this.equationShockEffect.duration) {
+          this.equationShockEffect = null;
+        }
+      }
+      if (this.ghostHandAnim) {
+        this.ghostHandAnim.t += dt;
+        if (this.ghostHandAnim.t >= (this.ghostHandAnim.duration || 2.2)) {
+          this.ghostHandAnim = null;
+        }
+      }
+      if (this.regularAudio && !this.regularAudio.paused) {
+        global.CrystalAudio?.checkSeamlessLoop?.(this.regularAudio);
+      }
 
       if (this.obstacleDecay < this.targetObstacleDecay) {
         this.obstacleDecay = Math.min(this.targetObstacleDecay, this.obstacleDecay + dt * 1.4);
@@ -6557,34 +7615,42 @@
         } else {
           this.camPanY = 0;
         }
-        this.protag.x = R(-12 + p * 42);
-        this.ordemCompanion.x = R(-28 + p * 76);
+        this.protag.x = R(-12 + p * 34);
+        this.ordemCompanion.x = R(-28 + p * 66);
         this.protag.state = p < 1 ? 'walk' : 'idle';
         this.ordemCompanion.state = p < 1 ? 'walk' : 'idle';
         if (this.phaseTime >= 1.2) {
           this.camPanY = 0;
-          this.protag.x = 30;
-          this.ordemCompanion.x = 48;
+          this.protag.x = 22;
+          this.ordemCompanion.x = 38;
           this.protag.state = 'idle';
           this.ordemCompanion.state = 'idle';
           this.openIntroIfAny();
         }
       } else if (this.phase === 'intro_dialogue') {
-        const curLine = DialogueBox.isOpen && DialogueBox.queue ? DialogueBox.queue[DialogueBox.idx] : null;
+        const dlgIdx = DialogueBox.currentIndex ?? DialogueBox.idx ?? 0;
+        const curLine = DialogueBox.isOpen && DialogueBox.queue ? DialogueBox.queue[dlgIdx] : null;
         if (curLine && curLine.protagState) {
           this.protag.state = curLine.protagState === 'shock' ? 'shock' : 'idle';
         } else if (this.worldKey === 'caatinga' && this.currentLevel === 1) {
           this.protag.state = 'idle';
         }
       } else if (this.phase === 'equation_magnetic' && this.magneticAnim) {
-        const p = easeInOut(clamp(this.phaseTime / 0.75, 0, 1));
         const m = this.magneticAnim;
-        this.pureEquation.x = R(m.pStartX + (m.midX - 10 - m.pStartX) * p);
-        this.pureEquation.y = R(m.pStartY + (m.midY - m.pStartY) * p);
-        this.shadowEquation.x = R(m.sStartX + (m.midX + 10 - m.sStartX) * p);
-        this.shadowEquation.y = R(m.sStartY + (m.midY - m.sStartY) * p);
+        const st = ActorAnimator.computeEquationMagneticState(m, this.phaseTime);
+        this.pureEquation.x = st.pureX;
+        this.pureEquation.y = st.pureY;
+        this.shadowEquation.x = st.shadowX;
+        this.shadowEquation.y = st.shadowY;
         this.layoutEquationPieces(this.pureEquation, 'pure');
         this.layoutEquationPieces(this.shadowEquation, 'shadow');
+
+        if (st.isImpactShock && !m.shockTriggered) {
+          m.shockTriggered = true;
+          this.equationShockEffect = { x: m.midX, y: m.midY, elapsed: 0, duration: 0.48 };
+          this.spawnShatter(m.midX, m.midY, 'pure', 8);
+          this.spawnShatter(m.midX, m.midY, 'shadow', 8);
+        }
 
         if (this.phaseTime >= 0.78) {
           this.pureEquation.broken = true;
@@ -6600,6 +7666,7 @@
           if (this.pieces.some((k) => k.shadow && !k.broken)) {
             this.phase = 'gameplay';
             this.phaseTime = 0;
+            this.triggerDefeatIfImpossible();
           } else {
             this.onStepCleared(m.midX, m.midY);
           }
@@ -6847,8 +7914,6 @@
           ActorAnimator.drawActor(ctx, 'araci', 'sing', 94, 142, tq, { flipX: false });
           ActorAnimator.drawActor(ctx, 'irece', 'sing', 168, 142, tq, { flipX: true });
           ActorAnimator.drawActor(ctx, 'jurema', 'sing', 196, 142, tq, { flipX: true });
-          ActorAnimator.drawStoneNeonAnimal(ctx, 'cyan', extraVoice, 18, 142, tq, false);
-          ActorAnimator.drawStoneNeonAnimal(ctx, 'magenta', extraVoice, 302, 142, tq, true);
         } else {
           if (mt >= 47.0) {
             drawNextBiomePanorama(ctx, spec.nextBiome, (mt - 47.0) / 5.5, tq);
@@ -6860,11 +7925,6 @@
           }
           if (mt >= 42.0 && mt < 47.0) {
             drawMagicCrystalDrum(ctx, 118, 118, tq);
-          }
-          ActorAnimator.drawStoneNeonAnimal(ctx, 'cyan', extraVoice, 18, 142, tq, false);
-          ActorAnimator.drawStoneNeonAnimal(ctx, 'magenta', extraVoice, 206, 142, tq, true);
-          if (mt < 47.0) {
-            ActorAnimator.drawStoneNeonAnimal(ctx, 'gold', extraVoice, 298, 142, tq, true);
           }
           ActorAnimator.drawMusicNotesLoop(ctx, this.guardianActor.x, this.guardianActor.y - 24, tq, {
             count: 4,
@@ -6903,7 +7963,13 @@
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.putImageData(bgSet.image, 0, 0);
       const panOffset = R(this.camPanY || 0);
-      ctx.setTransform(2, 0, 0, 2, 0, panOffset * 2);
+      let shakeX = 0, shakeY = 0;
+      if (this.phase === 'equation_magnetic' && this.magneticAnim) {
+        const magSt = ActorAnimator.computeEquationMagneticState(this.magneticAnim, this.phaseTime);
+        shakeX = magSt.shakeX;
+        shakeY = magSt.shakeY;
+      }
+      ctx.setTransform(2, 0, 0, 2, shakeX * 2, panOffset * 2 + shakeY * 2);
 
       const spec = this.getSpec();
 
@@ -6911,8 +7977,6 @@
         drawAncientSanctuaryGate(ctx, this.obstacleDecay, this.gateOpenRatio, tq);
       } else if (this.phase === 'post_musical_dlg' || this.phase === 'world_celebrate_complete' || this.phase === 'walk_to_world_exit') {
         drawNextBiomePanorama(ctx, spec.nextBiome, 1.0, tq);
-        ActorAnimator.drawStoneNeonAnimal(ctx, 'cyan', this.phase === 'world_celebrate_complete', 20, 142, tq, false);
-        ActorAnimator.drawStoneNeonAnimal(ctx, 'magenta', this.phase === 'world_celebrate_complete', 298, 142, tq, true);
       } else if (this.isWorldFinale()) {
         drawGiantBiomeCrystal(ctx, this.worldKey, this.obstacleDecay, this.giantCrystalFlash, this.giantCrystalBroken, tq);
         if (!this.giantCrystalBroken) {
@@ -6950,7 +8014,8 @@
         });
       }
       if (this.worldKey === 'caatinga' && this.phase === 'intro_dialogue' && DialogueBox.isOpen && DialogueBox.queue) {
-        const curLine = DialogueBox.queue[DialogueBox.idx];
+        const dlgIdx = DialogueBox.currentIndex ?? DialogueBox.idx ?? 0;
+        const curLine = DialogueBox.queue[dlgIdx];
         if (curLine && (curLine.protagState === 'panting' || curLine.protagState === 'shock')) {
           const f12 = Math.floor(tq * 12);
           const dropY = this.protag.y - 22 + (f12 % 5);
@@ -7013,13 +8078,6 @@
           }
         }
 
-        if (this.phase === 'equation_magnetic' && this.pureEquation && this.shadowEquation) {
-          const f12 = Math.floor(tq * 12);
-          for (let x = this.pureEquation.x; x <= this.shadowEquation.x; x += 3) {
-            P1(ctx, x, this.pureEquation.y + ((x + f12) & 1 ? -1 : 1), '#ffffff');
-          }
-        }
-
         const pureEqMembers = this.pieces.filter((p) => !p.broken && p.value > 0 && p.inEquation === 'pure');
         const shadowEqMembers = this.pieces.filter((p) => !p.broken && p.value > 0 && p.inEquation === 'shadow');
         drawEquationAura(ctx, this.pureEquation, tq, pureEqMembers);
@@ -7056,17 +8114,24 @@
           drawCrystalPiece(ctx, p, tq, p === this.selectedPiece, p.id === this.tutorialHighlightId);
         }
 
+        if (this.phase === 'equation_magnetic' && this.magneticAnim) {
+          ActorAnimator.drawEquationMagneticShock(ctx, this.pureEquation, this.shadowEquation, this.magneticAnim, this.phaseTime, tq);
+        }
+
         drawFloatingBanners(ctx, this.floatingBanners, tq);
       }
 
       this.drawShards(ctx);
+      if (this.equationShockEffect) {
+        ActorAnimator.drawEquationShockwave(ctx, this.equationShockEffect, tq);
+      }
 
       ctx.setTransform(2, 0, 0, 2, 0, 0);
       const inMusical = this.phase === 'musical_part1_shadows' || this.phase === 'musical_part2_bright';
       const hudCustomTitle = spec.customHudTitle || (this.phase && this.phase.startsWith('shell_game_') ? 'Caatinga - O Desafio das Areias' : (this.phase === 'river_melody_game' ? 'Rio - Melodia das Águas' : null));
       GameHUD.renderTopBar(ctx, this.currentLevel, this.currentStep, this.totalSteps, inMusical, hudCustomTitle);
 
-      if (inMusical) {
+      if (inMusical && GameHUD.godMode) {
         const sb = this.skipMusicalBtnRect;
         ctx.fillStyle = '#3d2b24';
         ctx.fillRect(sb.x, sb.y, sb.w, sb.h);
@@ -7079,6 +8144,10 @@
       }
 
       DialogueBox.render(ctx, tq);
+      if (this.phase === 'gameplay' && this.ghostHandAnim && typeof E.drawGhostHandHint === 'function') {
+        E.drawGhostHandHint(ctx, this.ghostHandAnim, tq);
+      }
+
       TutorialModal.render(ctx, tq);
 
       if (this.phase === 'celebrate_complete') {
@@ -7089,7 +8158,7 @@
         this.drawGameOverOverlay(ctx);
       }
 
-      GameHUD.renderModals(ctx);
+      GameHUD.renderModals(ctx, tq);
       IrisTransition.render(ctx);
     },
 
@@ -7110,5 +8179,6 @@
     }
   };
 
+  TruePixelWorlds.GEM_PALETTES = GEM_PALETTES;
   global.TruePixelWorlds = TruePixelWorlds;
 })(typeof window !== 'undefined' ? window : globalThis);

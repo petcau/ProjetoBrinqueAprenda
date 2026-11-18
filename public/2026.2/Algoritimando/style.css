@@ -3430,64 +3430,6 @@ body.arrastando * {
   }
 }
 
-/* ============================================================
-   CELULAR DEITADO
-   Tela deitada e baixa (celular): o jogo usa o desenho do PC em
-   miniatura. Um aviso sugere virar o aparelho; ele some sozinho em
-   pé e pode ser dispensado. As medidas daqui são em px de propósito:
-   o aviso precisa ser legível justamente quando o resto está miúdo.
-   ============================================================ */
-.girar {
-  display: none;
-}
-@media (orientation: landscape) and (max-height: 480px) and (pointer: coarse) {
-  #stage:not(.deitado-ok) .girar {
-    position: absolute;
-    inset: 0;
-    z-index: 60;
-    display: grid;
-    place-items: center;
-    padding: 12px;
-    background: rgba(29, 24, 36, 0.86);
-  }
-  .girar-caixa {
-    max-width: 420px;
-    padding: 16px 20px;
-    display: grid;
-    justify-items: center;
-    gap: 10px;
-    text-align: center;
-    background: var(--cream);
-    border: 3px solid var(--ink);
-    border-radius: 18px;
-    box-shadow: 0 5px 0 var(--ink);
-  }
-  /* um celular em pé, desenhado em CSS */
-  .girar-figura {
-    width: 30px;
-    height: 50px;
-    border: 4px solid var(--ink);
-    border-radius: 8px;
-    background: var(--p);
-    box-shadow: inset 0 -8px 0 var(--ink);
-  }
-  #stage .girar h2 {
-    font-family: Fredoka;
-    font-size: 20px;
-  }
-  .girar p {
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 1.35;
-  }
-  #stage .girar .btn {
-    font-size: 15px;
-    padding: 8px 20px;
-    min-height: 44px;
-    border-width: 3px;
-    box-shadow: 0 4px 0 var(--ink);
-  }
-}
 /* deitado e baixo: o cartão do chamado não tem altura para a
    ilustração; sem ela, o título e o botão param de se sobrepor */
 @media (min-aspect-ratio: 4/5) and (max-height: 480px) {
@@ -4000,5 +3942,830 @@ body.arrastando * {
     box-shadow:
       0 0 0 0.6cqw var(--brown),
       0 0 0 3cqw rgba(255, 211, 77, 0.15);
+  }
+}
+
+/* ===== começo do jogo: só a Casa, até o sanduíche =====
+   Um círculo de luz sobre a Casa; o resto do mapa fica na sombra
+   (a sombra é a borda enorme do próprio círculo). */
+.mapa-foco {
+  position: absolute;
+  left: calc(50% + (var(--x, 50%) - 50%) * var(--k, 1));
+  top: var(--y, 50%);
+  width: 26%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  box-shadow:
+    0 0 4cqw 2cqw rgba(20, 14, 30, 0.72) inset,
+    0 0 0 300vmax rgba(20, 14, 30, 0.72);
+  pointer-events: none;
+  z-index: 2;
+}
+#hub .lugar.trancado {
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.25;
+  filter: grayscale(1);
+}
+#hub .lugar.primeiro {
+  z-index: 3;
+}
+.local-aviso {
+  flex: none;
+  font-weight: 800;
+  text-align: center;
+  color: var(--brown);
+  font-size: max(1.1cqw, 12px);
+  line-height: 1.3;
+}
+.call.call-espera {
+  opacity: 0.55;
+  filter: grayscale(0.6);
+  cursor: default;
+}
+.call.call-espera .btn {
+  background: #d9cbb6;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* ===== indicador de arrastar o mapa (celular) =====
+   Fica "grudado" na janela do mapa enquanto o miolo rola embaixo. */
+.mapa-arraste {
+  position: sticky;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+.mapa-arraste[hidden] {
+  display: none;
+}
+.mapa-arraste-dica {
+  position: absolute;
+  left: 50%;
+  top: 4cqw;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+  padding: 1.6cqw 3.6cqw;
+  border-radius: 99px;
+  background: rgba(43, 34, 49, 0.82);
+  color: #fff;
+  font: 800 max(3.4cqw, 12px) Nunito, sans-serif;
+  white-space: nowrap;
+  animation: arraste 1.6s ease-in-out infinite;
+}
+.mapa-arraste-dica svg {
+  width: 9cqw;
+  height: 4.5cqw;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+@keyframes arraste {
+  0%, 100% { transform: translateX(-56%); }
+  50% { transform: translateX(-44%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mapa-arraste-dica { animation: none; }
+}
+
+/* ===== a cena do chamado em tela cheia ===== */
+/* PC: a cena é o fundo da tela; o quadro .fase-arte não tem caixa
+   própria e o botão fica no canto da cena, acima do "Nível" */
+.fase-arte {
+  display: contents;
+}
+.cena-cheia-btn {
+  position: absolute;
+  left: 2cqw;
+  bottom: 7.4cqw;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 0.6cqw;
+}
+.cena-cheia-btn[hidden] {
+  display: none;
+}
+.cena-cheia-btn .icone {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.modal.cena-cheia {
+  background: rgba(20, 15, 30, 0.92);
+  cursor: zoom-out;
+}
+.cena-cheia-imagem {
+  position: absolute;
+  inset: 3cqw 3cqw 9cqw;
+  background: center / contain no-repeat;
+}
+.cena-cheia-fechar {
+  position: absolute;
+  bottom: 2.4cqw;
+  left: 50%;
+  transform: translateX(-50%);
+}
+/* celular: o botão fica dentro do quadro da cena, só com o ícone */
+@media (max-aspect-ratio: 4/5) {
+  #stage .fase-arte {
+    position: relative;
+  }
+  #stage .cena-cheia-btn {
+    left: auto;
+    right: 2cqw;
+    top: 2cqw;
+    bottom: auto;
+    padding: 1.6cqw;
+  }
+  #stage .cena-cheia-btn .icone {
+    width: 5.4cqw;
+    height: 5.4cqw;
+  }
+  #stage .cena-cheia-texto {
+    display: none;
+  }
+  #stage .cena-cheia-imagem {
+    inset: 4cqw 4cqw 20cqw;
+  }
+  #stage .cena-cheia-fechar {
+    bottom: 6cqw;
+  }
+}
+
+/* ============================================================
+   PC: MONTAGEM AO LADO E BOTÕES FORA DA BANDEJA
+   - Com 7 ou 8 cartas não sobra altura embaixo da bandeja e a
+     montagem sumia. Agora o botão "Ver montagem" aparece nesses
+     níveis e ela abre ao lado, por cima da cena (montagem.js põe a
+     classe "montagem-sem-espaco" na tela).
+   - "Verificar" ficava por cima da última carta da bandeja. Os
+     botões da direita passam a ficar empilhados na coluna do
+     Robô-guia, fora da área das cartas.
+   ============================================================ */
+@media not (max-aspect-ratio: 4/5) {
+  .rodape-direita {
+    flex-direction: column;
+    align-items: stretch;
+    width: 13.5cqw;
+    gap: 0.9cqw;
+  }
+  .rodape-direita .chip,
+  .rodape-direita .btn {
+    justify-content: center;
+    text-align: center;
+  }
+  #fase.tem-montagem.montagem-sem-espaco #btn-montagem:not([hidden]) {
+    display: inline-flex;
+    align-items: center;
+  }
+  #btn-montagem[aria-pressed="true"] {
+    background: var(--p);
+    color: #fff;
+  }
+  /* "Ver cena": a montagem some de vez (senão voltaria para baixo da
+     bandeja quando as cartas saem dela) */
+  #fase.tem-montagem.montagem-sem-espaco:not(.ver-montagem) .montagem {
+    display: none;
+  }
+  /* a área de jogo começa em 41cqw: a caixa volta 39cqw para a
+     esquerda e ocupa o lugar da cena */
+  #fase.tem-montagem.montagem-sem-espaco.ver-montagem .montagem:not([hidden]) {
+    position: absolute;
+    left: -39cqw;
+    top: 0;
+    width: 37cqw;
+    height: 33cqw;
+    flex: none;
+    visibility: visible;
+    z-index: 4;
+  }
+}
+
+/* prêmio escondido (nível rejogado não dá dica) */
+.rewards div[hidden] {
+  display: none;
+}
+
+/* ============================================================
+   CELULAR DEITADO — desenho próprio
+   Tela deitada e baixa (até 500 px de altura). Antes o jogo usava
+   aqui o desenho do PC em miniatura: botões de 20 px e letra de 9.
+   O palco continua 16:9, mas com menos coisas na tela e tudo maior:
+   - nível: sem a cena; tabuleiro à esquerda e bandeja à direita,
+     com cartas deitadas (figura + legenda), como no celular em pé;
+     o Robô-guia vira uma faixa e os botões ficam numa linha embaixo;
+   - demais telas: botões e textos maiores, janelas mais largas.
+   As medidas mínimas em px valem para o menor celular (640 x 360).
+   ============================================================ */
+@media (min-aspect-ratio: 4/5) and (max-height: 500px) {
+  /* ---------- botões, chips e janelas ---------- */
+  #stage .btn {
+    font-size: max(2.3cqw, 14px);
+    padding: 0.9cqw 3cqw;
+    min-height: max(6.2cqw, 38px);
+  }
+  #stage .btn.small {
+    font-size: max(2cqw, 12.5px);
+    padding: 0.7cqw 2.2cqw;
+    min-height: max(5.6cqw, 34px);
+  }
+  #stage .chip {
+    font-size: max(2cqw, 12.5px);
+    padding: 0.6cqw 1.6cqw;
+  }
+  #stage .chip:is(button) {
+    min-height: max(5.8cqw, 36px);
+    min-width: max(5.8cqw, 36px);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #stage .top {
+    inset: 1.2cqw 1.5cqw auto;
+    gap: 1cqw;
+    align-items: center;
+  }
+  #stage .top .ci {
+    width: 3.6cqw;
+    height: 3.6cqw;
+  }
+  #stage .title-box {
+    font-size: max(2.4cqw, 14px);
+  }
+  #stage .modal .panel {
+    width: min(74cqw, 96%);
+    max-height: 96cqh;
+    overflow-y: auto;
+    padding: 2.4cqw 3cqw;
+    gap: 1.6cqw;
+  }
+  #stage .modal p {
+    font-size: max(2cqw, 12.5px);
+    line-height: 1.45;
+  }
+  #stage h2 {
+    font-size: max(3cqw, 18px);
+  }
+
+  /* ---------- menu ---------- */
+  #stage .menu-btns {
+    gap: 1.4cqw;
+  }
+  #stage .menu-btns .btn {
+    min-width: 30cqw;
+  }
+  #stage .menu-linha .btn {
+    min-width: 0;
+  }
+
+  /* ---------- história ---------- */
+  #stage #story {
+    --faixa: 17cqw;
+  }
+  #stage #story .caption {
+    width: 58cqw;
+    bottom: 5.6cqw;
+    font-size: max(2.1cqw, 13px);
+    padding: 1cqw 2cqw;
+  }
+  #stage #story .skip {
+    bottom: 5.4cqw;
+  }
+  #stage #story .next {
+    bottom: 5.2cqw;
+  }
+  #stage #story .dots {
+    bottom: 1.4cqw;
+  }
+
+  /* ---------- crachá ---------- */
+  #stage #nameIn {
+    font-size: max(2.2cqw, 16px);
+    padding: 1cqw 1.6cqw;
+    min-height: max(6.2cqw, 38px);
+  }
+  #stage .char-form h2 {
+    font-size: max(2.8cqw, 17px);
+  }
+
+  /* ---------- mapa ---------- */
+  /* os marcadores ficam do tamanho do PC: maiores, o da Casa entraria
+     por baixo dos botões do topo */
+  #stage #hub .top .chip:is(button) {
+    min-height: max(5cqw, 32px);
+    min-width: max(5cqw, 32px);
+  }
+  #stage #hub:not(.em-progresso) .lugar-nome {
+    font-size: max(2cqw, 12.5px);
+    padding: 0.2cqw 1.4cqw;
+  }
+  #stage .lugar-conta {
+    font-size: max(1.7cqw, 11px);
+  }
+  #stage #hub:not(.em-progresso) .side > .guide:not(.prog) {
+    width: 44cqw;
+    grid-template-columns: 6.4cqw minmax(0, 1fr);
+  }
+  #stage #hub .guide b {
+    font-size: max(2cqw, 12.5px);
+  }
+  #stage #hub .guide p {
+    font-size: max(1.9cqw, 12px);
+    line-height: 1.3;
+  }
+  #stage #hub:not(.em-progresso) .prog {
+    width: 26cqw;
+  }
+  #stage .prog small {
+    font-size: max(1.8cqw, 11.5px);
+  }
+  #stage .prog strong {
+    font-size: max(2.8cqw, 17px);
+  }
+  #stage .prog #bIdeias,
+  #stage .prog .btn {
+    font-size: max(1.9cqw, 12px);
+    min-height: max(5.2cqw, 32px);
+    margin-top: 0.8cqw;
+  }
+
+  /* ---------- painel do lugar, ideias e níveis ---------- */
+  #stage .local-painel,
+  #stage .modal .ideias-painel {
+    width: min(84cqw, 96%);
+    padding: 1.6cqw 2.4cqw;
+    gap: 1.2cqw;
+  }
+  #stage .local-chamados .call {
+    grid-template-columns: 7cqw 1fr;
+    padding: 1cqw 1.6cqw;
+  }
+  #stage .local-chamados .call .who {
+    width: 7cqw;
+    height: 7cqw;
+  }
+  #stage .local-chamados .call b {
+    font-size: max(2.5cqw, 15px);
+  }
+  #stage .local-chamados .call small {
+    font-size: max(1.9cqw, 12px);
+  }
+  #stage .local-chamados .call .btn {
+    font-size: max(2cqw, 12.5px);
+    min-height: 0;
+    padding: 0.7cqw 2cqw;
+  }
+  #stage .ideia b {
+    font-size: max(2.3cqw, 14px);
+  }
+  #stage .modal .ideia p {
+    font-size: max(1.9cqw, 12px);
+  }
+  #stage .ideia .selo {
+    --d: 7cqw;
+  }
+  #stage .nivel-btn b {
+    font-size: max(2.2cqw, 14px);
+  }
+  #stage .nivel-btn span {
+    font-size: max(1.8cqw, 11.5px);
+  }
+
+  /* ---------- nível: tabuleiro e bandeja lado a lado ---------- */
+  #stage {
+    --carta-l: auto;
+    /* a altura da carta vem das fileiras (2 cartas por fileira): com
+       poucas cartas elas crescem até um teto; com 8, ainda dá 44 px */
+    --carta-a: clamp(6.8cqw, calc((27.6cqw - (var(--fileiras, 4) - 1) * 0.9cqw) / var(--fileiras, 4)), 10.5cqw);
+  }
+  #stage #fase .fase-faixa {
+    max-width: 46cqw;
+    padding: 0.5cqw 1.8cqw;
+  }
+  #stage #fase .fase-titulo {
+    font-size: max(2.2cqw, 14px);
+  }
+  /* a frase de instrução sai: o Robô-guia, logo abaixo, já dá a deixa */
+  #stage #fase .fase-instrucao {
+    display: none;
+  }
+  /* Robô-guia: uma faixa entre o topo e as cartas */
+  #stage #fase .guia {
+    left: 1.5cqw;
+    right: 1.5cqw;
+    top: 8.4cqw;
+    width: auto;
+    height: 7.4cqw;
+    padding: 0.5cqw 1.6cqw;
+    display: grid;
+    grid-template-columns: 5.6cqw minmax(0, 1fr);
+    gap: 1.4cqw;
+    align-items: center;
+    text-align: left;
+  }
+  #stage #fase .guia .face {
+    width: 5.6cqw;
+    height: 5.6cqw;
+    margin: 0;
+  }
+  #stage #fase .guia b {
+    display: none;
+  }
+  #stage #fase .guia p {
+    font-size: max(1.95cqw, 12.5px);
+    line-height: 1.25;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  #stage #fase .area-jogo {
+    left: 1.5cqw;
+    right: 1.5cqw;
+    top: 16.8cqw;
+    bottom: 8.4cqw;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    gap: 1.5cqw;
+  }
+  #stage #fase .tabuleiro,
+  #stage #fase .bandeja {
+    padding: 1cqw;
+    min-height: 0;
+    border-radius: 1.6cqw;
+  }
+  #stage #fase .tabuleiro-grade,
+  #stage #fase .bandeja-fila {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: stretch;
+    align-content: start;
+    gap: 0.9cqw;
+  }
+  #stage #fase .espaco {
+    width: auto;
+  }
+  #stage #fase .espaco-numero {
+    font-size: 4cqw;
+  }
+  #stage #fase .espaco.preenchido .espaco-numero {
+    left: -0.8cqw;
+    top: -0.8cqw;
+    width: 3.2cqw;
+    height: 3.2cqw;
+    font-size: max(1.8cqw, 11px);
+  }
+  #stage #fase .carta {
+    width: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: 1cqw;
+    padding: 0.5cqw 0.9cqw;
+  }
+  #stage #fase .carta-figura {
+    flex: none;
+    width: 5.4cqw;
+    height: 5.4cqw;
+    max-height: 100%;
+  }
+  #stage #fase .carta-figura.figura-vazia {
+    font-size: 0;
+  }
+  #stage #fase .carta-legenda {
+    font-size: max(1.8cqw, 11.5px);
+    line-height: 1.12;
+    text-align: left;
+    -webkit-line-clamp: 3;
+  }
+  #stage #fase .carta-legenda.legenda-longa {
+    font-size: max(1.6cqw, 10.4px);
+  }
+  /* o aviso do Verificar vai para o pé da coluna da direita: nessa
+     hora a bandeja está vazia (todas as cartas estão no tabuleiro) */
+  #stage #fase .tabuleiro {
+    position: static;
+  }
+  #stage #fase .verificacao {
+    position: absolute;
+    left: calc(50% + 1.75cqw);
+    right: 1cqw;
+    bottom: 1cqw;
+    z-index: 5;
+    margin: 0;
+    padding: 0.8cqw 1.4cqw;
+    border-radius: 1.2cqw;
+    background: var(--cream);
+    border: 0.3cqw solid #e0574f;
+    font-size: max(1.9cqw, 12px);
+    line-height: 1.25;
+  }
+  #stage #fase .verificacao[data-tipo="certo"] {
+    border-color: #2f7a46;
+  }
+  #stage #fase .verificacao[hidden] {
+    display: none;
+  }
+  /* a montagem troca de lugar com a bandeja */
+  #stage #fase .montagem {
+    display: none;
+  }
+  #stage #fase.tem-montagem.ver-montagem .montagem:not([hidden]) {
+    display: block;
+    /* "relative": o desenho de dentro se mede pela caixa */
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: auto;
+    visibility: visible;
+    grid-column: 2;
+    grid-row: 1;
+  }
+  #stage #fase.tem-montagem.ver-montagem .bandeja {
+    display: none;
+  }
+  #stage #fase #btn-montagem:not([hidden]) {
+    display: inline-flex;
+  }
+  /* linha de baixo: Nível e Tela cheia à esquerda; os três botões à direita */
+  #stage #fase .rodape {
+    left: 1.5cqw;
+    right: 1.5cqw;
+    bottom: 1.2cqw;
+    align-items: center;
+  }
+  #stage #fase .rodape-direita {
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    gap: 1cqw;
+  }
+  #stage #fase #btn-verificar {
+    order: 3;
+    font-size: max(2.3cqw, 14px);
+    padding: 0.6cqw 3cqw;
+  }
+  #stage .cena-cheia-btn {
+    left: 18.5cqw;
+    bottom: 1.2cqw;
+  }
+  /* "Dica" no lugar de "Pedir dica": a linha de baixo tem cinco botões */
+  #stage #fase .dica-pedir {
+    display: none;
+  }
+  #stage #fase .dica-curta {
+    display: inline;
+  }
+  #stage #fase #btn-dica {
+    gap: 1.6cqw;
+  }
+  #stage #fase.sem-fundo .cena-cheia-btn {
+    display: none;
+  }
+  #stage .dica-restantes {
+    font-size: max(1.5cqw, 10px);
+  }
+
+  /* ---------- lição ---------- */
+  #stage .conclusao-painel {
+    padding: 1.4cqw 2cqw;
+    gap: 1cqw;
+  }
+  #stage .conclusao-progresso {
+    font-size: max(1.7cqw, 11px);
+  }
+  #stage .conclusao-pergunta {
+    font-size: max(2.2cqw, 14px);
+  }
+  #stage .conclusao-texto p,
+  #stage .conclusao-reflexao li {
+    font-size: max(1.9cqw, 12px);
+    line-height: 1.35;
+  }
+  #stage .conclusao-reflexao h3 {
+    font-size: max(2cqw, 13px);
+  }
+  #stage .rewards b {
+    font-size: max(1.9cqw, 12px);
+  }
+  #stage .licao-selo small {
+    font-size: max(1.5cqw, 10px);
+  }
+  #stage .licao-selo b {
+    font-size: max(2.1cqw, 13px);
+  }
+  #stage .licao-selo-frase {
+    font-size: max(1.8cqw, 11.5px);
+  }
+
+  /* ---------- promoção e final ---------- */
+  #stage .promo-card {
+    width: 34cqw;
+    top: 8cqw;
+    gap: 0.8cqw;
+  }
+  #stage .rank {
+    font-size: max(1.8cqw, 11.5px);
+  }
+  #stage .promo-card b {
+    font-size: max(2.4cqw, 15px);
+  }
+  #stage img.badge-sm {
+    height: 14cqw;
+  }
+  #stage .final-panel p {
+    font-size: max(2cqw, 12.5px);
+  }
+  #stage .final-stars {
+    font-size: max(3cqw, 18px);
+  }
+}
+
+/* ===== configurações: a linha da tela cheia ===== */
+#sons .tela-linha[hidden] {
+  display: none;
+}
+.tela-dica {
+  font-size: max(1.2cqw, 12px);
+  font-weight: 600;
+  color: #6a5238;
+  text-align: left;
+  line-height: 1.3;
+}
+@media (max-aspect-ratio: 4/5) {
+  #stage .tela-dica {
+    grid-column: 1 / -1;
+    font-size: 3.2cqw;
+  }
+}
+
+/* ===== agente secreto ===== */
+/* a terceira estrela do crachá esconde o segredo, mas não pode se
+   entregar: só evita o zoom do toque duplo no celular */
+#badgeEstrelas img:nth-child(3) {
+  touch-action: manipulation;
+}
+.avatar[hidden] {
+  display: none;
+}
+/* com o 7º agente, a grade passa a ter 4 colunas */
+.avatars.com-secreto {
+  grid-template-columns: repeat(4, auto);
+}
+.avatar-secreto.revela {
+  animation: revela 0.9s ease-out;
+}
+@keyframes revela {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.25); opacity: 1; }
+  100% { transform: scale(1.08); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .avatar-secreto.revela { animation: none; }
+}
+@media (max-aspect-ratio: 4/5) {
+  #stage .avatars.com-secreto {
+    gap: 3cqw;
+  }
+  #stage .avatars.com-secreto .avatar {
+    width: 17cqw;
+    height: 17cqw;
+  }
+}
+
+/* ===== agente secreto: moldura dourada e o momento especial ===== */
+/* o anel dourado, usado no agente da grade, no crachá e na cena */
+.moldura-dourada,
+.avatar.avatar-secreto,
+.cracha.secreto .cracha-foto {
+  border-color: #c98a12;
+  box-shadow:
+    0 0 0 0.35cqw #ffe08a,
+    0 0 0 0.7cqw #c98a12,
+    0 0 2.4cqw 0.6cqw rgba(255, 196, 64, 0.65);
+}
+.avatar.avatar-secreto {
+  opacity: 1;
+  background: linear-gradient(135deg, #fff1b8, #e9b53a);
+}
+.avatar.avatar-secreto.sel {
+  border-color: #c98a12;
+  box-shadow:
+    0 0 0 0.35cqw #ffe08a,
+    0 0 0 0.7cqw #c98a12,
+    0 0 0 1.2cqw var(--p),
+    0 0 3cqw 1cqw rgba(255, 196, 64, 0.8);
+}
+.cracha.secreto .cracha-topo {
+  background: linear-gradient(90deg, #b8800f, #f2c24b 50%, #b8800f);
+  color: var(--ink);
+}
+
+/* a cena: fundo escuro, raios dourados girando e o retrato emoldurado */
+.modal.segredo {
+  background: radial-gradient(circle at 50% 45%, rgba(70, 45, 10, 0.92), rgba(15, 10, 25, 0.96) 70%);
+  overflow: hidden;
+  z-index: 40;
+}
+.segredo-raios {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: 160cqw;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: repeating-conic-gradient(from 0deg, rgba(255, 210, 90, 0.22) 0 8deg, transparent 8deg 20deg);
+  -webkit-mask: radial-gradient(circle, #000 0 18%, transparent 55%);
+  mask: radial-gradient(circle, #000 0 18%, transparent 55%);
+  animation: segredo-gira 14s linear infinite;
+}
+@keyframes segredo-gira {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+.segredo-conteudo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2cqw;
+  text-align: center;
+  animation: segredo-entra 0.9s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+@keyframes segredo-entra {
+  0% { transform: scale(0.3); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.segredo-chamada {
+  font: 800 max(1.6cqw, 14px) Nunito, sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ffe08a;
+}
+.segredo-retrato {
+  width: 22cqw;
+  height: 22cqw;
+  border-radius: 50%;
+  border: 0.6cqw solid #c98a12;
+  overflow: hidden;
+  background: #fff1b8;
+}
+.segredo-retrato img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.modal.segredo h2 {
+  font-size: max(3.4cqw, 22px);
+  color: #fff;
+  text-shadow: 0 0.3cqw 0 #8a5a0a, 0 0 2cqw rgba(255, 196, 64, 0.8);
+}
+.segredo-ok {
+  background: linear-gradient(180deg, #ffd96a, #e2a523);
+  color: var(--ink);
+}
+@media (prefers-reduced-motion: reduce) {
+  .segredo-raios,
+  .segredo-conteudo {
+    animation: none;
+  }
+}
+@media (max-aspect-ratio: 4/5) {
+  #stage .segredo-retrato {
+    width: 52cqw;
+    height: 52cqw;
+    border-width: 1.4cqw;
+  }
+  #stage .segredo-conteudo {
+    gap: 5cqw;
+    padding: 0 6cqw;
+  }
+  #stage .segredo-chamada {
+    font-size: 3.8cqw;
+  }
+  #stage .modal.segredo h2 {
+    font-size: 7cqw;
+  }
+  #stage .moldura-dourada,
+  #stage .avatar.avatar-secreto,
+  #stage .cracha.secreto .cracha-foto {
+    box-shadow:
+      0 0 0 0.8cqw #ffe08a,
+      0 0 0 1.6cqw #c98a12,
+      0 0 5cqw 1.4cqw rgba(255, 196, 64, 0.65);
   }
 }

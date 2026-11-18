@@ -73,6 +73,16 @@
       );
     if (phase === 1 && $("vitoria")?.open && $("ra-celebration"))
       A.canvas($("ra-celebration"), (c, w, h) => {
+        if (window.RioClaroResumo) {
+          RioClaroResumo.paint(
+            c,
+            w,
+            h,
+            t,
+            document.body.classList.contains("reduce-motion"),
+          );
+          return;
+        }
         A.draw(
           c,
           "acoes",

@@ -1,0 +1,142 @@
+#phase-dialog .phase-copy > section {
+  padding: 8px 12px;
+  border: 1px solid #afa969;
+  border-radius: 14px;
+  background: linear-gradient(125deg, #faf2d9, #ebe8c3);
+  box-shadow: inset 0 1px #fff9df;
+}
+#phase-dialog .phase-copy p {
+  margin: 0;
+}
+#phase-dialog .phase-copy > section + section,
+#phase-dialog .phase-loot {
+  margin-top: 6px;
+}
+#phase-dialog .phase-copy h3 {
+  border: 1px solid #ac8b4f;
+  border-radius: 12px 4px;
+  background: linear-gradient(110deg, #42693c, #28523c);
+  color: #fff0c4;
+  padding: 6px 12px;
+  box-shadow: 0 2px #bfa15f;
+}
+#phase-dialog #phase-goals {
+  padding: 3px 0;
+  margin: 0;
+  list-style: none;
+}
+#phase-dialog #phase-goals li {
+  padding: 5px 0;
+  margin: 2px 0;
+  border-bottom: 1px solid #b6be8666;
+  gap: 7px;
+  line-height: 1.3;
+}
+#phase-dialog #phase-goals li:last-child {
+  border-bottom: 0;
+}
+#phase-dialog .phase-scene {
+  box-shadow: 0 3px 9px #28472b33;
+}
+@media (orientation: landscape) and (max-height: 540px) {
+  dialog#phase-dialog {
+    width: min(760px, 92vw);
+    max-width: 92vw;
+    height: min(330px, 90dvh);
+    max-height: 90dvh;
+    padding: 10px 14px;
+    border-width: 4px;
+    border-radius: 20px;
+  }
+  #phase-dialog > header {
+    padding: 0 3px 4px;
+    margin-bottom: 0;
+  }
+  #phase-dialog > header h2 {
+    font-size: 23px;
+    margin: 0;
+    line-height: 1.1;
+  }
+  #phase-dialog > header .eyebrow {
+    font-size: 8px;
+    margin: 0 0 2px;
+  }
+  #phase-dialog .phase-columns {
+    gap: 12px;
+    margin: 5px 0;
+    grid-template-columns: 0.85fr 1.4fr;
+    min-height: 0;
+  }
+  #phase-dialog .phase-scene {
+    min-height: 0;
+    border-radius: 14px;
+  }
+  #phase-dialog .phase-scene canvas {
+    min-height: 0;
+  }
+  #phase-dialog .phase-scene figcaption {
+    padding: 6px;
+  }
+  #phase-dialog .phase-scene figcaption strong {
+    font-size: 14px;
+  }
+  #phase-dialog .phase-scene figcaption span {
+    font-size: 9px;
+  }
+  #phase-dialog .phase-copy {
+    gap: 6px;
+  }
+  #phase-dialog .phase-copy > section {
+    padding: 4px 8px;
+    border-radius: 10px;
+  }
+  #phase-dialog .phase-copy > section + section,
+  #phase-dialog .phase-loot {
+    margin-top: 3px;
+  }
+  #phase-dialog .phase-copy h3 {
+    font-size: 12px;
+    padding: 2px 7px;
+    margin: 0 0 4px;
+  }
+  #phase-dialog .phase-copy p,
+  #phase-dialog #phase-goals li {
+    font-size: 10px;
+    line-height: 1.25;
+    margin: 0;
+  }
+  #phase-dialog #phase-goals {
+    padding: 0;
+  }
+  #phase-dialog #phase-goals li {
+    padding: 1px 0;
+  }
+  #phase-dialog #phase-goals .nature-symbol {
+    width: 14px;
+    height: 14px;
+    flex: none;
+  }
+  #phase-dialog .phase-loot {
+    gap: 7px;
+  }
+  #phase-dialog .phase-loot > section {
+    padding: 5px 8px;
+  }
+  #phase-dialog .phase-loot .brief-item-art,
+  #phase-dialog #phase-reward {
+    height: 32px;
+  }
+  #phase-dialog #phase-reward svg {
+    height: 32px;
+    max-width: 35px;
+  }
+  #phase-dialog > footer {
+    gap: 12px;
+    margin-top: 4px;
+  }
+  #phase-dialog > footer .wood-button {
+    min-height: 38px;
+    font-size: 14px;
+    padding: 9px 17px;
+  }
+}

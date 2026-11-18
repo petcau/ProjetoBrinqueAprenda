@@ -1,0 +1,146 @@
+/* As letras ocupam o campo interno da placa, independentemente do estado da madeira. */
+.map-view .map-title-plaque h1 {
+  font:
+    400 clamp(24px, 2.5vw, 33px) / 1 Lilita,
+    system-ui,
+    sans-serif;
+  letter-spacing: 0.025em;
+}
+.map-view > .flora-line {
+  top: 104px;
+  z-index: 5;
+  pointer-events: none;
+  margin: 0;
+}
+.island-ending #flora-map-line {
+  visibility: hidden;
+}
+.map-view .map-hotspot {
+  position: absolute;
+  padding: 0 !important;
+}
+.map-view .map-hotspot .map-region-name {
+  position: absolute;
+  inset: 21% 9% 18% 16%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  max-width: none;
+  font:
+    400 19px/1.04 Lilita,
+    system-ui,
+    sans-serif !important;
+  letter-spacing: 0.01em;
+  color: #fff1ce;
+  text-align: center;
+  text-shadow: 0 1px 1px #13291b;
+  overflow-wrap: normal;
+  transform: translateY(-1px);
+}
+.map-view .map-hotspot .number {
+  inset: auto;
+  left: 8.2%;
+  top: 2.3%;
+  width: 18%;
+  height: 43%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font:
+    400 25px/1 Lilita,
+    system-ui,
+    sans-serif;
+  color: #365439;
+}
+.map-view .map-hotspot[data-region-state="distante"] {
+  background-image: url("assets/placa-distante.webp") !important;
+  filter: none !important;
+}
+.map-view .map-hotspot[data-region-state="distante"] .map-region-name {
+  color: #f5e4c5;
+  text-shadow: 0 1px 2px #1b130c;
+}
+.map-view .map-hotspot[data-region-state="distante"] .number {
+  color: #66513b;
+}
+.map-view .map-hotspot[data-region-state="atual"] {
+  filter: drop-shadow(0 0 4px #ffd58880) !important;
+}
+.map-view .map-hotspot.is-complete::after {
+  right: 5%;
+  bottom: 7%;
+  width: 18px;
+  height: 18px;
+  font-size: 14px;
+}
+.map-view,
+.map-view .island::before {
+  background-image:
+    radial-gradient(ellipse at center, #407e8522, #123c5955),
+    url("assets/mapa-antes.webp");
+}
+body[data-map-restored="true"] .map-view,
+body[data-map-restored="true"] .map-view .island::before {
+  background-image:
+    radial-gradient(ellipse at center, #80d1cf22, #175d7c55),
+    url("../arte-viva/assets/mapa-depois.webp");
+}
+@media (orientation: landscape) and (max-height: 520px) {
+  .map-view > .flora-line {
+    top: auto;
+    bottom: 42px;
+    max-width: min(30vw, 260px);
+    font-size: 9px;
+    line-height: 1.2;
+    padding: 5px 8px;
+  }
+  .map-view .map-hotspot {
+    width: clamp(138px, 18.5vw, 160px) !important;
+    height: 58px !important;
+    max-width: 24vw;
+    padding: 0 !important;
+  }
+  .map-view .map-hotspot .map-region-name {
+    font-size: 13px !important;
+    line-height: 1.03;
+  }
+  .map-view .map-hotspot .number {
+    font-size: 19px;
+  }
+  .map-view .map-hotspot.is-complete::after {
+    width: 14px;
+    height: 14px;
+    font-size: 11px;
+  }
+  .map-view .map-title-plaque {
+    width: 310px;
+    min-height: 59px;
+    padding: 22px 44px 11px 27px;
+  }
+  .map-view .map-title-plaque h1 {
+    font-size: 20px;
+  }
+  .map-view .map-title-plaque #map-flora {
+    width: 45px;
+    height: 49px;
+    right: 14px;
+  }
+}
+@media (orientation: landscape) and (max-height: 345px) {
+  .map-view .map-title-plaque {
+    width: 270px;
+    min-height: 46px;
+    padding: 17px 40px 8px 22px;
+  }
+  .map-view .map-title-plaque h1 {
+    font-size: 18px;
+  }
+  .map-view .map-title-plaque #map-flora {
+    width: 37px;
+    height: 40px;
+    right: 12px;
+  }
+}

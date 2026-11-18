@@ -50,7 +50,7 @@ window.IntroStory = (() => {
         {
           id: 'panel-a',
           sceneId: 'intro-01',
-          src: 'intro/intro-01.webp',
+          src: 'assets/intro/intro-01.webp',
           alt: 'Quarto tranquilo à noite: a menina estuda na escrivaninha, o gato dorme na cama e um livro antigo brilha na estante.',
           tilt: -0.6,
           miniPanel: null
@@ -58,11 +58,11 @@ window.IntroStory = (() => {
         {
           id: 'panel-b',
           sceneId: 'intro-01b',
-          src: 'intro/slide2_livro.png',
+          src: 'assets/intro/slide2_livro.png',
           alt: 'O livro antigo flutua e cresce com brilho mágico diante da estante.',
           tilt: 0.7,
           miniPanel: {
-            src: 'intro/hq-livro-sorriso.webp',
+            src: 'assets/intro/hq-livro-sorriso.webp',
             alt: 'Detalhe do Livro Malvado abrindo um sorriso travesso.',
             pos: 'pos-bottom-right'
           }
@@ -131,11 +131,11 @@ window.IntroStory = (() => {
         {
           id: 'panel-c',
           sceneId: 'intro-02',
-          src: 'intro/intro-02.webp',
+          src: 'assets/intro/intro-02.webp',
           alt: 'O Livro Malvado abre um portal brilhante no quarto enquanto a menina e o gato se assustam.',
           tilt: -0.5,
           miniPanel: {
-            src: 'intro/hq-rosto-menina.webp',
+            src: 'assets/intro/hq-rosto-menina.webp',
             alt: 'Rosto surpreso da menina.',
             pos: 'pos-bottom-right'
           }
@@ -143,11 +143,11 @@ window.IntroStory = (() => {
         {
           id: 'panel-d',
           sceneId: 'intro-02b',
-          src: 'intro/intro-02b.webp',
+          src: 'assets/intro/intro-02b.webp',
           alt: 'O Livro Malvado puxa o gatinho laranja no ar em direção ao portal.',
           tilt: 0.6,
           miniPanel: {
-            src: 'intro/hq-gato-susto.webp',
+            src: 'assets/intro/hq-gato-susto.webp',
             alt: 'Gatinho assustado sendo puxado pela magia.',
             pos: 'pos-bottom-left'
           }
@@ -155,11 +155,11 @@ window.IntroStory = (() => {
         {
           id: 'panel-e',
           sceneId: 'intro-03',
-          src: 'intro/intro-03.webp',
+          src: 'assets/intro/intro-03.webp',
           alt: 'A menina salta em direção ao portal para tentar alcançar o gatinho.',
           tilt: -0.4,
           miniPanel: {
-            src: 'intro/hq-pulo.webp',
+            src: 'assets/intro/hq-pulo.webp',
             alt: 'Detalhe do salto da menina rumo ao portal.',
             pos: 'pos-bottom-right'
           }
@@ -272,7 +272,7 @@ window.IntroStory = (() => {
         {
           id: 'panel-f',
           sceneId: 'intro-04',
-          src: 'intro/intro-04.webp',
+          src: 'assets/intro/intro-04.webp',
           alt: 'A menina sai do portal no céu e cai em direção a uma ilha mágica.',
           tilt: -0.6,
           miniPanel: null
@@ -280,7 +280,7 @@ window.IntroStory = (() => {
         {
           id: 'panel-g',
           sceneId: 'intro-05',
-          src: 'intro/intro-05.webp',
+          src: 'assets/intro/intro-05.webp',
           alt: 'A menina aterrissa sentada na Praça do Portal da ilha entre nuvens de poeira.',
           tilt: 0.6,
           miniPanel: null
@@ -351,11 +351,11 @@ window.IntroStory = (() => {
         {
           id: 'panel-h',
           sceneId: 'intro-06',
-          src: 'intro/intro-06.webp',
+          src: 'assets/intro/intro-06.webp',
           alt: 'O Livro Malvado flutua diante da montanha onde o gato está preso com 4 cadeados.',
           tilt: -0.4,
           miniPanel: {
-            src: 'intro/hq-gato-preso.webp',
+            src: 'assets/intro/hq-gato-preso.webp',
             alt: 'Detalhe do gatinho preso atrás dos 4 cadeados coloridos no Pico do Miau.',
             pos: 'pos-top-right'
           }
@@ -363,12 +363,12 @@ window.IntroStory = (() => {
         {
           id: 'panel-i',
           sceneId: 'intro-07',
-          src: 'intro/intro-07.webp',
+          src: 'assets/intro/intro-07.webp',
           alt: 'Visão geral da Ilha do Conhecimento com as 4 chaves brilhando nos 4 cantos e os 4 cadeados no Pico do Miau.',
           tilt: 0.5,
           hasKeyLockGlow: true,
           miniPanel: {
-            src: 'intro/hq-menina-determinada.webp',
+            src: 'assets/intro/hq-menina-determinada.webp',
             alt: 'A menina olha determinada para a montanha pronta para a aventura.',
             pos: 'pos-bottom-right'
           }
@@ -455,25 +455,25 @@ window.IntroStory = (() => {
   // Lista plana de referências às cenas para compatibilidade de inspeção
   // Frases curtas; textoOriginal permite restaurar cada slide sem perder a história anterior.
   const SCENES = Object.freeze([
-    { id: "intro-01", src: "intro/intro-01.webp",
+    { id: "intro-01", src: "assets/intro/intro-01.webp",
       text: "A menina estuda com seu gato e um livro acorda.", textoOriginal: "Numa noite tranquila, uma menina estudava ao lado do seu gatinho… Mas, na estante, um livro muito antigo estava acordando…" },
-    { id: "intro-01b", src: "intro/slide2_livro.png",
+    { id: "intro-01b", src: "assets/intro/slide2_livro.png",
       text: "O livro acorda e fica bem grande.", textoOriginal: "FUUUSH! O livro acordou… e começou a crescer!" },
-    { id: "intro-02", src: "intro/intro-02.webp",
+    { id: "intro-02", src: "assets/intro/intro-02.webp",
       text: "O Livro Malvado abre um portal perto do gato.", textoOriginal: "Hehehe! Há muito tempo eu espero por isso! O que está acontecendo?!" },
-    { id: "intro-02b", src: "intro/intro-02b.webp",
+    { id: "intro-02b", src: "assets/intro/intro-02b.webp",
       text: "O Livro Malvado pega o gato.", textoOriginal: "ZUUUM! Esse gatinho agora é meu! Miaaau!" },
-    { id: "intro-03", src: "intro/intro-03.webp",
+    { id: "intro-03", src: "assets/intro/intro-03.webp",
       text: "A menina pula no portal para buscar seu gato.", textoOriginal: "HUP! Meu gato! Devolve ele!" },
-    { id: "intro-04", src: "intro/intro-04.webp",
+    { id: "intro-04", src: "assets/intro/intro-04.webp",
       text: "A menina segue o gato pelo portal até a ilha.", textoOriginal: "AAAAH! A menina pulou atrás do gato… e caiu em uma ilha mágica!" },
-    { id: "intro-05", src: "intro/intro-05.webp",
+    { id: "intro-05", src: "assets/intro/intro-05.webp",
       text: "A menina chega à Ilha do Conhecimento.", textoOriginal: "PUF! Ai! Onde eu estou?" },
-    { id: "intro-06", src: "intro/intro-06.webp",
+    { id: "intro-06", src: "assets/intro/intro-06.webp",
       text: "O gato está numa cela com 4 cadeados no alto da montanha.", textoOriginal: "Bem-vinda à Ilha do Conhecimento! Seu gato está preso lá no alto, no Pico do Miau. Para libertá-lo, você precisa vencer todos os desafios da ilha!" },
-    { id: "intro-07", src: "intro/intro-07.webp",
+    { id: "intro-07", src: "assets/intro/intro-07.webp",
       text: "Ache 4 chaves na floresta, vila, ruínas e fazenda.", textoOriginal: "Ele está trancado com 4 cadeados! Cada chave está escondida em um canto da ilha. Explore os 4 cantos da ilha, resolva os desafios, ache as 4 chaves e salve o gato!" },
-    { id: "intro-final", src: "intro/intro-07.webp",
+    { id: "intro-final", src: "assets/intro/intro-07.webp",
       text: "Solte o gato com as chaves e voltem para casa.", textoOriginal: "Seu objetivo. Floresta dos Padrões. Aldeia do Saber. Ruínas das Formas. Campos Contados. Ache as 4 chaves → abra os 4 cadeados → salve o gato!" , isFinalCard: true },
   ]);
 

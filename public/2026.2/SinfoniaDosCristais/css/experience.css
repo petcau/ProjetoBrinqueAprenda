@@ -2,11 +2,11 @@
 .game-screen{background:#05030f}
 .reduce-motion .crystal-light{opacity:.3!important}
 /* Interactive Pixel Art Menu Buttons over the Sinfonia dos Cristais Sanctuary Backdrop */
-.home-screen .menu-choice{--menu-color:#a8ff66;position:absolute;left:7%;top:36.2%;width:28%;height:6.8%;padding:0!important;border:none!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;display:flex;align-items:center;justify-content:flex-start;cursor:pointer;transition:transform .05s ease-out;z-index:2;isolation:isolate;will-change:transform;transform:translateZ(0)}
-.home-screen .menu-choice:nth-child(2){top:44.8%;--menu-color:#5ef2ff}
-.home-screen .menu-choice:nth-child(3){top:53.4%;--menu-color:#9feaff}
-.home-screen .menu-choice:nth-child(4){top:62.0%;--menu-color:#ff8ae2}
-.home-screen .menu-choice:nth-child(5){top:70.6%;--menu-color:#ffd35a}
+.home-screen .menu-choice{--menu-color:#a8ff66;position:absolute;left:7%;top:38.5%;width:28%;height:7.2%;padding:0!important;border:none!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;display:flex;align-items:center;justify-content:flex-start;cursor:pointer;transition:transform .05s ease-out;z-index:2;isolation:isolate;will-change:transform;transform:translateZ(0)}
+.home-screen .menu-choice:nth-child(2){top:48.0%;--menu-color:#5ef2ff}
+.home-screen .menu-choice:nth-child(3){top:57.5%;--menu-color:#9feaff}
+.home-screen .menu-choice:nth-child(4){top:67.0%;--menu-color:#ff8ae2}
+
 .home-screen .menu-choice .menu-btn-art{height:100%;width:auto;max-width:100%;object-fit:contain;object-position:left center;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none;filter:drop-shadow(0 3px 6px rgba(0,0,0,0.75));transition:transform .05s ease-out;will-change:transform;transform:translateZ(0)}
 .home-screen .menu-choice:is(:hover,:focus-visible){transform:translateX(5px) scale(1.02)}
 .home-screen .menu-choice:active{transform:translateX(3px) scale(0.98)}

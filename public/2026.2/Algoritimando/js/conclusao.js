@@ -118,6 +118,8 @@
     const e = premio.estrelas;
     premioEstrelas.textContent = `+${e} ${e === 1 ? 'estrela' : 'estrelas'}`;
     premioDicas.textContent = `+${premio.dicas} ${premio.dicas === 1 ? 'dica' : 'dicas'}`;
+    // nível rejogado não dá dica: o prêmio some em vez de dizer "+0"
+    premioDicas.parentElement.hidden = !premio.dicas;
     const ultima = indiceFase + 1 >= situacao.fases.length;
     botaoTexto.textContent = ultima ? 'Voltar à central' : 'Próximo nível';
 

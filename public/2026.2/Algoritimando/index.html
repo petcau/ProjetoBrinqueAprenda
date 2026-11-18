@@ -7,11 +7,9 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <title>Algoritimando</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@600;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css?v=202611111239" />
+    <!-- fontes guardadas no projeto: o jogo funciona sem internet -->
+    <link rel="stylesheet" href="fontes/fontes.css?v=202611120212" />
+    <link rel="stylesheet" href="style.css?v=202611120212" />
   </head>
   <body>
     <div id="stage">
@@ -21,7 +19,7 @@
         <div class="menu-btns">
           <button class="btn" id="bPlay">Jogar</button>
           <button class="btn green" id="bSound" type="button">
-            Sons: ligado
+            Configurações
           </button>
           <button class="btn ghost" id="bHow">Como jogar</button>
           <div class="menu-linha">
@@ -103,6 +101,16 @@
               </button>
               <button class="avatar" data-a="5" aria-label="Agente 6">
                 <img src="img/av5.webp" alt="" />
+              </button>
+              <!-- agente secreto: aparece depois de 10 toques na terceira
+                   estrela do crachá (app.js) -->
+              <button
+                class="avatar avatar-secreto"
+                data-a="6"
+                aria-label="Agente secreto"
+                hidden
+              >
+                <img src="img/av6.webp" alt="" />
               </button>
             </div>
             <!-- os selos das ideias já conquistadas (app.js) -->
@@ -204,7 +212,21 @@
             <b class="contador-estrelas-num">0</b></span
           >
         </header>
-        <div class="fase-arte" aria-hidden="true"></div>
+        <div class="fase-arte">
+          <!-- ver a cena do chamado em tela cheia (jogo.js) -->
+          <button
+            class="chip cena-cheia-btn"
+            id="btn-cena-cheia"
+            type="button"
+            title="Ver a cena em tela cheia"
+            aria-label="Ver a cena em tela cheia"
+          >
+            <svg class="icone" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" />
+            </svg>
+            <span class="cena-cheia-texto">Tela cheia</span>
+          </button>
+        </div>
         <main class="area-jogo">
           <!-- Tabuleiro: um espaço numerado por passo (montado pelo jogo.js) -->
           <section
@@ -431,6 +453,20 @@
         </div>
       </div>
 
+      <!-- a cena do chamado em tela cheia: toque em qualquer lugar fecha -->
+      <div
+        class="modal cena-cheia"
+        id="cena-cheia"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Cena do chamado"
+      >
+        <div class="cena-cheia-imagem" role="img" aria-label="Cena do chamado"></div>
+        <button class="btn ghost small cena-cheia-fechar" id="btn-cena-fechar" type="button">
+          Fechar
+        </button>
+      </div>
+
       <div class="modal" id="local">
         <div class="panel local-painel">
           <div class="local-cabeca">
@@ -538,9 +574,23 @@
           />
         </div>
       </div>
+      <!-- o momento do agente secreto: aparece uma vez, quando o
+           segredo da terceira estrela é descoberto (app.js) -->
+      <div class="modal segredo" id="segredo" role="dialog" aria-modal="true" aria-labelledby="segredoTitulo">
+        <div class="segredo-raios" aria-hidden="true"></div>
+        <div class="segredo-conteudo">
+          <p class="segredo-chamada">Você descobriu um segredo!</p>
+          <div class="segredo-retrato moldura-dourada">
+            <img src="img/av6.webp" alt="" />
+          </div>
+          <h2 id="segredoTitulo">Agente secreto desbloqueado</h2>
+          <button class="btn segredo-ok" id="bSegredoOk" type="button">Usar este agente</button>
+        </div>
+      </div>
+
       <div class="modal" id="sons">
         <div class="panel">
-          <h2>Sons</h2>
+          <h2>Configurações</h2>
           <div class="som-linha">
             <span class="som-nome">Música</span>
             <button
@@ -581,6 +631,19 @@
               aria-label="Volume dos efeitos"
             />
           </div>
+          <!-- tela cheia: some onde o navegador não deixa (ex.: iPhone) -->
+          <div class="som-linha tela-linha" id="linhaTelaCheia">
+            <span class="som-nome">Tela cheia</span>
+            <button
+              class="btn small som-liga mudo"
+              id="bTelaCheia"
+              type="button"
+              aria-pressed="false"
+            >
+              Desligada
+            </button>
+            <span class="tela-dica">O jogo ocupa a tela toda, sem a barra do navegador.</span>
+          </div>
           <button class="btn" id="bSonsFechar" type="button">Pronto</button>
         </div>
       </div>
@@ -599,34 +662,21 @@
           <button class="btn" id="bHowClose">Entendi</button>
         </div>
       </div>
-      <!-- celular deitado: o jogo cabe, mas fica miúdo. O aviso sugere
-           virar o aparelho; some sozinho em pé e pode ser dispensado -->
-      <div class="girar" id="girar" role="dialog" aria-labelledby="girarTitulo">
-        <div class="girar-caixa">
-          <span class="girar-figura" aria-hidden="true"></span>
-          <h2 id="girarTitulo">Vire o celular em pé</h2>
-          <p>Assim as cartas e os botões ficam maiores e mais fáceis de tocar.</p>
-          <button class="btn ghost" id="bGirarSeguir" type="button">
-            Continuar deitado
-          </button>
-        </div>
-      </div>
-    </div>
     <!-- avisos para leitor de tela (invisíveis na tela): movimentos
          das cartas numa região, explicações de erro em outra -->
     <div class="sr leitor-avisos" aria-live="polite"></div>
     <div class="sr leitor-explicacao" aria-live="polite"></div>
-    <script src="js/motor.js?v=202611111239"></script>
-    <script src="js/comum.js?v=202611111239"></script>
-    <script src="js/situacoes.js?v=202611111239"></script>
-    <script src="js/em-progresso.js?v=202611111239"></script>
-    <script src="js/som.js?v=202611111239"></script>
-    <script src="js/progresso.js?v=202611111239"></script>
-    <script src="js/perfil.js?v=202611111239"></script>
-    <script src="js/arrasto.js?v=202611111239"></script>
-    <script src="js/conclusao.js?v=202611111239"></script>
-    <script src="js/montagem.js?v=202611111239"></script>
-    <script src="js/jogo.js?v=202611111239"></script>
-    <script src="js/app.js?v=202611111239"></script>
+    <script src="js/motor.js?v=202611120212"></script>
+    <script src="js/comum.js?v=202611120212"></script>
+    <script src="js/situacoes.js?v=202611120212"></script>
+    <script src="js/em-progresso.js?v=202611120212"></script>
+    <script src="js/som.js?v=202611120212"></script>
+    <script src="js/progresso.js?v=202611120212"></script>
+    <script src="js/perfil.js?v=202611120212"></script>
+    <script src="js/arrasto.js?v=202611120212"></script>
+    <script src="js/conclusao.js?v=202611120212"></script>
+    <script src="js/montagem.js?v=202611120212"></script>
+    <script src="js/jogo.js?v=202611120212"></script>
+    <script src="js/app.js?v=202611120212"></script>
   </body>
 </html>

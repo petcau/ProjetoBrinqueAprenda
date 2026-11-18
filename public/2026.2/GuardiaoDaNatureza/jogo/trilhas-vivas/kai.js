@@ -50,7 +50,9 @@
           );
         return loading.get(name);
       }),
-      ...(window.BosqueVegetacao ? [BosqueVegetacao.load()] : []),
+      ...(phase === 4 && window.TrilhasNatureza
+        ? [TrilhasNatureza.load()]
+        : []),
     ]);
   }
   function draw(
@@ -125,17 +127,28 @@
       v = pose(p, reduced);
     const name = images.has(bank) ? bank : "explorador",
       h = c.canvas.id === "cenario" ? height * 1.32 : height;
-    const idle = p.moving || reduced ? 0 : Math.sin(time * 1.7) * 0.35;
+    const idle = p.moving || reduced ? 0 : Math.sin(time * 1.8) * 0.8;
     if (c.canvas.id === "cenario") {
       document.body.dataset.kaiUniform = name;
       document.body.dataset.kaiWalkFrame = String(v.step);
       document.body.dataset.kaiWalkDirection = String(p.direction);
+      document.body.dataset.heroDirection = String(p.direction);
     }
-    return draw(c, name, v.row * 6 + v.step, p.x, p.y, h + idle, {
+    c.save();
+    if (!p.moving && !reduced) {
+      c.translate(p.x, p.y);
+      c.rotate(Math.sin(time * 0.85) * 0.006);
+      c.translate(-p.x, -p.y);
+    }
+    const result = draw(c, name, v.row * 6 + v.step, p.x, p.y, h + idle, {
       flip: v.flip,
     });
+    c.restore();
+    return result;
   }
   function equipment(c, row, progress, x, y, height = 83, flip = false) {
+    if (c.canvas.id === "cenario")
+      document.body.dataset.heroDirection = flip ? "4" : "0";
     return draw(
       c,
       "equipamentos",
@@ -170,8 +183,17 @@
         return walk(c, p, time, reduced, height);
       }
       river(c, p, time, reduced, options = {}) {
-        if (options.dressing || options.kind || p.swimming)
-          return super.river(c, p, time, reduced, options);
+        if (options.dressing || options.kind || p.swimming) {
+          const mirrored = options.kind && p.direction >= 3 && p.direction <= 5;
+          c.save();
+          if (mirrored) {
+            c.translate(p.x * 2, 0);
+            c.scale(-1, 1);
+          }
+          const result = super.river(c, p, time, reduced, options);
+          c.restore();
+          return result;
+        }
         walk(c, p, time, reduced, 63, false, "protecao");
         return "traje-andar:" + pose(p, reduced).step;
       }
@@ -211,6 +233,8 @@
   }
   function task(c, row, progress, p, target, height = 83) {
     const flip = target ? target.x < p.x : p.direction >= 3 && p.direction <= 5;
+    if (c.canvas.id === "cenario")
+      document.body.dataset.heroDirection = flip ? "4" : "0";
     document.body.dataset.kaiAction = String(row);
     document.body.dataset.kaiUniform = {
       0: "resgate",
@@ -244,8 +268,11 @@
     }
   }
   function uniformMarkup(name) {
-    return `<svg class="bosque-uniform" viewBox="${BosqueTrajes[name].join(" ")}" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><image href="${new URL("assets/trajes-mini.webp", base)}" width="600" height="160"/></svg>`;
+    const b = BosqueTrajes[name],
+      clip = "traje-" + name;
+    return `<svg class="bosque-uniform" viewBox="${b.join(" ")}" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><defs><clipPath id="${clip}"><rect x="${b[0]}" y="${b[1]}" width="${b[2]}" height="${b[3]}"/></clipPath></defs><image clip-path="url(#${clip})" href="${new URL("assets/trajes-mini.webp", base)}" width="600" height="160"/></svg>`;
   }
+
   if (window.RaizesPersonagens) {
     const A = RaizesPersonagens,
       priorLoad = A.load,

@@ -1,0 +1,244 @@
+/* Passagem de folhas: oito imagens pequenas e movimento por composição. */
+#leaf-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  isolation: isolate;
+  contain: strict;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+#leaf-transition.is-covering {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+#leaf-transition .grove-shade {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 45% 42%,
+    #385c3c,
+    #183d30 60%,
+    #102e26
+  );
+  opacity: 0;
+  transition: opacity 0.48s cubic-bezier(0.22, 0.7, 0.3, 1);
+}
+#leaf-transition .grove-half {
+  position: absolute;
+  inset: -10% auto -10% -12%;
+  width: 66%;
+  border-radius: 0;
+  background: linear-gradient(115deg, #73994eaa, #416e3e66 65%, #c8cb7d22);
+  clip-path: polygon(0 0, 79% 0, 96% 23%, 83% 48%, 100% 73%, 80% 100%, 0 100%);
+  transform: translate3d(-108%, 0, 0);
+  opacity: 0.6;
+  transition: transform 0.48s cubic-bezier(0.22, 0.7, 0.3, 1);
+  will-change: transform;
+}
+#leaf-transition .grove-half.right {
+  left: auto;
+  right: -12%;
+  scale: -1 1;
+  transform: translate3d(-108%, 0, 0);
+}
+#leaf-transition .grove-leaf {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: clamp(56px, 10vw, 142px);
+  height: auto;
+  opacity: 0;
+  transform: translate3d(-65vw, -25vh, 0) rotate(var(--angle));
+  transition:
+    transform 0.6s cubic-bezier(0.22, 0.7, 0.3, 1),
+    opacity 0.35s;
+  will-change: transform;
+}
+#leaf-transition .grove-leaf:nth-of-type(even) {
+  transform: translate3d(65vw, 25vh, 0) rotate(var(--angle));
+}
+#leaf-transition.grove-closed .grove-shade {
+  opacity: 1;
+}
+#leaf-transition.grove-closed .grove-half {
+  transform: translate3d(0, 0, 0);
+}
+#leaf-transition.grove-closed .grove-leaf {
+  opacity: 0.88;
+  transform: translate3d(-50%, -50%, 0) rotate(calc(var(--angle) + 30deg));
+}
+#leaf-transition.is-leaving .grove-half {
+  transform: translate3d(-108%, 0, 0);
+  transition-duration: 0.6s;
+}
+#leaf-transition.is-leaving .grove-shade {
+  opacity: 0;
+  transition-duration: 0.6s;
+}
+#leaf-transition.is-leaving .grove-leaf {
+  opacity: 0;
+  transform: translate3d(65vw, 25vh, 0) rotate(calc(var(--angle) + 75deg));
+}
+#leaf-transition.is-leaving .grove-leaf:nth-of-type(even) {
+  transform: translate3d(-65vw, -25vh, 0) rotate(calc(var(--angle) - 35deg));
+}
+#leaf-transition .grove-loading {
+  position: absolute;
+  inset: auto 15% 17%;
+  text-align: center;
+  color: #f3e9bd;
+  font:
+    400 clamp(17px, 2.3vw, 24px) Lilita,
+    Georgia,
+    serif;
+  letter-spacing: 0.03em;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+#leaf-transition.grove-waiting .grove-loading {
+  opacity: 1;
+  transition-delay: 0.24s;
+}
+#leaf-transition .grove-loading span {
+  display: block;
+  margin-top: 5px;
+  font: 16px system-ui;
+  letter-spacing: 8px;
+  animation: passagem-respirar 1.4s ease-in-out infinite;
+}
+@keyframes passagem-respirar {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* O próximo cuidado precisa caber inteiro, em vez de virar reticências. */
+body.raizes-jogo #jogo .current-care {
+  white-space: normal !important;
+  overflow: visible;
+  text-overflow: clip;
+  font-size: 12px !important;
+  line-height: 1.35;
+  color: #fff5cd;
+  margin-top: 6px;
+  padding-top: 5px;
+  border-top: 1px solid #c8bc774d;
+}
+body.raizes-jogo #jogo .goal-label {
+  color: #f8edcd;
+}
+@media (orientation: landscape) and (max-height: 520px) {
+  body.raizes-jogo #jogo :is(.mission, .missions) {
+    width: 252px !important;
+    max-width: min(36vw, 270px) !important;
+    padding: 8px 11px !important;
+    border-radius: 16px;
+  }
+  body.raizes-jogo #jogo :is(.mission, .missions) h1 {
+    font-size: 14px !important;
+    line-height: 1.2;
+  }
+  body.raizes-jogo #jogo :is(.mission, .missions) h1 button {
+    min-height: 27px;
+    padding: 4px 6px;
+  }
+  body.raizes-jogo #jogo .mission:not(.expanded) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3px 5px;
+  }
+  body.raizes-jogo #jogo .missions:not(.expanded) #goals {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3px 5px;
+  }
+  body.raizes-jogo
+    #jogo
+    :is(.mission, .missions):not(.expanded)
+    .goal:not([hidden]) {
+    min-height: 30px;
+    width: 100%;
+    padding: 3px 1px;
+    gap: 4px;
+    margin: 0;
+    justify-content: flex-start;
+  }
+  body.raizes-jogo #jogo :is(.mission, .missions):not(.expanded) .goal-label {
+    display: inline;
+    font-size: 11px !important;
+    line-height: 1.15;
+  }
+  body.raizes-jogo
+    #jogo
+    :is(.mission, .missions):not(.expanded)
+    .goal-label[data-short] {
+    font-size: 0 !important;
+  }
+  body.raizes-jogo
+    #jogo
+    :is(.mission, .missions):not(.expanded)
+    .goal-label[data-short]::before {
+    content: attr(data-short);
+    font-size: 11px;
+  }
+  body.raizes-jogo #jogo :is(.mission, .missions) .goal-label small {
+    display: none;
+  }
+  body.raizes-jogo #jogo :is(.mission, .missions) .goal strong {
+    font-size: 13px !important;
+    font-variant-numeric: tabular-nums;
+  }
+  body.raizes-jogo #jogo .current-care {
+    font-size: 12px !important;
+  }
+  body.raizes-jogo #jogo .goal .brisa-icon,
+  body.raizes-jogo #jogo .goal .ui-icon {
+    width: 23px !important;
+    height: 23px !important;
+    flex-shrink: 0;
+  }
+  body.raizes-jogo #jogo .actions {
+    gap: 8px !important;
+  }
+  body.raizes-jogo #jogo .actions button {
+    width: 58px !important;
+    height: 58px !important;
+    min-width: 58px !important;
+    padding: 6px !important;
+  }
+  body.raizes-jogo #jogo .actions button .brisa-icon {
+    width: 32px !important;
+    height: 32px !important;
+    max-width: 100%;
+    max-height: 100%;
+  }
+  body.raizes-jogo #jogo .top-actions {
+    gap: 7px !important;
+  }
+  body.raizes-jogo #jogo .top-actions button {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    padding: 6px !important;
+  }
+  body.raizes-jogo #jogo .top-actions button .brisa-icon {
+    width: 28px !important;
+    height: 28px !important;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 !important;
+  }
+  body.raizes-jogo #jogo .joystick {
+    width: 96px !important;
+    height: 96px !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #leaf-transition * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

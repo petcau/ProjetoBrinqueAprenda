@@ -25,7 +25,7 @@
   function uniformCard(u) {
     const known = GuardiaoMemoria.hasUniform(u.id),
       active = known && GuardiaoMemoria.read().uniform === u.id;
-    return `<article class="brisa-item brisa-uniform ${known ? "is-known" : "is-undiscovered"} ${active ? "is-worn" : ""}" data-uniform="${u.id}" aria-label="${known ? u.name : "Traje ainda não descoberto"}"><div class="item-illustration uniform-${u.id}" aria-hidden="true">${BosqueKai.uniformMarkup(u.id)}</div><div><h3>${known ? u.name : "Traje a descobrir"}</h3><p>${known ? u.description : "A equipe entrega este traje durante a aventura."}</p>${active ? '<span class="worn-label">Vestindo agora</span>' : ""}</div></article>`;
+    return `<article class="brisa-item brisa-uniform ${known ? "is-known" : "is-undiscovered"} ${active ? "is-worn" : ""}" data-uniform="${u.id}" aria-label="${u.name}${known ? "" : ", disponível na fase " + u.phase}"><div class="item-illustration uniform-${u.id}" aria-hidden="true">${BosqueKai.uniformMarkup(u.id)}</div><div><h3>${u.name}</h3><p>${known ? "Traje da fase " + (u.phase || 1) + "." : "Disponível na fase " + u.phase + "."}</p>${active ? '<span class="worn-label">Vestindo agora</span>' : ""}</div></article>`;
   }
   function render() {
     const m = GuardiaoMemoria,

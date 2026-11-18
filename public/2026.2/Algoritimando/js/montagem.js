@@ -57,10 +57,21 @@
     if (!jaMostrados.has(chave)) el.classList.add('nova');
   }
 
-  /* ---------------- botão do celular ---------------- */
+  /* ---------------- botão "Ver montagem" ----------------
+     No celular a montagem troca de lugar com a cena e começa
+     desligada. No PC o botão só aparece quando a montagem não cabe
+     embaixo da bandeja (7 ou 8 cartas): aí ela abre ao lado, por
+     cima da cena, e começa LIGADA — é nos níveis difíceis que ver a
+     consequência mais ajuda. */
+
+  // em pé ou deitado: nos dois a montagem troca de lugar por botão
+  const celular = window.matchMedia('(max-aspect-ratio: 4/5), (max-height: 500px)');
 
   function lerPreferencia() {
-    try { return localStorage.getItem(CHAVE) === '1'; } catch { return false; }
+    try {
+      const salvo = localStorage.getItem(CHAVE);
+      return salvo === null ? !celular.matches : salvo === '1';
+    } catch { return !celular.matches; }
   }
 
   function mostrarNoCelular(sim) {
@@ -79,6 +90,33 @@
     new ResizeObserver(() => {
       caixa.classList.toggle('apertada', caixa.getBoundingClientRect().height < 48);
     }).observe(caixa);
+
+    /* Sobra altura embaixo da bandeja? A conta usa a bandeja CHEIA
+       (ela tem as mesmas fileiras do tabuleiro), e não a altura de
+       agora: senão, conforme as cartas saem da bandeja, a montagem
+       ficaria pulando do lado para baixo no meio do nível. */
+    const area = tela.querySelector('.area-jogo');
+    const tabuleiro = tela.querySelector('.tabuleiro');
+    const bandeja = tela.querySelector('.bandeja');
+    const grade = tela.querySelector('.tabuleiro-grade');
+    const molduraDe = el => {
+      const c = getComputedStyle(el);
+      return ['paddingTop', 'paddingBottom', 'borderTopWidth', 'borderBottomWidth']
+        .reduce((soma, k) => soma + (parseFloat(c[k]) || 0), 0);
+    };
+    const medirSobra = () => {
+      if (celular.matches || !area.clientHeight || !grade.offsetHeight) {
+        tela.classList.remove('montagem-sem-espaco');
+        return;
+      }
+      const vao = parseFloat(getComputedStyle(area).rowGap) || 0;
+      const sobra = area.clientHeight - 2 * grade.offsetHeight
+        - molduraDe(tabuleiro) - molduraDe(bandeja) - 2 * vao;
+      tela.classList.toggle('montagem-sem-espaco', sobra < 48);
+    };
+    const olheiro = new ResizeObserver(medirSobra);
+    [area, grade].forEach(el => olheiro.observe(el));
+    celular.addEventListener('change', medirSobra);
   }
 
   /* ---------------- preparar a fase ---------------- */

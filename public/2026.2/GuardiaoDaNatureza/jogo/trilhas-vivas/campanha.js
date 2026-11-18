@@ -104,7 +104,14 @@
       if (!itemsGiven) return;
       for (const t of tasks) {
         const old = s.tasks?.find((a) => a.id === t.id);
-        if (!old) continue;
+        if (!old) {
+          // Uma partida concluída antes da ampliação da fauna continua concluída.
+          if (s.completed && animal(t)) {
+            t.status = "safe";
+            t.position = { ...animalHome(t) };
+          }
+          continue;
+        }
         const allowed =
           t.type === "bed"
             ? ["pending", "cleared", "dug", "seeded", "growing", "done"]
@@ -335,7 +342,7 @@
     neutral();
     route = [];
     player.moving = false;
-    action = { task: t.id, kind, elapsed: 0, duration };
+    action = { task: t.id, kind, elapsed: 0, duration, problem: t.problem };
     player.direction =
       (Math.round(-Math.atan2(t.y - player.y, t.x - player.x) / (Math.PI / 4)) +
         8) %
@@ -343,6 +350,7 @@
     $("action-progress").hidden = false;
   }
   function animalHome(t) {
+    if (t.home) return { ...t.home };
     if (id === 3 && t.speciesKey) return GuardiaoElenco.habitat(t.speciesKey);
     if (id === 2)
       return t.type === "turtle"
@@ -560,7 +568,7 @@
       t.quizPassed = true;
       $("puzzle").close();
       puzzleTask = null;
-      rescue(t);
+      startAction(t, t.type === "cage" ? "unlock" : "care", 1.35);
       save();
       updateHUD();
       window.GuardiaoAudio?.effect("resgate");
@@ -643,6 +651,14 @@
     if (!dependencies(t)) {
       message("Vamos recolher o lixo perto deste amigo primeiro.");
       return;
+    }
+    if (animal(t)) {
+      const beside = GuardiaoCuidados.approach(player, t, nav);
+      if (beside && distance(player, beside) > 4) {
+        pendingInteraction = t.id;
+        schedulePath(beside);
+        return;
+      }
     }
     if (distance(player, t) > 52 || !nav.interactionVisible(player, t)) {
       pendingInteraction = t.id;
@@ -830,7 +846,7 @@
     ui.update(dt);
     if (stage === "dressing") {
       dressingTime += dt;
-      if (dressingTime >= 2.4) {
+      if (dressingTime >= 5.6) {
         protective = true;
         stage = "exploring";
         $("cinema").hidden = true;
@@ -958,43 +974,12 @@
       startReward();
   }
   function updateFlora(dt) {
-    const resting =
-      id !== 2 &&
-      ui.jump <= 0 &&
-      !player.moving &&
-      !action &&
-      player.idle > 2.5 &&
-      stage !== "handoff";
-    let x = player.x - 25,
-      y = player.y - 65;
-    if (stage === "reward" || $("vitoria").open) {
-      flora.mode = "comemorando";
-      x = player.x + 30;
-      y = player.y - 72;
-    } else if (resting) {
-      if (flora.mode !== "ombro" && flora.mode !== "pousando") {
-        flora.mode = "pousando";
-        flora.elapsed = 0;
-      }
-      flora.elapsed += dt;
-      if (flora.elapsed > 0.65) flora.mode = "ombro";
-      x =
-        player.x + (player.direction >= 3 && player.direction <= 5 ? 13 : -13);
-      y = player.y - 43;
-    } else {
-      flora.mode = "voando";
-      flora.elapsed = 0;
-      if (action?.kind === "kitten") {
-        x = player.x + 30;
-        y =
-          player.y -
-          90 -
-          Math.sin((action.elapsed / action.duration) * Math.PI) * 85;
-      }
-    }
-    const k = 1 - Math.exp(-dt * 7);
-    flora.x += (x - flora.x) * k;
-    flora.y += (y - flora.y) * k;
+    FloraCompanheira.update(flora, player, dt, {
+      phase: id,
+      busy: action || stage === "handoff" || stage === "dressing",
+      reward: stage === "reward" || $("vitoria").open,
+      jump: ui.height(),
+    });
   }
   function transform() {
     const s = camera.scale,
@@ -1068,7 +1053,7 @@
       ctx.stroke();
       ctx.setLineDash([]);
     }
-    if (data.station) art.bins(ctx, data.station);
+    if (data.station && !art.binActors) art.bins(ctx, data.station);
 
     if (id === 4) {
       ellipse(data.refill.x, data.refill.y, 22, 7, "#8ce9f144");
@@ -1076,154 +1061,170 @@
     }
   }
   function drawTask(t) {
-    const p = t.position,
-      isAnimal = animal(t),
-      isCurrent = action?.task === t.id;
-    if (["trash", "recycle"].includes(t.type)) {
-      if (
-        t.status === "pending" &&
-        !(isCurrent && action.elapsed / action.duration > 0.45)
-      )
-        if (!art.residual(ctx, t))
-          sprites.draw(
-            ctx,
-            "objetos",
-            t.type === "trash"
-              ? Number(t.id.replace("lixo", "")) % 4
-              : {
-                  recyclable: Number(t.id.replace("reciclavel", "")) % 3,
-                  organic: 3,
-                  residual: 1,
-                }[t.material],
-            t.x,
-            t.y,
-            24,
-            { angle: id === 2 ? Math.sin(time * 2 + t.x) * 0.1 : 0 },
-          );
-      return;
-    }
-    if (t.type === "key") {
-      if (!finished(t)) icon("key", t.x, t.y - 9, 26);
-      return;
-    }
-    if (isAnimal) {
-      if (
-        isCurrent &&
-        ["turtle", "fish", "kitten", "bird"].includes(action.kind)
-      )
-        return;
-      if (
-        id === 2 &&
-        art.riverAnimal(
-          ctx,
-          t,
-          time,
-          reduced(),
-          p.x,
-          p.y,
-          t.type === "turtle" ? 43 : 30,
+    try {
+      const p = t.position,
+        isAnimal = animal(t),
+        isCurrent = action?.task === t.id;
+      if (["trash", "recycle"].includes(t.type)) {
+        if (
+          t.status === "pending" &&
+          !(
+            isCurrent &&
+            action.elapsed / action.duration > (id === 2 ? 0.18 : 0.45)
+          )
         )
-      )
+          if (!art.residual(ctx, t))
+            sprites.draw(
+              ctx,
+              "objetos",
+              t.type === "trash"
+                ? Number(t.id.replace("lixo", "")) % 4
+                : {
+                    recyclable: Number(t.id.replace("reciclavel", "")) % 3,
+                    organic: 3,
+                    residual: 1,
+                  }[t.material],
+              t.x,
+              t.y,
+              24,
+              { angle: id === 2 ? Math.sin(time * 2 + t.x) * 0.1 : 0 },
+            );
         return;
-      if (t.speciesKey) {
-        art.animal(
+      }
+      if (t.type === "key") {
+        if (!finished(t)) icon("key", t.x, t.y - 9, 26);
+        return;
+      }
+      if (isAnimal) {
+        if (isCurrent && ["kitten"].includes(action.kind)) return;
+        if (
+          id === 2 &&
+          art.riverAnimal(
+            ctx,
+            t,
+            time,
+            reduced(),
+            p.x,
+            p.y,
+            t.type === "turtle" ? 43 : 30,
+            isCurrent ? action.elapsed / action.duration : 0,
+          )
+        )
+          return;
+        if (t.speciesKey) {
+          art.animal(
+            ctx,
+            t,
+            time,
+            reduced(),
+            p.x,
+            p.y,
+            ["capivara", "onca", "anta", "tamandua"].includes(t.speciesKey)
+              ? 46
+              : 36,
+          );
+          if (t.type === "cage")
+            sprites.draw(
+              ctx,
+              "objetos",
+              t.status === "pending" &&
+                !(isCurrent && action.elapsed / action.duration > 0.3)
+                ? 4
+                : 5,
+              t.x,
+              t.y,
+              60,
+              { alpha: t.status === "pending" ? 0.72 : 1 },
+            );
+          return;
+        }
+        let sheet,
+          index,
+          height = 36;
+        if (id === 2) {
+          sheet = "animais-rio";
+          const base = t.type === "turtle" ? 0 : 8;
+          if (t.status === "pending")
+            index = base + (!reduced() && time % 4 > 3.7 ? 1 : 0);
+          else if (t.status === "returning" || t.status === "safe")
+            index = base + 4 + (Math.floor(time * 7) % 4);
+          else index = base + 3;
+          height = t.type === "turtle" ? 38 : 26;
+        } else {
+          sheet =
+            t.status === "returning"
+              ? "animais-fauna-andando"
+              : "animais-fauna";
+          const base = t.species * 4;
+          index =
+            base +
+            (t.status === "pending"
+              ? !reduced() && time % 4 > 3.7
+                ? 1
+                : 0
+              : t.status === "returning"
+                ? 3
+                : 2);
+          if (t.status === "returning")
+            index = base + (reduced() ? 0 : Math.floor(time * 8) % 4);
+          height = t.type === "kitten" ? 32 : t.species === 2 ? 37 : 34;
+          if (t.type === "cage" && t.status !== "pending")
+            sprites.draw(ctx, "objetos", 5, t.x, t.y, 60);
+        }
+        ellipse(p.x, p.y, 13, 4, "#1c452b44");
+        sprites.draw(
+          ctx,
+          sheet,
+          index,
+          p.x,
+          p.y - (t.type === "kitten" && t.status === "pending" ? 75 : 0),
+          height,
+          { flip: t.facingRight },
+        );
+        if (t.type === "cage" && t.status === "pending")
+          sprites.draw(ctx, "objetos", 4, t.x, t.y, 60, { alpha: 0.88 });
+        return;
+      }
+      if (t.type === "transport") {
+        if (finished(t))
+          icon(t.id === "onibus" ? "bus" : "bike", t.x, t.y - 15, 30);
+        return;
+      }
+      if (t.type === "community") {
+        icon(finished(t) ? "heart" : "hand", t.x, t.y - 12, 25);
+        return;
+      }
+      if (t.type === "bed") {
+        world.plant(ctx, t, elapsed, reduced());
+      } else if (t.type === "nest")
+        sprites.draw(ctx, "objetos", finished(t) ? 14 : 13, t.x, t.y, 43);
+      else if (t.type === "solar") {
+        sprites.draw(ctx, "objetos", finished(t) ? 11 : 10, t.x, t.y, 48);
+        if (finished(t)) art.energy(ctx, t.x, t.y, time, reduced());
+      } else if (t.type === "garden" && finished(t))
+        shared.draw(
+          ctx,
+          "natureza",
+          6,
+          t.x,
+          t.y,
+          22 +
+            32 *
+              (reduced()
+                ? 1
+                : Math.min(1, (elapsed - (t.restoredAt ?? -3)) / 2)),
+        );
+    } finally {
+      if (animal(t))
+        GuardiaoCuidados.draw(
           ctx,
           t,
           time,
           reduced(),
-          p.x,
-          p.y,
-          ["capivara", "onca", "anta", "tamandua"].includes(t.speciesKey)
-            ? 46
-            : 36,
+          action?.task === t.id ? action.elapsed / action.duration : 0,
+          player,
         );
-        if (t.type === "cage")
-          sprites.draw(
-            ctx,
-            "objetos",
-            t.status === "pending" &&
-              !(isCurrent && action.elapsed / action.duration > 0.3)
-              ? 4
-              : 5,
-            t.x,
-            t.y,
-            60,
-            { alpha: t.status === "pending" ? 0.72 : 1 },
-          );
-        return;
-      }
-      let sheet,
-        index,
-        height = 36;
-      if (id === 2) {
-        sheet = "animais-rio";
-        const base = t.type === "turtle" ? 0 : 8;
-        if (t.status === "pending")
-          index = base + (!reduced() && time % 4 > 3.7 ? 1 : 0);
-        else if (t.status === "returning" || t.status === "safe")
-          index = base + 4 + (Math.floor(time * 7) % 4);
-        else index = base + 3;
-        height = t.type === "turtle" ? 38 : 26;
-      } else {
-        sheet =
-          t.status === "returning" ? "animais-fauna-andando" : "animais-fauna";
-        const base = t.species * 4;
-        index =
-          base +
-          (t.status === "pending"
-            ? !reduced() && time % 4 > 3.7
-              ? 1
-              : 0
-            : t.status === "returning"
-              ? 3
-              : 2);
-        if (t.status === "returning")
-          index = base + (reduced() ? 0 : Math.floor(time * 8) % 4);
-        height = t.type === "kitten" ? 32 : t.species === 2 ? 37 : 34;
-        if (t.type === "cage" && t.status !== "pending")
-          sprites.draw(ctx, "objetos", 5, t.x, t.y, 60);
-      }
-      ellipse(p.x, p.y, 13, 4, "#1c452b44");
-      sprites.draw(
-        ctx,
-        sheet,
-        index,
-        p.x,
-        p.y - (t.type === "kitten" && t.status === "pending" ? 75 : 0),
-        height,
-        { flip: t.facingRight },
-      );
-      if (t.type === "cage" && t.status === "pending")
-        sprites.draw(ctx, "objetos", 4, t.x, t.y, 60, { alpha: 0.88 });
-      return;
     }
-    if (t.type === "transport") {
-      if (finished(t))
-        icon(t.id === "onibus" ? "bus" : "bike", t.x, t.y - 15, 30);
-      return;
-    }
-    if (t.type === "community") {
-      icon(finished(t) ? "heart" : "hand", t.x, t.y - 12, 25);
-      return;
-    }
-    if (t.type === "bed") {
-      world.plant(ctx, t, elapsed, reduced());
-    } else if (t.type === "nest")
-      sprites.draw(ctx, "objetos", finished(t) ? 14 : 13, t.x, t.y, 43);
-    else if (t.type === "solar") {
-      sprites.draw(ctx, "objetos", finished(t) ? 11 : 10, t.x, t.y, 48);
-      if (finished(t)) art.energy(ctx, t.x, t.y, time, reduced());
-    } else if (t.type === "garden" && finished(t))
-      shared.draw(
-        ctx,
-        "natureza",
-        6,
-        t.x,
-        t.y,
-        22 +
-          32 *
-            (reduced() ? 1 : Math.min(1, (elapsed - (t.restoredAt ?? -3)) / 2)),
-      );
   }
   function drawPlayer() {
     const flip = player.direction >= 3 && player.direction <= 5;
@@ -1254,23 +1255,34 @@
     } else if (stage === "dressing") {
       const pose = art.river(ctx, player, time, reduced(), {
         dressing: true,
-        progress: Math.min(0.999, dressingTime / 2.4),
+        progress: Math.min(0.999, dressingTime / 5.6),
       });
       name = pose.split(":")[0];
       frame = Number(pose.split(":")[1]);
-    } else if (
-      id === 2 &&
-      protective &&
-      (action || player.swimming || !action)
-    ) {
+    } else if (id === 2 && protective) {
       const pose = art.river(ctx, player, time, reduced(), {
-        kind: action?.kind,
+        // A pose de coleta alcança a embalagem. As poses antigas de carregar um
+        // peixe/tartaruga fariam o animal aparecer duplicado fora da água.
+        kind: action
+          ? animal(tasks.find((t) => t.id === action.task))
+            ? "desprender"
+            : action.kind
+          : null,
+        problem: action?.problem,
         progress: action
           ? Math.min(0.999, action.elapsed / action.duration)
           : 0,
       });
       name = pose.split(":")[0];
       frame = Number(pose.split(":")[1]);
+      if (action?.kind === "trash")
+        art.riverTrash?.(
+          ctx,
+          sprites,
+          tasks.find((t) => t.id === action.task),
+          player,
+          action.elapsed / action.duration,
+        );
     } else if (action && id >= 3) {
       const target = tasks.find((t) => t.id === action.task),
         progress = Math.min(0.999, action.elapsed / action.duration);
@@ -1438,6 +1450,10 @@
   }
   function drawCelebration() {
     const c = $("celebration").getContext("2d");
+    if (window.RioClaroResumo) {
+      RioClaroResumo.paint(c, 420, 230, time, reduced());
+      return;
+    }
     c.clearRect(0, 0, 420, 175);
     sprites.draw(c, "npcs", data.npcRow * 3 + 1, 105, 150, 108);
     colar.drawActor(c, 6.5, 210, 153, 125, true);
@@ -1496,6 +1512,7 @@
       y: t.position.y,
       draw: () => drawTask(t),
     }));
+    if (data.station) actors.push(...(art.binActors?.(ctx) || []));
     actors.push(
       ...world
         .actors(time, reduced(), player)
@@ -1539,7 +1556,7 @@
         !action &&
         stage === "exploring"
       )
-        label(t.name, t.x, y - 20);
+        label(t.problemLabel || t.name, t.x, y - 20);
     }
     if (stage === "handoff") {
       const p = 1 - handoff / 1.5;
@@ -1899,17 +1916,10 @@
     $("loading").textContent =
       "Preparando " + data.name.toLowerCase() + "… " + loaded;
   }
-  const specific =
-    id === 2
-      ? ["animais-rio"]
-      : id === 3
-        ? ["kai-floresta", "animais-fauna", "animais-fauna-andando"]
-        : id === 4
-          ? ["kai-plantio", "kai-floresta"]
-          : ["kai-rio", "kai-plantio", "kai-floresta"];
+  const specific = id === 2 ? ["animais-rio"] : [];
   Promise.all([
     sprites.load(["npcs", "objetos", ...specific], progress),
-    shared.load(progress, ["kai-repouso", "natureza"]),
+    shared.load(progress, ["natureza"]),
     Promise.resolve(null),
     Promise.resolve(null),
     window.GuardiaoIcones.load(),
@@ -1917,6 +1927,7 @@
     colar.load(),
     art.load(),
     BosqueKai.load(),
+    world.ready,
   ])
     .then((r) => {
       iconImage = r[4];
