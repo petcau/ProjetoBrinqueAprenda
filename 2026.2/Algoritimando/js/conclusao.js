@@ -9,7 +9,7 @@
    pergunta-título. O texto e as perguntas para conversar ficam
    atrás do botão "Para o professor": servem para ele conduzir a
    conversa — e são a base para desenhar a imagem. Enquanto a
-   imagem não existe, aparece o quadro "ilustração da lição".
+   imagem não existe, a tela abre direto no texto da lição.
 
    TODO o conteúdo vem de fase.licao (ver o formato no motor.js);
    este arquivo só monta a tela. Nada de frase de sanduíche aqui.
@@ -45,6 +45,7 @@
   const arte           = raiz.querySelector('.licao-arte');
   const premioEstrelas = raiz.querySelector('.premio-estrelas');
   const premioDicas    = raiz.querySelector('.premio-dicas');
+  const premioFigurinha = raiz.querySelector('.premio-figurinha');
   const caixaSelo      = raiz.querySelector('.licao-selo');
 
   // para o evento de continuar
@@ -60,22 +61,28 @@
     }
   }
 
-  /* imagem da lição, ou o quadro tracejado enquanto ela não existe
+  /* imagem da lição, ou o texto da lição enquanto ela não existe
      (background-image não avisa quando falha: um Image() escuta) */
   function preencherImagem(src, legenda) {
     imagem.classList.remove('vazia');
     imagem.textContent = '';
     imagem.style.backgroundImage = '';
     imagem.setAttribute('aria-label', legenda || 'Ilustração da lição');
+    imagem.dataset.src = src || '';
     const vazia = () => {
       imagem.style.backgroundImage = '';
       imagem.classList.add('vazia');
       imagem.textContent = 'ilustração da lição';
+      // sem imagem, a lição abre direto no texto (sem quadro vazio)
+      if (!professor.hidden || botaoProf.hidden) return;
+      mostrarProfessor(true);
+      botaoProf.hidden = true;
     };
     if (!src) { vazia(); return; }
     imagem.style.backgroundImage = `url("${src}")`;
     const sonda = new Image();
-    sonda.onerror = vazia;
+    // só vale se esta ainda for a imagem da lição aberta
+    sonda.onerror = () => { if (imagem.dataset.src === src) vazia(); };
     sonda.src = src;
   }
 
@@ -102,9 +109,9 @@
     blocoTexto.hidden = !licao.texto;
     if (licao.texto) preencherParagrafos(blocoTexto, licao.texto);
 
-    preencherImagem(licao.imagem, licao.pergunta);
     mostrarProfessor(false);
     botaoProf.hidden = !licao.texto && !(licao.reflexao && licao.reflexao.length);
+    preencherImagem(licao.imagem, licao.pergunta);
 
     reflexao.hidden = !(licao.reflexao && licao.reflexao.length);
     listaReflexao.textContent = '';
@@ -118,6 +125,10 @@
     const e = premio.estrelas;
     premioEstrelas.textContent = `+${e} ${e === 1 ? 'estrela' : 'estrelas'}`;
     premioDicas.textContent = `+${premio.dicas} ${premio.dicas === 1 ? 'dica' : 'dicas'}`;
+    // nível rejogado não dá dica: o prêmio some em vez de dizer "+0"
+    premioDicas.parentElement.hidden = !premio.dicas;
+    // a figurinha do álbum: só na primeira vez (ver jogo.js)
+    premioFigurinha.hidden = !premio.figurinha;
     const ultima = indiceFase + 1 >= situacao.fases.length;
     botaoTexto.textContent = ultima ? 'Voltar à central' : 'Próximo nível';
 
@@ -128,6 +139,8 @@
       caixaSelo.querySelector('.licao-selo-disco').replaceChildren(Comum.criarSelo(selo));
       caixaSelo.querySelector('.licao-selo-nome').textContent = selo.nome;
       caixaSelo.querySelector('.licao-selo-frase').textContent = selo.frase || '';
+      // o som do selo vem depois do da vitória, que toca junto com a lição
+      setTimeout(() => { if (window.Som && Som.selo) Som.selo(); }, 1300);
     }
     arte.style.backgroundImage = situacao.fundoConclusao ? `url("${situacao.fundoConclusao}")` : '';
     raiz.classList.toggle('sem-arte', !situacao.fundoConclusao);

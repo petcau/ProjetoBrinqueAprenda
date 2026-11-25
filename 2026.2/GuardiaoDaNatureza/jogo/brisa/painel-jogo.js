@@ -73,6 +73,16 @@
       );
     if (phase === 1 && $("vitoria")?.open && $("ra-celebration"))
       A.canvas($("ra-celebration"), (c, w, h) => {
+        if (window.RioClaroResumo) {
+          RioClaroResumo.paint(
+            c,
+            w,
+            h,
+            t,
+            document.body.classList.contains("reduce-motion"),
+          );
+          return;
+        }
         A.draw(
           c,
           "acoes",
@@ -136,8 +146,6 @@
       );
     }
     $("interagir").innerHTML = R.icon("hand") + "<small>CUIDAR</small>";
-    const rotate = $("girar-tela-cheia");
-    if (rotate) R.bindFull(rotate);
     if (phase === 1) {
       const art = document.querySelector(".celebration-art");
       if (art) {

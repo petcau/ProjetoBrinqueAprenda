@@ -109,11 +109,49 @@
     tela.style.setProperty('--img', situacao.fundo ? `url("${situacao.fundo}")` : 'none');
     tela.style.setProperty('--cor', situacao.cor || '#8c6d4a');
     tela.classList.toggle('sem-fundo', !situacao.fundo);
+    document.getElementById('btn-cena-cheia').hidden = !situacao.fundo;
 
     montarFase();
     irPara('fase');
     focarPrimeiraCarta();
+    // celular em pé: a cena aparece inteira ao entrar no chamado
+    if (emPe.matches) abrirCenaCheia(true);
   }
+
+  /* ---------------- a cena em tela cheia ----------------
+     A imagem de fundo do chamado (a criança, o robô e o balão com o
+     pedido) inteira, sem o tabuleiro por cima. Fecha tocando em
+     qualquer lugar, no botão ou com Esc. */
+  const cenaCheia = document.getElementById('cena-cheia');
+  const btnCenaCheia = document.getElementById('btn-cena-cheia');
+  const btnCenaFechar = document.getElementById('btn-cena-fechar');
+  /* No celular em pé a cena é só um fundo borrado. Ao entrar no
+     chamado ela aparece inteira, com o pedido do morador, e sai
+     sozinha depois de TEMPO_ABERTURA (ou com um toque). */
+  const emPe = window.matchMedia('(max-aspect-ratio: 4/5)');
+  const TEMPO_ABERTURA = 4000;
+  let relogioCena = null;
+  function abrirCenaCheia(abertura = false) {
+    if (!situacao || !situacao.fundo) return;
+    clearTimeout(relogioCena);
+    cenaCheia.querySelector('.cena-cheia-imagem').style.backgroundImage = `url("${situacao.fundo}")`;
+    cenaCheia.classList.toggle('abertura', abertura === true);
+    btnCenaFechar.textContent = abertura === true ? 'Começar' : 'Fechar';
+    cenaCheia.classList.add('on');
+    btnCenaFechar.focus({ preventScroll: true });
+    if (abertura === true) relogioCena = setTimeout(fecharCenaCheia, TEMPO_ABERTURA);
+  }
+  function fecharCenaCheia() {
+    clearTimeout(relogioCena);
+    if (!cenaCheia.classList.contains('on')) return;
+    const eraAbertura = cenaCheia.classList.contains('abertura');
+    cenaCheia.classList.remove('on', 'abertura');
+    if (eraAbertura) focarPrimeiraCarta();
+    else btnCenaCheia.focus({ preventScroll: true });
+  }
+  btnCenaCheia.addEventListener('click', () => abrirCenaCheia());
+  cenaCheia.addEventListener('click', fecharCenaCheia);
+  document.addEventListener('keydown', ev => { if (ev.key === 'Escape') fecharCenaCheia(); });
 
   function focarPrimeiraCarta() {
     const primeira = fila.querySelector('.carta');
@@ -138,6 +176,8 @@
 
     // um espaço numerado por passo, todos vazios; até 4 por linha
     tela.style.setProperty('--colunas', Math.min(f.passos.length, 4));
+    // celular deitado: duas cartas por fileira (ver style.css)
+    tela.style.setProperty('--fileiras', Math.ceil(f.passos.length / 2));
     grade.textContent = '';
     f.passos.forEach((_, i) => {
       const li = document.createElement('li');
@@ -155,6 +195,7 @@
     fila.textContent = '';
     embaralhar(f.passos).forEach(p => {
       const li = document.createElement('li');
+      li.dataset.lugar = p.id;   // o lugar fixo da carta (ver arrasto.js)
       li.append(criarCarta(p));
       fila.append(li);
     });
@@ -179,19 +220,25 @@
   /* Fase completa sem erro: grava o avanço e mostra a lição. */
   function aoConcluirFase() {
     const ganhas = erros === 0 ? 3 : erros === 1 ? 2 : 1;
+    // a dica de prêmio é só da primeira vez: rejogar um nível já
+    // concluído não pode virar fonte de dicas sem fim
+    const primeiraVez = !(progresso.niveis[indiceFase] > 0);
     progresso.niveis[indiceFase] = Math.max(progresso.niveis[indiceFase] || 0, ganhas);
     // rejogar um nível antigo nunca faz o chamado voltar atrás
     progresso.fase = Math.max(progresso.fase, indiceFase + 1);
     Progresso.gravar(chave, progresso);
     atualizarEstrelas();
 
-    Perfil.dados.dicas += 1;
+    const dicasGanhas = primeiraVez ? 1 : 0;
+    Perfil.dados.dicas += dicasGanhas;
     const ultima = indiceFase + 1 >= situacao.fases.length;
     // chamado do professor não entra na conta da promoção
     if (ultima && !chave.startsWith('prof:')) Perfil.dados.concluidos[situacao.id] = true;
     Perfil.gravar();
 
-    const premio = { estrelas: ganhas, dicas: 1 };
+    // figurinha nova no álbum: só os chamados do jogo, na primeira vez
+    const figurinha = primeiraVez && typeof SITUACOES !== 'undefined' && SITUACOES.some(s => s.id === chave);
+    const premio = { estrelas: ganhas, dicas: dicasGanhas, figurinha };
     document.querySelectorAll('#licao .gStars').forEach(e => { e.textContent = contadorNum.textContent; });
     rosto.src = ROSTO.dica;
     // a espera deixa a criança ver a última carta assentar; o som de
@@ -305,6 +352,7 @@
   });
 
   function gastarDica() {
+    Som.dica();
     Perfil.dados.dicas -= 1;
     Perfil.gravar();
     atualizarBotaoDica();
@@ -447,7 +495,7 @@
     const { carta, alvo, mudou } = ev.detail;
     if (mudou && alvo.tipo === 'espaco') {
       assentar(carta);
-      Som.clique();
+      Som.cartaVai();
     }
     atualizarVerificar();
   }

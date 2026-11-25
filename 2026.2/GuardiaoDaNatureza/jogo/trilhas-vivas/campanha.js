@@ -104,7 +104,14 @@
       if (!itemsGiven) return;
       for (const t of tasks) {
         const old = s.tasks?.find((a) => a.id === t.id);
-        if (!old) continue;
+        if (!old) {
+          // Uma partida concluída antes da ampliação da fauna continua concluída.
+          if (s.completed && animal(t)) {
+            t.status = "safe";
+            t.position = { ...animalHome(t) };
+          }
+          continue;
+        }
         const allowed =
           t.type === "bed"
             ? ["pending", "cleared", "dug", "seeded", "growing", "done"]
@@ -120,6 +127,10 @@
               : t.type === "bed" && old.status === "growing"
                 ? "done"
                 : old.status;
+          if (t.speciesKey === "preguica" && t.status === "returning") {
+            t.status = "safe";
+            t.position = { x: t.x, y: t.y };
+          }
           t.seedSpecies = old.seedSpecies || "ipê";
           t.quizPassed = old.quizPassed === true;
           t.progress = Math.max(0, Math.min(1, Number(old.progress) || 0));
@@ -335,7 +346,7 @@
     neutral();
     route = [];
     player.moving = false;
-    action = { task: t.id, kind, elapsed: 0, duration };
+    action = { task: t.id, kind, elapsed: 0, duration, problem: t.problem };
     player.direction =
       (Math.round(-Math.atan2(t.y - player.y, t.x - player.x) / (Math.PI / 4)) +
         8) %
@@ -343,6 +354,7 @@
     $("action-progress").hidden = false;
   }
   function animalHome(t) {
+    if (t.home) return { ...t.home };
     if (id === 3 && t.speciesKey) return GuardiaoElenco.habitat(t.speciesKey);
     if (id === 2)
       return t.type === "turtle"
@@ -378,12 +390,12 @@
     return [];
   }
   function rescue(t) {
-    t.status = "returning";
+    t.status = t.speciesKey === "preguica" ? "safe" : "returning";
     t.position = { x: t.x, y: t.y };
     nav.setDynamic(
       tasks.filter((v) => v.type === "cage" && v.status === "pending"),
     );
-    t.route = animalRoute(t);
+    t.route = t.status === "safe" ? [] : animalRoute(t);
 
     t.restoredAt = elapsed;
     message(t.name + " está melhor!", "Kai");
@@ -414,7 +426,7 @@
       t.progress = 1;
       t.restoredAt = elapsed;
       water = Math.max(0, water - 12);
-      message("Uma nova " + t.seedSpecies + " para a floresta!", "Kai");
+      message("Semente de " + t.seedSpecies + " plantada!", "Kai");
     } else if (animal(t)) rescue(t);
     else if (t.type === "recycle") {
       t.status = "carried";
@@ -467,11 +479,11 @@
         ["sun", "Virar para o sol", window.GuardiaoIcones.markup("sun")],
         ["shade", "Virar para a sombra", window.GuardiaoIcones.markup("leaf")],
       ];
-    return [
-      ["recyclable", "Recicláveis", window.GuardiaoColecao.bin("recyclable")],
-      ["organic", "Orgânicos", window.GuardiaoColecao.bin("organic")],
-      ["residual", "Rejeitos", window.GuardiaoColecao.bin("residual")],
-    ];
+    return GuardiaoCidadeBins.map((s) => [
+      s.kind,
+      s.label + " · " + s.colorName,
+      window.GuardiaoColecao.bin(s.kind),
+    ]);
   }
 
   function objectMarkup(i) {
@@ -501,10 +513,10 @@
           window.GuardiaoIcones.markup(icon),
         ])
       : t.type === "bed"
-        ? ["ipê", "ingá", "aroeira"].map((name) => [
+        ? GuardiaoSementes.species.map(({ name }) => [
             name,
             name,
-            window.GuardiaoColecao.plant(name),
+            GuardiaoSementes.markup(name),
           ])
         : choices(t.type);
     if (t.quiz) {
@@ -513,9 +525,9 @@
         "Vamos pensar antes de cuidar de " + t.name + ".";
     }
     if (t.type === "bed") {
-      $("puzzle-title").textContent = "Qual muda vamos plantar?";
+      $("puzzle-title").textContent = "Qual semente vamos plantar?";
       $("puzzle-description").textContent =
-        "Escolha a planta que você quiser. Todas são nativas. Depois plante e regue!";
+        "Escolha uma semente de árvore brasileira ameaçada. Depois, é só plantar e regar.";
     }
     $("puzzle-feedback").removeAttribute("data-correct");
     $("quiz-continue")?.remove();
@@ -525,6 +537,18 @@
         b.type = "button";
         b.dataset.answer = value;
         b.innerHTML = art + "<span>" + label + "</span>";
+        if (t.type === "bed") {
+          const seed = GuardiaoSementes.species.find((s) => s.name === value);
+          b.insertAdjacentHTML(
+            "beforeend",
+            "<small><i>" +
+              seed.scientific +
+              "</i><br>" +
+              seed.status +
+              "</small>",
+          );
+          b.title = seed.fact;
+        }
         b.addEventListener("click", () => answer(value));
         return b;
       }),
@@ -539,7 +563,7 @@
     const correct = t.quiz
       ? value === t.quiz.answer
       : t.type === "bed"
-        ? ["ipê", "ingá", "aroeira"].includes(value)
+        ? GuardiaoSementes.species.some((s) => s.name === value)
         : t.type === "cage"
           ? value === t.answer
           : t.type === "solar"
@@ -550,7 +574,7 @@
         t.type === "bed"
           ? "Este local combina com " + t.native + ". Vamos tentar essa muda?"
           : t.type === "recycle"
-            ? "Recicláveis: papel limpo, plástico e metal. Orgânicos: restos de alimento. Rejeitos: resíduos sem reaproveitamento, como papel sujo. Tente de novo!"
+            ? "Vermelha: plástico. Verde: vidro. Amarela: metal. Azul: papel limpo. Escolha pelo material do objeto. Tente de novo!"
             : "Vamos tentar outra? Você consegue!";
       $("puzzle-feedback").dataset.correct = "false";
       tone(330);
@@ -560,7 +584,7 @@
       t.quizPassed = true;
       $("puzzle").close();
       puzzleTask = null;
-      rescue(t);
+      startAction(t, t.type === "cage" ? "unlock" : "care", 1.35);
       save();
       updateHUD();
       window.GuardiaoAudio?.effect("resgate");
@@ -644,6 +668,14 @@
       message("Vamos recolher o lixo perto deste amigo primeiro.");
       return;
     }
+    if (animal(t)) {
+      const beside = GuardiaoCuidados.approach(player, t, nav);
+      if (beside && distance(player, beside) > 4) {
+        pendingInteraction = t.id;
+        schedulePath(beside);
+        return;
+      }
+    }
     if (distance(player, t) > 52 || !nav.interactionVisible(player, t)) {
       pendingInteraction = t.id;
       schedulePath(t, 46);
@@ -659,10 +691,7 @@
     }
     if (t.type === "bed") {
       if (t.status === "pending") {
-        t.seedSpecies = ["ipê", "ingá", "aroeira"][
-          tasks.filter((v) => v.type === "bed").indexOf(t) % 3
-        ];
-        startAction(t, "seed", 1.05);
+        showPuzzle(t);
       } else if (t.status === "seeded") {
         if (water >= 12) startAction(t, "water", 1.4);
         else message("Encha o regador na fonte.");
@@ -730,8 +759,12 @@
   }
   function updateHUD() {
     document.querySelectorAll("[data-goal]").forEach((b) => {
-      const type = b.dataset.goal,
-        total = tasks.filter((t) => group(t, type)).length,
+      const type = b.dataset.goal;
+      if (type === "home") {
+        b.querySelector("strong").textContent = "→";
+        return;
+      }
+      const total = tasks.filter((t) => group(t, type)).length,
         done = tasks.filter((t) => group(t, type) && finished(t)).length;
       b.querySelector("strong").textContent = done + "/" + total;
       b.classList.toggle("done", done === total);
@@ -830,7 +863,7 @@
     ui.update(dt);
     if (stage === "dressing") {
       dressingTime += dt;
-      if (dressingTime >= 2.4) {
+      if (dressingTime >= 5.6) {
         protective = true;
         stage = "exploring";
         $("cinema").hidden = true;
@@ -958,43 +991,12 @@
       startReward();
   }
   function updateFlora(dt) {
-    const resting =
-      id !== 2 &&
-      ui.jump <= 0 &&
-      !player.moving &&
-      !action &&
-      player.idle > 2.5 &&
-      stage !== "handoff";
-    let x = player.x - 25,
-      y = player.y - 65;
-    if (stage === "reward" || $("vitoria").open) {
-      flora.mode = "comemorando";
-      x = player.x + 30;
-      y = player.y - 72;
-    } else if (resting) {
-      if (flora.mode !== "ombro" && flora.mode !== "pousando") {
-        flora.mode = "pousando";
-        flora.elapsed = 0;
-      }
-      flora.elapsed += dt;
-      if (flora.elapsed > 0.65) flora.mode = "ombro";
-      x =
-        player.x + (player.direction >= 3 && player.direction <= 5 ? 13 : -13);
-      y = player.y - 43;
-    } else {
-      flora.mode = "voando";
-      flora.elapsed = 0;
-      if (action?.kind === "kitten") {
-        x = player.x + 30;
-        y =
-          player.y -
-          90 -
-          Math.sin((action.elapsed / action.duration) * Math.PI) * 85;
-      }
-    }
-    const k = 1 - Math.exp(-dt * 7);
-    flora.x += (x - flora.x) * k;
-    flora.y += (y - flora.y) * k;
+    FloraCompanheira.update(flora, player, dt, {
+      phase: id,
+      busy: action || stage === "handoff" || stage === "dressing",
+      reward: stage === "reward" || $("vitoria").open,
+      jump: ui.height(),
+    });
   }
   function transform() {
     const s = camera.scale,
@@ -1068,7 +1070,7 @@
       ctx.stroke();
       ctx.setLineDash([]);
     }
-    if (data.station) art.bins(ctx, data.station);
+    if (data.station && !art.binActors) art.bins(ctx, data.station);
 
     if (id === 4) {
       ellipse(data.refill.x, data.refill.y, 22, 7, "#8ce9f144");
@@ -1076,154 +1078,176 @@
     }
   }
   function drawTask(t) {
-    const p = t.position,
-      isAnimal = animal(t),
-      isCurrent = action?.task === t.id;
-    if (["trash", "recycle"].includes(t.type)) {
-      if (
-        t.status === "pending" &&
-        !(isCurrent && action.elapsed / action.duration > 0.45)
-      )
-        if (!art.residual(ctx, t))
-          sprites.draw(
-            ctx,
-            "objetos",
-            t.type === "trash"
-              ? Number(t.id.replace("lixo", "")) % 4
-              : {
-                  recyclable: Number(t.id.replace("reciclavel", "")) % 3,
-                  organic: 3,
-                  residual: 1,
-                }[t.material],
-            t.x,
-            t.y,
-            24,
-            { angle: id === 2 ? Math.sin(time * 2 + t.x) * 0.1 : 0 },
-          );
-      return;
-    }
-    if (t.type === "key") {
-      if (!finished(t)) icon("key", t.x, t.y - 9, 26);
-      return;
-    }
-    if (isAnimal) {
-      if (
-        isCurrent &&
-        ["turtle", "fish", "kitten", "bird"].includes(action.kind)
-      )
-        return;
-      if (
-        id === 2 &&
-        art.riverAnimal(
-          ctx,
-          t,
-          time,
-          reduced(),
-          p.x,
-          p.y,
-          t.type === "turtle" ? 43 : 30,
+    try {
+      const p = t.position,
+        isAnimal = animal(t),
+        isCurrent = action?.task === t.id;
+      if (["trash", "recycle"].includes(t.type)) {
+        if (
+          t.status === "pending" &&
+          !(
+            isCurrent &&
+            action.elapsed / action.duration > (id === 2 ? 0.18 : 0.45)
+          )
         )
-      )
+          if (!art.residual(ctx, t))
+            sprites.draw(
+              ctx,
+              "objetos",
+              t.type === "trash"
+                ? Number(t.id.replace("lixo", "")) % 4
+                : {
+                    recyclable: Number(t.id.replace("reciclavel", "")) % 3,
+                    organic: 3,
+                    residual: 1,
+                  }[t.material],
+              t.x,
+              t.y,
+              24,
+              { angle: id === 2 ? Math.sin(time * 2 + t.x) * 0.1 : 0 },
+            );
         return;
-      if (t.speciesKey) {
-        art.animal(
+      }
+      if (t.type === "key") {
+        if (!finished(t))
+          GuardiaoRemodelacao.draw(ctx, "materiais/chave", t.x, t.y, 29);
+        return;
+      }
+      if (isAnimal) {
+        if (isCurrent && ["kitten"].includes(action.kind)) return;
+        if (
+          id === 2 &&
+          art.riverAnimal(
+            ctx,
+            t,
+            time,
+            reduced(),
+            p.x,
+            p.y,
+            t.type === "turtle" ? 43 : 30,
+            isCurrent ? action.elapsed / action.duration : 0,
+          )
+        )
+          return;
+        if (t.speciesKey) {
+          art.animal(
+            ctx,
+            t,
+            time,
+            reduced(),
+            p.x,
+            p.y,
+            ["capivara", "onca", "anta", "tamandua"].includes(t.speciesKey)
+              ? 46
+              : 36,
+          );
+          if (t.type === "cage")
+            sprites.draw(
+              ctx,
+              "objetos",
+              t.status === "pending" &&
+                !(isCurrent && action.elapsed / action.duration > 0.3)
+                ? 4
+                : 5,
+              t.x,
+              t.y,
+              60,
+              { alpha: t.status === "pending" ? 0.72 : 1 },
+            );
+          return;
+        }
+        let sheet,
+          index,
+          height = 36;
+        if (id === 2) {
+          sheet = "animais-rio";
+          const base = t.type === "turtle" ? 0 : 8;
+          if (t.status === "pending")
+            index = base + (!reduced() && time % 4 > 3.7 ? 1 : 0);
+          else if (t.status === "returning" || t.status === "safe")
+            index = base + 4 + (Math.floor(time * 7) % 4);
+          else index = base + 3;
+          height = t.type === "turtle" ? 38 : 26;
+        } else {
+          sheet =
+            t.status === "returning"
+              ? "animais-fauna-andando"
+              : "animais-fauna";
+          const base = t.species * 4;
+          index =
+            base +
+            (t.status === "pending"
+              ? !reduced() && time % 4 > 3.7
+                ? 1
+                : 0
+              : t.status === "returning"
+                ? 3
+                : 2);
+          if (t.status === "returning")
+            index = base + (reduced() ? 0 : Math.floor(time * 8) % 4);
+          height = t.type === "kitten" ? 32 : t.species === 2 ? 37 : 34;
+          if (t.type === "cage" && t.status !== "pending")
+            sprites.draw(ctx, "objetos", 5, t.x, t.y, 60);
+        }
+        ellipse(p.x, p.y, 13, 4, "#1c452b44");
+        sprites.draw(
+          ctx,
+          sheet,
+          index,
+          p.x,
+          p.y - (t.type === "kitten" && t.status === "pending" ? 75 : 0),
+          height,
+          { flip: t.facingRight },
+        );
+        if (t.type === "cage" && t.status === "pending")
+          sprites.draw(ctx, "objetos", 4, t.x, t.y, 60, { alpha: 0.88 });
+        return;
+      }
+      if (t.type === "transport") {
+        if (finished(t))
+          icon(t.id === "onibus" ? "bus" : "bike", t.x, t.y - 15, 30);
+        return;
+      }
+      if (t.type === "community") {
+        icon(finished(t) ? "heart" : "hand", t.x, t.y - 12, 25);
+        return;
+      }
+      if (t.type === "bed") {
+        world.plant(ctx, t, elapsed, reduced());
+      } else if (t.type === "nest")
+        sprites.draw(ctx, "objetos", finished(t) ? 14 : 13, t.x, t.y, 43);
+      else if (t.type === "solar") {
+        GuardiaoRemodelacao.solar(
+          ctx,
+          t,
+          finished(t),
+          isCurrent ? action.elapsed / action.duration : 0,
+        );
+        if (finished(t)) art.energy(ctx, t.x, t.y, time, reduced());
+      } else if (t.type === "garden" && finished(t))
+        shared.draw(
+          ctx,
+          "natureza",
+          6,
+          t.x,
+          t.y,
+          22 +
+            32 *
+              (reduced()
+                ? 1
+                : Math.min(1, (elapsed - (t.restoredAt ?? -3)) / 2)),
+        );
+    } finally {
+      if (animal(t))
+        GuardiaoCuidados.draw(
           ctx,
           t,
           time,
           reduced(),
-          p.x,
-          p.y,
-          ["capivara", "onca", "anta", "tamandua"].includes(t.speciesKey)
-            ? 46
-            : 36,
+          action?.task === t.id ? action.elapsed / action.duration : 0,
+          player,
         );
-        if (t.type === "cage")
-          sprites.draw(
-            ctx,
-            "objetos",
-            t.status === "pending" &&
-              !(isCurrent && action.elapsed / action.duration > 0.3)
-              ? 4
-              : 5,
-            t.x,
-            t.y,
-            60,
-            { alpha: t.status === "pending" ? 0.72 : 1 },
-          );
-        return;
-      }
-      let sheet,
-        index,
-        height = 36;
-      if (id === 2) {
-        sheet = "animais-rio";
-        const base = t.type === "turtle" ? 0 : 8;
-        if (t.status === "pending")
-          index = base + (!reduced() && time % 4 > 3.7 ? 1 : 0);
-        else if (t.status === "returning" || t.status === "safe")
-          index = base + 4 + (Math.floor(time * 7) % 4);
-        else index = base + 3;
-        height = t.type === "turtle" ? 38 : 26;
-      } else {
-        sheet =
-          t.status === "returning" ? "animais-fauna-andando" : "animais-fauna";
-        const base = t.species * 4;
-        index =
-          base +
-          (t.status === "pending"
-            ? !reduced() && time % 4 > 3.7
-              ? 1
-              : 0
-            : t.status === "returning"
-              ? 3
-              : 2);
-        if (t.status === "returning")
-          index = base + (reduced() ? 0 : Math.floor(time * 8) % 4);
-        height = t.type === "kitten" ? 32 : t.species === 2 ? 37 : 34;
-        if (t.type === "cage" && t.status !== "pending")
-          sprites.draw(ctx, "objetos", 5, t.x, t.y, 60);
-      }
-      ellipse(p.x, p.y, 13, 4, "#1c452b44");
-      sprites.draw(
-        ctx,
-        sheet,
-        index,
-        p.x,
-        p.y - (t.type === "kitten" && t.status === "pending" ? 75 : 0),
-        height,
-        { flip: t.facingRight },
-      );
-      if (t.type === "cage" && t.status === "pending")
-        sprites.draw(ctx, "objetos", 4, t.x, t.y, 60, { alpha: 0.88 });
-      return;
     }
-    if (t.type === "transport") {
-      if (finished(t))
-        icon(t.id === "onibus" ? "bus" : "bike", t.x, t.y - 15, 30);
-      return;
-    }
-    if (t.type === "community") {
-      icon(finished(t) ? "heart" : "hand", t.x, t.y - 12, 25);
-      return;
-    }
-    if (t.type === "bed") {
-      world.plant(ctx, t, elapsed, reduced());
-    } else if (t.type === "nest")
-      sprites.draw(ctx, "objetos", finished(t) ? 14 : 13, t.x, t.y, 43);
-    else if (t.type === "solar") {
-      sprites.draw(ctx, "objetos", finished(t) ? 11 : 10, t.x, t.y, 48);
-      if (finished(t)) art.energy(ctx, t.x, t.y, time, reduced());
-    } else if (t.type === "garden" && finished(t))
-      shared.draw(
-        ctx,
-        "natureza",
-        6,
-        t.x,
-        t.y,
-        22 +
-          32 *
-            (reduced() ? 1 : Math.min(1, (elapsed - (t.restoredAt ?? -3)) / 2)),
-      );
   }
   function drawPlayer() {
     const flip = player.direction >= 3 && player.direction <= 5;
@@ -1254,23 +1278,34 @@
     } else if (stage === "dressing") {
       const pose = art.river(ctx, player, time, reduced(), {
         dressing: true,
-        progress: Math.min(0.999, dressingTime / 2.4),
+        progress: Math.min(0.999, dressingTime / 5.6),
       });
       name = pose.split(":")[0];
       frame = Number(pose.split(":")[1]);
-    } else if (
-      id === 2 &&
-      protective &&
-      (action || player.swimming || !action)
-    ) {
+    } else if (id === 2 && protective) {
       const pose = art.river(ctx, player, time, reduced(), {
-        kind: action?.kind,
+        // A pose de coleta alcança a embalagem. As poses antigas de carregar um
+        // peixe/tartaruga fariam o animal aparecer duplicado fora da água.
+        kind: action
+          ? animal(tasks.find((t) => t.id === action.task))
+            ? "desprender"
+            : action.kind
+          : null,
+        problem: action?.problem,
         progress: action
           ? Math.min(0.999, action.elapsed / action.duration)
           : 0,
       });
       name = pose.split(":")[0];
       frame = Number(pose.split(":")[1]);
+      if (action?.kind === "trash")
+        art.riverTrash?.(
+          ctx,
+          sprites,
+          tasks.find((t) => t.id === action.task),
+          player,
+          action.elapsed / action.duration,
+        );
     } else if (action && id >= 3) {
       const target = tasks.find((t) => t.id === action.task),
         progress = Math.min(0.999, action.elapsed / action.duration);
@@ -1438,6 +1473,12 @@
   }
   function drawCelebration() {
     const c = $("celebration").getContext("2d");
+    if (window.RioClaroResumo) {
+      RaizesPersonagens.canvas($("celebration"), (ctx, width, height) =>
+        RioClaroResumo.paint(ctx, width, height, time, reduced()),
+      );
+      return;
+    }
     c.clearRect(0, 0, 420, 175);
     sprites.draw(c, "npcs", data.npcRow * 3 + 1, 105, 150, 108);
     colar.drawActor(c, 6.5, 210, 153, 125, true);
@@ -1496,6 +1537,7 @@
       y: t.position.y,
       draw: () => drawTask(t),
     }));
+    if (data.station) actors.push(...(art.binActors?.(ctx) || []));
     actors.push(
       ...world
         .actors(time, reduced(), player)
@@ -1526,10 +1568,15 @@
             : animal(t)
               ? 53
               : t.type === "solar"
-                ? 60
-                : 37),
-        size = animal(t) ? 24 : 18;
-      ellipse(t.x, y, animal(t) ? 15 : 11, animal(t) ? 15 : 11, "#fff2c6eb");
+                ? 75
+                : 43),
+        size = GuardiaoRemodelacao.has(t.icon)
+          ? 30 / camera.scale
+          : animal(t)
+            ? 24
+            : 18;
+      if (!GuardiaoRemodelacao.has(t.icon))
+        ellipse(t.x, y, animal(t) ? 15 : 11, animal(t) ? 15 : 11, "#fff2c6eb");
       icon(t.icon, t.x, y, size);
       if (
         t === target() &&
@@ -1539,7 +1586,7 @@
         !action &&
         stage === "exploring"
       )
-        label(t.name, t.x, y - 20);
+        label(t.problemLabel || t.name, t.x, y - 20);
     }
     if (stage === "handoff") {
       const p = 1 - handoff / 1.5;
@@ -1755,6 +1802,10 @@
     location.reload();
   });
   $("tela-cheia").addEventListener("click", async () => {
+    if (window.GuardiaoTela) {
+      await GuardiaoTela.toggle();
+      return;
+    }
     try {
       if (document.fullscreenElement) await document.exitFullscreen();
       else await $("jogo").requestFullscreen();
@@ -1841,7 +1892,7 @@
           `<button class="goal" data-goal="${type}"><span data-icon="${iconName}"></span><span class="goal-label">${label}</span><strong>0/${total}</strong></button>`,
       )
       .join("") +
-    `<button class="goal return-goal" data-goal="home" hidden><span data-icon="leaf"></span><span>Voltar a ${data.npc}</span><strong>→</strong></button>`;
+    `<button class="goal return-goal" data-goal="home" hidden><span data-icon="leaf"></span><span class="goal-label">Voltar a ${data.npc}</span><strong>→</strong></button>`;
   document.querySelectorAll("[data-goal]").forEach((b) =>
     b.addEventListener("click", () => {
       guide(b.dataset.goal);
@@ -1893,30 +1944,22 @@
   nav.setDynamic(
     tasks.filter((t) => t.type === "cage" && t.status === "pending"),
   );
-  let loaded = 0;
-  function progress() {
-    loaded++;
-    $("loading").textContent =
-      "Preparando " + data.name.toLowerCase() + "… " + loaded;
-  }
-  const specific =
-    id === 2
-      ? ["animais-rio"]
-      : id === 3
-        ? ["kai-floresta", "animais-fauna", "animais-fauna-andando"]
-        : id === 4
-          ? ["kai-plantio", "kai-floresta"]
-          : ["kai-rio", "kai-plantio", "kai-floresta"];
-  Promise.all([
-    sprites.load(["npcs", "objetos", ...specific], progress),
-    shared.load(progress, ["kai-repouso", "natureza"]),
-    Promise.resolve(null),
-    Promise.resolve(null),
-    window.GuardiaoIcones.load(),
-    life.load(),
-    colar.load(),
-    art.load(),
-    BosqueKai.load(),
+  const specific = id === 2 ? ["animais-rio"] : [];
+  GuardiaoCarregamento.run([
+    {
+      label: "Personagens e objetos",
+      load: () => sprites.load(["npcs", "objetos", ...specific]),
+    },
+    { label: "Natureza", load: () => shared.load(undefined, ["natureza"]) },
+    { label: null, load: () => null },
+    { label: null, load: () => null },
+    { label: "Símbolos", load: () => window.GuardiaoIcones.load() },
+    { label: "Animações", load: () => life.load() },
+    { label: "Colar", load: () => colar.load() },
+    { label: "Artes da fase", load: () => art.load() },
+    { label: "Uniforme de Kai", load: () => BosqueKai.load() },
+    { label: "Cenário", load: () => world.ready },
+    { label: "Novas artes", load: () => GuardiaoRemodelacao.phase(id) },
   ])
     .then((r) => {
       iconImage = r[4];
@@ -1926,7 +1969,7 @@
           { required: true },
         );
       ready = true;
-      $("loading").hidden = true;
+
       document.body.dataset.gameReady = "true";
       resize();
       updateHUD();
@@ -1939,15 +1982,12 @@
         window.GuardiaoMemoria.grant(2);
         window.GuardiaoMemoria.uniform("protecao", { required: true });
       }
+      GuardiaoCarregamento.finish();
       start();
     })
     .catch((error) => {
-      console.error(error);
-      $("loading").innerHTML =
-        'Não foi possível carregar a aventura.<br><a href="' +
-        location.pathname +
-        "?fase=" +
-        id +
-        '">Tentar novamente</a>';
+      ready = false;
+      document.body.dataset.gameReady = "false";
+      GuardiaoCarregamento.fail(error);
     });
 })();

@@ -452,6 +452,22 @@ window.IslandRenderer = (() => {
           camera.x/WORLD_SCALE,camera.y/WORLD_SCALE,vw/WORLD_SCALE,vh/WORLD_SCALE,camera.x,camera.y,vw,vh);
         ctx.strokeStyle='#00ff70';ctx.lineWidth=1;
         ctx.strokeRect(player.x-FOOT_W/2,player.y-FOOT_H,FOOT_W,FOOT_H);
+        for(const p of world.points||[]){
+          if(p.zonas){
+            for(const z of p.zonas){
+              const zx=z.x*WORLD_SCALE,zy=z.y*WORLD_SCALE,zw=z.w*WORLD_SCALE,zh=z.h*WORLD_SCALE;
+              ctx.strokeStyle='#00ffff';ctx.lineWidth=2;
+              ctx.strokeRect(zx,zy,zw,zh);
+              ctx.fillStyle='#00ffff22';ctx.fillRect(zx,zy,zw,zh);
+              ctx.fillStyle='#00ffff';ctx.font='bold 11px monospace';ctx.textAlign='left';
+              ctx.fillText('cela: zona extra',zx+2,zy-4);
+            }
+          }
+          if(p.id==='montanha'){
+            ctx.strokeStyle='#00ffff44';ctx.lineWidth=1;
+            ctx.beginPath();ctx.arc(p.x,p.y,p.radius||90*WORLD_SCALE,0,Math.PI*2);ctx.stroke();
+          }
+        }
       }
       ctx.restore();
       drawHud(time,reducedMotion);
@@ -488,6 +504,7 @@ window.IslandRenderer = (() => {
         const lines=[
           `x: ${(player.x/WORLD_SCALE).toFixed(0)}  y: ${(player.y/WORLD_SCALE).toFixed(0)}`,
           `Região: ${curReg?.name||''}`,
+          `Teclas: ${player.pressedCodes || '(nenhuma)'}`,
           `Intenção: ${player.intentName || '(nenhuma)'}`,
           `Sprite: ${spriteDirName} (${player.facing || ''})`,
           `Trocas/s: ${player.switchesPerSec ?? 0}`,

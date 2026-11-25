@@ -15,6 +15,7 @@ window.OperacoesPuzzle = (() => {
   function prepare(input,positions) {
     return ready ||= (async()=>{
       data=input;layout=positions;zones=OperacoesLayout.build(layout);
+      OperacoesLayout.autoTeste?.(data?.fases);
       // Apoios adicionais autorizados: preservam todos os pontos e a calibração originais.
       const m=layout.mesa_suprimento;
       for(let i=0;i<3;i++)zones.mesa.cells.push({x:m.x+(i+1)*m.w/4,y:m.y+125});
@@ -22,7 +23,7 @@ window.OperacoesPuzzle = (() => {
       for(const i of [0,3,5,6]){const p=zones.carrinho.cells[i];zones.carrinho.cells.push({x:p.x,y:p.y-25});}
       await Promise.all(names.map(name=>new Promise(resolve=>{const img=new Image();img.onload=()=>{art[name]=img;resolve();};img.onerror=()=>{console.warn(`[Operações] Ausente: ${name}.png; usando placeholder.`);resolve();};img.src=`assets/puzzles/operacoes/${name}.png`;})));
       await new Promise(resolve=>{const img=new Image();img.onload=()=>{art.chave=img;resolve();};img.onerror=()=>{console.warn('[Operações] Chave ausente; usando placeholder.');resolve();};img.src='assets/hud/chave_operacoes.png';});
-      await Promise.all([['ajudaNormal','assets/tutorial/botao-ajuda-normal.webp'],['ajudaPressionado','assets/tutorial/botao-ajuda-pressionado.webp'],['btnGear','assets/hud/configuracoes.png']].map(([k,src])=>new Promise(resolve=>{const img=new Image();img.onload=()=>{art[k]=img;resolve();};img.onerror=()=>resolve();img.src=src;})));
+      await Promise.all([['ajudaNormal','assets/tutorial/botao-ajuda-normal.webp'],['ajudaPressionado','assets/tutorial/botao-ajuda-pressionado.webp'],['btnGear','assets/hud/configuracoes.png'],['botao_conferir','assets/puzzles/algebra/botao.png']].map(([k,src])=>new Promise(resolve=>{const img=new Image();img.onload=()=>{art[k]=img;resolve();};img.onerror=()=>{if(k==='botao_conferir')console.warn('[Operações] Imagem do botão Conferir ausente; usando botão verde desenhado por código.');resolve();};img.src=src;})));
       const sails=art.velas_frames;
       if(sails){strip=sails.naturalWidth===3584&&sails.naturalHeight===224;const grid=sails.naturalWidth===896&&sails.naturalHeight===896;
         console.info(`[Operações] Velas: ${sails.naturalWidth}×${sails.naturalHeight}, ${strip?'tira horizontal':grid?'grade 4×4':'formato inválido; placeholder'}.`);if(!strip&&!grid)art.velas_frames=null;}
@@ -43,11 +44,14 @@ window.OperacoesPuzzle = (() => {
     const host=document.createElement('div'),frame=document.createElement('div'),canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
     host.style.cssText='position:fixed;inset:0;z-index:1000;background:#171c20;display:flex;justify-content:center;';frame.style.cssText='position:relative;height:100%;';
     canvas.style.cssText='display:block;width:100%;height:100%;touch-action:none;';canvas.tabIndex=0;host.setAttribute('role','dialog');host.setAttribute('aria-modal','true');host.setAttribute('aria-label','O Moinho Encantado');
-    const exit=document.createElement('button'),restart=document.createElement('button'),takeKey=document.createElement('button'),help=document.createElement('button'),settings=document.createElement('button'),controls=[exit,restart,takeKey,help,settings];
-    let helpPressed=false,paused=false;
-    const rects=[{x:950,y:16,w:54,h:48},{x:884,y:16,w:54,h:48},{x:482,y:209,w:76,h:92},{x:818,y:16,w:54,h:48},{x:752,y:16,w:54,h:48}];
-    const labels=['Sair do moinho','Reiniciar fase','Pegar a Chave de Operações','Ajuda: como jogar','Configurações'];
+    const exit=document.createElement('button'),restart=document.createElement('button'),takeKey=document.createElement('button'),help=document.createElement('button'),settings=document.createElement('button'),checkBtn=document.createElement('button'),controls=[exit,restart,takeKey,help,settings,checkBtn];
+    let helpPressed=false,paused=false,checkHover=false,checkPressed=false,suppressSubmit=true;
+    const rects=[{x:950,y:16,w:54,h:48},{x:884,y:16,w:54,h:48},{x:482,y:209,w:76,h:92},{x:818,y:16,w:54,h:48},{x:752,y:16,w:54,h:48},{x:850,y:504,w:162,h:61}];
+    const labels=['Sair do moinho','Reiniciar fase','Pegar a Chave de Operações','Ajuda: como jogar','Configurações','Conferir'];
     for(let i=0;i<controls.length;i++){const b=controls[i];b.type='button';b.textContent=labels[i];b.setAttribute('aria-label',labels[i]);b.title=labels[i];b.style.cssText='position:absolute;background:transparent;color:transparent;font-size:0;padding:0;overflow:hidden;border:0;border-radius:10px;cursor:pointer;';frame.appendChild(b);}
+    checkBtn.onpointerenter=()=>{checkHover=true;};checkBtn.onpointerleave=()=>{checkHover=false;checkPressed=false;};
+    checkBtn.onpointerdown=()=>{if(state==='JOGANDO'&&!paused)checkPressed=true;};checkBtn.onpointerup=()=>{checkPressed=false;};
+    checkBtn.onclick=()=>{if(state==='JOGANDO'&&!paused)onCheck();};
     const status=document.createElement('p');status.setAttribute('aria-live','polite');status.style.cssText='position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);';frame.appendChild(status);
     frame.prepend(canvas);host.appendChild(frame);document.body.appendChild(host);
     const font=getComputedStyle(document.body).fontFamily||'sans-serif',calm=window.matchMedia('(prefers-reduced-motion: reduce)').matches||Boolean(window.GameSettings?.calm);
@@ -57,10 +61,11 @@ window.OperacoesPuzzle = (() => {
     for(const id in zones)occupied[id]=new Int8Array(zones[id].cells.length).fill(-1);
     let phase=0,f,type,containers,bagCount=0,drag=-1,pointerId=-1,s=1,offset=0,state='JOGANDO',elapsed=0,last=0,raf=0,closed=false,completed=0,angle=0,speed=0,message='',messageTime=0,shake=0,cartX=0,cartY=0,sparked=0,claimed=false,keyX=518,keyY=200;
     let item='saco_trigo',dragZone='',dragCell=0,downX=0,downY=0,clock=0,condition=false,result='ok',goal=0,settled=0;
+    const initialCounts={plataforma:0,mesa:0,carrinho:0,vermelha:0,azul:0,verde:0};
     const ease=t=>1-(1-t)**3;
     function say(text){status.textContent=text;}
     function openSettings(){if(paused)return;paused=true;if(drag>=0){seat(drag,dragZone,dragCell);drag=-1;releaseCapture();}if(window.openSettings)window.openSettings(settings,()=>{paused=false;settings.focus();});else if(window.SettingsBook){window.SettingsBook.open('index');document.getElementById('book-dialog')?.showModal();}}
-    function change(next){state=next;elapsed=0;restart.disabled=next!=='JOGANDO';help.disabled=next!=='JOGANDO';takeKey.hidden=next!=='CHAVE';exit.disabled=claimed;}
+    function change(next){state=next;elapsed=0;restart.disabled=next!=='JOGANDO';help.disabled=next!=='JOGANDO';takeKey.hidden=next!=='CHAVE';exit.disabled=claimed;checkBtn.hidden=next!=='JOGANDO'||claimed;checkBtn.disabled=next!=='JOGANDO';if(next!=='JOGANDO'){checkHover=false;checkPressed=false;}}
     function resize() {
       const w=Math.min(window.innerWidth,window.innerHeight*1024/572),dpr=Math.min(2,window.devicePixelRatio||1);frame.style.width=`${w}px`;
       canvas.width=Math.round(w*dpr);canvas.height=Math.round(window.innerHeight*dpr);s=canvas.width/1024;offset=(canvas.height-572*s)/2;
@@ -91,6 +96,7 @@ window.OperacoesPuzzle = (() => {
       for(let i=0;i<bagCount;i++){const b=bags[i],initial=type.initial(f);let id=i<initial?type.zone:'mesa',cell=i<initial?i:i-initial;
         if(f.tipo==='dobro'&&i>=initial+f.mesa){id='carrinho';cell=i-initial-f.mesa;}
         order[i]=i;b.fixed=f.tipo==='dobro'&&i<initial;b.origin=id;seat(i,id,cell,true);}
+      for(const id in initialCounts)initialCounts[id]=counts(id);
       item=f.tipo==='divisao'?'saco_farinha':'saco_trigo';change('JOGANDO');condition=false;result='ok';goal=target(f);settled=0;
       say(`Fase ${phase+1} de 3. ${f.tipo==='dobro'?`O moinho precisa do DOBRO. No moinho: ${f.moinho}. Mesa: ${f.mesa}. Carrinho: ${f.carrinho}.`:f.tipo==='metadeMais'?`Deixe a METADE e mais ${f.mais}. Tem: ${f.carrinhoTem}.`:`Reparta ${f.sacos} sacos igualmente em ${f.carrocas} carroças.`}`);
       canvas.setAttribute('aria-label',`Moinho. ${status.textContent} Arraste os sacos. Escape sai. F3: depuração.`);
@@ -99,15 +105,27 @@ window.OperacoesPuzzle = (() => {
       completed=phase+1;messageTime=0;change('SUCESSO');say('Muito bem!');
       if(f.tipo==='dobro')for(let i=0;i<32;i++){const k=i*5;particles[k]=518+(Math.random()-.5)*24;particles[k+1]=200-Math.random()*100;particles[k+2]=(Math.random()-.5)*16;particles[k+3]=85+Math.random()*35;particles[k+4]=1.5;}
     }
+    let lastEvalLog='';
+    function alvoFase(fd){return fd.tipo==='dobro'?2*fd.moinho:fd.tipo==='metadeMais'?Math.floor(fd.carrinhoTem/2)+fd.mais:fd.sacos/fd.carrocas;}
+    function onCheck() {
+      if(state!=='JOGANDO'||paused||drag>=0)return;
+      const sacos=[];
+      for(let i=0;i<bagCount;i++)sacos.push({zone:bags[i].zone});
+      const alvo=alvoFase(f);
+      const res=OperacoesLayout.avaliarFase({fase:phase+1,tipo:f.tipo,alvo,sacos});
+      const c=res.detalhe.counts;
+      lastEvalLog=`Fase ${res.detalhe.fase} · ${f.tipo} · alvo ${alvo} · atual ${res.detalhe.atual} · ${res.detalhe.regra} · ${res.ok?'ok':'errado'}`;
+      console.info(`[Operações] ${lastEvalLog} | plat:${c.plataforma} carr:${c.carrinho} carrç:${c.vermelha}/${c.azul}/${c.verde} mesa:${c.mesa}`);
+      if(res.ok){
+        success();
+      }else{
+        message=phase===2?'Ainda não está igual!':'Ainda não está certo!';
+        messageTime=2;shake=.25;say(message);
+      }
+    }
     function validate() {
-      let n=0;for(let i=0;i<containers.length;i++)n+=counts(containers[i]);condition=drag<0&&type.win(f,n,counts,containers);result='ok';
-      if(f.tipo==='dobro'&&n>goal)result='passou';
-      else if(f.tipo==='metadeMais'&&n<goal)result='faltou';
-      else if(f.tipo==='divisao'&&counts('mesa')>0){let equal=true;for(let i=1;i<containers.length;i++)if(counts(containers[i])!==counts(containers[0]))equal=false;if(equal&&n>0)result='sobras';}
-      if(!condition)settled=0;
-      if(state!=='JOGANDO'||drag>=0)return;if(condition){if(f.tipo==='divisao')success();return;}
-      if(messageTime<=0&&result!=='ok'){message=result==='passou'?'Ops! Passou do dobro.':result==='faltou'?'Ops! Faltou saco no carrinho.':'Use todos os sacos!';messageTime=2;shake=result==='faltou'?.25:0;say(message);}
-      else if(f.tipo==='divisao'&&n===f.sacos&&messageTime<=0){message='Ainda não está igual!';messageTime=1.5;say(message);}
+      let n=0;for(let i=0;i<containers.length;i++)n+=counts(containers[i]);
+      condition=drag<0&&type.win(f,n,counts,containers);result='ok';
     }
     function project(event) {
       const r=canvas.getBoundingClientRect();
@@ -139,15 +157,29 @@ window.OperacoesPuzzle = (() => {
     function solve() {
       if(drag>=0){seat(drag,dragZone,dragCell);drag=-1;releaseCapture();}
       settled=0;
+      const meta=alvoFase(f);
       if(f.tipo==='dobro'){
-        for(let i=bagCount-1;i>=0&&counts(type.zone)>goal;i--)if(bags[i].zone===type.zone&&!bags[i].fixed){occupied[type.zone][bags[i].cell]=-1;restore(i);}
-        for(let i=0;i<bagCount&&counts(type.zone)<goal;i++)if(bags[i].zone!=='plataforma'){occupied[bags[i].zone][bags[i].cell]=-1;seat(i,type.zone,occupied[type.zone].indexOf(-1));}}
-      else if(f.tipo==='metadeMais'){for(let i=bagCount-1;i>=0;i--){const b=bags[i],n=counts(type.zone);if(n>goal&&b.zone===type.zone){occupied[type.zone][b.cell]=-1;table(i);}else if(n<goal&&b.zone==='mesa'){occupied.mesa[b.cell]=-1;seat(i,type.zone,occupied[type.zone].indexOf(-1));}}}
-      else if(f.tipo==='divisao'){
+        for(let i=0;i<bagCount;i++){
+          if(bags[i].fixed)continue;
+          occupied[bags[i].zone][bags[i].cell]=-1;
+          if(counts('plataforma')<meta)seat(i,'plataforma',occupied.plataforma.indexOf(-1));
+          else table(i);
+        }
+      }else if(f.tipo==='metadeMais'){
         for(const id in occupied)occupied[id].fill(-1);
-        const each=f.sacos/containers.length;for(let i=0;i<bagCount;i++)seat(i,containers[Math.floor(i/each)],i%each);
+        for(let i=0;i<bagCount;i++){
+          if(i<meta)seat(i,'carrinho',i);
+          else table(i);
+        }
+      }else if(f.tipo==='divisao'){
+        for(const id in occupied)occupied[id].fill(-1);
+        for(let i=0;i<12;i++){
+          const dest=i<4?'vermelha':i<8?'azul':'verde';
+          seat(i,dest,i%4);
+        }
       }
       validate();
+      success();
     }
     function collect(){if(state!=='CHAVE')return;claimed=true;change('COLETAR');say('Chave de Operações obtida!');}
     function key(event) {
@@ -160,18 +192,22 @@ window.OperacoesPuzzle = (() => {
         for(let tries=0;tries<controls.length;tries++){i=(i+step+controls.length)%controls.length;if(!controls[i].hidden&&!controls[i].disabled){controls[i].focus();return;}}
         canvas.focus();return;
       }
-      if((k==='enter'||k===' ')&&controls.includes(event.target))return;
-      event.preventDefault();if(event.repeat)return;if(k==='f3'){options.toggleDebug();if(options.debug())selfTest();}else if((k==='enter'||k==='e')&&state==='CHAVE')collect();else if(k==='n'&&options.debug()&&state==='JOGANDO')solve();
+      if((k==='enter'||k===' ')&&controls.includes(event.target)&&event.target!==checkBtn)return;
+      event.preventDefault();if(event.repeat)return;
+      if(k==='f3'){options.toggleDebug();if(options.debug())selfTest();}
+      else if((k==='enter'||k==='e')&&state==='CHAVE')collect();
+      else if(k==='n'&&options.debug()&&state==='JOGANDO')solve();
+      else if((k==='enter'||k===' '||event.code==='Enter'||event.code==='NumpadEnter'||event.code==='Space')&&state==='JOGANDO'&&!suppressSubmit)onCheck();
     }
+    function keyUp(event){const k=event.key.toLowerCase(),c=event.code;if(k==='enter'||k===' '||c==='Enter'||c==='NumpadEnter'||c==='Space')suppressSubmit=false;}
     function close(won=false) {
       if(closed)return;closed=true;if(window.ActivePuzzle?.type==='operacoes')window.ActivePuzzle=null;window.TutorialCard?.fechar?.();cancelAnimationFrame(raf);drag=-1;releaseCapture();
       canvas.removeEventListener('pointerdown',down);canvas.removeEventListener('pointermove',move);canvas.removeEventListener('pointerup',up);canvas.removeEventListener('pointercancel',cancel);canvas.removeEventListener('lostpointercapture',cancel);
-      document.removeEventListener('keydown',key,true);window.removeEventListener('resize',resize);host.remove();current=null;options.onExit(won);
+      document.removeEventListener('keydown',key,true);document.removeEventListener('keyup',keyUp,true);window.removeEventListener('resize',resize);host.remove();current=null;options.onExit(won);
     }
     function update(dt) {
       if(paused||window.TutorialCard?.isAberto?.())return;
       elapsed+=dt;clock+=dt;messageTime=Math.max(0,messageTime-dt);shake=Math.max(0,shake-dt);
-      if(state==='JOGANDO'&&f.tipo!=='divisao'){settled=condition&&drag<0?settled+dt:0;if(settled+1e-9>=ASSENTA_S)success();}
       const target=completed===0?0:completed===1?6:completed===2?10:16;speed+=(target-speed)*(1-Math.exp(-dt*5));angle+=speed*dt;
       for(let i=0;i<3;i++)lamps[i]+=((i<completed?1:0)-lamps[i])*(1-Math.exp(-dt*6));
       for(let i=0;i<bagCount;i++){const b=bags[i];b.t=Math.min(1,b.t+(b.duration?dt/b.duration:1));const t=ease(b.t);b.h=b.fh+(b.th-b.fh)*ease(calm?1:Math.min(1,b.t*b.duration/.1));
@@ -179,7 +215,7 @@ window.OperacoesPuzzle = (() => {
       // Inserção no array fixo: profundidade crescente, sem sort nem arrays por frame.
       for(let i=1;i<bagCount;i++){const v=order[i];let j=i-1;while(j>=0&&bags[order[j]].y>bags[v].y){order[j+1]=order[j];j--;}order[j+1]=v;}
       cartX=state==='SUCESSO'&&f.tipo==='metadeMais'&&!calm?650*Math.min(1,elapsed/1.3)**2:!calm&&shake>0?Math.sin(shake*90)*2:0;
-      cartY=!calm&&shake>0&&counts('carrinho')<goal?2:0;
+      cartY=(f.tipo==='metadeMais'&&counts('carrinho')>goal)?2:(!calm&&shake>0?2:0);
       if(f.tipo==='divisao')for(let i=0;i<containers.length;i++){
         const t=elapsed-i*.28;hops[i]=state==='SUCESSO'&&!calm&&t>=0&&t<.42?-6*Math.sin(t/.42*Math.PI):0;
         if(state==='SUCESSO'&&!calm&&t>=0&&!(sparked&(1<<i))){sparked|=1<<i;const z=zones[containers[i]],p=z.cells[1];
@@ -197,7 +233,8 @@ window.OperacoesPuzzle = (() => {
       else if(state==='COLETAR')keyY=255-(calm?0:ease(Math.min(1,elapsed/.45))*65);
     }
     function sprite(name,x,y,w,h){const img=art[name];if(img)ctx.drawImage(img,x,y,w,h);else{ctx.fillStyle='#c99b62';ctx.fillRect(x,y,w,h);ctx.strokeStyle='#684527';ctx.strokeRect(x,y,w,h);}}
-    function text(value,x,y,size=16,color='#513525'){ctx.fillStyle=color;ctx.font=`bold ${size}px ${font}`;ctx.fillText(value,x,y);}
+    function text(value,x,y,size=16,color='#513525',maxW){ctx.fillStyle=color;ctx.font=`bold ${size}px ${font}`;if(maxW)ctx.fillText(value,x,y,maxW);else ctx.fillText(value,x,y);}
+    function signText(value,x,y,size=16,maxW=160){ctx.fillStyle='#513525';ctx.font=`bold ${size}px ${font}`;const w=ctx.measureText(String(value)).width;if(w>maxW){const s2=Math.max(11,Math.floor(size*maxW/w));ctx.font=`bold ${s2}px ${font}`;}ctx.fillText(value,x,y,maxW);}
     function lift(id){return f.tipo==='divisao'?hops[containers.indexOf(id)]||0:0;}
     function bag(index) {
       const b=bags[index],h=b.h*(calm?1:1+.07*Math.sin(b.pop/.18*Math.PI)),img=art[item],w=h*(img?.naturalWidth||130)/(img?.naturalHeight||151),x=b.x+(b.zone==='carrinho'?cartX:0),y=b.y+(b.zone==='carrinho'?cartY:lift(b.zone));
@@ -217,22 +254,24 @@ window.OperacoesPuzzle = (() => {
       if(f.tipo==='divisao')for(let i=0;i<containers.length;i++){const id=containers[i],z=zones[id],name=`carroca_${id}`,img=art[name];sprite(name,z.drawX,z.drawY+hops[i],(img?.naturalWidth||298)*z.scale,(img?.naturalHeight||227)*z.scale);}
       for(let i=0;i<bagCount;i++)if(order[i]!==drag)bag(order[i]);if(drag>=0)bag(drag);
       if(!calm){ctx.fillStyle=f.tipo==='divisao'?'#fff09a':'#fff0cc';for(let i=0;i<32;i++){const k=i*5;if(particles[k+4]>0&&(f.tipo==='divisao'||particles[k+1]>=200&&particles[k+1]<278))ctx.fillRect(particles[k],particles[k+1],3,4);}}
-      sprite('placa_pedido',18,12,170,134);
+      sprite('placa_pedido',14,10,186,140);
+      const tr=(k,p,fb)=>(typeof window.t==='function'?window.t(k,p,fb):fb);
       if(f.tipo==='dobro'){
-        text('O moinho',103,59,17);text('precisa do',103,83,17);text('DOBRO',103,111,22);
+        signText(tr('operacoes.sign.dobro1',null,'O moinho'),107,56,16);signText(tr('operacoes.sign.dobro2',null,'precisa do'),107,80,16);signText(tr('operacoes.sign.dobro3',{n:f.moinho},`DOBRO de ${f.moinho}`),107,108,20);
       }else if(f.tipo==='metadeMais'){
-        text('Deixe a',103,59,17);text('METADE',103,84,21);text(`e mais ${f.mais}`,103,111,18);
+        signText(tr('operacoes.sign.half1',null,'Deixe a'),107,55,16);signText(tr('operacoes.sign.half2',{n:f.carrinhoTem},`METADE de ${f.carrinhoTem}`),107,83,18);signText(tr('operacoes.sign.half3',{mais:f.mais},`e mais ${f.mais}`),107,110,17);
       }
-      else{text('Reparta',103,55,17);text(f.sacos,103,91,32);text('sacos igualmente',103,113,13);}
-      for(let i=0;i<3;i++){const x=210+i*40;sprite('lanterna_apagada',x,24,27.6,39.6);ctx.globalAlpha=lamps[i];ctx.drawImage(glow,x-21,0,70,70);ctx.drawImage(lit,x,24,27.6,39.6);ctx.globalAlpha=1;}
+      else{signText(tr('operacoes.sign.div1',null,'Reparta'),107,55,16);signText(tr('operacoes.sign.div2',{n:f.sacos},`${f.sacos} sacos`),107,85,22);signText(tr('operacoes.sign.div3',{c:f.carrocas},`em ${f.carrocas} carroças`),107,112,14);}
+      for(let i=0;i<3;i++){const x=214+i*40;sprite('lanterna_apagada',x,24,27.6,39.6);ctx.globalAlpha=lamps[i];ctx.drawImage(glow,x-21,0,70,70);ctx.drawImage(lit,x,24,27.6,39.6);ctx.globalAlpha=1;}
       for(let i=0;i<containers.length;i++){
         const id=containers[i],z=zones[id],x=id==='carrinho'?710+cartX:f.tipo==='divisao'?z.cells[1].x:520,y=id==='carrinho'?310+cartY:f.tipo==='divisao'?310+lift(id):205;
         const pulse=f.tipo==='divisao'&&messageTime>0&&!calm?1+.09*Math.sin(messageTime*16):1;
         ctx.save();ctx.translate(x,y);ctx.scale(pulse,pulse);
         if(f.tipo==='divisao'){sprite('etiqueta',-36.7,-20.5,73.4,41);text(counts(id),0,6,22);}
-        else tag(f.tipo==='dobro'?`No moinho: ${counts(id)}`:`Tem: ${counts(id)}`,0,0);ctx.restore();
+        else tag(f.tipo==='dobro'?tr('demo.op.mill',{n:counts(id)},`No moinho: ${counts(id)}`):tr('operacoes.tag.has',{n:counts(id)},`Tem: ${counts(id)}`),0,0,initialCounts[id]);ctx.restore();
       }
-      if(f.tipo==='dobro'){tag(`Mesa: ${counts('mesa')}`,310,338);tag(`Carrinho: ${counts('carrinho')}`,710,310);}
+      if(f.tipo==='dobro'){tag(tr('demo.op.table',{n:counts('mesa')},`Mesa: ${counts('mesa')}`),310,338,initialCounts.mesa);tag(tr('demo.op.cart',{n:counts('carrinho')},`Carrinho: ${counts('carrinho')}`),710,310,initialCounts.carrinho);}
+      if(f.tipo==='divisao'){tag(tr('demo.op.table',{n:counts('mesa')},`Mesa: ${counts('mesa')}`),310,338,initialCounts.mesa);}
       if(state==='ENGRENAGEM'||state==='VOAR_CHAVE'||state==='CHAVE'||state==='COLETAR'){
         const img=art.engrenagem,scale=.5*(state==='ENGRENAGEM'?ease(Math.min(1,elapsed/1.5)):1),w=(img?.naturalWidth||151)*scale,h=(img?.naturalHeight||155)*scale;
         ctx.save();ctx.translate(518,200);ctx.rotate(calm?0:state==='ENGRENAGEM'?elapsed*2.8:4.2);sprite('engrenagem',-w/2,-h/2,w,h);ctx.restore();
@@ -247,10 +286,12 @@ window.OperacoesPuzzle = (() => {
       if(options.debug()){
         ctx.lineWidth=1;ctx.strokeStyle='#ff3939';for(const id in zones){const z=zones[id];ctx.strokeRect(z.x-20,z.y-20,z.w+40,z.h+40);for(let i=0;i<z.cells.length;i++){const p=z.cells[i];ctx.fillStyle='#ff2020';ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fill();text(i,p.x,p.y-6,12,'#fff');}text(`${id}: ${counts(id)}`,z.x+60,z.y-24,14,'#fff');}
         const a=layout.area_terra;ctx.strokeRect(a.x,a.y,a.w,a.h);text(`Ponteiro: ${pointer.x.toFixed(1)}, ${pointer.y.toFixed(1)}`,512,554,16,'#fff');
-        ctx.fillStyle='#171c20ee';ctx.fillRect(195,75,785,58);
+        ctx.fillStyle='#171c20ee';ctx.fillRect(195,75,785,72);
         text(`Fase ${phase+1} | moinho ${counts('plataforma')} | mesa ${counts('mesa')} | carrinho ${counts('carrinho')} | carroças ${counts('vermelha')}/${counts('azul')}/${counts('verde')}`,587,96,14,'#fff');
-        const rule=f.tipo==='dobro'?`moinho == ${goal}`:f.tipo==='metadeMais'?`carrinho == ${goal}`:`mesa == 0 e cada carroça == ${goal}`;
-        text(`${rule}; sem arrastar | ${settled.toFixed(2)}/${ASSENTA_S}s | estado: ${result}`,587,119,14,'#fff');
+        const alvoAtual=alvoFase(f),atualC=f.tipo==='dobro'?counts('plataforma'):f.tipo==='metadeMais'?counts('carrinho'):counts('vermelha')+counts('azul')+counts('verde');
+        const rule=f.tipo==='dobro'?`plataforma == ${alvoAtual}`:f.tipo==='metadeMais'?`carrinho == ${alvoAtual}`:`mesa == 0 e cada carroça == ${alvoAtual}`;
+        text(`${rule} | atual: ${atualC} | estado: ${result}`,587,118,14,'#fff');
+        if(lastEvalLog)text(lastEvalLog,587,138,12,'#5dfcff');
       }
       if(state==='ESCURECER'||state==='TITULO'||state==='SAIR'){ctx.globalAlpha=state==='TITULO'?1:Math.min(1,elapsed/.4);ctx.fillStyle='#171c20';ctx.fillRect(0,0,1024,572);ctx.globalAlpha=1;if(state==='TITULO')text(`Fase ${phase+2} de 3`,512,286,36,'#fff4d3');}
       button(0,'×');button(1,'↻');
@@ -264,15 +305,41 @@ window.OperacoesPuzzle = (() => {
       if(gearImg)ctx.drawImage(gearImg,sr.x+13,sr.y+10,28,28);
       if(document.activeElement===settings){ctx.strokeStyle='#fff0a0';ctx.lineWidth=3;ctx.beginPath();ctx.roundRect(sr.x,sr.y,sr.w,sr.h,10);ctx.stroke();}
       ctx.restore();
+      if(state==='JOGANDO'){
+        const r=rects[5],isHover=checkHover||document.activeElement===checkBtn,isDown=checkPressed,dx=isDown?2:0,dy=isDown?2:0;
+        ctx.save();
+        if(isHover)ctx.filter='brightness(1.15)';
+        const img=art.botao_conferir;
+        if(img&&img.naturalWidth)ctx.drawImage(img,r.x+dx,r.y+dy,r.w,r.h);
+        else{ctx.fillStyle='#4a8528';ctx.beginPath();ctx.roundRect(r.x+dx,r.y+dy,r.w,r.h,10);ctx.fill();ctx.strokeStyle='#285012';ctx.lineWidth=2;ctx.stroke();}
+        ctx.font=`bold 20px ${font}`;ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillStyle='#1b3b12';ctx.fillText('Conferir',r.x+r.w/2+dx,r.y+r.h/2+2+dy);
+        ctx.fillStyle='#ffffff';ctx.fillText('Conferir',r.x+r.w/2+dx,r.y+r.h/2+dy);
+        if(document.activeElement===checkBtn){ctx.strokeStyle='#fff0a0';ctx.lineWidth=3;ctx.beginPath();ctx.roundRect(r.x+dx,r.y+dy,r.w,r.h,10);ctx.stroke();}
+        ctx.restore();
+      }
     }
-    function tag(label,x,y){ctx.fillStyle='#34271de8';ctx.fillRect(x-76,y-20,152,35);text(label,x,y+4,17,'#fff4d3');}
+    function tag(label,x,y,startVal){
+      ctx.font=`bold 17px ${font}`;
+      const w=Math.max(152,Math.ceil(ctx.measureText(label).width)+24);
+      ctx.fillStyle='#34271de8';ctx.fillRect(x-w/2,y-20,w,35);text(label,x,y+4,17,'#fff4d3');
+      if(typeof startVal==='number'){
+        const tr=(k,p,fb)=>(typeof window.t==='function'?window.t(k,p,fb):fb);
+        const sLabel=tr('operacoes.startedWith',{n:startVal},`Começou com ${startVal}`);
+        ctx.font=`bold 13px ${font}`;
+        const sw=Math.max(114,Math.ceil(ctx.measureText(sLabel).width)+18);
+        ctx.save();ctx.fillStyle='#f5d38c';ctx.strokeStyle='#7a4c1e';ctx.lineWidth=2;
+        ctx.beginPath();ctx.roundRect(x-sw/2,y-43,sw,21,7);ctx.fill();ctx.stroke();
+        ctx.fillStyle='#3b210c';ctx.fillText(sLabel,x,y-28);ctx.restore();
+      }
+    }
     function loop(time){if(closed)return;if(paused){last=time;raf=requestAnimationFrame(loop);return;}const dt=last?Math.min(.05,(time-last)/1000):0;last=time;update(dt);if(closed)return;draw();raf=requestAnimationFrame(loop);}
     exit.onclick=()=>close(false);restart.onclick=reset;takeKey.onclick=collect;
     help.onpointerdown=()=>{if(!help.disabled)helpPressed=true;};help.onpointerup=()=>{helpPressed=false;};help.onpointerleave=()=>{helpPressed=false;};
     help.onclick=()=>{if(help.disabled||state!=='JOGANDO')return;if(drag>=0){seat(drag,dragZone,dragCell);drag=-1;releaseCapture();}window.TutorialCard?.abrir?.('operacoes',{onFechar:()=>canvas.focus()});};
     settings.onclick=()=>openSettings();
     canvas.addEventListener('pointerdown',down);canvas.addEventListener('pointermove',move);canvas.addEventListener('pointerup',up);canvas.addEventListener('pointercancel',cancel);canvas.addEventListener('lostpointercapture',cancel);
-    document.addEventListener('keydown',key,true);window.addEventListener('resize',resize);current=close;
+    document.addEventListener('keydown',key,true);document.addEventListener('keyup',keyUp,true);window.addEventListener('resize',resize);current=close;
     window.ActivePuzzle = { type: 'operacoes', close: () => close(false), pause: () => { paused = true; }, resume: () => { paused = false; }, get active() { return Boolean(current); } };
     setup();resize();
     const tutorialAbriu=window.TutorialCard?.verificarEabrir?.('operacoes',{onFechar:()=>canvas.focus()});

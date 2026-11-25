@@ -4,7 +4,7 @@ window.GeometriaPuzzle = (() => {
   let data,catalog,ready,current;const images=new Map(),dash=[6,5],solid=[];
   // Lógica pura, também disponível no console: GeometriaPuzzle.selfTest().
   function selfTest(input=data) {
-    const results=[],expected=[{}, {'01':'2,0 2,1 1,1 1,2'}, {'05':'0,0 0,1 1,1 1,2 2,2','04':'4,2 3,3 4,3'}];
+    const results=[],expected=[{}, {'01':'2,0 2,1 1,1 1,2'}, {'05':'0,0 0,1 1,1 1,2 2,2'}];
     let prepared;
     try{prepared=Polyomino.prepare(input);}catch(error){console.error(`[Geometria] FALHOU: ${error.message}`);return false;}
     for(let index=0;index<prepared.cycles.length;index++) {
@@ -19,7 +19,8 @@ window.GeometriaPuzzle = (() => {
       }
       if(ids.size!==Object.keys(expected[index]||{}).length)ok=false;
       const free=cycle.pieces.filter(id=>!ids.has(id));
-      const shapes=free.map(id=>{const seen=new Set();return prepared.pieces[id].rotations.filter(r=>{const key=r.rows.join('/');if(seen.has(key))return false;seen.add(key);return true;});});
+      // Cada peça exibida já usa a orientação exata da solução (sem rotação).
+      const shapes=free.map(id=>{const pl=cycle.placements.find(item=>item.id===id);return [prepared.pieces[id].rotations[pl.rotation]];});
       function search(depth) {
         if(depth===free.length)return board.includes(-1)?0:1;
         let count=0;
@@ -32,7 +33,7 @@ window.GeometriaPuzzle = (() => {
         return count;
       }
       const count=search(0);ok=ok&&count>=1;results.push(ok);
-      console.info(`[Geometria] Ponte ${index+1}: ${ok?'PASSOU':'FALHOU'}; travadas: ${ids.size}; soluções: ${count} (só rotações)`);
+      console.info(`[Geometria] Ponte ${index+1}: ${ok?'PASSOU':'FALHOU'}; travadas: ${ids.size}; soluções: ${count} (orientação fixa)`);
     }
     return results.every(Boolean);
   }
@@ -62,13 +63,13 @@ window.GeometriaPuzzle = (() => {
     let helpPressed=false,paused=false;
     host.style.cssText='position:fixed;inset:0;z-index:1000;background:#10131d;display:flex;justify-content:center;';
     frameHost.style.cssText='position:relative;height:100%;';canvas.style.cssText='display:block;width:100%;height:100%;touch-action:none;';canvas.tabIndex=0;
-    canvas.setAttribute('aria-label','Geometria: monte a ponte. Clique para girar; arraste para encaixar; R gira ao arrastar; Escape sai.');
+    canvas.setAttribute('aria-label','Geometria: monte a ponte. Arraste as peças para encaixar; toque numa peça encaixada para devolvê-la; Escape sai.');
     host.setAttribute('role','dialog');host.setAttribute('aria-modal','true');host.setAttribute('aria-label','Ponte de peças');
     exit.setAttribute('aria-label','Sair da ponte');help.setAttribute('aria-label','Ajuda: como jogar');restart.setAttribute('aria-label','Reiniciar ponte');settingsBtn.setAttribute('aria-label','Configurações');settingsBtn.title='Configurações';
     for(const b of [exit,help,restart,settingsBtn]){b.style.cssText='position:absolute;background:transparent;color:transparent;border:0;border-radius:10px;cursor:pointer;';frameHost.appendChild(b);}
     frameHost.prepend(canvas);host.appendChild(frameHost);document.body.appendChild(host);
     const particles=new Float32Array(24*5),hero={moving:false,walk:0,idle:0};
-    const pointer={x:0,y:0},grab={id:-1,index:-1,x:0,y:0,startX:0,startY:0,time:0,moved:0,rotation:0,drag:false,col:0,row:0,valid:false};
+    const pointer={x:0,y:0},grab={id:-1,index:-1,x:0,y:0,startX:0,startY:0,time:0,moved:0,drag:false,col:0,row:0,valid:false};
     const calm=window.matchMedia('(prefers-reduced-motion: reduce)').matches||Boolean(window.GameSettings?.calm);
     let cycleIndex=0,cycle,board,pieces,cell,left,state='JOGANDO',elapsed=0,last=0,raf=0,walkX=1100,walkTime=0,closed=false,s=1,offset=0;
     const turn=Math.PI/2,ease=t=>1-(1-t)**3;
@@ -92,7 +93,7 @@ window.GeometriaPuzzle = (() => {
     function setup() {
       cycle=catalog.cycles[cycleIndex];cell=Math.min((m.GAP_RIGHT-m.GAP_LEFT)/cycle.cols,(m.BOTTOM-m.SLOT_Y0)/cycle.rows);left=m.CENTER_X-cycle.cols*cell/2;
       board=new Int8Array(cycle.cols*cycle.rows).fill(-1);
-      pieces=cycle.pieces.map(id=>({id,def:catalog.pieces[id],locked:cycle.travadas.some(p=>p.id===id),r:Math.floor(Math.random()*4),placed:false,x:0,y:0,size:m.TRAY_CELL,angle:0,duration:0,anim:0,pop:0}));
+      pieces=cycle.pieces.map(id=>{const pl=cycle.placements.find(item=>item.id===id);return {id,def:catalog.pieces[id],locked:cycle.travadas.some(p=>p.id===id),r:pl?pl.rotation:0,placed:false,x:0,y:0,size:m.TRAY_CELL,angle:0,duration:0,anim:0,pop:0};});
       for(let i=pieces.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)),p=pieces[i];pieces[i]=pieces[j];pieces[j]=p;}
       layout();for(const p of pieces)if(!p.locked){p.x=p.homeX;p.y=p.homeY;p.angle=p.r*turn;}
       for(const pose of cycle.travadas){const i=pieces.findIndex(p=>p.id===pose.id),p=pieces[i];p.r=pose.rotation;fill(i,pose.col,pose.row);p.x=p.tx;p.y=p.ty;p.size=p.ts;p.angle=p.ta;p.duration=0;p.pop=0;}
@@ -130,7 +131,7 @@ window.GeometriaPuzzle = (() => {
       if(state!=='JOGANDO'||grab.id!==-1||event.button>0)return;event.preventDefault();project(event);canvas.focus();
       for(let i=pieces.length-1;i>=0;i--)if(!pieces[i].locked&&hit(pieces[i])) {
         const p=pieces[i],r=p.def.rotations[p.r];grab.id=event.pointerId;grab.index=i;grab.x=(pointer.x-p.x)/p.size+r.w/2;grab.y=(pointer.y-p.y)/p.size+r.h/2;
-        grab.startX=event.clientX;grab.startY=event.clientY;grab.time=performance.now();grab.moved=0;grab.rotation=p.r;grab.drag=false;canvas.setPointerCapture(event.pointerId);break;
+        grab.startX=event.clientX;grab.startY=event.clientY;grab.time=performance.now();grab.moved=0;grab.drag=false;canvas.setPointerCapture(event.pointerId);break;
       }
     }
     function move(event) {
@@ -140,7 +141,6 @@ window.GeometriaPuzzle = (() => {
       if(grab.drag){p.tx=pointer.x+(r.w/2-grab.x)*cell;p.ty=pointer.y+(r.h/2-grab.y)*cell;candidate();}
     }
     function restore(p) {
-      p.r=grab.rotation;
       const r=p.def.rotations[p.r];
       if(p.placed){fill(grab.index,p.col,p.row);p.pop=0;p.duration=calm?0:.18;}
       else animate(p,p.homeX,p.homeY,m.TRAY_CELL,p.r*turn,.18);
@@ -150,7 +150,7 @@ window.GeometriaPuzzle = (() => {
       if(grab.id!==event.pointerId)return;move(event);const p=pieces[grab.index];
       if(!grab.drag&&performance.now()-grab.time<250&&grab.moved<8){
         if(p.placed){remove(grab.index);p.placed=false;animate(p,p.homeX,p.homeY,m.TRAY_CELL,p.r*turn,.18);}
-        else {p.r=(p.r+1)%4;layout();for(const other of pieces)if(!other.placed)animate(other,other.homeX,other.homeY,m.TRAY_CELL,other===p?p.angle+turn:other.r*turn);}
+        else restore(p);
       }else if(grab.drag&&grab.valid)fill(grab.index,grab.col,grab.row);else restore(p);
       const id=grab.id;grab.id=-1;grab.index=-1;grab.drag=false;if(canvas.hasPointerCapture(id))canvas.releasePointerCapture(id);complete();
     }
@@ -174,7 +174,6 @@ window.GeometriaPuzzle = (() => {
       if(k==='f3'){options.toggleDebug();return;}
       if(state!=='JOGANDO')return;
       if(k==='n'&&options.debug())solve();
-      if(k==='r'&&grab.drag){const p=pieces[grab.index],r=p.def.rotations[p.r],x=grab.x;grab.x=r.h-grab.y;grab.y=x;p.r=(p.r+1)%4;const next=p.def.rotations[p.r];animate(p,pointer.x+(next.w/2-grab.x)*cell,pointer.y+(next.h/2-grab.y)*cell,cell,p.angle+turn);candidate();}
     }
     function close(complete=false) {
       if(closed)return;closed=true;cancelAnimationFrame(raf);

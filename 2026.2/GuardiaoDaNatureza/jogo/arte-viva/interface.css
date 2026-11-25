@@ -1,0 +1,815 @@
+/* Acabamento ilustrado: arte original, molduras próprias e conteúdo independente. */
+:root {
+  --arte-plaque: url("assets/botao.webp");
+  --arte-ink: #344b31;
+}
+#home-ambience {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.home .game-logo {
+  animation-duration: 6.2s !important;
+}
+.home-menu a .drifting-face {
+  animation-duration: 5.8s;
+  background-image: var(--arte-plaque);
+  gap: 16px;
+  padding: 10px 40px;
+}
+.home-menu a:nth-child(2) .drifting-face {
+  animation-delay: -2.7s;
+}
+.home-menu .wood-button {
+  height: clamp(66px, 13vh, 106px);
+}
+.home-menu .nature-symbol {
+  width: 44px;
+  height: 44px;
+  flex: none;
+}
+.home-menu a .drifting-face {
+  text-shadow:
+    0 2px #4d361a,
+    0 3px 5px #132e24;
+}
+.home-menu a:hover .drifting-face {
+  filter: brightness(1.1);
+}
+.home-menu a:active .drifting-face {
+  filter: brightness(1.15);
+}
+.nature-symbol {
+  vertical-align: middle;
+}
+.arte-icon {
+  display: block;
+  object-fit: contain;
+  overflow: visible;
+  flex-shrink: 0;
+}
+button:is(.icon-button, [data-fullscreen]),
+.home-settings {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+button:is(.icon-button, [data-fullscreen]) > .nature-symbol {
+  position: static !important;
+  display: block;
+  margin: 0 !important;
+  width: 28px;
+  height: 28px;
+  max-width: 100%;
+  max-height: 100%;
+  flex: none;
+  transform: none;
+}
+/* O conteúdo respeita o diâmetro interno dos três comandos das cinco fases. */
+#jogo .top-actions button.ra-world-icon {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 6px !important;
+  gap: 0;
+  line-height: 0;
+  overflow: hidden;
+}
+body #jogo .top-actions button.ra-world-icon > svg.nature-symbol {
+  display: block;
+  position: static !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0 !important;
+  flex: none;
+  transform: none;
+}
+.shell-bar #fs-toggle {
+  width: 48px;
+  height: 48px;
+  padding: 9px;
+  border: 3px solid #b9863f;
+  background: radial-gradient(circle at 35% 30%, #477541, #204b32 75%);
+  box-shadow:
+    inset 0 0 0 2px #e4bc65,
+    0 3px 5px #173d3955;
+}
+.home-settings {
+  width: 76px;
+  height: 76px;
+  padding: 13px;
+  border: 4px solid #9b652e;
+  background: radial-gradient(circle at 40% 30%, #57873b, #19462f 78%);
+  box-shadow:
+    inset 0 0 0 3px #eac36d,
+    0 5px 9px #13392e80;
+}
+.home-settings .arte-icon {
+  width: 100% !important;
+  height: 100% !important;
+}
+.wood-button#back-home {
+  background: transparent var(--arte-plaque) center/100% 100% no-repeat;
+  border: 0;
+  padding: 9px 24px;
+  gap: 8px;
+}
+#back-home .nature-symbol {
+  width: 23px;
+  height: 23px;
+}
+
+/* O desenho da ilha cabe inteiro. O mar preenche as sobras em outras proporções. */
+.map-view,
+.map-view .island {
+  background-color: #208eaa;
+  background-image:
+    radial-gradient(ellipse at center, #80d1cf33, #175d7c55),
+    url("../mapa-ferido/assets/mapa-antes.webp");
+  background-size: cover;
+  background-position: center;
+}
+.map-view .island {
+  backdrop-filter: none;
+  background: #287e91;
+  overflow: hidden;
+}
+.map-view .island::before {
+  content: "";
+  position: absolute;
+  inset: -22px;
+  background:
+    linear-gradient(#185a6b44, #163e5655),
+    url("../mapa-ferido/assets/mapa-antes.webp") center/cover;
+  filter: blur(14px);
+  pointer-events: none;
+}
+.map-view .map-stage {
+  z-index: 1;
+}
+.map-title-plaque {
+  background: transparent url("assets/titulo.webp") center/100% 100% no-repeat;
+  width: clamp(340px, 43vw, 540px);
+  min-height: 98px;
+  padding: 34px 75px 18px 46px;
+}
+.map-title-plaque h1 {
+  font-family: Georgia, serif;
+  font-weight: 800;
+  font-size: clamp(23px, 2.5vw, 34px);
+  letter-spacing: 0;
+  text-align: center;
+}
+.map-title-plaque #map-flora {
+  right: 20px;
+  top: 0;
+  width: 74px;
+  height: 79px;
+  transform: rotate(4deg);
+  transform-origin: center bottom;
+}
+.map-hotspot {
+  width: 226px !important;
+  height: 86px !important;
+  min-height: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  padding: 23px 20px 13px 42px !important;
+  background: transparent url("assets/regiao.webp") center/100% 100% no-repeat !important;
+  opacity: 1 !important;
+}
+.map-hotspot .map-region-name {
+  font-family: Georgia, serif;
+  font-weight: 800;
+  font-size: 18px !important;
+  line-height: 1.08;
+  white-space: normal;
+  text-align: center;
+  text-wrap: balance;
+  max-width: 100%;
+  align-self: center;
+}
+.map-hotspot > .nature-symbol {
+  display: none;
+}
+.map-hotspot .number {
+  position: absolute;
+  top: 2px;
+  left: 22px;
+  width: 37px;
+  height: 37px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  box-shadow: none;
+  background: none;
+  color: #365934;
+  font:
+    800 24px/1 Georgia,
+    serif;
+}
+.map-hotspot .number::after {
+  display: none;
+}
+.map-hotspot[aria-disabled="true"] {
+  filter: saturate(0.72);
+}
+.map-hotspot[aria-disabled="true"] .map-region-name {
+  color: #f0e3bd;
+}
+.map-hotspot:hover,
+.map-hotspot:focus-visible {
+  filter: brightness(1.1);
+}
+.map-hotspot.is-complete::after {
+  right: 13px;
+  bottom: 6px;
+  width: 20px;
+  height: 20px;
+  font-size: 16px;
+}
+.map-footer {
+  gap: 7px;
+  padding-right: 104px;
+}
+.map-footer p {
+  background: linear-gradient(100deg, #204d36ed, #345f3c);
+  border: 2px solid #d2ad5b;
+  box-shadow:
+    inset 0 0 0 1px #6e4728,
+    0 2px 5px #173d3955;
+  color: #fff0c1;
+}
+.map-footer #map-current {
+  gap: 5px;
+}
+.map-footer .nature-symbol {
+  width: 22px;
+  height: 22px;
+}
+.brisa-map-pack {
+  width: 82px !important;
+  height: 82px !important;
+  right: 18px;
+  bottom: 20px;
+  border: 4px solid #a16a30 !important;
+  border-radius: 50% !important;
+  padding: 8px !important;
+  background: radial-gradient(circle at 40% 30%, #557f3c, #20492e) !important;
+  box-shadow:
+    inset 0 0 0 3px #e8c16a,
+    0 5px 8px #15382c80 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.brisa-map-pack .brisa-icon {
+  width: 53px !important;
+  height: 53px !important;
+  margin: 0 !important;
+}
+.brisa-map-pack span {
+  display: none;
+}
+
+/* O diário ganha uma janela para a floresta e uma legenda curta sobre madeira. */
+.journal-shell {
+  grid-template-columns: 27% minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  border-color: #a76d33;
+  box-shadow:
+    inset 0 0 0 2px #f2cf83,
+    0 14px 50px #12372ca0;
+}
+.journal-friends {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto auto;
+  grid-template-columns: minmax(0, 1fr);
+  justify-content: stretch;
+  padding: 0 0 18px;
+  gap: 0;
+  background: linear-gradient(130deg, #395b32, #173f30);
+  border-right: 3px solid #a98142;
+}
+.journal-friends canvas {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: contain;
+  border-bottom: 3px solid #b18c48;
+  margin: 0;
+}
+.journal-friends > .eyebrow {
+  font-size: 9px;
+  padding: 0 9px;
+  letter-spacing: 0.15em;
+  color: #e3db9e;
+}
+.journal-friends h2 {
+  margin: 6px 10px;
+  font:
+    400 clamp(20px, 2.4vw, 30px) / 1.1 Lilita,
+    Georgia,
+    serif;
+  color: #fff0be;
+}
+.journal-friends > p:last-child {
+  margin: 8px 10px 0;
+  color: #e1e7be;
+}
+.journal-main {
+  color: var(--arte-ink);
+  background-image:
+    linear-gradient(110deg, #fff4d83d, #f7e7bb33),
+    url("../encontros-da-floresta/assets/papel.svg");
+  background-size: auto, 210px;
+}
+.journal-heading h1,
+.settings-shell h1 {
+  color: #315437;
+  text-shadow: 0 1px #fff5cc;
+}
+.ra-tabs button {
+  border-radius: 14px 14px 7px 7px;
+  background: linear-gradient(#f0e5ba, #e0d5a5);
+  box-shadow: inset 0 1px #fff6d6;
+}
+.ra-tabs button[aria-selected="true"] {
+  background: linear-gradient(#537c45, #2c5738);
+  border-color: #75914c;
+  color: #fff2c1;
+  box-shadow:
+    inset 0 2px 0 #8eaa64,
+    0 2px #a98b43;
+}
+.mission-list .nature-symbol,
+.journey-list .nature-symbol,
+.mission-symbol {
+  width: 40px;
+  height: 40px;
+}
+.settings-shell {
+  background: linear-gradient(115deg, #fff3d8, #efdfaf);
+  border: 6px solid #a67439;
+  border-radius: 25px;
+  box-shadow:
+    inset 0 0 0 2px #edcb82,
+    0 12px 35px #133e3280;
+}
+.settings-layout {
+  grid-template-columns: 29% minmax(0, 1fr);
+  gap: 20px;
+}
+.settings-preview {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
+  border: 2px solid #b39352;
+  background: linear-gradient(130deg, #537344, #294d34);
+  box-shadow: inset 0 0 0 1px #d2b368;
+}
+.settings-preview canvas {
+  height: 100%;
+  min-height: 0;
+  border-bottom: 2px solid #b39352;
+}
+.settings-preview > div {
+  padding: 13px 15px;
+}
+.settings-preview h2 {
+  font-size: clamp(19px, 2vw, 26px);
+}
+.settings-preview p:not(.eyebrow) {
+  margin: 6px 0;
+}
+.settings-preview .eyebrow {
+  color: #ebe3ae;
+}
+.settings-preview span {
+  color: #e3e7c0;
+}
+.settings-shell .ra-setting,
+.settings-shell .ra-volume {
+  background: linear-gradient(120deg, #f3eccf, #e8dfb8);
+  box-shadow: inset 0 1px #fff8dd;
+}
+
+/* Ferramentas numa bolsa de campo, com ilustrações inteiras e alinhadas. */
+#mochila-jornada.brisa-pack {
+  border: 7px solid #986234;
+  border-radius: 25px;
+  background:
+    linear-gradient(120deg, #fff2d2b0, #f3e1b5b0),
+    url("../encontros-da-floresta/assets/papel.svg");
+  background-size: auto, 200px;
+  box-shadow:
+    inset 0 0 0 2px #edc67e,
+    0 15px 55px #102b2d99;
+}
+#mochila-jornada > header {
+  gap: 13px;
+  padding: 4px 5px 15px;
+  border-bottom: 2px solid #c2a05e;
+}
+#mochila-jornada .pack-emblem {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(#e1c47e, #ae7e42);
+  border-radius: 50%;
+  border: 2px solid #916136;
+  flex: none;
+}
+#mochila-jornada .pack-emblem svg {
+  width: 44px;
+  height: 44px;
+}
+#mochila-jornada .brisa-collection {
+  gap: 12px;
+}
+#mochila-jornada .brisa-item {
+  background: linear-gradient(120deg, #fff6dd, #efdfb6);
+  border: 1px solid #c0a36b;
+  border-radius: 17px;
+  box-shadow:
+    inset 0 1px #fff9e7,
+    0 3px 0 #a67c3f22;
+  padding: 12px;
+  gap: 12px;
+}
+#mochila-jornada .item-illustration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse, #d5dca080, #d9c68c20 70%);
+  min-width: 0;
+}
+#mochila-jornada .item-illustration > svg {
+  max-width: 100%;
+  max-height: 100%;
+}
+#mochila-jornada h3 {
+  line-height: 1.16;
+  color: #355537;
+}
+#mochila-jornada p {
+  color: #625537;
+}
+#mochila-jornada .is-undiscovered .item-illustration {
+  opacity: 0.22;
+  filter: grayscale(1);
+}
+
+/* Conquista: colar à esquerda, comemoração e contagem à direita, como a referência. */
+.colar-cutscene.encontro-recompensa .colar-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  align-items: center;
+  overflow: hidden;
+  width: min(930px, calc(100vw - 40px));
+  height: min(600px, calc(100dvh - 32px));
+  padding: 22px 32px 18px;
+  border: 9px solid #9a5f2d;
+  border-radius: 32px;
+  box-shadow:
+    inset 0 0 0 3px #f0c979,
+    0 15px 60px #071d1fa0;
+  background:
+    linear-gradient(110deg, #fff5d940, #ecd49e55),
+    url("../encontros-da-floresta/assets/papel.svg");
+  background-size: auto, 200px;
+  gap: 12px 28px;
+}
+.colar-cutscene.encontro-recompensa .colar-card header {
+  grid-column: 1/-1;
+  grid-row: 1;
+}
+.colar-cutscene.encontro-recompensa .colar-view {
+  grid-column: 1;
+  grid-row: 2;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+.colar-cutscene.encontro-recompensa .colar-card footer {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  margin: 0;
+  height: 100%;
+  min-height: 0;
+}
+.colar-cutscene.encontro-recompensa .colar-card footer p {
+  max-width: none;
+  text-align: center;
+}
+.colar-cutscene.encontro-recompensa #colar-continuar {
+  grid-column: 1/-1;
+  grid-row: 3;
+}
+.colar-cutscene.encontro-recompensa .colar-card h2 {
+  color: #fff0bd;
+  background: var(--arte-plaque) center/100% 100% no-repeat;
+  padding: 20px 38px;
+  font:
+    800 clamp(22px, 3.2vw, 38px) / 1.08 Georgia,
+    serif;
+  margin: 3px 0 7px;
+}
+.colar-cutscene.encontro-recompensa .colar-eyebrow {
+  margin: 0;
+  letter-spacing: 0.06em;
+  color: #53663a;
+  font-weight: 800;
+}
+.colar-cutscene.encontro-recompensa #colar-frase {
+  color: #67472c;
+  margin: 0;
+  font:
+    700 18px/1.2 Georgia,
+    serif;
+}
+.colar-cutscene.encontro-recompensa .colar-view {
+  border-right: 1px solid #b3a76488;
+  padding-right: 24px;
+  max-height: none;
+}
+.colar-cutscene.encontro-recompensa #colar-kai {
+  width: 100%;
+  max-width: 360px;
+  flex: 1;
+  min-height: 0;
+  height: auto;
+}
+.colar-cutscene.encontro-recompensa #colar-kai {
+  aspect-ratio: 300/230;
+  max-height: calc(100% - 83px);
+}
+.colar-pedras {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 30px;
+  margin-top: 5px;
+}
+.colar-pedras > span {
+  display: block;
+  width: 23px;
+  height: 28px;
+  opacity: 0.22;
+  filter: grayscale(1);
+  transition:
+    opacity 0.5s,
+    filter 0.5s,
+    translate 0.5s;
+}
+.colar-pedras > span.obtained {
+  opacity: 1;
+  filter: none;
+  translate: 0 -2px;
+}
+.colar-pedras svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.colar-cutscene.encontro-recompensa .colar-card footer p {
+  width: 94%;
+  padding: 8px 14px;
+  background: var(--arte-plaque) center/100% 100% no-repeat;
+  color: #fff0bd;
+}
+.colar-cutscene.encontro-recompensa #colar-contagem {
+  display: block;
+  color: #fff0bd;
+  font:
+    800 32px/1.15 Georgia,
+    serif;
+}
+.colar-cutscene.encontro-recompensa .colar-card footer p span {
+  font-size: 13px;
+}
+.colar-cutscene.encontro-recompensa #colar-continuar {
+  background: var(--arte-plaque) center/100% 100% no-repeat;
+  border: 0;
+  color: #fff1bc;
+  padding: 17px 30px;
+  box-shadow: none;
+}
+
+/* Folhas atravessam uma luz de bosque, sem grandes polígonos na passagem. */
+#leaf-transition .grove-shade {
+  background: radial-gradient(ellipse at 52% 42%, #426c45, #193e31 72%);
+}
+#leaf-transition .grove-half {
+  clip-path: ellipse(82% 72% at 10% 50%);
+  background: linear-gradient(100deg, #65924466, #bad27710);
+  opacity: 0.65;
+}
+#leaf-transition .grove-leaf {
+  width: clamp(44px, 8vw, 110px);
+  filter: drop-shadow(0 3px 3px #0f2c2830);
+}
+#leaf-transition.grove-closed .grove-leaf {
+  opacity: 0.78;
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+  .settings-shell .ra-settings-body [data-setting-panel="audio"] {
+    align-content: start;
+    gap: 6px;
+  }
+  .settings-shell [data-setting-panel="audio"] :is(.ra-setting, .ra-volume) {
+    padding: 7px 10px;
+  }
+  .settings-shell .audio-preview {
+    margin-top: 0;
+    padding: 6px 8px;
+  }
+  .home-menu .wood-button {
+    height: clamp(54px, 15vh, 78px);
+  }
+  .home-menu .nature-symbol {
+    width: 31px;
+    height: 31px;
+  }
+  .home-menu a .drifting-face {
+    gap: 10px;
+    padding: 6px 27px;
+  }
+  .home-settings {
+    width: 58px;
+    height: 58px;
+    padding: 10px;
+  }
+  .shell-bar #fs-toggle {
+    width: 40px;
+    height: 40px;
+    padding: 7px;
+  }
+  .shell-bar #fs-toggle .arte-icon {
+    width: 23px;
+    height: 23px;
+  }
+  .map-title-plaque {
+    min-height: 64px;
+    width: 340px;
+    padding: 23px 48px 12px 28px;
+  }
+  .map-title-plaque h1 {
+    font-size: 22px;
+  }
+  .map-title-plaque #map-flora {
+    width: 50px;
+    height: 54px;
+    right: 14px;
+  }
+  .map-hotspot {
+    width: 176px !important;
+    max-width: 25vw;
+    height: 66px !important;
+    padding: 17px 15px 9px 32px !important;
+  }
+  .map-hotspot .map-region-name {
+    font-size: 14px !important;
+  }
+  .map-hotspot .number {
+    left: 16px;
+    top: 1px;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+  }
+  .brisa-map-pack {
+    width: 58px !important;
+    height: 58px !important;
+    right: 12px;
+    bottom: 14px;
+    padding: 5px !important;
+  }
+  .brisa-map-pack .brisa-icon {
+    width: 38px !important;
+    height: 38px !important;
+  }
+  .map-footer {
+    padding-right: 78px;
+    gap: 5px;
+  }
+  .map-footer p {
+    font-size: 10px;
+    padding: 5px 8px;
+  }
+  .journal-shell {
+    grid-template-columns: 25% minmax(0, 1fr);
+  }
+  .journal-friends {
+    padding-bottom: 9px;
+  }
+  .journal-friends canvas {
+    margin-bottom: 0;
+  }
+  .journal-friends > .eyebrow {
+    font-size: 6px;
+    letter-spacing: 0.08em;
+  }
+  .journal-friends h2 {
+    font-size: 17px;
+    margin: 4px 6px;
+  }
+  .journal-friends > p:last-child {
+    font-size: 9px;
+    line-height: 1.25;
+    margin: 4px 6px 0;
+  }
+  .settings-layout {
+    gap: 12px;
+    grid-template-columns: 27% minmax(0, 1fr);
+  }
+  .settings-preview > div {
+    padding: 8px;
+  }
+  .settings-preview canvas {
+    height: 100%;
+    min-height: 0;
+  }
+  .settings-preview h2 {
+    font-size: 17px;
+    margin: 4px 0;
+  }
+  .settings-preview .eyebrow {
+    font-size: 6px;
+  }
+  .settings-preview p:not(.eyebrow) {
+    font-size: 9px;
+    line-height: 1.25;
+  }
+  .settings-preview span {
+    font-size: 8px;
+    margin-top: 5px;
+    padding-top: 4px;
+  }
+  .colar-cutscene.encontro-recompensa .colar-card {
+    padding: 9px 18px;
+    border-width: 7px;
+    border-radius: 22px;
+    gap: 5px 12px;
+  }
+  .colar-cutscene.encontro-recompensa .colar-card h2 {
+    padding: 12px 26px;
+    font-size: 24px;
+    margin: 2px 0 4px;
+  }
+  .colar-cutscene.encontro-recompensa .colar-eyebrow {
+    font-size: 8px;
+  }
+  .colar-cutscene.encontro-recompensa #colar-frase {
+    font-size: 13px;
+  }
+  .colar-cutscene.encontro-recompensa #colar-contagem {
+    font-size: 23px;
+  }
+  .colar-cutscene.encontro-recompensa #colar-kai {
+    max-height: calc(100% - 57px);
+  }
+  .colar-pedras {
+    height: 20px;
+    gap: 6px;
+    margin-top: 3px;
+  }
+  .colar-pedras > span {
+    width: 16px;
+    height: 20px;
+  }
+  .colar-cutscene.encontro-recompensa .colar-card footer p {
+    padding: 5px 10px;
+    margin: 0;
+  }
+  .colar-cutscene.encontro-recompensa #colar-continuar {
+    padding: 11px 24px;
+    min-height: 42px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home .game-logo,
+  .home-menu a .drifting-face {
+    animation: none !important;
+  }
+}

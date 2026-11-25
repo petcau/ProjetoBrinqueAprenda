@@ -6,7 +6,7 @@
     const stageCanvas = document.createElement('canvas');
     const stageContext = stageCanvas.getContext('2d');
     const label = document.getElementById('travelStatus');
-    let source, chapter, shadow, done;
+    let source, chapter, shadow, done, rejectRun;
     let line = 0, time = 0, elapsed = 0, last = 0;
     let active = false, paused = false, loading = false, pendingSkip = false, model = {};
 
@@ -16,8 +16,7 @@
       document.getElementById('travelAction').textContent = chapter.memory && line === 0
         ? 'Uma silhueta colossal emerge na lembrança de Pixel. A aparência permanece oculta na escuridão.'
         : 'Pixel reflete em voz alta, com a guitarra junto ao corpo.';
-      document.getElementById('nextTravel').textContent = line < chapter.lines.length - 1
-        ? 'Continuar diálogo →' : chapter.chapter === 10 ? 'Voltar ao resultado →' : 'Abrir o próximo caminho →';
+      document.getElementById('nextTravel').textContent='▶';
       document.getElementById('travelOverlay').dataset.memory = String(chapter.memory && line === 0);
       document.getElementById('backTravel').disabled = line===0;
       if(!paused)RR_AUDIO.reflectionScore(chapter.chapter,line);
@@ -86,7 +85,7 @@
       if (!active) return;
       const delta = Math.min(.05, (now - last) / 1000); last = now;
       if (!paused && !document.hidden) { time += delta; elapsed += delta; }
-      draw();
+      try{draw();}catch(error){active=false;const reject=rejectRun;rejectRun=null;done=null;reject?.(error);return;}
       if (elapsed >= RR_NARRATIVE.readingTime(chapter.lines[line])) advance();
       if (active) requestAnimationFrame(tick);
     }
@@ -103,7 +102,7 @@
         if (pendingSkip) { pendingSkip = false; return; }
         line = 0; elapsed = 0; time = 0; paused = false; active = true; last = performance.now();
         document.getElementById('pauseTravel').textContent = 'Pausar cena'; dialogue();
-        return new Promise(resolve => { done = resolve; draw(); requestAnimationFrame(tick); });
+        return new Promise((resolve,reject) => { done = resolve;rejectRun=reject;try{draw();requestAnimationFrame(tick);}catch(error){active=false;done=null;rejectRun=null;reject(error);} });
       },
       toggle() { if (active) { paused = !paused; document.getElementById('pauseTravel').textContent = paused ? 'Continuar cena' : 'Pausar cena'; if(paused)RR_AUDIO.silence();else dialogue(); } },
       back() { if(active&&line>0){line--;elapsed=0;dialogue();draw();} },

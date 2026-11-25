@@ -11,5 +11,5 @@ window.RR_CAMPAIGN=Object.freeze([
  {id:'atlanta',name:'Atlanta',goal:6500,released:true},
  {id:'masmorra',name:'Masmorra Ardente',goal:7000,released:true},
  {id:'colina',name:'Colina Escarlate',goal:7500,released:true},
- {id:'fase11',name:'OrbitHop · Endgame',goal:null,released:true}
+ {id:'fase11',name:'OrbitHop · O Último Acorde',goal:null,released:true}
 ].map((stage,index)=>Object.freeze({...stage,number:index+1})));

@@ -31,5 +31,67 @@ window.OperacoesLayout = (() => {
     for(let i=0;i<zone.cells.length;i++)if(occupied[i]<0){const p=zone.cells[i],d=(p.x-x)**2+(p.y-y)**2;if(d<=distance){best=i;distance=d;}}
     return best;
   }
-  return {build,inside,nearest};
+  // Função pura que avalia a fase apenas pelo estado lógico dos sacos.
+  // alvo, tipo e dados da fase derivam do JSON via estado.alvo / estado.tipo.
+  function avaliarFase(estado) {
+    const f = Number(estado?.fase) || 1;
+    const sacos = estado?.sacos || [];
+    const tipo = estado?.tipo || '';
+    const alvo = estado?.alvo;
+    const counts = { plataforma: 0, carrinho: 0, vermelha: 0, azul: 0, verde: 0, mesa: 0, outros: 0 };
+    for (let i = 0; i < sacos.length; i++) {
+      const z = sacos[i]?.zone;
+      if (z && Object.prototype.hasOwnProperty.call(counts, z)) counts[z]++;
+      else counts.outros++;
+    }
+    let ok = false, regra = '', atual = 0;
+    if (tipo === 'dobro') {
+      atual = counts.plataforma;
+      regra = `plataforma == ${alvo}`;
+      ok = Number.isInteger(alvo) && atual === alvo;
+    } else if (tipo === 'metadeMais') {
+      atual = counts.carrinho;
+      regra = `carrinho == ${alvo}`;
+      ok = Number.isInteger(alvo) && atual === alvo;
+    } else if (tipo === 'divisao') {
+      // alvo = sacos/carrocas (por carroça)
+      const totalCarrocas = counts.vermelha + counts.azul + counts.verde;
+      atual = totalCarrocas;
+      regra = `mesa == 0 e cada carroça == ${alvo}`;
+      ok = Number.isInteger(alvo) && counts.mesa === 0 && counts.vermelha === alvo && counts.azul === alvo && counts.verde === alvo;
+    }
+    return { ok, detalhe: { fase: f, tipo, counts, alvo, atual, regra } };
+  }
+  function autoTeste(fases) {
+    // fases = data.fases do JSON; sem eles não dá para calcular alvos corretos.
+    if (!fases || fases.length < 3) { console.warn('[Operações] Autoteste: dados das fases ausentes; pulando.'); return true; }
+    const alvo1 = 2 * fases[0].moinho;                          // dobro → 4
+    const alvo2 = Math.floor(fases[1].carrinhoTem / 2) + fases[1].mais; // metadeMais → 8
+    const alvo3 = fases[2].sacos / fases[2].carrocas;           // divisao → 4
+    const testes = [
+      { f: 1, tipo: 'dobro',      alvo: alvo1,
+        c: Array.from({length: alvo1},     () => ({zone:'plataforma'})).concat([{zone:'mesa'},{zone:'carrinho'}]),
+        e: Array.from({length: alvo1 - 1}, () => ({zone:'plataforma'})).concat([{zone:'mesa'},{zone:'mesa'},{zone:'carrinho'}]) },
+      { f: 2, tipo: 'metadeMais', alvo: alvo2,
+        c: Array.from({length: fases[1].carrinhoTem}, (_,i) => ({zone: i < alvo2 ? 'carrinho' : 'mesa'})),
+        e: Array.from({length: fases[1].carrinhoTem}, (_,i) => ({zone: i < alvo2 - 1 ? 'carrinho' : 'mesa'})) },
+      { f: 3, tipo: 'divisao',    alvo: alvo3,
+        c: Array.from({length: fases[2].sacos}, (_,i) => ({zone: i < alvo3 ? 'vermelha' : i < 2*alvo3 ? 'azul' : 'verde'})),
+        e: Array.from({length: fases[2].sacos}, (_,i) => ({zone: i < alvo3+1 ? 'vermelha' : i < 2*alvo3 ? 'azul' : 'verde'})) }
+    ];
+    let passou = true;
+    for (const t of testes) {
+      const resC = avaliarFase({ fase: t.f, tipo: t.tipo, alvo: t.alvo, sacos: t.c });
+      const resE = avaliarFase({ fase: t.f, tipo: t.tipo, alvo: t.alvo, sacos: t.e });
+      if (!resC.ok || resE.ok) {
+        passou = false;
+        console.error(`[Operações] Autoteste avaliarFase: ERRO na fase ${t.f} (tipo=${t.tipo}, alvo=${t.alvo}; correto=${resC.ok}, errado=${resE.ok})`);
+      } else {
+        console.info(`[Operações] Autoteste fase ${t.f} (${t.tipo}, alvo ${t.alvo}): OK`);
+      }
+    }
+    if (passou) console.info('[Operações] Autoteste avaliarFase: OK — todas as 3 fases validadas.');
+    return passou;
+  }
+  return {build,inside,nearest,avaliarFase,autoTeste};
 })();

@@ -82,6 +82,64 @@
   notes.forEach((f, i) => tone(f, t + i * delay, dur, type, v));
  }
 
+ const VOICE_PROFILES = {
+  protagonist_male:   { baseFreq: 330, type: 'square',   harmType: 'triangle', harmRatio: 1.5,  pitchSpan: 55, dur: 0.042, gain: 0.055 },
+  protagonist_female: { baseFreq: 455, type: 'triangle', harmType: 'sine',     harmRatio: 2.0,  pitchSpan: 70, dur: 0.042, gain: 0.065 },
+  ordem:              { baseFreq: 585, type: 'sine',     harmType: 'triangle', harmRatio: 2.0,  pitchSpan: 85, dur: 0.048, gain: 0.065 },
+  araci:              { baseFreq: 410, type: 'triangle', harmType: 'sine',     harmRatio: 1.5,  pitchSpan: 60, dur: 0.045, gain: 0.060 },
+  irece:              { baseFreq: 515, type: 'sine',     harmType: 'triangle', harmRatio: 1.25, pitchSpan: 65, dur: 0.046, gain: 0.060 },
+  jurema:             { baseFreq: 370, type: 'sawtooth', harmType: 'triangle', harmRatio: 1.5,  pitchSpan: 50, dur: 0.044, gain: 0.048 },
+  mystery:            { baseFreq: 245, type: 'sine',     harmType: 'triangle', harmRatio: 0.5,  pitchSpan: 30, dur: 0.055, gain: 0.065 }
+ };
+
+ function resolveVoiceProfileKey(speakerOrPortrait) {
+  const raw = String(speakerOrPortrait || '').trim().toLowerCase();
+  const gender = (typeof window !== 'undefined' && window.TruePixelEngine?.playerProfile?.gender) || 'male';
+  if (raw === 'portrait_protagonist_female' || raw === 'protagonist_female') return 'protagonist_female';
+  if (raw === 'portrait_protagonist_male' || raw === 'protagonist_male') return 'protagonist_male';
+  if (raw === 'portrait_protagonist' || raw === 'protagonista' || raw === 'protagonist') {
+   return gender === 'female' ? 'protagonist_female' : 'protagonist_male';
+  }
+  if (raw.includes('ordem') || raw.includes('fada')) return 'ordem';
+  if (raw.includes('araci')) return 'araci';
+  if (raw.includes('irece') || raw.includes('irecê')) return 'irece';
+  if (raw.includes('jurema')) return 'jurema';
+  if (raw.includes('misteriosa') || raw.includes('mystery') || raw.includes('silhouette')) return 'mystery';
+  const pName = (typeof window !== 'undefined' && window.TruePixelEngine?.getPlayerName?.()) || '';
+  if (pName && raw === pName.toLowerCase()) {
+   return gender === 'female' ? 'protagonist_female' : 'protagonist_male';
+  }
+  return gender === 'female' && !raw ? 'protagonist_female' : 'protagonist_male';
+ }
+
+ function playVoiceBlip(speakerOrKey = 'protagonist_male', char = 'a', charIndex = 0) {
+  const hud = (typeof window !== 'undefined') ? window.TruePixelEngine?.GameHUD : null;
+  if (hud && (hud.muted || hud.sfxVol <= 0)) return null;
+  if (!enabled || volume <= 0) return null;
+
+  const profileKey = resolveVoiceProfileKey(speakerOrKey);
+  const profile = VOICE_PROFILES[profileKey] || VOICE_PROFILES.protagonist_male;
+  const code = String(char || 'a').charCodeAt(0) || 97;
+  const semitoneOffsets = [0, 2, 4, 7, 9, -2, 5, 11];
+  const semi = semitoneOffsets[(code + (Number(charIndex) || 0)) & 7];
+  const freq = Math.round(profile.baseFreq * Math.pow(2, semi / 24) + ((code % 5) - 2) * (profile.pitchSpan * 0.08));
+
+  const blip = { profileKey, freq, type: profile.type, char: String(char || ''), charIndex: Number(charIndex) || 0 };
+  if (typeof window !== 'undefined' && window.CrystalAudio) {
+   window.CrystalAudio._lastVoiceBlip = blip;
+  }
+
+  const ac = ensure();
+  if (ac && bus) {
+   const t = ac.currentTime;
+   tone(freq, t, profile.dur, profile.type, profile.gain, freq * 1.04);
+   if (profile.harmType && profile.harmRatio) {
+    tone(freq * profile.harmRatio, t + 0.004, profile.dur * 0.72, profile.harmType, profile.gain * 0.35, freq * profile.harmRatio);
+   }
+  }
+  return blip;
+ }
+
  window.CrystalAudio = {
   unlock: ensure,
   hover() {
@@ -237,12 +295,16 @@
   equationMagnetic() {
    if (!enabled || !ensure()) return;
    const t = ctx.currentTime;
-   // Pulso magnético convergente durante os 0.75s de atração das duas equações
-   tone(220, t, 0.72, 'sine', 0.12, 880);
-   tone(330, t + 0.04, 0.68, 'triangle', 0.10, 1318.5);
-   for (let i = 0; i < 6; i++) {
-    tone(523.25 + i * 140, t + i * 0.11, 0.09, 'sine', 0.08, 659.25 + i * 180);
+   // Crescendo magnético (0..0.50s) seguido do impacto energético em t + 0.50s
+   tone(220, t, 0.50, 'sine', 0.11, 880);
+   tone(330, t + 0.03, 0.47, 'triangle', 0.09, 1318.5);
+   for (let i = 0; i < 5; i++) {
+    tone(523.25 + i * 150, t + i * 0.09, 0.08, 'sine', 0.08, 659.25 + i * 190);
    }
+   // Pulso elétrico de choque na colisão (0.50s)
+   noiseBurst(t + 0.50, 0.20, 3200, 'bandpass', 2.4, 0.16, 900);
+   tone(1567.98, t + 0.50, 0.22, 'square', 0.10, 523.25);
+   tone(1046.5, t + 0.52, 0.24, 'triangle', 0.12, 2093);
   },
   equationShatter() {
    if (!enabled || !ensure()) return;
@@ -431,11 +493,58 @@
   reward(n = 3) {
    cue([261.6, 329.6, 392, 523.3, 659.3].slice(0, Math.max(2, n + 1)), 0.06, 'triangle', 0.11, 0.18);
   },
+  victoryFanfare() {
+   if (!enabled || !ensure()) return;
+   const t = ctx.currentTime;
+   const notes = [523.25, 659.25, 783.99, 1046.5, 1318.51];
+   notes.forEach((f, i) => {
+    const st = t + i * 0.068;
+    const dur = i === notes.length - 1 ? 0.42 : 0.22;
+    tone(f, st, dur, 'triangle', 0.13);
+    tone(f * 2, st + 0.006, dur * 0.65, 'sine', 0.06);
+   });
+  },
+  worldFinaleFanfare() {
+   if (!enabled || !ensure()) return;
+   const t = ctx.currentTime;
+   const arp = [392.0, 523.25, 659.25, 783.99, 1046.5, 1318.51, 1567.98];
+   arp.forEach((f, i) => {
+    const st = t + i * 0.065;
+    const dur = i >= arp.length - 2 ? 0.52 : 0.24;
+    tone(f, st, dur, 'triangle', 0.13);
+    tone(f * 2, st + 0.008, dur * 0.7, 'sine', 0.065);
+   });
+   // Acorde cristalino sustentado no clímax
+   [523.25, 783.99, 1046.5].forEach((f) => {
+    tone(f, t + 0.44, 0.58, 'sine', 0.075);
+   });
+  },
+  starChime(index = 1) {
+   if (!enabled || !ensure()) return;
+   const t = ctx.currentTime;
+   const idx = Math.max(1, Math.min(3, Number(index) || 1));
+   const baseFreqs = [783.99, 987.77, 1174.66]; // G5, B5, D6
+   const f = baseFreqs[idx - 1];
+   tone(f, t, 0.26, 'triangle', 0.14, f * 1.01);
+   tone(f * 2, t + 0.005, 0.20, 'sine', 0.08);
+   if (idx === 3) {
+    // Brilho extra na 3ª estrela (oitava triunfal G6)
+    tone(1567.98, t + 0.055, 0.36, 'triangle', 0.13);
+    tone(2093.0, t + 0.085, 0.30, 'sine', 0.07);
+   }
+  },
   error() {
    if (!enabled || !ensure()) return;
    const t = ctx.currentTime;
    tone(233.08, t, 0.11, 'sawtooth', 0.11, 174.61);
    tone(174.61, t + 0.07, 0.15, 'sawtooth', 0.11, 130.81);
+  },
+  shadowBlocked() {
+   if (!enabled || !ensure()) return;
+   const t = ctx.currentTime;
+   noiseBurst(t, 0.14, 420, 'lowpass', 1.4, 0.12, 160);
+   tone(110, t, 0.14, 'triangle', 0.14, 55);
+   tone(82.41, t + 0.03, 0.18, 'sawtooth', 0.09, 46);
   },
   gameOver() {
    if (!enabled || !ensure()) return;
@@ -448,24 +557,107 @@
   finale() {
    cue([261.6, 329.6, 392, 523.3, 659.3, 784], 0.1, 'triangle', 0.12, 0.22);
   },
+  _lastBrinqueIntro: null,
+  brinqueIntro() {
+   const hud = (typeof window !== 'undefined') ? window.TruePixelEngine?.GameHUD : null;
+   if ((hud && (hud.muted || hud.sfxVol <= 0)) || !enabled || volume <= 0) return false;
+   const entry = { calledAt: Date.now(), played: false };
+   this._lastBrinqueIntro = entry;
+   const ac = ensure();
+   if (!ac) return false;
+
+   let playedThisCall = false;
+   const playScheduledJingle = () => {
+    if (playedThisCall || !enabled || volume <= 0) return;
+    playedThisCall = true;
+    const t = ac.currentTime || 0;
+    const hops = [
+     { delay: 0.06, popStart: 310, popEnd: 620, freq: 523.25 },
+     { delay: 0.20, popStart: 390, popEnd: 780, freq: 659.25 },
+     { delay: 0.34, popStart: 460, popEnd: 920, freq: 783.99 }
+    ];
+    hops.forEach((h) => {
+     const ht = t + h.delay;
+     tone(h.popStart, ht, 0.065, 'sine', 0.075, h.popEnd);
+     tone(h.freq, ht + 0.012, 0.20, 'triangle', 0.12, h.freq * 1.01);
+     tone(h.freq * 2, ht + 0.016, 0.16, 'sine', 0.06, h.freq * 2);
+    });
+    tone(880.0, t + 0.52, 0.13, 'triangle', 0.11, 885);
+    tone(1760.0, t + 0.524, 0.10, 'sine', 0.05);
+    tone(783.99, t + 0.62, 0.13, 'triangle', 0.11, 788);
+    tone(1567.98, t + 0.624, 0.10, 'sine', 0.05);
+
+    [523.25, 659.25, 783.99, 1046.5, 1174.66].forEach((f, i) => {
+     const nt = t + 0.74 + i * 0.018;
+     tone(f, nt, 0.30, 'triangle', 0.10);
+     tone(f * 2, nt + 0.006, 0.22, 'sine', 0.045);
+    });
+    tone(1567.98, t + 0.84, 0.24, 'sine', 0.065);
+    tone(2093.0, t + 0.92, 0.24, 'sine', 0.065);
+    entry.played = true;
+   };
+
+   if (ac.state === 'suspended' && typeof ac.resume === 'function') {
+    ac.resume().then(() => {
+     if (typeof window !== 'undefined' && window.CrystalOnboarding && !window.CrystalOnboarding.brinqueSplashActive) return;
+     playScheduledJingle();
+    }).catch(() => {});
+    return true;
+   }
+   playScheduledJingle();
+   return true;
+  },
+  brinqueChime() {
+   const hud = (typeof window !== 'undefined') ? window.TruePixelEngine?.GameHUD : null;
+   if ((hud && (hud.muted || hud.sfxVol <= 0)) || !enabled || volume <= 0) return false;
+   const ac = ensure();
+   if (!ac) return false;
+   const t = ac.currentTime || 0;
+   tone(440, t, 0.05, 'sine', 0.07, 880);
+   [523.25, 659.25, 1046.5].forEach((f, i) => {
+    tone(f, t + i * 0.045, 0.20, 'triangle', 0.11);
+    tone(f * 2, t + i * 0.045 + 0.005, 0.14, 'sine', 0.05);
+   });
+   this._lastBrinqueIntro = {
+    ...(this._lastBrinqueIntro || { calledAt: Date.now() }),
+    played: true,
+    chime: true
+   };
+   return true;
+  },
   stopAllMusic(except = null) {
    if (menuTrack && menuTrack !== except) {
+    clearFadeTimer(menuTrack);
     try { menuTrack.pause(); menuTrack.currentTime = 0; } catch (_) {}
    }
    if (typeof window !== 'undefined') {
     const cave = window.CaveChapter1;
     if (cave?.musicAudio && cave.musicAudio !== except) {
+     clearFadeTimer(cave.musicAudio);
      try { cave.musicAudio.pause(); } catch (_) {}
+    }
+    if (cave?.regularAudio && cave.regularAudio !== except) {
+     clearFadeTimer(cave.regularAudio);
+     try { cave.regularAudio.pause(); } catch (_) {}
     }
     const worlds = window.TruePixelWorlds;
     if (worlds?.regularAudio && worlds.regularAudio !== except) {
+     clearFadeTimer(worlds.regularAudio);
      try { worlds.regularAudio.pause(); } catch (_) {}
     }
     if (worlds?.musicAudio && worlds.musicAudio !== except) {
+     clearFadeTimer(worlds.musicAudio);
      try { worlds.musicAudio.pause(); } catch (_) {}
     }
    }
   },
+  VOICE_PROFILES,
+  _lastVoiceBlip: null,
+  playVoiceBlip,
+  resolveVoiceProfileKey,
+  fadeInTrack,
+  setupSeamlessLoop,
+  checkSeamlessLoop,
   get enabled() {
    return enabled;
   },
@@ -476,6 +668,124 @@
    return !enabled || volume <= 0;
   }
  };
+
+ function clearFadeTimer(audioEl) {
+  if (audioEl && audioEl._fadeTimer) {
+   clearInterval(audioEl._fadeTimer);
+   audioEl._fadeTimer = null;
+  }
+  if (audioEl) {
+   audioEl._fadingIn = false;
+  }
+ }
+
+ function getEffectiveMusicVol() {
+  if (typeof window !== 'undefined' && window.TruePixelEngine?.GameHUD) {
+   const hud = window.TruePixelEngine.GameHUD;
+   if (hud.muted) return 0;
+   const v = Number(hud.musicVol);
+   if (Number.isFinite(v)) return Math.max(0, Math.min(1, v > 1 ? v / 100 : v));
+  }
+  return menuVol;
+ }
+
+ function fadeInTrack(audioEl, targetVol = 0.5, durationMs = 650, startOffset = 0) {
+  if (!audioEl) return;
+  const numTarget = Math.max(0, Math.min(1, Number.isFinite(Number(targetVol)) ? Number(targetVol) : 0.5));
+  if (startOffset > 0 && (!Number.isFinite(audioEl.currentTime) || audioEl.currentTime < startOffset * 0.8)) {
+   try { audioEl.currentTime = startOffset; } catch (_) {}
+   audioEl._startOffset = startOffset;
+  }
+  clearFadeTimer(audioEl);
+  audioEl._fadeTargetVol = numTarget;
+  audioEl._loopFadingOut = false;
+  const hudMuted = (typeof window !== 'undefined') ? Boolean(window.TruePixelEngine?.GameHUD?.muted) : false;
+  if (numTarget <= 0 || audioEl.muted || hudMuted) {
+   audioEl.volume = 0;
+   return;
+  }
+  const steps = 10;
+  const stepMs = Math.max(16, Math.round((durationMs || 650) / steps));
+  let step = 1;
+  const startVol = Math.min(numTarget, Math.max(0.02, Math.round(numTarget * 0.12 * 1000) / 1000));
+  audioEl.volume = startVol;
+  audioEl._fadingIn = true;
+  const timer = setInterval(() => {
+   const hud = (typeof window !== 'undefined') ? window.TruePixelEngine?.GameHUD : null;
+   if (!audioEl || audioEl.paused || audioEl.muted || hud?.muted) {
+    clearFadeTimer(audioEl);
+    if (audioEl && (audioEl.muted || hud?.muted)) audioEl.volume = 0;
+    return;
+   }
+   step++;
+   const curTarget = Number.isFinite(audioEl._fadeTargetVol) ? audioEl._fadeTargetVol : numTarget;
+   if (step >= steps) {
+    audioEl.volume = curTarget;
+    clearFadeTimer(audioEl);
+   } else {
+    const ratio = step / steps;
+    audioEl.volume = Math.min(curTarget, startVol + (curTarget - startVol) * ratio);
+   }
+  }, stepMs);
+  if (timer && typeof timer.unref === 'function') timer.unref();
+  audioEl._fadeTimer = timer;
+ }
+
+ function checkSeamlessLoop(audioEl) {
+  if (!audioEl || !audioEl._seamlessLoopConfig) return false;
+  const { loopStart, loopEndOffset, fadeMs } = audioEl._seamlessLoopConfig;
+  const dur = Number(audioEl.duration);
+  if (!Number.isFinite(dur) || dur <= loopStart + loopEndOffset + 1.0) return false;
+  const loopPoint = dur - loopEndOffset;
+  const cur = Number(audioEl.currentTime) || 0;
+  const fadeOutWindow = 0.35;
+  const targetVol = Number.isFinite(audioEl._fadeTargetVol) ? audioEl._fadeTargetVol : getEffectiveMusicVol();
+
+  if (cur >= loopPoint) {
+   try { audioEl.currentTime = loopStart; } catch (_) {}
+   audioEl._loopFadingOut = false;
+   if (!audioEl.muted && targetVol > 0) {
+    fadeInTrack(audioEl, targetVol, fadeMs || 260, 0);
+   }
+   if (audioEl.paused && typeof audioEl.play === 'function') {
+    try { audioEl.play().catch(() => {}); } catch (_) {}
+   }
+   return true;
+  }
+
+  if (cur >= loopPoint - fadeOutWindow && !audioEl._fadingIn && targetVol > 0 && !audioEl.muted) {
+   const remainRatio = Math.max(0.15, Math.min(1, (loopPoint - cur) / fadeOutWindow));
+   audioEl._loopFadingOut = true;
+   audioEl.volume = Math.max(0.01, Math.min(targetVol, targetVol * remainRatio));
+  }
+  return false;
+ }
+
+ function setupSeamlessLoop(audioEl, opts = {}) {
+  if (!audioEl) return;
+  audioEl._seamlessLoopConfig = {
+   loopStart: opts.loopStart !== undefined ? Number(opts.loopStart) : 0.25,
+   loopEndOffset: opts.loopEndOffset !== undefined ? Number(opts.loopEndOffset) : 0.48,
+   fadeMs: opts.fadeMs !== undefined ? Number(opts.fadeMs) : 280
+  };
+  audioEl.loop = true;
+  if (!audioEl._seamlessBound && typeof audioEl.addEventListener === 'function') {
+   audioEl._seamlessBound = true;
+   audioEl.addEventListener('timeupdate', () => checkSeamlessLoop(audioEl));
+   audioEl.addEventListener('ended', () => {
+    const cfg = audioEl._seamlessLoopConfig;
+    if (!cfg) return;
+    try { audioEl.currentTime = cfg.loopStart; } catch (_) {}
+    const targetVol = Number.isFinite(audioEl._fadeTargetVol) ? audioEl._fadeTargetVol : getEffectiveMusicVol();
+    fadeInTrack(audioEl, targetVol, cfg.fadeMs || 280, 0);
+    if (typeof audioEl.play === 'function') {
+     try { audioEl.play().catch(() => {}); } catch (_) {}
+    }
+   });
+  }
+ }
+
+ const MENU_START_OFFSET = 3.2;
 
  function getAssetUrl(relPath) {
   try {
@@ -492,9 +802,19 @@
   menuTrack.preload = 'auto';
   menuTrack.setAttribute?.('playsinline', '');
   menuTrack.playsInline = true;
+  setupSeamlessLoop(menuTrack, { loopStart: MENU_START_OFFSET, loopEndOffset: 0.6, fadeMs: 320 });
  }
  let menuVol = 0.5;
- if (menuTrack) menuTrack.volume = menuVol;
+ if (menuTrack) {
+  menuTrack.volume = menuVol;
+  menuTrack._fadeTargetVol = menuVol;
+ }
+
+ function startMenuTrackWithFade() {
+  if (!menuTrack) return Promise.resolve();
+  fadeInTrack(menuTrack, menuVol, 650, MENU_START_OFFSET);
+  return menuTrack.play();
+ }
 
  let unlockActive = false;
  function setupInteractionUnlock() {
@@ -503,11 +823,13 @@
   const events = ['click', 'pointerdown', 'pointerup', 'touchstart', 'touchend', 'keydown'];
   const handler = () => {
    ensure();
+   if (typeof window !== 'undefined' && window.CrystalOnboarding?.brinqueSplashActive) {
+    return;
+   }
    if (!document.body?.dataset?.screen || document.body.dataset.screen === 'home') {
     if (menuTrack && menuTrack.paused) {
      window.CrystalAudio?.stopAllMusic?.(menuTrack);
-     menuTrack.volume = menuVol;
-     menuTrack.play().then(() => { teardown(); }).catch(() => {});
+     startMenuTrackWithFade().then(() => { teardown(); }).catch(() => {});
      return;
     }
    } else {
@@ -531,26 +853,36 @@
  }
 
  window.CrystalMenuAudio = {
+  START_OFFSET: MENU_START_OFFSET,
   get track() { return menuTrack; },
   get playing() { return Boolean(menuTrack && !menuTrack.paused); },
   getVolume() { return menuVol; },
+  fadeIn() {
+   if (menuTrack) fadeInTrack(menuTrack, menuVol, 650, MENU_START_OFFSET);
+  },
   play() {
    if (typeof document !== 'undefined' && document.body?.dataset?.screen && document.body.dataset.screen !== 'home') {
-    if (menuTrack) try { menuTrack.pause(); } catch (_) {}
+    if (menuTrack) {
+     clearFadeTimer(menuTrack);
+     try { menuTrack.pause(); } catch (_) {}
+    }
     return Promise.resolve();
    }
    if (!menuTrack || !menuTrack.paused) return Promise.resolve();
    window.CrystalAudio?.stopAllMusic?.(menuTrack);
-   menuTrack.volume = menuVol;
-   return menuTrack.play().catch(() => {
+   return startMenuTrackWithFade().catch(() => {
     setupInteractionUnlock();
    });
   },
   pause() {
-   if (menuTrack) menuTrack.pause();
+   if (menuTrack) {
+    clearFadeTimer(menuTrack);
+    menuTrack.pause();
+   }
   },
   stop() {
    if (menuTrack) {
+    clearFadeTimer(menuTrack);
     menuTrack.pause();
     menuTrack.currentTime = 0;
    }
@@ -560,16 +892,19 @@
    menuVol = Math.max(0, Math.min(1, Number.isFinite(num) ? num : 0.5));
    if (menuTrack) {
     menuTrack.muted = menuVol <= 0;
-    menuTrack.volume = menuVol;
-    if (menuVol > 0 && menuTrack.paused && typeof document !== 'undefined' && (!document.body?.dataset?.screen || document.body.dataset.screen === 'home')) {
-     menuTrack.play().catch(() => {});
+    menuTrack._fadeTargetVol = menuVol;
+    if (!menuTrack._fadingIn) {
+     menuTrack.volume = menuVol;
+    }
+    if (menuVol > 0 && menuTrack.paused && typeof document !== 'undefined' && (!document.body?.dataset?.screen || document.body.dataset.screen === 'home') && !(typeof window !== 'undefined' && window.CrystalOnboarding?.brinqueSplashActive)) {
+     startMenuTrackWithFade().catch(() => {});
     }
    }
   },
   autoStart() {
    if (!menuTrack) return;
-   menuTrack.volume = menuVol;
-   const p = menuTrack.play();
+   if (typeof window !== 'undefined' && window.CrystalOnboarding?.brinqueSplashActive) return;
+   const p = startMenuTrackWithFade();
    if (p && typeof p.catch === 'function') {
     p.catch(() => {
      setupInteractionUnlock();

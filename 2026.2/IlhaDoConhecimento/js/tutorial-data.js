@@ -41,11 +41,6 @@ window.TutorialData = (() => {
           demo: 'geometria-arrastar'
         },
         {
-          titulo: 'Gire a peça',
-          texto: 'Toque na peça da barra para ela girar.',
-          demo: 'geometria-girar'
-        },
-        {
           titulo: 'Tire a peça',
           texto: 'Toque numa peça já encaixada e ela volta para a barra.',
           demo: 'geometria-tirar'

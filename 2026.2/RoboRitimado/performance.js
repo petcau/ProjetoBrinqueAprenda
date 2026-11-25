@@ -51,11 +51,23 @@
   }
   // Rigid whole-body illustration: uniform scale and sole-pivot rotation only.
   // No vertex warping, bending, stretching or separate limb physics.
+  const bodyStamps=new Map(),imageIds=new WeakMap();let imageSerial=0;
   function body(ctx,image,rect,x,floor,scale,stance,alpha) {
+    if(!imageIds.has(image))imageIds.set(image,++imageSerial);
+    const matrix=ctx.getTransform(),density=Math.min(1.5,Math.max(1,Math.hypot(matrix.a,matrix.b)));
+    const key=[imageIds.get(image),...rect,Math.round(scale*10000),density].join(':');
+    let stamp=bodyStamps.get(key);
+    if(!stamp){
+      stamp=document.createElement('canvas');stamp.width=Math.max(1,Math.ceil(rect[2]*scale*density));stamp.height=Math.max(1,Math.ceil(rect[3]*scale*density));
+      const painter=stamp.getContext('2d');painter.imageSmoothingEnabled=true;painter.imageSmoothingQuality='high';
+      painter.drawImage(image,...rect,0,0,stamp.width,stamp.height);
+      if(bodyStamps.size>=16)bodyStamps.delete(bodyStamps.keys().next().value);bodyStamps.set(key,stamp);
+    }
     ctx.save();
     ctx.globalAlpha=alpha;ctx.translate(x,floor);ctx.rotate(stance.lean);
     if(stance.flip)ctx.scale(-1,1);
-    ctx.drawImage(image,...rect,-stance.contactX*scale,-stance.groundY*scale,rect[2]*scale,rect[3]*scale);
+    ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+    ctx.drawImage(stamp,-stance.contactX*scale,-stance.groundY*scale,rect[2]*scale,rect[3]*scale);
     ctx.restore();
   }
   const stages=new Map();
@@ -197,9 +209,9 @@
     fase11:     [[2,false,-.053,-.038],[4,false,.030,-.008],[5,false,-.028,.006],[3,false,.052,.034]]
   };
   function stepAmount(progress) {
-    return smooth(progress / .24) * (1 - smooth((progress - .56) / .44));
+    return smooth(progress / .16) * (1 - smooth((progress - .78) / .22));
   }
-  function draw(ctx,image,level,{width,height,mood=2,danceImage,lane=null,weight=0,previousLane=null,previousWeight=0,motion=1}){
+  function draw(ctx,image,level,{width,height,mood=2,danceImage,stepImage,lane=null,weight=0,previousLane=null,previousWeight=0,motion=1}){
     const neutral = [0,false,0,0];
     const move = lane==null ? neutral : stances[level.id][lane];
     const previous = previousLane==null ? neutral : stances[level.id][previousLane];
@@ -209,8 +221,15 @@
     const lean=motion*(move[2]*weight+previous[2]*previousWeight);
     const base=level.frames[0];
     const heightLimit=Math.min(width*.84/(level.designWidth||440),height*.86/(level.designHeight||552))*base[3];
-    function layer(stance,alpha){
+    function layer(stance,alpha,direction=null){
       if(alpha<=.001)return;
+      if(direction!=null&&stepImage?.naturalWidth&&level.steps){
+        const rect=level.steps.frames[direction];
+        const [groundY,contactX]=level.steps.contacts[direction];
+        const scale=Math.min(heightLimit/level.steps.referenceHeight,width*.92/Math.max(...level.steps.frames.map(r=>r[2])));
+        body(ctx,stepImage,rect,center,floor,scale,{lean:0,groundY,contactX,flip:false},alpha);
+        return;
+      }
       const [index,flip]=stance;
       const alternate=index===-1&&danceImage?.complete&&danceImage.naturalWidth;
       const frame=index===-1?0:index;
@@ -227,15 +246,22 @@
     }
     const neutralWeight=Math.max(0,1-weight-previousWeight);
     layer(neutral,neutralWeight);
-    layer(previous,previousWeight);
-    layer(move,weight);
-    const definition=definitions[level.id];
+    layer(previous,previousWeight,previousLane);
+    layer(move,weight,lane);
+    const definition=definitions[level.id]||{name:'O Último Acorde',phrases:['Guarda cósmica','Escudo do ritmo','Acorde das estrelas','Passo de coragem']};
     const phrase=lane==null?definition.name:definition.phrases[lane];
     return { x:center,floor,height:heightLimit,lean,phrase,scale:heightLimit/base[3],frame:0,
-      nextFrame:move[0],blend:weight,stepLane:lane,flipped:move[1],groundContact:{x:center,y:floor},
+      nextFrame:lane,stepSource:level.steps?.sprite,blend:weight,stepLane:lane,flipped:false,groundContact:{x:center,y:floor},
       pose:{x:center,lean,lift:0},backend:'rigid-illustration',connected:true,rigid:true,mood:moods[mood].name };
   }
   function arenaPose(ctx,sprite,x,floor,height,step) {
+    const entry=window.RR_DANCE_STEPS?.fase11;
+    const sheet=entry?RR_SPRITES.load(entry.sprite).image:null;
+    if(entry&&sheet?.naturalWidth){
+      const layers=[[null,Math.max(0,1-step.weight-step.previousWeight)],[step.previousLane,step.previousWeight],[step.lane,step.weight]];
+      for(const [lane,alpha] of layers){if(alpha<=.001)continue;if(lane==null){RR_SPRITES.draw(ctx,sprite,RR_SPRITES.standard[0],x,floor,height,{alpha});continue;}const rect=entry.frames[lane],[groundY,contactX]=entry.contacts[lane];body(ctx,sheet,rect,x,floor,height/entry.referenceHeight,{lean:0,groundY,contactX,flip:false},alpha);}
+      return;
+    }
     const move = step.lane==null?[0,false,0,0]:stances.fase11[step.lane];
     const previous = step.previousLane==null?[0,false,0,0]:stances.fase11[step.previousLane];
     const {weight,previousWeight,motion}=step;

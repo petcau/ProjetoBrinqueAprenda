@@ -39,7 +39,8 @@
     leaving = false,
     playPromise = null,
     musicFailed = false,
-    ducked = false;
+    ducked = false,
+    cinematic = false;
   let waterWanted = false,
     waterVoice = null,
     waterLoading = false,
@@ -123,6 +124,7 @@
     if (!media) return;
     if (
       !activated ||
+      cinematic ||
       !visible() ||
       !preferences.music ||
       preferences.musicVolume === 0
@@ -413,6 +415,14 @@
   });
   window.GuardiaoAudio = Object.freeze({
     unlock,
+    cinematic: (value) => {
+      cinematic = !!value;
+      if (cinematic) {
+        water(false);
+        stopVoices();
+      }
+      syncMusic();
+    },
     update,
     effect,
     water,

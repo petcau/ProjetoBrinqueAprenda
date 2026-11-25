@@ -205,9 +205,10 @@
       this.currentLabel = 'Cristais em harmonia';
       global.CrystalAssetsReady = true;
 
-      // Mantém a prontidão visível
+      // Mantém a prontidão visível e libera a transição automaticamente
       setTimeout(() => {
         this.ready = true;
+        setTimeout(() => this.finishAndEnterGame(), 400);
       }, 350);
     },
 

@@ -103,7 +103,7 @@
       }
     }else if(['guitar','surge','levitate',3].includes(motion)){
       const cluster=motion==='guitar'?[66,66.3,73,72.6]:[54,54.4,61,60.7,68];
-      cluster.forEach((midi,i)=>note(midi,now+i*.32,.65,.045,'triangle'));
+      for(let pulse=0;pulse<32;pulse++){const at=now+pulse*.11;note(cluster[pulse%cluster.length]+Math.sin(pulse*2)*.7,at,.14,.025,'triangle');if(pulse%4===0)note(42+pulse%7,at,.12,.018,'sine');}
       if(motion==='levitate'||motion===3)portal(2);
     }else if(motion===5){portal(2);note(48,now+1,.35,.05,'sine');}
     else if(motion===6){note(48,now,.22,.09,'sine');note(76,now+.15,.35,.05,'triangle');}

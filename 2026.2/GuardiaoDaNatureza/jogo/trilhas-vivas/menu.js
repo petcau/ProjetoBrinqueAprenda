@@ -56,7 +56,7 @@
         "Alguns amigos precisam de cuidado. Marina ensina a respeitar cada espécie e seu habitat.",
       goals: [
         "Encontre a chave dos abrigos.",
-        "Responda às perguntas e ajude os animais.",
+        "Liberte e cuide dos nove animais.",
         "Acompanhe os amigos aos lugares seguros.",
       ],
       row: 2,
@@ -162,10 +162,12 @@
   }
   function mapDraw(restoring = 0) {
     const p = progress();
+    MapaFerido.prepare();
+    document.body.dataset.mapRestored = String(p.completed.length === 5);
     $("map-hotspots").innerHTML = phases
       .map(
         (d) =>
-          `<button type="button" class="map-hotspot ${p.completed.includes(d.id) ? "is-complete" : ""}" data-phase="${d.id}" style="--x:${d.region[0]}%;--y:${d.region[1]}%" aria-label="${d.name}. ${unlocked(d.id) ? (p.completed.includes(d.id) ? "Natureza recuperada" : "Disponível") : "Complete a região anterior"}" aria-disabled="${!unlocked(d.id)}"><span class="number">${d.id}</span>${R.icon(d.icon)}<span class="map-region-name">${d.name}</span><small>${p.completed.includes(d.id) ? "Natureza recuperada" : unlocked(d.id) ? "Vamos cuidar?" : "Complete a região anterior"}</small></button>`,
+          `<button type="button" class="map-hotspot ${p.completed.includes(d.id) ? "is-complete" : ""}" data-phase="${d.id}" data-region-state="${MapaFerido.regionState(d.id, p)}" style="--x:${d.region[0]}%;--y:${d.region[1]}%" aria-label="${d.name}. ${unlocked(d.id) ? (p.completed.includes(d.id) ? "Natureza recuperada" : "Disponível") : "Complete a região anterior"}" aria-disabled="${!unlocked(d.id)}"><span class="number">${d.id}</span>${R.icon(d.icon)}<span class="map-region-name">${MapaFerido.label(d.id)}</span><small>${p.completed.includes(d.id) ? "Natureza recuperada" : unlocked(d.id) ? "Vamos cuidar?" : "Complete a região anterior"}</small></button>`,
       )
       .join("");
     BosqueMapa.update(
@@ -196,28 +198,37 @@
     if (id && p.completed.includes(id)) {
       mapDraw(id);
       clearTimeout(restoreTimer);
-      restoreTimer = setTimeout(
-        () => {
-          const s = progress();
-          delete s.pendingRestoration;
-          try {
-            localStorage.setItem(
-              "guardiao.mapa.progresso.v1",
-              JSON.stringify(s),
-            );
-          } catch {}
-          history.replaceState(null, "", location.pathname + "#mapa");
-          if (R.won()) window.VivaFinal?.start();
-          else mapDraw();
-        },
-        reduced() ? 300 : 2100,
-      );
+      Promise.resolve(BosqueMapa.ready())
+        .catch(() => {})
+        .then(() => {
+          if (view !== "mapa" || !progress().completed.includes(id)) return;
+          clearTimeout(restoreTimer);
+          restoreTimer = setTimeout(
+            () => {
+              if (view !== "mapa" || !progress().completed.includes(id)) return;
+              const s = progress();
+              delete s.pendingRestoration;
+              try {
+                localStorage.setItem(
+                  "guardiao.mapa.progresso.v1",
+                  JSON.stringify(s),
+                );
+              } catch {}
+              history.replaceState(null, "", location.pathname + "#mapa");
+              if (R.won()) window.VivaFinal?.start();
+              else mapDraw();
+            },
+            reduced() ? 300 : (BosqueMapa.duration || 2.1) * 1000 + 200,
+          );
+        });
     } else if (
       R.won() &&
       localStorage.getItem("guardiao.viva.final.v1") !== "visto"
     ) {
       clearTimeout(restoreTimer);
-      restoreTimer = setTimeout(() => window.VivaFinal?.start(), 900);
+      restoreTimer = setTimeout(() => {
+        if (view === "mapa" && R.won()) window.VivaFinal?.start();
+      }, 900);
     }
   }
   function brief(id) {
@@ -244,7 +255,8 @@
       ? "Iniciar fase"
       : "Conclua a região anterior";
     $("start-phase").setAttribute("aria-disabled", String(!unlocked(id)));
-    A.load(["npcs", "encontros"]);
+    if (window.CincoMissoes) CincoMissoes.brief(id);
+    else A.load(["npcs", "encontros"]);
     document.querySelector(".phase-scene").style.backgroundImage = "none";
     $("phase-dialog").showModal();
     document.body.dataset.phasePreview = String(id);
@@ -286,15 +298,10 @@
       clearTimeout(captionTimer);
       captionTimer = setTimeout(() => (line.hidden = true), 4500);
     }
-    if (view === "configuracoes") A.load(["flora", "encontros"]);
-    if (view === "sobre")
-      A.load([
-        "kai",
-        "acoes",
-        "flora",
-        "encontros",
-        ...(activeAbout === "equipe" ? ["professor"] : []),
-      ]);
+    if (view === "configuracoes") A.load(["flora"]);
+    if (view === "sobre" && activeAbout === "comandos")
+      A.load(["kai", "acoes", "flora", "encontros"]);
+    if (view === "sobre" && activeAbout === "equipe") A.load(["professor"]);
     if (playEnding) window.VivaFinal?.start();
     else if (view !== "mapa") window.VivaFinal?.stop();
     document.title =
@@ -344,6 +351,11 @@
     time = now / 1000;
     if (!ready) return;
     if (view === "mapa") {
+      if (
+        window.VivaFinal?.active &&
+        document.body.dataset.finaleScene === "video"
+      )
+        return;
       BosqueMapa.paint(time, reduced());
       A.canvas($("map-flora"), (c, w, h) => {
         A.owl(
@@ -395,6 +407,7 @@
         const d = phases[(progress().current || 1) - 1],
           x = (w * d.region[0]) / 100,
           y = (h * d.region[1]) / 100 - 57;
+        if (MapaFerido.portrait(c, x, y, w < 900 ? 17 : 19)) return;
         c.fillStyle = "#305a39";
         c.strokeStyle = "#edce7a";
         c.lineWidth = 3;
@@ -417,7 +430,6 @@
       });
     }
     if (view === "sobre") {
-      A.canvas($("about-friends"), (c, w, h) => A.friends(c, w, h, time));
       if (activeAbout === "equipe")
         A.canvas($("professor-portrait"), (c, w, h) => {
           const frame = document.body.classList.contains("reduce-motion")
@@ -455,20 +467,8 @@
       A.canvas($("settings-flora"), (c, w, h) =>
         A.owl(c, w * 0.5, h * 0.9, h * 0.69, time, "ombro", false),
       );
-      A.canvas($("settings-preview"), (c, w, h) => {
-        A.scenery(c, 5, w, h);
-        A.owl(
-          c,
-          w * 0.54,
-          h * 0.89,
-          Math.min(h * 0.49, w * 0.48),
-          time,
-          "ombro",
-          false,
-        );
-      });
     }
-    if ($("phase-dialog").open)
+    if ($("phase-dialog").open && $("phase-conversation"))
       A.canvas($("phase-conversation"), (c, w, h) =>
         A.meeting(c, w, h, selected, time),
       );
@@ -529,7 +529,8 @@
         .querySelectorAll("[data-about-panel]")
         .forEach((p) => (p.hidden = p.dataset.aboutPanel !== activeAbout));
       $("about-content").scrollTop = 0;
-      if (activeAbout === "comandos") A.load(["kai", "encontros"]);
+      if (activeAbout === "comandos")
+        A.load(["kai", "acoes", "flora", "encontros"]);
       if (activeAbout === "equipe") A.load(["professor"]);
       if (!reduced())
         document.getElementById(activeAbout).animate(
@@ -606,9 +607,9 @@
       const island = document.querySelector(".island"),
         stage = document.querySelector(".map-stage"),
         r = island.getBoundingClientRect(),
-        k = Math.min(r.width / 1000, r.height / 563);
-      stage.style.width = k * 1000 + "px";
-      stage.style.height = k * 563 + "px";
+        k = Math.min(r.width / 1280, r.height / 721);
+      stage.style.width = k * 1280 + "px";
+      stage.style.height = k * 721 + "px";
       document.body.dataset.mapFit = "inteiro";
     };
     new ResizeObserver(fit).observe(document.querySelector(".island"));
@@ -679,13 +680,10 @@
         }[p.graphicsQuality] || "Gráficos equilibrados");
       if (tab)
         $("settings-explainer").textContent = {
-          audio: "Uma trilha suave e os sons dos seus cuidados.",
-          conforto:
-            "Ajuste leitura, contraste e orientações para explorar com calma.",
-          controles:
-            "Escolha teclado ou toque. O joystick só aparece no modo celular.",
-          imagem:
-            "A prévia acompanha as folhas e o movimento que você escolher.",
+          audio: "Ajuste os sons da sua aventura.",
+          conforto: "Leia e explore com conforto.",
+          controles: "Escolha teclado ou toque.",
+          imagem: "Escolha efeitos e qualidade.",
         }[tab];
     };
     window.addEventListener("viva:settings-tab", (e) =>

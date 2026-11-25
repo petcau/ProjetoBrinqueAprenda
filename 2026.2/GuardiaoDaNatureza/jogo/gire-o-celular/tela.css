@@ -1,0 +1,184 @@
+/* Componentes do kit fornecido, com proporções originais e texto acessível. */
+#girar-celular {
+  --rotate-space: calc(
+    100dvh - max(12px, env(safe-area-inset-top)) -
+      max(12px, env(safe-area-inset-bottom))
+  );
+  box-sizing: border-box;
+  padding: max(12px, env(safe-area-inset-top))
+    max(8px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom))
+    max(8px, env(safe-area-inset-left));
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: #173d2b;
+  color: #183f24;
+  font-family: system-ui, sans-serif;
+}
+#girar-celular[open] {
+  background:
+    linear-gradient(#102c1d15, #102c1d30),
+    url("assets/floresta.webp") center / cover no-repeat #173d2b;
+}
+#girar-celular::backdrop {
+  background: #173d2b;
+}
+#girar-celular .rotate-card {
+  position: relative;
+  container-type: inline-size;
+  box-sizing: border-box;
+  width: min(96vw, 480px, calc(var(--rotate-space) * 1065 / 1477));
+  aspect-ratio: 1065 / 1477;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  text-align: center;
+  flex: none;
+  filter: drop-shadow(0 8px 12px #10241566);
+}
+#girar-celular .rotate-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+#girar-celular .rotate-brand {
+  position: absolute;
+  top: 4.8%;
+  left: 24%;
+  width: 53%;
+  margin: 0;
+  font:
+    400 5.3cqw / 1.06 Lilita,
+    Renascenca,
+    system-ui;
+  color: #fff3c8;
+  text-shadow: 0 2px 1px #25310b;
+}
+#girar-celular .rotate-flora {
+  position: absolute;
+  top: 15.5%;
+  left: 10.5%;
+  width: 79%;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+  animation: rotate-flora-breath 4.8s ease-in-out infinite;
+}
+#girar-celular .rotate-kicker {
+  position: absolute;
+  top: 50.1%;
+  left: 10%;
+  width: 80%;
+  margin: 0;
+  font:
+    600 4.1cqw / 1.25 system-ui,
+    sans-serif;
+  color: #4b5c27;
+  letter-spacing: 0;
+}
+#girar-celular #girar-titulo {
+  position: absolute;
+  top: 55.8%;
+  left: 10%;
+  width: 80%;
+  margin: 0;
+  font:
+    400 9.5cqw / 1.1 Lilita,
+    Renascenca,
+    system-ui;
+  text-transform: none;
+  letter-spacing: 0;
+  text-shadow: none;
+  color: #123c20;
+}
+#girar-celular #girar-dica {
+  position: absolute;
+  top: 65%;
+  left: 12%;
+  width: 76%;
+  margin: 0;
+  font:
+    600 4.2cqw / 1.35 system-ui,
+    sans-serif;
+  color: #244627;
+}
+#girar-celular #girar-tela-cheia {
+  position: absolute;
+  top: 75.8%;
+  left: 10%;
+  width: 80%;
+  height: 10.7%;
+  min-height: 44px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0 5% 0 15%;
+  border: 0;
+  border-radius: 999px;
+  background: transparent url("assets/botao.webp") center / 122% auto no-repeat;
+  box-shadow: none;
+  color: #fff2c5;
+  font:
+    400 4.6cqw / 1.1 Lilita,
+    Renascenca,
+    system-ui;
+  text-shadow: 0 2px 1px #1f310c;
+  touch-action: manipulation;
+  transition:
+    filter 180ms ease,
+    scale 180ms ease;
+}
+#girar-celular #girar-tela-cheia:is(:hover, :focus-visible) {
+  filter: brightness(1.12);
+}
+#girar-celular #girar-tela-cheia:active {
+  scale: 0.97;
+}
+#girar-celular #girar-tela-cheia:focus-visible {
+  outline: 3px solid #fff3c8;
+  outline-offset: 3px;
+}
+#girar-celular #girar-tela-cheia:disabled {
+  cursor: progress;
+}
+#girar-celular #girar-status {
+  position: absolute;
+  top: 88.1%;
+  left: 11%;
+  width: 78%;
+  margin: 0;
+  min-height: 0;
+  font:
+    500 3.1cqw / 1.3 system-ui,
+    sans-serif;
+  color: #4c5e2c;
+}
+@keyframes rotate-flora-breath {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-0.3deg);
+  }
+  50% {
+    transform: translateY(-2px) rotate(0.3deg);
+  }
+}
+.reduce-motion #girar-celular .rotate-flora {
+  animation: none;
+}
+.reduce-motion #girar-celular #girar-tela-cheia {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  #girar-celular .rotate-flora {
+    animation: none;
+  }
+  #girar-celular #girar-tela-cheia {
+    transition: none;
+  }
+}

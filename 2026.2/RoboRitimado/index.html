@@ -6,35 +6,39 @@
   <meta name="theme-color" content="#150f2e">
   <meta name="description" content="Robô Ritmado: ajude Pixel a viajar por dez mundos até a batalha final em OrbitHop.">
   <title>Robô Ritmado • A aventura de Pixel</title>
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=0.15">
-  <link rel="stylesheet" href="stage.css?v=0.15">
-  <link rel="stylesheet" href="worlds.css?v=0.15">
-  <link rel="stylesheet" href="front.css?v=0.15">
-  <link rel="stylesheet" href="playful.css?v=0.15">
-  <script src="settings.js?v=0.15" defer></script>
-  <script src="interface-audio.js?v=0.15" defer></script>
-  <script src="sprite-assets.js?v=0.15" defer></script>
-  <link rel="stylesheet" href="wonder.css?v=0.15">
-  <link rel="stylesheet" href="performance.css?v=0.15">
-  <link rel="stylesheet" href="encore.css?v=0.15">
-  <link rel="stylesheet" href="adventure.css?v=0.15">
-  <link rel="stylesheet" href="journey.css?v=0.15">
-  <link rel="stylesheet" href="encounter.css?v=0.15">
-  <link rel="stylesheet" href="story.css?v=0.15">
-  <link rel="stylesheet" href="finale.css?v=0.15.1">
-  <script src="performance.js?v=0.15" defer></script>
-  <script src="campaign.js?v=0.15" defer></script>
-  <script src="levels.js?v=0.15" defer></script>
-  <script src="narrative.js?v=0.15" defer></script>
-  <script src="portal.js?v=0.15" defer></script>
-  <script src="reflection.js?v=0.15" defer></script>
-  <script src="travel.js?v=0.15" defer></script>
-  <script src="battle.js?v=0.15" defer></script>
-  <script src="battle-effects.js?v=0.15" defer></script>
-  <script src="finale.js?v=0.15" defer></script>
-  <script src="game.js?v=0.15" defer></script>
-  <script src="cinematic.js?v=0.15" defer></script>
-  <script src="front.js?v=0.15" defer></script>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=0.16">
+  <link rel="stylesheet" href="stage.css?v=0.16">
+  <link rel="stylesheet" href="worlds.css?v=0.16">
+  <link rel="stylesheet" href="front.css?v=0.16">
+  <link rel="stylesheet" href="playful.css?v=0.16">
+  <script src="settings.js?v=0.16" defer></script>
+  <script src="interface-audio.js?v=0.16" defer></script>
+  <script src="sprite-assets.js?v=0.16" defer></script>
+  <link rel="stylesheet" href="wonder.css?v=0.16">
+  <link rel="stylesheet" href="performance.css?v=0.16">
+  <link rel="stylesheet" href="encore.css?v=0.16">
+  <link rel="stylesheet" href="adventure.css?v=0.16">
+  <link rel="stylesheet" href="journey.css?v=0.16">
+  <link rel="stylesheet" href="encounter.css?v=0.16">
+  <link rel="stylesheet" href="story.css?v=0.16">
+  <link rel="stylesheet" href="finale.css?v=0.16">
+  <script src="performance.js?v=0.16" defer></script>
+  <script src="campaign.js?v=0.16" defer></script>
+  <script src="dance-steps.js?v=0.16" defer></script>
+  <script src="arrow-art.js?v=0.16" defer></script>
+  <script src="levels.js?v=0.16" defer></script>
+  <script src="narrative.js?v=0.16" defer></script>
+  <script src="portal.js?v=0.16" defer></script>
+  <script src="reflection.js?v=0.16" defer></script>
+  <script src="travel.js?v=0.16" defer></script>
+  <script src="battle.js?v=0.16" defer></script>
+  <script src="battle-effects.js?v=0.16" defer></script>
+  <script src="finale.js?v=0.16" defer></script>
+  <script src="game.js?v=0.16" defer></script>
+  <script src="cinematic.js?v=0.16" defer></script>
+  <script src="boot.js?v=0.16" defer></script>
+  <script src="front.js?v=0.16" defer></script>
+  <link rel="stylesheet" href="polish16.css?v=0.16">
 </head>
 <body data-theme="doces" data-screen="menu" class="warning-pending">
   <div class="world" aria-hidden="true"></div>
@@ -42,7 +46,7 @@
   <div class="app">
     <header class="topbar">
 
-      <nav id="journeyNav" class="journey-nav" aria-label="Os dez mundos da aventura"></nav>
+      <nav id="journeyNav" class="journey-nav" hidden aria-label="Os dez mundos da aventura"></nav>
       <div class="top-actions"><button id="effects" class="icon-button" aria-pressed="false" title="Reduzir os efeitos visuais">✧ <span>Efeitos suaves</span></button><button id="fullscreen" class="icon-button" title="Alternar tela cheia" aria-label="Alternar tela cheia">⛶</button></div>
     </header>
 
@@ -95,15 +99,14 @@
 
       <section class="controls" aria-label="Controles e ajustes">
         <div class="control-help"><span class="keyboard-legend"><kbd>←</kbd><kbd>↓</kbd><kbd>↑</kbd><kbd>→</kbd></span><span>para tocar <b>·</b> <kbd>Esc</kbd> para pausar</span></div>
-        <label class="sync-control" title="Valor positivo: o jogo aceita o comando mais tarde. Valor negativo: aceita mais cedo.">Ajuste de ritmo <input id="offset" type="range" min="-200" max="200" step="10" value="0" aria-label="Ajuste do atraso entre som e comando em milissegundos"><output id="offsetValue">0 ms</output></label>
       </section>
       <div class="touch-controls" aria-label="Setas para jogar com toque"><button data-lane="0" aria-label="Esquerda">←</button><button data-lane="1" aria-label="Baixo">↓</button><button data-lane="2" aria-label="Cima">↑</button><button data-lane="3" aria-label="Direita">→</button></div>
     </main>
-    <footer><span>♪ OUÇA. BRINQUE. BRILHE.</span><span>VERSÃO 0.15.1 <b>•</b> ONZE FASES</span></footer>
+    <footer><span>♪ OUÇA. BRINQUE. BRILHE.</span><span>VERSÃO 0.16 <b>•</b> ONZE FASES</span></footer>
   </div>
   <dialog id="travelOverlay" class="travel-overlay" aria-label="A jornada de Pixel">
     <canvas id="travelCanvas" aria-hidden="true"></canvas>
-    <div class="travel-controls"><button id="backTravel" class="quiet-button">← Voltar</button><button id="pauseTravel" class="quiet-button">Pausar cena</button><button id="nextTravel" class="quiet-button">Avançar →</button><button id="skipTravel" class="quiet-button">Pular cena</button></div>
+    <div class="travel-controls"><button id="backTravel" class="quiet-button" aria-label="Voltar cena">◀</button><button id="pauseTravel" class="quiet-button">Pausar cena</button><button id="nextTravel" class="quiet-button" aria-label="Avançar cena">▶</button><button id="skipTravel" class="quiet-button">Pular cena</button></div>
     <div id="finalCredits" class="final-credits" hidden>
       <div><h2>Robô Ritmado</h2><p>Agradecimento especial</p><strong>Professor Peterson Lobato</strong>
       <p>Equipe</p><strong>Ísis Maria Teles de Oliveira<br>Fernanda da Silva Bispo<br>Luis Fabiano Moreira Teles</strong>

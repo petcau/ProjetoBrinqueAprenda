@@ -1,10 +1,12 @@
 "use strict";
 (() => {
+  const art = new URL("../gire-o-celular/assets/", document.currentScript.src);
   const touch = matchMedia("(any-pointer:coarse)");
   const phone = () => touch.matches || navigator.maxTouchPoints > 0;
   let blocked = false,
     prompt,
-    previousFocus;
+    previousFocus,
+    pending = false;
   function bringForward() {
     if (!blocked || !prompt) return;
     if (prompt.open) prompt.close();
@@ -12,16 +14,24 @@
   }
   function apply() {
     const next = innerHeight > innerWidth;
-    document.getElementById("girar-titulo").textContent = phone()
+    const mobile = phone();
+    document.getElementById("girar-titulo").textContent = mobile
       ? "Gire o celular"
       : "Amplie a janela";
-    document.getElementById("girar-dica").textContent = phone()
-      ? "Para jogar, deixe a tela deitada. Sua aventura espera por você."
+    document.getElementById("girar-dica").textContent = mobile
+      ? "Deixe a tela na horizontal para começar sua aventura."
       : "Deixe a janela mais larga que alta para continuar sua aventura.";
+    document.getElementById("girar-acao").textContent = mobile
+      ? "JOGAR NA HORIZONTAL"
+      : "AMPLIAR A JANELA";
     const changed = next !== blocked;
     blocked = next;
     document.body.dataset.orientationBlocked = String(blocked);
     if (blocked) {
+      if (changed)
+        document.getElementById("girar-status").textContent = mobile
+          ? "Vire o aparelho para continuar."
+          : "Amplie a janela para continuar.";
       if (!prompt.open) {
         previousFocus = document.activeElement;
         prompt.showModal();
@@ -44,24 +54,53 @@
     prompt.id = "girar-celular";
     prompt.setAttribute("aria-labelledby", "girar-titulo");
     prompt.setAttribute("aria-describedby", "girar-dica");
-    prompt.innerHTML =
-      '<div class="rotate-card"><svg viewBox="0 0 180 140" aria-hidden="true"><path d="M24 93A59 59 0 01122 28M118 12L132 32L108 35" fill="none" stroke="#a5c47b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><g transform="rotate(-90 90 75)"><rect x="62" y="26" width="56" height="98" rx="12" fill="#31573b" stroke="#d6b779" stroke-width="5"/><rect x="69" y="39" width="42" height="68" rx="3" fill="#a2bd75"/><circle cx="90" cy="116" r="3" fill="#f4e4b0"/><path d="M88 92V61Q69 61 75 49Q94 48 88 69Q104 45 108 60Q112 75 88 76" fill="#507c46"/></g></svg><p class="rotate-kicker">A AVENTURA FICA MELHOR ASSIM</p><h1 id="girar-titulo">Gire o celular</h1><p id="girar-dica">Para jogar, deixe a tela deitada.<br>Sua aventura espera por você.</p><button type="button" id="girar-tela-cheia">Jogar deitado</button><p id="girar-status" role="status">Vire o aparelho para continuar.</p></div>';
+    prompt.innerHTML = `
+      <div class="rotate-card">
+        <img class="rotate-frame" src="${new URL("moldura.webp", art)}" width="1065" height="1477" alt="" loading="lazy" decoding="async" aria-hidden="true">
+        <p class="rotate-brand">GUARDIÃO DA<br>NATUREZA</p>
+        <img class="rotate-flora" src="${new URL("flora.webp", art)}" width="1619" height="971" alt="" loading="lazy" decoding="async" aria-hidden="true">
+        <p class="rotate-kicker">A floresta espera por você!</p>
+        <h1 id="girar-titulo">Gire o celular</h1>
+        <p id="girar-dica">Deixe a tela na horizontal para começar sua aventura.</p>
+        <button type="button" id="girar-tela-cheia" aria-describedby="girar-status"><span id="girar-acao">JOGAR NA HORIZONTAL</span></button>
+        <p id="girar-status" role="status">Vire o aparelho para continuar.</p>
+      </div>`;
     document.body.append(prompt);
     prompt.addEventListener("cancel", (e) => {
       if (blocked) e.preventDefault();
     });
-    prompt.querySelector("button").addEventListener("click", async () => {
+    const button = prompt.querySelector("button");
+    button.addEventListener("click", async () => {
+      if (pending) return;
+      pending = true;
+      button.disabled = true;
+      button.setAttribute("aria-busy", "true");
       try {
-        if (!document.fullscreenElement)
-          await document.documentElement.requestFullscreen?.();
-      } catch {}
-      try {
-        await screen.orientation?.lock?.("landscape");
-      } catch {}
-      apply();
-      if (blocked)
-        document.getElementById("girar-status").textContent =
-          "Vire o celular com as mãos para deixar a tela deitada.";
+        try {
+          if (
+            !document.fullscreenElement &&
+            !document.webkitFullscreenElement
+          ) {
+            const enter =
+              document.documentElement.requestFullscreen ||
+              document.documentElement.webkitRequestFullscreen;
+            if (window.GuardiaoTela) await GuardiaoTela.enter();
+            else await enter?.call(document.documentElement);
+          }
+        } catch {}
+        try {
+          if (phone()) await screen.orientation?.lock?.("landscape");
+        } catch {}
+        apply();
+        if (blocked)
+          document.getElementById("girar-status").textContent = phone()
+            ? "Gire o aparelho com as mãos."
+            : "Amplie a janela para continuar.";
+      } finally {
+        pending = false;
+        button.disabled = false;
+        button.removeAttribute("aria-busy");
+      }
     });
     new MutationObserver((records) => {
       if (

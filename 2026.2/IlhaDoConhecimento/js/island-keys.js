@@ -59,8 +59,8 @@ window.IslandKeys = (() => {
       if(key===near) {
         // Mundo → tela: herda a transformação do personagem; desfaz só a escala do balão.
         ctx.translate(key.wx,y-KEY_HEIGHT-8);ctx.scale(1/factor,1/factor);
-        ctx.fillStyle='#12202de6';ctx.beginPath();ctx.roundRect(-72,-30,144,28,8);ctx.fill();
-        ctx.fillStyle='#fff';ctx.font='bold 14px system-ui';ctx.textAlign='center';ctx.fillText('E — Interagir',0,-11);
+        ctx.fillStyle='#12202de6';ctx.beginPath();ctx.roundRect(-94,-30,188,28,8);ctx.fill();
+        ctx.fillStyle='#fff';ctx.font='bold 14px system-ui';ctx.textAlign='center';ctx.fillText('E / Enter — Interagir',0,-11);
       }
       ctx.restore();
     }

@@ -1,6 +1,7 @@
 "use strict";
 (() => {
   function briefItems() {
+    if (window.CincoMissoes) return;
     const id = Number(document.body.dataset.phasePreview),
       node = document.getElementById("phase-items");
     if (!id || !node) return;

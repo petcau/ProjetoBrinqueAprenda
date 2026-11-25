@@ -61,7 +61,7 @@ a svg {
 .backdrop {
   position: fixed;
   inset: 0;
-  background: url("assets/inicio.webp") center/cover no-repeat;
+  background: url("../arte-viva/assets/inicio.webp") center/cover no-repeat;
 }
 .view {
   position: absolute;
@@ -659,7 +659,7 @@ a svg {
 .demo-scene {
   position: relative;
   min-height: 230px;
-  background: url("assets/inicio.webp") 78% 75% / auto 140%;
+  background: url("../arte-viva/assets/inicio.webp") 78% 75% / auto 140%;
   border-radius: 20px;
   border: 2px solid #9caa73;
   overflow: hidden;

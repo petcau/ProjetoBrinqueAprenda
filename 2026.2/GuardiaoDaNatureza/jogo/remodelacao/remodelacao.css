@@ -1,0 +1,705 @@
+/* The supplied emblems already contain their own wooden and gold rim. */
+.remodel-icon {
+  display: inline-block;
+  width: var(--icon-size, 28px);
+  height: var(--icon-size, 28px);
+  object-fit: contain;
+  vertical-align: middle;
+  flex: none;
+}
+.remodel-bin {
+  display: block;
+  width: 52px;
+  height: 65px;
+  object-fit: contain;
+}
+body .remodel-control,
+body #jogo button.remodel-control {
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-grid;
+  place-items: center;
+  isolation: isolate;
+}
+body .remodel-control::before,
+body .remodel-control::after {
+  display: none !important;
+}
+body #jogo .top-actions .remodel-control {
+  width: 52px !important;
+  height: 52px !important;
+}
+body .remodel-control > .remodel-icon,
+body .remodel-control > .remodel-full {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}
+.remodel-control small {
+  line-height: 1.2;
+  color: #fff3cd;
+  text-shadow: 0 1px 3px #17372a;
+  font-size: 10px;
+}
+.remodel-full {
+  display: block;
+  position: relative;
+}
+.remodel-full > .remodel-icon {
+  width: 100%;
+  height: 100%;
+}
+.remodel-exit {
+  position: absolute;
+  bottom: 5px;
+  right: 7px;
+  background: #183d2a;
+  border: 1px solid #d6ae60;
+  color: #ffe49b;
+  border-radius: 50%;
+  font: bold 16px/20px system-ui;
+  width: 20px;
+  text-align: center;
+}
+body #jogo .hud-kit [data-icon] > .remodel-icon {
+  width: 100% !important;
+  height: 100% !important;
+}
+body #jogo .actions .hud-tool.remodel-tool > #tool-icon {
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+body #jogo .actions .remodel-tool > #tool-icon > .remodel-icon {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  object-fit: contain;
+}
+body #puzzle-options .remodel-bin {
+  width: 48px;
+  height: 60px;
+}
+body .remodel-control:focus-visible {
+  outline: 3px solid #ffdb8e;
+  outline-offset: 3px;
+  border-radius: 50%;
+}
+.remodel-frame {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: var(--remodel-x, 50px) minmax(0, 1fr) var(
+      --remodel-x,
+      50px
+    );
+  grid-template-rows: var(--remodel-y, 24px) minmax(0, 1fr) var(
+      --remodel-y,
+      24px
+    );
+  pointer-events: none;
+  z-index: -1;
+}
+.remodel-frame > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+/* The original dialogue nodes remain live; the ZIP model has its actions in the copy column. */
+body.remodelacao :is(#intro, #conversa).ra-talk.remodel-talk {
+  box-sizing: border-box;
+  position: fixed !important;
+  inset: 0 !important;
+  margin: auto !important;
+  translate: none !important;
+  transform: none !important;
+  width: min(1160px, 96vw) !important;
+  max-width: min(1160px, 96vw) !important;
+  height: min(490px, calc(100dvh - 32px)) !important;
+  max-height: calc(100dvh - 32px) !important;
+  padding: 22px !important;
+  border: 4px solid #986027 !important;
+  border-image: none !important;
+  border-radius: 23px !important;
+  background: radial-gradient(
+    ellipse at 25% 5%,
+    #fff2cc,
+    #f7e5b1 68%,
+    #e8c98d
+  ) !important;
+  color: #214834 !important;
+  box-shadow:
+    inset 0 0 0 2px #f4bf64,
+    inset 0 0 0 5px #bf7d34,
+    0 10px 35px #062c2b88 !important;
+  overflow: hidden !important;
+}
+body.remodelacao :is(#intro, #conversa).ra-talk.remodel-talk[open] {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: 75px minmax(0, 1fr) !important;
+  gap: 16px !important;
+}
+body.remodelacao :is(#intro, #conversa).ra-talk.remodel-talk::before,
+body.remodelacao :is(#intro, #conversa).ra-talk.remodel-talk::after {
+  display: none !important;
+}
+body.remodelacao :is(#intro, #conversa).ra-talk.remodel-talk > header {
+  position: relative;
+  isolation: isolate;
+  display: flex !important;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+  width: 100%;
+  padding: 0 26px !important;
+  border: 0 !important;
+  background: none !important;
+}
+.remodel-talk-frame {
+  --remodel-x: 65px;
+  --remodel-y: 0px;
+}
+body.remodelacao
+  :is(#intro, #conversa).ra-talk.remodel-talk
+  > header
+  > .remodel-icon {
+  width: 54px;
+  height: 54px;
+}
+body.remodelacao :is(#intro, #conversa).ra-talk.remodel-talk > header > p {
+  margin: 0 !important;
+  font: 400 clamp(21px, 2.7vw, 36px) / 1.1 Lilita !important;
+  color: #fff2c1 !important;
+}
+body.remodelacao :is(#intro, #conversa).ra-talk.remodel-talk .ra-talk-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 0.43fr) minmax(0, 0.57fr) !important;
+  gap: 24px;
+  min-height: 0;
+}
+body.remodelacao
+  :is(#intro, #conversa).ra-talk.remodel-talk
+  .remodel-talk-visual {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 32px;
+  align-self: center;
+  width: 100%;
+  aspect-ratio: 1.38;
+  max-height: 100%;
+  min-height: 0;
+  margin: 0;
+  border: 2px solid #c3974c;
+  border-radius: 14px;
+  background: #235237;
+  overflow: hidden;
+}
+body.remodelacao :is(#intro, #conversa).ra-talk.remodel-talk .ra-talk-scene {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+.remodel-talk-visual figcaption {
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 4px 8px;
+  color: #ffe7aa;
+  font: 700 15px/1.2 system-ui;
+  text-align: center;
+}
+body.remodelacao :is(#intro, #conversa).ra-talk.remodel-talk .ra-talk-copy {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  align-items: stretch;
+  justify-content: stretch;
+  align-content: stretch;
+  min-width: 0;
+  min-height: 0;
+  gap: 10px;
+  padding: 7px 4px;
+  overflow: hidden;
+}
+body.remodelacao
+  :is(#intro, #conversa).ra-talk.remodel-talk
+  .ra-talk-copy
+  > .eyebrow {
+  margin: 0 !important;
+  color: #6c7d45 !important;
+  font: 800 13px/1.25 system-ui !important;
+  letter-spacing: 0.12em;
+}
+body.remodelacao
+  :is(#intro, #conversa).ra-talk.remodel-talk
+  .remodel-talk-name {
+  margin: 0 !important;
+  color: #174b2b !important;
+  font: 400 clamp(28px, 3.3vw, 42px) / 1.1 Lilita !important;
+}
+.remodel-talk-message {
+  min-height: 0;
+  overflow: auto;
+  padding-right: 5px;
+  overscroll-behavior: contain;
+}
+body.remodelacao
+  :is(#intro, #conversa).ra-talk.remodel-talk
+  :is(#intro-text, #conversa-texto) {
+  margin: 0 !important;
+  font: 500 clamp(17px, 1.8vw, 24px) / 1.5 system-ui !important;
+  color: #214834 !important;
+}
+body.remodelacao
+  :is(#intro, #conversa).ra-talk.remodel-talk
+  .remodel-talk-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  padding: 0 !important;
+  border: 0 !important;
+}
+body.remodelacao
+  :is(#intro, #conversa).ra-talk.remodel-talk
+  :is(#intro-count, #conversa-pagina) {
+  color: #627647;
+  font: 700 16px/1.2 system-ui;
+}
+body.remodelacao :is(#intro, #conversa).ra-talk.remodel-talk .remodel-action {
+  flex: none;
+  box-sizing: border-box;
+  width: 240px !important;
+  height: 56px !important;
+  min-height: 44px;
+  margin: 0 !important;
+  padding: 8px 28px !important;
+  background: url("assets/ui/botao-acao.webp") center/100% 100% no-repeat !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #fff3ce !important;
+  font: 400 24px/1.2 Lilita !important;
+}
+body.remodelacao
+  :is(#intro, #conversa).ra-talk.remodel-talk
+  .remodel-action::before,
+body.remodelacao
+  :is(#intro, #conversa).ra-talk.remodel-talk
+  .remodel-action::after {
+  display: none !important;
+}
+#app .home-menu .remodel-icon {
+  width: clamp(30px, 4vw, 52px);
+  height: clamp(30px, 4vw, 52px);
+}
+body #vitoria.conquista-panel :is(.completion-stats, #victory-stats) {
+  display: grid;
+  grid-auto-flow: row;
+  grid-auto-columns: auto;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  justify-content: center;
+}
+body
+  #vitoria.conquista-panel
+  :is(.completion-stats, #victory-stats)[data-stat-count="1"] {
+  grid-template-columns: minmax(0, 440px);
+}
+body #vitoria.conquista-panel :is(.completion-stats, #victory-stats) > span {
+  box-sizing: border-box;
+  min-height: 96px;
+  padding: 13px 22px;
+  grid-template-columns: 56px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-content: center;
+  align-items: center;
+  justify-items: start;
+  gap: 3px 14px;
+  text-align: left;
+}
+body #vitoria .remodel-stat-frame {
+  --remodel-x: 51px;
+  --remodel-y: 24px;
+  border: 0;
+}
+body #vitoria .conquista-stat-icon {
+  width: 56px;
+  height: 56px;
+}
+body #vitoria .conquista-stat-icon > .remodel-icon {
+  width: 100%;
+  height: 100%;
+}
+body #vitoria.conquista-panel :is(.completion-stats, #victory-stats) strong {
+  margin: 0;
+  font: 400 32px/1 Lilita;
+  text-align: left;
+}
+body #vitoria .conquista-stat-label {
+  font: 700 16px/1.25 system-ui;
+  overflow-wrap: normal;
+  text-wrap: pretty;
+  text-align: left;
+}
+body #jogo #loading.remodel-loading:not([hidden]) {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 80 !important;
+  display: grid;
+  place-items: center;
+  width: 100vw !important;
+  height: 100dvh !important;
+  max-width: none !important;
+  max-height: none !important;
+  box-sizing: border-box;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  translate: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #123f2c url("assets/loading/fundo.webp") center/cover no-repeat !important;
+  color: #fff3c7;
+  box-shadow: none !important;
+  overflow: hidden;
+}
+#loading.remodel-loading::before,
+#loading.remodel-loading::after {
+  display: none !important;
+}
+.remodel-load-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: min(60vw, 760px);
+  height: 94%;
+  padding: 8px 0;
+  box-sizing: border-box;
+  text-align: center;
+  font-family: system-ui;
+}
+.remodel-load-logo {
+  width: min(100%, 610px);
+  height: clamp(70px, 16vh, 125px);
+  object-fit: contain;
+}
+.remodel-load-center > .eyebrow {
+  margin: 0;
+  font: 700 clamp(10px, 1.2vw, 15px) / 1.3 system-ui;
+  letter-spacing: 0.2em;
+  color: #e4d091;
+}
+.remodel-load-center > h1 {
+  font: 400 clamp(32px, 5vw, 64px) / 1.08 Lilita;
+  margin: 0;
+  color: #fff2bf;
+}
+.remodel-load-center > h2 {
+  font: 700 clamp(17px, 2.6vw, 30px) / 1.2 system-ui;
+  margin: 0;
+  color: #fff2bf;
+}
+.remodel-load-track {
+  position: relative;
+  isolation: isolate;
+  width: min(48vw, 620px);
+  height: 58px;
+  flex: none;
+  background: url("assets/ui/trilho-carregamento.webp") center/100% 100%
+    no-repeat;
+  box-sizing: border-box;
+  padding: 17px 31px;
+}
+.remodel-load-track > [data-load-fill] {
+  display: block;
+  height: 100%;
+  border-radius: 20px;
+  background: linear-gradient(#e1ef91 0 20%, #8bc742 21% 68%, #629632);
+  width: 0;
+  max-width: 100%;
+  transition: width 0.18s ease;
+}
+.remodel-load-center > [data-load-count] {
+  font: 400 30px/1 Lilita;
+}
+.remodel-load-center > [data-load-status] {
+  font: 500 12px/1.3 system-ui;
+  margin: 0;
+  color: #e4ebcf;
+  min-height: 16px;
+}
+.remodel-load-tip {
+  width: min(43vw, 550px);
+  box-sizing: border-box;
+  border: 1px solid #c5ae69;
+  border-radius: 16px;
+  background: #123e2ddd;
+  padding: 12px 18px;
+  margin-top: 8px;
+}
+.remodel-load-tip > strong {
+  font: 700 12px/1.2 system-ui;
+  color: #e8cf80;
+}
+.remodel-load-tip > p {
+  margin: 4px 0 0;
+  font: 500 clamp(12px, 1.5vw, 20px) / 1.3 system-ui;
+}
+.remodel-retry {
+  padding: 10px 22px;
+  border: 2px solid #d6b76c;
+  border-radius: 12px;
+  background: #35673f;
+  color: #fff2c7;
+  font-weight: 700;
+}
+body[data-loading-state] .grove-loading {
+  display: none !important;
+}
+@media (max-height: 540px) and (orientation: landscape) {
+  body #jogo .top-actions .remodel-control {
+    width: 46px !important;
+    height: 46px !important;
+  }
+  body.remodelacao :is(#intro, #conversa).ra-talk.remodel-talk {
+    padding: 12px !important;
+    border-width: 3px !important;
+    border-radius: 17px !important;
+  }
+  body.remodelacao :is(#intro, #conversa).ra-talk.remodel-talk[open] {
+    grid-template-rows: 50px minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+  body.remodelacao :is(#intro, #conversa).ra-talk.remodel-talk > header {
+    padding: 0 14px !important;
+    gap: 10px;
+  }
+  .remodel-talk-frame {
+    --remodel-x: 44px;
+  }
+  body.remodelacao
+    :is(#intro, #conversa).ra-talk.remodel-talk
+    > header
+    > .remodel-icon {
+    width: 38px;
+    height: 38px;
+  }
+  body.remodelacao :is(#intro, #conversa).ra-talk.remodel-talk > header > p {
+    font-size: 20px !important;
+  }
+  body.remodelacao
+    :is(#intro, #conversa).ra-talk.remodel-talk
+    .ra-talk-columns {
+    gap: 14px;
+  }
+  body.remodelacao
+    :is(#intro, #conversa).ra-talk.remodel-talk
+    .remodel-talk-visual {
+    grid-template-rows: minmax(0, 1fr) 25px;
+    border-radius: 10px;
+  }
+  .remodel-talk-visual figcaption {
+    font-size: 12px;
+    padding: 3px 6px;
+  }
+  body.remodelacao :is(#intro, #conversa).ra-talk.remodel-talk .ra-talk-copy {
+    gap: 6px;
+    padding: 3px 2px;
+  }
+  body.remodelacao
+    :is(#intro, #conversa).ra-talk.remodel-talk
+    .ra-talk-copy
+    > .eyebrow {
+    font-size: 10px !important;
+  }
+  body.remodelacao
+    :is(#intro, #conversa).ra-talk.remodel-talk
+    .remodel-talk-name {
+    font-size: 27px !important;
+  }
+  body.remodelacao
+    :is(#intro, #conversa).ra-talk.remodel-talk
+    :is(#intro-text, #conversa-texto) {
+    font-size: 15px !important;
+    line-height: 1.4 !important;
+  }
+  body.remodelacao
+    :is(#intro, #conversa).ra-talk.remodel-talk
+    :is(#intro-count, #conversa-pagina) {
+    font-size: 12px;
+  }
+  body.remodelacao :is(#intro, #conversa).ra-talk.remodel-talk .remodel-action {
+    width: 176px !important;
+    height: 44px !important;
+    font-size: 19px !important;
+  }
+  body #vitoria.conquista-panel :is(.completion-stats, #victory-stats) > span {
+    padding: 9px 15px;
+    min-height: 70px;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 3px 10px;
+  }
+  body #vitoria .conquista-stat-icon {
+    width: 40px;
+    height: 40px;
+  }
+  body #vitoria.conquista-panel :is(.completion-stats, #victory-stats) strong {
+    font-size: 24px;
+  }
+  body #vitoria .conquista-stat-label {
+    font-size: 12px;
+  }
+  body #vitoria .remodel-stat-frame {
+    --remodel-x: 38px;
+    --remodel-y: 18px;
+  }
+  .remodel-load-center {
+    gap: 4px;
+  }
+  .remodel-load-logo {
+    height: 60px;
+  }
+  .remodel-load-center > h1 {
+    font-size: 36px;
+  }
+  .remodel-load-center > h2 {
+    font-size: 19px;
+  }
+  .remodel-load-track {
+    height: 38px;
+    padding: 11px 21px;
+  }
+  .remodel-load-center > [data-load-count] {
+    font-size: 22px;
+  }
+  .remodel-load-center > [data-load-status] {
+    font-size: 10px;
+    min-height: 12px;
+  }
+  .remodel-load-tip {
+    margin-top: 3px;
+    padding: 7px 10px;
+  }
+  .remodel-load-tip > strong {
+    font-size: 10px;
+  }
+  .remodel-load-tip > p {
+    font-size: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .remodel-load-track > [data-load-fill] {
+    transition: none !important;
+  }
+}
+.reduce-motion .remodel-load-track > [data-load-fill] {
+  transition: none !important;
+}
+.large-text
+  body.remodelacao
+  :is(#intro, #conversa).ra-talk.remodel-talk
+  :is(#intro-text, #conversa-texto) {
+  font-size: clamp(18px, 2.1vw, 26px) !important;
+}
+@media (max-height: 540px) and (orientation: landscape) {
+  .large-text
+    body.remodelacao
+    :is(#intro, #conversa).ra-talk.remodel-talk
+    :is(#intro-text, #conversa-texto) {
+    font-size: 17px !important;
+  }
+}
+
+body[data-loading-state="error"]
+  #loading
+  :is(.remodel-load-track, [data-load-count]) {
+  display: none;
+}
+body[data-loading-state="error"] #loading h1 {
+  font-size: clamp(26px, 3.5vw, 44px);
+}
+
+/* Keep the necklace and the original cast readable on short landscape screens. */
+@media (max-height: 360px) and (orientation: landscape) {
+  body dialog#vitoria.conquista-panel {
+    padding: 8px 14px;
+    max-height: calc(100dvh - 20px);
+  }
+  body dialog#vitoria.conquista-panel[open]:not([hidden]),
+  body dialog#vitoria.conquista-panel.reward-preview:not([open]):not([hidden]) {
+    height: calc(100dvh - 20px);
+    gap: 3px;
+  }
+  body #vitoria.conquista-panel .resumo-cabecalho {
+    min-height: 0;
+    padding: 3px 32px;
+  }
+  body #vitoria.conquista-panel .resumo-cabecalho p {
+    font-size: 7px;
+    margin-bottom: 1px;
+  }
+  body #vitoria.conquista-panel .resumo-cabecalho h2 {
+    font-size: 20px;
+    line-height: 1.03;
+  }
+  body #vitoria.conquista-panel .resumo-corpo {
+    min-height: 108px;
+  }
+  body #vitoria.conquista-panel :is(.completion-stats, #victory-stats) > span {
+    min-height: 58px;
+    padding: 8px 14px;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 2px 10px;
+  }
+  body #vitoria .conquista-stat-icon {
+    width: 34px;
+    height: 34px;
+  }
+  body #vitoria.conquista-panel :is(.completion-stats, #victory-stats) strong {
+    font-size: 22px;
+  }
+  body #vitoria .conquista-stat-label {
+    font-size: 11px;
+  }
+  body #vitoria.conquista-panel .resumo-nota {
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  body #vitoria.conquista-panel .resumo-acoes > a.resumo-proximo {
+    min-height: 44px;
+    height: 44px;
+    padding: 4px 28px;
+  }
+}
+
+@media (max-height: 360px) and (orientation: landscape) {
+  .large-text body #vitoria .conquista-stat-label {
+    font-size: 12px;
+  }
+  .large-text
+    body
+    #vitoria.conquista-panel
+    :is(.completion-stats, #victory-stats)
+    strong {
+    font-size: 24px;
+  }
+}

@@ -9,7 +9,7 @@
     im.fetchPriority = "high";
     im.decoding = "async";
     const src = new URL(
-      "../viva/assets/inicio.webp",
+      "../arte-viva/assets/inicio.webp",
       document.currentScript?.src ||
         new URL("../bosque-vivo/fundo.js", location.href),
     ).href;

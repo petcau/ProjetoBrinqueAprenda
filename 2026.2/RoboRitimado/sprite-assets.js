@@ -2,14 +2,41 @@
   'use strict';
   const cache=new Map();
   function load(url){
-    if(cache.has(url))return cache.get(url);
+    if(cache.has(url)){
+      const existing=cache.get(url);
+      if(existing.status==='error')existing.retry();
+      return existing;
+    }
     const image=new Image();image.decoding='async';
-    const ready=new Promise((resolve,reject)=>{
-      image.onload=async()=>{try{await image.decode();if(!image.naturalWidth||!image.naturalHeight)throw Error('Imagem vazia');resolve(image);}catch(error){reject(Error('Não foi possível preparar a imagem '+url+': '+error.message));}};
-      image.onerror=()=>reject(Error('Não foi possível carregar '+url+'. Extraia a pasta completa do jogo.'));
-    });
-    ready.catch(()=>{});image.src=url;
-    const asset={image,ready};cache.set(url,asset);return asset;
+    const asset={image,status:'loading',ready:null,retry:prepare};
+    function prepare(){
+      asset.status='loading';
+      asset.ready=new Promise((resolve,reject)=>{
+        let attempts=0,timer;
+        function request(){
+          attempts++;
+          clearTimeout(timer);
+          timer=setTimeout(failed,12000);
+          image.onload=loaded;image.onerror=failed;image.src=url;
+        }
+        function failed(){
+          clearTimeout(timer);
+          if(attempts<3){image.onload=image.onerror=null;image.src='';setTimeout(request,180*attempts);return;}
+          image.onload=image.onerror=null;
+          asset.status='error';
+          reject(Error('Não foi possível carregar '+url.split('/').pop()+'. Tente novamente.'));
+        }
+        function loaded(){
+          clearTimeout(timer);
+          if(!image.naturalWidth||!image.naturalHeight){failed();return;}
+          image.onload=image.onerror=null;asset.status='ready';resolve(image);
+        }
+        image.onerror=failed;
+        request();
+      });
+      asset.ready.catch(()=>{});
+    }
+    cache.set(url,asset);prepare();return asset;
   }
   const cells=(w=384,h=512)=>Array.from({length:8},(_,i)=>[(i%4)*w,Math.floor(i/4)*h,w,h]);
   function validate(image,frames){

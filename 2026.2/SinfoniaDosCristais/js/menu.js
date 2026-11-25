@@ -38,8 +38,8 @@
     return c;
   }
 
-  // True Pixel Art Sprites for the Monumental Ancient Door on the Menu (320x180 coordinate space)
-  // Door center in menu-aprovado.png is at x = 219, y = 26..138
+  // True Pixel Art Sprites for the Monumental Ancient Door on the Menu
+  // Logical grid 320x180 with 640x360 Hi-Bit physical pixel canvas (aligned to menu-aprovado.png)
   const DOOR_CX = 219;
   const SOCKETS = {
     fairy:   { x: 219, y: 69 },
@@ -48,73 +48,140 @@
     opal:    { x: 219, y: 113 }
   };
 
-  // Grand Butterfly Fairy Gem (Top Socket of the Ancient Door)
-  const FAIRY_BUTTERFLY_SPR = fromMap([
-    '............oBo............',
-    '...........oBCBo...........',
-    '..........oBCWCBo..........',
-    '.oGGGGGo..oBCWCBo..oGGGGGo.',
-    'oGWWWWWGo..oBCBGo.oGWWWWWGo',
-    'oGWCCCCWGo..oGo..oGWCCCCWGo',
-    'oGWCBBBCWGo.oGo.oGWCBBBCWGo',
-    '.oGWCBPMCWGoHYHoGWCMBCWGo..',
-    '..oGWCMPMCGHYWYHGCMPCWGo...',
-    '...oGGCMPMGHYWYHGMPCGGo....',
-    '....ooGGPPGHYWYHGPPGGoo....',
-    '...oGWCBBBGHYWYHGBBBCWGo...',
-    '..oGWCCCCWGGHYHGGWCCCCWGo..',
-    '..oGWWBCWGo.oGo.oGWCBWWGo..',
-    '...oGCCCGo..oBo..oGCCCGo...',
-    '....oGGGo..oBCBo..oGGGo....',
-    '...........oBWBBo..........',
-    '...........oBCBo...........',
-    '............oBo............'
-  ], {
-    o: '#5c2f0c', G: '#e59a28', H: '#ffe478', Y: '#ffae22',
-    W: '#ffffff', C: '#9ef0ff', B: '#3fc6f0', P: '#ff72e0', M: '#c77dff'
-  });
+  // Hi-Bit 640x360 Primordial Gem Palette & Socketed Sprites for Worlds 2, 3, 4
+  const HI_GEM_PAL = {
+    o: '#3b1d08', d: '#8c4e12', G: '#d6861e', g: '#f5b838', H: '#fff2a6', W: '#ffffff',
+    s: '#072413', e: '#0d4a26', E: '#168742', m: '#28cf68', L: '#74f79d', M: '#d8ffe6', y: '#ffd23f', Y: '#fff59e',
+    u: '#072042', b: '#0c4e82', B: '#127db3', t: '#19c2db', C: '#5cf7ff', A: '#ccffff', p: '#f2b8ff',
+    n: '#3b0b07', r: '#80190c', R: '#c72e12', O: '#f56216', a: '#ffa624', f: '#ffe45e', c: '#fff8cc', i: '#ff6ec7', v: '#78faff'
+  };
 
-  // Primordial Gems for when player unlocks Worlds 2, 3, 4
-  const EMERALD_SPR = fromMap([
-    '....oGo....',
-    '...oGHGo...',
-    '..oGEEEGo..',
-    '.oGELELEGo.',
-    'oGELLWLLEGo',
-    'oGELWWWLLEo',
-    'oGELLWLLEGo',
-    '.oGELELEGo.',
-    '..oGEEEGo..',
-    '...oGHGo...',
-    '....oGo....'
-  ], { o: '#4a2b0d', G: '#e59a28', H: '#ffe478', E: '#179c52', L: '#52ef88', W: '#dcffe8' });
+  // Esmeralda Primordial (Floresta — encaixe esquerdo em 640x360: x=393, y=174)
+  // Folhas de jade aladas, broto coroa com gota de orvalho, cálice dourado e coração de semente
+  const EMERALD_HI_POS = { x: 393, y: 174 };
+  const EMERALD_HI_SPR = fromMap([
+    '...........dd............',
+    '..........dEedd..........',
+    '........ddEMMLed.........',
+    '.......dEEEMMLeed........',
+    '......dEEEELWmeeed.......',
+    '.....dEEEggLLmGGeed......',
+    '....dEEEEgggHgGGeeed.....',
+    '...dEEEELLLgHgmmmeeeo....',
+    '...dLLLLLLLegsmmmmmmo....',
+    '..dLLLLLLLLegsmmmmmmmo...',
+    '..dLLLLLLLeHLgsmmmmmmmo..',
+    '.dLLLLLLLeHMLLdsmmmmmmo..',
+    '.dLLLLLLLeHMLLdsmmmmmmmo.',
+    '.dMMLLLLeHMLmmmdsmmmmmmo.',
+    'dMMMLLLLeHLLHmmdsmmmmmmo.',
+    'dMMMLLLeHLLHWHmmdsmmmmmo.',
+    'dggMLLeHLLLHWgmmmdsmmmGo.',
+    'dggggmegEmHYYygEEdsEGGGo.',
+    'dLLLggegEmmgygEEEdsGGmmmo',
+    'dLLLmmgegmmdydEEdsGEEmmmo',
+    'dmmmmmmmsgmmdEEdsEEEEEEEo',
+    'dmmmmmmmsdmmEEEdsEEEEEEo.',
+    'dmmmmmmmmsdmeedsEEEEEEEo.',
+    'dEEEEEEEEsdmeedseeeeeeeo.',
+    'dEEEEEEEEEsdedseeeeeeeeo.',
+    '.dEEEEEEEEEsdseeeeeeeeo..',
+    '.oEEEEEEEEEsdseeeeeeeeo..',
+    '..oEEEEggggHHHGGGGeeeeo..',
+    '..oEEEEEEggHHHGGeeeeeo...',
+    '...oEEEEggLLLmmddeeeo....',
+    '...ooEEEggLLWmmddeeeo....',
+    '.....oEEggLLLmmddeeo.....',
+    '......ooggLLLmmddoo......',
+    '........ogLLLmmoo........',
+    '.........ooLLmo..........',
+    '...........ooo...........'
+  ], HI_GEM_PAL);
 
-  const PARAIBA_SPR = fromMap([
-    '....oGo....',
-    '...oGHGo...',
-    '..oGBBBGo..',
-    '.oGBCCCBo..',
-    'oGBCWWWCBo.',
-    'oGBCWWWCBo.',
-    '.oGBCCCBo..',
-    '..oGBBBGo..',
-    '...oGHGo...',
-    '....oGo....'
-  ], { o: '#4a2b0d', G: '#e59a28', H: '#ffe478', B: '#1488b8', C: '#3fe8ff', W: '#e4ffff' });
+  // Turmalina Paraíba Primordial (Rio — encaixe direito em 640x360: x=460, y=175)
+  // Crina de onda espumante, gota elétrica iridescente, laços aquáticos com pérolas e concha dourada
+  const PARAIBA_HI_POS = { x: 460, y: 175 };
+  const PARAIBA_HI_SPR = fromMap([
+    '...........GG..........',
+    '..........GBBGG........',
+    '..........GWWBBGG......',
+    '........GGWWWBBBBGG....',
+    '.......GtAAAWWBBBBBGG..',
+    '......GtCCCCtttBBBBBBu.',
+    '....GGtgggHHHGGGBBBBBu.',
+    '...GCCCCgggGGGGttttttu.',
+    '...GCCCggCCCCCGGtttttu.',
+    '...GCCggWCCBCCCGGttttu.',
+    '..GCCCggWtAAABCGGttttu.',
+    '..GCCCgWWAAAAACCGttttu.',
+    '.GCCCCCWAAAAAAtCtttttu.',
+    '.GAAAACWAAWWAttCtCCCCu.',
+    'GAAAAACtAAWWAttBCCWCu..',
+    'GAAAAACAAWWWAAttCCWCu..',
+    'GAAAAACAAAAAAAttBCCCCu.',
+    'GAAWWACAAAAAAAttBCCCCCu',
+    'GAAApACACCppptttBCCCCCu',
+    'GAAAAACCCCpppppBBCCCCCu',
+    'GBBBBBBCCCCCCppBbbbbbuu',
+    'GBBBBggCCCCCCpBBGGbbu..',
+    '.GBBBggBCCCCCBBbGGbbu..',
+    '.GBBBBggCCCBBBBGGbbbbu.',
+    '..uBBBBgggCBBGGGbbbbbu.',
+    '...uBBBgggHHHGGGbbbbu..',
+    '....uBBBggHHHGGbbbbbu..',
+    '.....uBBBApppAbbbbbu...',
+    '......uBBApppAbbbbbu...',
+    '.......uBCCCBBbbbbu....',
+    '........uCCCBBbbbu.....',
+    '.........uCCBBbuu......',
+    '..........uCBBu........',
+    '..........uuuu.........'
+  ], HI_GEM_PAL);
 
-  const OPAL_SPR = fromMap([
-    '....oGo....',
-    '...oGHGo...',
-    '..oGRRRGo..',
-    '.oGROOORGo.',
-    'oGROYYYORGo',
-    'oGROYWYORGo',
-    'oGROYYYORGo',
-    '.oGROOORGo.',
-    '..oGRRRGo..',
-    '...oGHGo...',
-    '....oGo....'
-  ], { o: '#4a2b0d', G: '#e59a28', H: '#ffe478', R: '#c83214', O: '#ff781e', Y: '#ffd84a', W: '#ffffd0' });
+  // Opala de Fogo Primordial (Caatinga — encaixe inferior em 640x360: x=426, y=210)
+  // Espiral de chama viva no topo, coração solar de 8 raios com iridescência e cálice de brasa
+  const OPAL_HI_POS = { x: 426, y: 210 };
+  const OPAL_HI_SPR = fromMap([
+    '...........OOOR............',
+    '............OO.............',
+    '............OO.............',
+    '............OO.............',
+    '............OWR............',
+    '...........OfccR...........',
+    '.........ddffccfd..........',
+    '........dOOffccfRd.........',
+    '.......dOOOffccfRRdd.......',
+    '.....ddRRRaafffaaRRRd......',
+    '....dRRRRRaafWfaaRRRRr.....',
+    '...daaaaaaaaaOOOOOOOOOr....',
+    '...daaaaaaaaHHgOOOOOOOOr...',
+    '...daaaaaaGGHHgddOOOOOOr...',
+    '..daaaaaaGGaaaaaddOOOOOOr..',
+    '.daaaaaaHHaaaaaaaggOOOOOOr.',
+    '.daaaaaGHaaaacaaRRgdOOOOOr.',
+    'daaaaaaGGaacccccRRddOOOOOr.',
+    'daaaaaaGaavccWcfRRRdOOOOOr.',
+    'daaaffaHaaccWWWffRRgOaaOOOr',
+    'dfffffOHaacWWWWWcRRgRaaaaar',
+    'dfffffOgaaccWWWffRRgRaaaaar',
+    'dffOOOOGaaOffWffvRRdRRRRaar',
+    'dOOOOOOGGOOffcffRRddRRRRRRr',
+    'dOOOOOOGgOOiOcORRRgdRRRRRRr',
+    'dOOOOOOOggOOOOORRggRRRRRRRr',
+    'dOOOOOOOOGGOOOORddRRRRRRRr.',
+    '.dOOOOOOOOGGgggddRRRRRRRRr.',
+    '.dOOOOOOOOOOgggRRRRRRRRRRr.',
+    '.rRRRRRRRggHHHHHGGrrrrrrr..',
+    '..rRRRRRRRRHHHHHrrrrrrrr...',
+    '...rRRRRRROOfffOOrrrrrrr...',
+    '....rRRRRROOfcfOOrrrrrr....',
+    '.....rrRRROOfffOOrrrrr.....',
+    '.......rRRRaaaRRrrrr.......',
+    '........rrRaaaRRrr.........',
+    '..........raaaRrr..........',
+    '...........raar............',
+    '............rrr............'
+  ], HI_GEM_PAL);
 
   // Pixel-art Menu Button Icons (11x11 crisp pixel grid: Novo Jogo, Continuar, Opções, Créditos, Sair)
   const MENU_ICONS = [
@@ -267,10 +334,11 @@
     frame.style.setProperty('--film-height', fh + 'px');
     frame.style.setProperty('--film-left', (w < 600 ? Math.min(0, (w - fw * 0.31) / 2) : 0) + 'px');
     frame.style.setProperty('--menu-font', fw * 36 / 1672 + 'px');
-    // True Pixel Art internal resolution 320x180
-    canvas.width = W;
-    canvas.height = H;
+    // True Pixel Art Hi-Bit internal resolution 640x360 (2x logical 320x180)
+    canvas.width = W * 2;
+    canvas.height = H * 2;
     ctx.imageSmoothingEnabled = false;
+    ctx.setTransform(2, 0, 0, 2, 0, 0);
     frame.querySelectorAll('.menu-choice:not(.menu-exit)').forEach(button => {
       button.style.setProperty('--crop-x', -button.offsetLeft + 'px');
       button.style.setProperty('--crop-y', -button.offsetTop + 'px');
@@ -290,7 +358,9 @@
   }
   buttons.forEach((btn, idx) => {
     btn.addEventListener('pointerenter', () => activateMenuHover(idx));
-    btn.addEventListener('focus', () => activateMenuHover(idx));
+    btn.addEventListener('focus', () => {
+      if (btn.matches?.(':focus-visible')) activateMenuHover(idx);
+    });
     btn.addEventListener('pointerleave', () => {
       if (hoveredChoice === idx) hoveredChoice = -1;
     });
@@ -334,9 +404,7 @@
       if (hot) star(cx, 107, 2, '#ffffff', '#9ef0ff');
     }
 
-    // 3. Top Socket: Gema da Fada (Butterfly Crystal Emblem)
-    // Drawn at (219, 69) to make the door's centerpiece razor-sharp True Pixel Art
-    ctx.drawImage(FAIRY_BUTTERFLY_SPR, SOCKETS.fairy.x - 13, SOCKETS.fairy.y - 9);
+    // 3. Top Socket: Gema da Fada (Butterfly Crystal Emblem already painted in Hi-Bit on menu-aprovado.png)
     if ((f12 & 1) === 0 || boost) {
       star(SOCKETS.fairy.x, SOCKETS.fairy.y, boost ? 3 : 2, '#ffffff', '#ffe478');
       P1(SOCKETS.fairy.x - 8, SOCKETS.fairy.y - 3, '#ffffff');
@@ -347,24 +415,35 @@
       ring(SOCKETS.fairy.x, SOCKETS.fairy.y, r, r % 2 === 0 ? '#9ef0ff' : '#ffc6f2');
     }
 
-    // 4. World 2, 3, 4 Primordial Gem Sockets (light up if unlocked, or shimmer with golden filigree)
-    if (completed.includes(10)) {
-      ctx.drawImage(EMERALD_SPR, SOCKETS.emerald.x - 5, SOCKETS.emerald.y - 5);
-      if (f12 % 8 === 0) star(SOCKETS.emerald.x, SOCKETS.emerald.y - 2, 2, '#ffffff', '#7aee8d');
+    // 4. World 2, 3, 4 Primordial Gem Sockets (640x360 Hi-Bit sprites fitted into each socket)
+    const hasEmerald = completed.includes(10);
+    const hasParaiba = completed.includes(15);
+    const hasOpal = completed.includes(20);
+    if (hasEmerald || hasParaiba || hasOpal) {
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      if (hasEmerald) ctx.drawImage(EMERALD_HI_SPR, EMERALD_HI_POS.x, EMERALD_HI_POS.y);
+      if (hasParaiba) ctx.drawImage(PARAIBA_HI_SPR, PARAIBA_HI_POS.x, PARAIBA_HI_POS.y);
+      if (hasOpal) ctx.drawImage(OPAL_HI_SPR, OPAL_HI_POS.x, OPAL_HI_POS.y);
+      ctx.setTransform(2, 0, 0, 2, 0, 0);
+    }
+
+    if (hasEmerald) {
+      if (f12 % 8 === 0 || boost) star(SOCKETS.emerald.x, SOCKETS.emerald.y, boost ? 2 : 1, '#ffffff', '#74f79d');
+      if ((f12 + 4) % 14 === 0) P1(SOCKETS.emerald.x, SOCKETS.emerald.y - 7, '#ffffff');
     } else if ((f12 + 2) % 16 === 0 || boost) {
       star(SOCKETS.emerald.x - 4, SOCKETS.emerald.y - 6, 1, '#fff3b0', '#e59a28');
     }
 
-    if (completed.includes(15)) {
-      ctx.drawImage(PARAIBA_SPR, SOCKETS.paraiba.x - 5, SOCKETS.paraiba.y - 5);
-      if ((f12 + 3) % 8 === 0) star(SOCKETS.paraiba.x, SOCKETS.paraiba.y - 2, 2, '#ffffff', '#57ffe3');
+    if (hasParaiba) {
+      if ((f12 + 3) % 8 === 0 || boost) star(SOCKETS.paraiba.x, SOCKETS.paraiba.y - 1, boost ? 2 : 1, '#ffffff', '#5cf7ff');
+      if ((f12 + 7) % 14 === 0) P1(SOCKETS.paraiba.x - 1, SOCKETS.paraiba.y + 6, '#f2b8ff');
     } else if ((f12 + 7) % 16 === 0 || boost) {
       star(SOCKETS.paraiba.x + 4, SOCKETS.paraiba.y - 6, 1, '#fff3b0', '#e59a28');
     }
 
-    if (completed.includes(20)) {
-      ctx.drawImage(OPAL_SPR, SOCKETS.opal.x - 5, SOCKETS.opal.y - 5);
-      if ((f12 + 5) % 8 === 0) star(SOCKETS.opal.x, SOCKETS.opal.y - 2, 2, '#ffffff', '#ffa23c');
+    if (hasOpal) {
+      if ((f12 + 5) % 8 === 0 || boost) star(SOCKETS.opal.x, SOCKETS.opal.y + 2, boost ? 2 : 1, '#ffffff', '#ffe45e');
+      if ((f12 + 9) % 12 === 0) P1(SOCKETS.opal.x, SOCKETS.opal.y - 7, '#fff8cc');
     } else if ((f12 + 11) % 16 === 0 || boost) {
       star(SOCKETS.opal.x, SOCKETS.opal.y - 8, 1, '#fff3b0', '#e59a28');
     }
@@ -381,23 +460,37 @@
   }
 
   function drawMenuSelector(f12) {
-    if (hoveredChoice < 0 || hoveredChoice > 4) return;
-    // Button vertical centers in 320x180 space matching .menu-choice tops (36.2%, 44.8%, 53.4%, 62.0%, 70.6% with height 6.8%)
-    const ys = [71, 87, 102, 118, 133];
+    if (hoveredChoice < 0 || hoveredChoice >= buttons.length) return;
+    const btn = buttons[hoveredChoice];
+    if (!btn) return;
+    const targetEl = btn.querySelector('.menu-btn-art') || btn;
+    const cRect = canvas.getBoundingClientRect();
+    const bRect = targetEl.getBoundingClientRect();
+    if (!cRect.width || !cRect.height || !bRect.width || !bRect.height) return;
+
+    const scaleX = W / cRect.width;
+    const scaleY = H / cRect.height;
+    const rawX = (bRect.left - cRect.left) * scaleX;
+    const rawY = (bRect.top - cRect.top) * scaleY;
+    const rawW = bRect.width * scaleX;
+    const rawH = bRect.height * scaleY;
+
     const cols = ['#a8ff66', '#5ef2ff', '#9ef0ff', '#ff8ae2', '#ffd35a'];
-    const bws = [76, 72, 60, 64, 46];
-    const cy = ys[hoveredChoice];
     const col = cols[hoveredChoice] || '#9ef0ff';
-    const bw = bws[hoveredChoice] || 72;
+    const bx = Math.max(12, Math.round(rawX - 3));
+    const by = Math.max(2, Math.round(rawY - 2));
+    const bw = Math.max(24, Math.round(rawW + 6));
+    const bh = Math.max(10, Math.round(rawH + 3));
+    const cy = Math.round(rawY + rawH * 0.5);
     const bob = [0, -1, 0, 1][f12 % 4];
     const shift = (f12 & 1) ? 1 : 0;
 
     // Seta luminosa em pixel art apontando para a opção sob o mouse com espaçamento elegante
-    dia(8 + shift, cy + bob, 2, '#ffffff', col);
-    P1(12 + shift, cy + bob, '#ffffff');
+    const arrowX = Math.max(4, bx - 10) + shift;
+    dia(arrowX, cy + bob, 2, '#ffffff', col);
+    P1(arrowX + 4, cy + bob, '#ffffff');
 
     // Colchetes de canto em pixel art + trilha energética sob o botão focado
-    const bx = 18, by = cy - 7, bh = 14;
     ctx.fillStyle = col;
     // Canto superior esquerdo e inferior esquerdo
     ctx.fillRect(bx, by, 5, 1);
@@ -410,14 +503,16 @@
     ctx.fillRect(bx + bw - 4, by + bh, 5, 1);
     ctx.fillRect(bx + bw, by + bh - 3, 1, 4);
 
-    // Linha de energia animada + estrelas nas pontas com distância confortável do texto
+    // Linha de energia animada + estrela na ponta direita
+    const trackSpan = Math.max(1, bw - 20);
     ctx.fillRect(bx + 4, by + bh, bw - 8, 1);
     ctx.fillStyle = '#ffffff';
-    ctx.fillRect(bx + 6 + ((f12 * 5) % (bw - 20)), by + bh, 10, 1);
+    ctx.fillRect(bx + 6 + ((f12 * 5) % trackSpan), by + bh, Math.min(10, Math.max(4, bw - 12)), 1);
     star(bx + bw + 6 - shift, cy, (f12 & 1) ? 2 : 1, '#ffffff', col);
   }
 
   function renderStaticFrame() {
+    ctx.setTransform(2, 0, 0, 2, 0, 0);
     ctx.clearRect(0, 0, W, H);
     drawAncientDoorEnhancements(0, 0);
     drawMenuSelector(0);
@@ -428,7 +523,7 @@
     last = now;
     const reduced = document.body.classList.contains('reduce-motion') || motion.matches;
 
-    if (!home.hidden && !document.hidden && !document.querySelector('dialog[open]')) {
+    if (!home.hidden && !document.hidden) {
       if (reduced) {
         renderStaticFrame();
       } else {
@@ -445,6 +540,7 @@
           el.style.opacity = (0.2 + boost + osc * 0.7).toFixed(2);
         });
 
+        ctx.setTransform(2, 0, 0, 2, 0, 0);
         ctx.clearRect(0, 0, W, H);
         drawAncientDoorEnhancements(f12, f8);
         drawMenuSelector(f12);

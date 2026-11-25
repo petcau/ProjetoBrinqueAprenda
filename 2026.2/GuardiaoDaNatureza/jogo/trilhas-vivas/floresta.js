@@ -655,63 +655,12 @@
     }
   }
   function updateFlora(dt) {
-    flora.elapsed += dt;
-    if (stage === "recompensa") {
-      flora.mode = "comemorando";
-      flora.x += (player.x + 36 - flora.x) * Math.min(1, dt * 5);
-      flora.y += (player.y - 78 - flora.y) * Math.min(1, dt * 5);
-      return;
-    }
-    const resting =
-      !player.moving &&
-      ui.jump <= 0 &&
-      !spraying &&
-      !healing &&
-      equipping === 0 &&
-      stage !== "entrega" &&
-      player.idle > 2.5;
-    if (resting && flora.mode === "voando") {
-      flora.mode = "aproximando";
-      flora.elapsed = 0;
-    }
-    if (!resting && ["aproximando", "pousando", "ombro"].includes(flora.mode)) {
-      flora.mode = "decolando";
-      flora.elapsed = 0;
-    }
-    const shoulder = {
-      x: player.x + (player.direction >= 3 && player.direction <= 5 ? 15 : -15),
-      y: player.y - 42,
-    };
-    if (["aproximando", "pousando", "ombro"].includes(flora.mode)) {
-      flora.x += (shoulder.x - flora.x) * Math.min(1, dt * 5);
-      flora.y += (shoulder.y - flora.y) * Math.min(1, dt * 5);
-      if (flora.mode === "aproximando" && W.distance(flora, shoulder) < 2) {
-        flora.mode = "pousando";
-        flora.elapsed = 0;
-      }
-      if (flora.mode === "pousando" && flora.elapsed > 0.45) {
-        flora.mode = "ombro";
-        flora.elapsed = 0;
-      }
-      if (flora.mode === "ombro") Object.assign(flora, shoulder);
-    } else {
-      const next = route[0],
-        lead = next
-          ? {
-              x: (next.x - player.x) / Math.max(1, W.distance(player, next)),
-              y: (next.y - player.y) / Math.max(1, W.distance(player, next)),
-            }
-          : { x: -0.5, y: 0 };
-      const to = healing
-        ? { x: healing.x - 15, y: healing.y - 60 }
-        : { x: player.x + lead.x * 52, y: player.y - 71 + lead.y * 25 };
-      flora.x += (to.x - flora.x) * Math.min(1, dt * 5);
-      flora.y += (to.y - flora.y) * Math.min(1, dt * 5);
-      if (flora.mode === "decolando" && flora.elapsed > 0.3) {
-        flora.mode = "voando";
-        flora.elapsed = 0;
-      }
-    }
+    FloraCompanheira.update(flora, player, dt, {
+      phase: 1,
+      busy: spraying || healing || equipping > 0 || stage === "entrega",
+      reward: stage === "recompensa" || stage === "concluido",
+      jump: ui.height(),
+    });
   }
   function update(dt) {
     ui.update(dt);
@@ -1108,6 +1057,14 @@
       a.height,
       { flip: a.stage === "voltando" && a.facingRight },
     );
+    GuardiaoCuidados.draw(
+      ctx,
+      a,
+      uiTime,
+      reduced(),
+      a.stage === "tratando" ? 1 - healTime / 1.6 : 0,
+      player,
+    );
     if (a.stage === "ferido") {
       ring(p.x, p.y, "#e8c68a", 15);
       if (
@@ -1243,17 +1200,13 @@
         ctx.fillStyle = "#fff3c5";
         ctx.strokeStyle = "#be8b37";
         ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.arc(a.position.x, y, 12, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
         window.GuardiaoIcones?.paint(
           ctx,
           window.GuardiaoIconesImage,
           "paw",
           a.position.x,
           y,
-          18,
+          30 / camera.scale,
         );
       }
     }
@@ -1371,6 +1324,7 @@
     node.replaceChildren(c);
   }
   function actionIcon(button, index) {
+    if (button === "mochila" && window.GuardiaoHUD) return;
     const mark = document.createElement("span");
     mark.className = "action-symbol";
     mark.innerHTML =
@@ -1494,6 +1448,10 @@
     location.reload();
   });
   $("tela-cheia").addEventListener("click", async () => {
+    if (window.GuardiaoTela) {
+      await GuardiaoTela.toggle();
+      return;
+    }
     try {
       if (document.fullscreenElement) await document.exitFullscreen();
       else await $("jogo").requestFullscreen();
@@ -1600,7 +1558,9 @@
         camera,
       }),
   });
-  window.GuardiaoIcones?.load().then((im) => (window.GuardiaoIconesImage = im));
+  const interfaceReady = window.GuardiaoIcones.load().then(
+    (im) => (window.GuardiaoIconesImage = im),
+  );
   document.addEventListener("guardiao:neutralizar", neutral);
   document.addEventListener("guardiao:acao-principal", () => {
     if (locked()) return;
@@ -1639,33 +1599,32 @@
   load();
   if (itemsGiven) window.GuardiaoMemoria.grant(1);
   W.setHazards([...fires, ...animals]);
-  let loaded = 0,
-    loadFailed = false;
   const activeSheets = Object.keys(ATLAS.sheets).filter(
-      (name) =>
-        ![
-          "kai-cuidados",
-          "kai-caminhada",
-          "kai-livre",
-          "flora",
-          "fogo",
-          "kai-recompensa",
-        ].includes(name),
-    ),
-    total = activeSheets.length + 7;
-  function progress() {
-    if (loadFailed) return;
-    loaded++;
-    $("loading").textContent = "Preparando a floresta… " + loaded + "/" + total;
-  }
-  Promise.all([
-    sprites.load(progress, activeSheets),
-    Promise.resolve(null),
-    Promise.resolve(null),
-    life.load(progress),
-    colar.load(),
-    art.load(),
-    equipmentReady,
+    (name) =>
+      ![
+        "kai-repouso",
+        "kai-cuidados",
+        "kai-caminhada",
+        "kai-livre",
+        "flora",
+        "fogo",
+        "kai-recompensa",
+      ].includes(name),
+  );
+  GuardiaoCarregamento.run([
+    {
+      label: "Personagens e objetos",
+      load: () => sprites.load(undefined, activeSheets),
+    },
+    { label: null, load: () => null },
+    { label: null, load: () => null },
+    { label: "Animações", load: () => life.load() },
+    { label: "Colar", load: () => colar.load() },
+    { label: "Artes da floresta", load: () => art.load() },
+    { label: "Equipamento de Kai", load: () => equipmentReady },
+    { label: "Cenário", load: () => world.ready },
+    { label: "Novas artes", load: () => GuardiaoRemodelacao.phase(1) },
+    { label: "Símbolos", load: () => interfaceReady },
   ])
     .then((result) => {
       environment = new window.FlorestaAmbiente(sprites, result[1], result[2]);
@@ -1673,7 +1632,7 @@
       if (itemsGiven) GuardiaoMemoria.uniform("explorador", { required: true });
       ready = true;
       document.body.dataset.gameReady = "true";
-      $("loading").hidden = true;
+
       flora.x = player.x - 28;
       flora.y = player.y - 70;
       resize();
@@ -1692,11 +1651,12 @@
         $("vitoria").showModal();
       } else
         speak("Vamos continuar! Toque na missão para encontrar o caminho.");
+      GuardiaoCarregamento.finish();
       start();
     })
-    .catch(() => {
-      loadFailed = true;
-      $("loading").innerHTML =
-        'Não foi possível carregar a floresta.<br><a href="index.html">Toque para tentar novamente</a>';
+    .catch((error) => {
+      ready = false;
+      document.body.dataset.gameReady = "false";
+      GuardiaoCarregamento.fail(error);
     });
 })();

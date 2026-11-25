@@ -191,12 +191,22 @@
       }
     });
   }
-  const full = () =>
-    !!(document.fullscreenElement || document.webkitFullscreenElement);
+  function fullDocument() {
+    try {
+      if (parent !== window && parent.GuardiaoJanela?.frame)
+        return parent.document;
+    } catch {}
+    return document;
+  }
+  const full = () => {
+    const owner = fullDocument();
+    return !!(owner.fullscreenElement || owner.webkitFullscreenElement);
+  };
   let pending = false;
   function syncFull() {
     document.querySelectorAll("[data-fullscreen]").forEach((b) => {
-      b.innerHTML = icon(full() ? "exit" : "full");
+      b.innerHTML =
+        window.GuardiaoHUD?.fullIcon(full()) || icon(full() ? "exit" : "full");
       b.title = full() ? "Sair da tela cheia" : "Entrar em tela cheia";
       b.setAttribute("aria-label", b.title);
       b.setAttribute("aria-pressed", String(full()));
@@ -208,18 +218,19 @@
     pending = true;
     syncFull();
     try {
+      const owner = fullDocument();
       if (full()) {
-        const fn = document.fullscreenElement
-          ? document.exitFullscreen || document.webkitExitFullscreen
-          : document.webkitExitFullscreen || document.exitFullscreen;
-        await fn.call(document);
+        const fn = owner.fullscreenElement
+          ? owner.exitFullscreen || owner.webkitExitFullscreen
+          : owner.webkitExitFullscreen || owner.exitFullscreen;
+        await fn.call(owner);
         screen.orientation?.unlock?.();
       } else {
         const fn =
-          document.documentElement.requestFullscreen ||
-          document.documentElement.webkitRequestFullscreen;
+          owner.documentElement.requestFullscreen ||
+          owner.documentElement.webkitRequestFullscreen;
         if (!fn) throw Error();
-        await fn.call(document.documentElement);
+        await fn.call(owner.documentElement);
         if (navigator.maxTouchPoints)
           try {
             await screen.orientation?.lock("landscape");
@@ -265,7 +276,7 @@
       activeGeneration = localStorage.getItem(generation);
       document.dispatchEvent(new CustomEvent("guardiao:neutralizar"));
       resetDialog?.close();
-      location.replace(new URL("index.html#inicio", base));
+      freshHome();
     } catch {
       for (const [k, v] of backup)
         try {
@@ -283,7 +294,16 @@
   };
   let activeGeneration = readGeneration();
   const stale = () => readGeneration() !== activeGeneration;
-  const freshHome = () => location.replace(new URL("index.html#inicio", base));
+  const freshHome = () => {
+    const home = new URL("index.html#inicio", base),
+      samePage =
+        home.origin === location.origin &&
+        home.pathname === location.pathname &&
+        home.search === location.search;
+    location.replace(home);
+    // Trocar apenas o hash preservaria inventário e restauração em memória.
+    if (samePage) location.reload();
+  };
   window.addEventListener("pageshow", () => {
     if (stale()) freshHome();
   });
@@ -308,10 +328,18 @@
   function askReset() {
     if (!resetDialog) {
       resetDialog = document.createElement("dialog");
-      resetDialog.className = "ra-dialog ra-reset";
+      resetDialog.className = "ra-dialog ra-reset nova-jornada";
       resetDialog.id = "ra-reset";
       resetDialog.setAttribute("aria-labelledby", "ra-reset-title");
-      resetDialog.innerHTML = `<p class="eyebrow">UMA NOVA JORNADA</p><h2 id="ra-reset-title">Começar do início?</h2><p>As cinco fases, os itens e os cristais serão reiniciados. A ilha volta ao estado inicial.</p><p>Áudio e controles continuam do seu jeito.</p><div class="ra-dialog-actions"><button type="button" data-cancel autofocus>Continuar por aqui</button><button type="button" class="primary" data-confirm>Sim, recomeçar</button></div>`;
+      resetDialog.setAttribute(
+        "aria-describedby",
+        "ra-reset-description ra-reset-preferences",
+      );
+      resetDialog.innerHTML = `<img class="recomeco-art" src="${new URL("../recomeco/assets/painel.webp", base).href}" width="1774" height="887" alt="" aria-hidden="true" decoding="async">
+        <header class="recomeco-heading"><p class="eyebrow">UMA NOVA JORNADA</p><h2 id="ra-reset-title">Começar do início?</h2></header>
+        <p id="ra-reset-description">As cinco fases, os itens e os cristais serão reiniciados. A ilha volta ao estado inicial.</p>
+        <p id="ra-reset-preferences">Áudio e controles continuam do seu jeito.</p>
+        <div class="ra-dialog-actions"><button type="button" data-cancel autofocus>Continuar por aqui</button><button type="button" class="primary" data-confirm>Sim, recomeçar</button></div>`;
       document.body.append(resetDialog);
       resetDialog.querySelector("[data-cancel]").onclick = () =>
         resetDialog.close();
@@ -335,8 +363,10 @@
   };
   window.GuardiaoTela = {
     toggle: toggleFull,
+    enter: () => (full() ? Promise.resolve() : toggleFull()),
     state: () => ({ fullscreen: full(), pending }),
   };
+  window.addEventListener("guardiao:fullscreen", syncFull);
   for (const event of ["fullscreenchange", "webkitfullscreenchange"])
     document.addEventListener(event, syncFull);
   document.addEventListener("DOMContentLoaded", () => {

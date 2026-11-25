@@ -163,8 +163,11 @@ window.AlgebraPuzzle = (() => {
     function stone(type,x,y,size,base=false,pop=1){const img=art[type],w=img?.naturalWidth||60,h=img?.naturalHeight||70,k=size/Math.max(w,h)*pop;ctx.save();ctx.translate(x,y);sprite(type,-w*k/2,base?-h*k:-h*k/2,w*k,h*k);ctx.restore();}
     function dot(x,y,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fill();}
     function draw(){ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#101820';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.setTransform(s,0,0,s,0,offset);ctx.imageSmoothingEnabled=false;ctx.textAlign='center';
+      const tr=(k,p,fb)=>(typeof window.t==='function'?window.t(k,p,fb):fb);
+      const large=Boolean(window.GameSettings?.get?.('largeText'))||document.body.classList.contains('large-text');
       sprite('fundo_vila',0,0,1024,572);sprite('coluna',453,123.5,236*scale,509*scale);
       const n=b.frame(angle)*4,img=art.travessa_frames;if(img)ctx.drawImage(img,frames[n],frames[n+1],353,160,b.px-176.5,b.py-80,353,160);else{ctx.save();ctx.translate(b.px,b.py);ctx.rotate(angle*Math.PI/180);ctx.fillStyle='#f1b74e';ctx.fillRect(-176,-6,352,12);ctx.restore();}
+      const balanced=left===right&&left>0;
       if(left===right){ctx.globalAlpha=calm?.65:state==='PISCAR'?.55+.4*Math.cos(elapsed*12):.6+Math.sin(time*3)*.15;ctx.drawImage(glow,b.px-38,b.py-38,76,76);ctx.globalAlpha=1;}
       for(let side=0;side<2;side++){const gx=b.hookX(angle,side),gy=b.hookY(angle,side),x=b.panX(angle,side),y=b.panY(angle,side);
         for(let ring=0;ring<2;ring++){const a=ring?layout.prato.anel_dir:layout.prato.anel_esq,ax=x+a[0]*scale,ay=y+a[1]*scale;
@@ -172,7 +175,24 @@ window.AlgebraPuzzle = (() => {
           ctx.save();ctx.translate(gx,gy);ctx.rotate(Math.atan2(-(ax-gx),ay-gy));sprite('corrente',-12,0,24,Math.hypot(ax-gx,ay-gy));ctx.restore();}
         if(state==='SUCESSO'){ctx.globalAlpha=calm?.35:.35+.1*Math.sin(time*4);ctx.drawImage(glow,x+31.75,y+6.25,140,70);ctx.globalAlpha=1;}
         if(drag>=0&&target===side){ctx.save();ctx.shadowColor='#b5f5ff';ctx.shadowBlur=18;ctx.fillStyle='#8ee8ff55';ctx.fillRect(x-8,y-8,219.5,102);ctx.restore();}sprite('prato',x,y,407*scale,172*scale);
-        for(let slot=0;slot<8;slot++)for(let i=0;i<17;i++){const p=items[i];if(p.side===side&&p.slot===slot)stone(p.type,b.cellX(angle,side,slot),b.cellY(angle,side,slot),p.type==='caixa_misteriosa'?38:34,true,calm?1:1+.13*Math.sin(p.pop/.2*Math.PI));}}
+        for(let slot=0;slot<8;slot++)for(let i=0;i<17;i++){const p=items[i];if(p.side===side&&p.slot===slot)stone(p.type,b.cellX(angle,side,slot),b.cellY(angle,side,slot),p.type==='caixa_misteriosa'?38:34,true,calm?1:1+.13*Math.sin(p.pop/.2*Math.PI));}
+        // Peso total ao vivo acima de cada prato (destaca quando os dois lados ficam iguais).
+        const sideVal=side===0?left:right,badgeW=large?76:66,badgeH=large?36:32,bx=gx,by=gy-24;
+        ctx.save();ctx.fillStyle=balanced?'#16442de8':'#152638eb';ctx.strokeStyle=balanced?'#4ade80':'#8ee8ff88';ctx.lineWidth=2.5;
+        ctx.beginPath();ctx.roundRect(bx-badgeW/2,by-badgeH/2,badgeW,badgeH,10);ctx.fill();ctx.stroke();
+        text(String(sideVal),bx,by+(large?9:8),large?24:21,balanced?'#86efac':'#fff5d7');ctx.restore();
+      }
+      // Legenda fixa de valores das gemas (lidos diretamente de layout.pesos via b.weight).
+      const legTypes=['rubi','safira','esmeralda','topazio'],legW=large?128:112,legRow=large?32:28,legH=24+legTypes.length*legRow;
+      ctx.save();ctx.fillStyle='#152638e6';ctx.strokeStyle='#8ee8ff66';ctx.lineWidth=2;
+      ctx.beginPath();ctx.roundRect(14,62,legW,legH,10);ctx.fill();ctx.stroke();
+      text(tr('algebra.legendTitle',null,'Valores'),14+legW/2,80,large?15:13,'#cfe9ff');
+      for(let i=0;i<legTypes.length;i++){
+        const ry=98+i*legRow;
+        stone(legTypes[i],38,ry,large?24:22);
+        ctx.textAlign='left';text(`= ${b.weight(legTypes[i],null)}`,58,ry+6,large?19:17,'#fff5d7');ctx.textAlign='center';
+      }
+      ctx.restore();
       sprite('bandeja',190,424,958*scale,280*scale);
       for(let i=0;i<5;i++){const slot=layout.bandeja.slots[i],x=190+slot[0]*scale,y=424+slot[1]*scale;const empty=finite&&remaining[i]===0;ctx.globalAlpha=empty?.35:available(types[i])?1:.3;ctx.filter=empty?'grayscale(1)':'none';stone(types[i],x,y,46);ctx.filter='none';ctx.globalAlpha=1;
         if(finite){ctx.fillStyle='#152638eb';ctx.fillRect(x+2,y+15,34,22);text('x'+remaining[i],x+19,y+32,15);}

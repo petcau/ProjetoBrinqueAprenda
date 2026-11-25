@@ -1,0 +1,553 @@
+/* Os dezesseis cartões continuam na mesma coleção com rolagem interna. */
+#mochila-jornada.kit-pack .mission-tool-card {
+  position: relative;
+  isolation: isolate;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  padding: 15px 12px;
+  gap: 8px;
+  color: #173e25;
+}
+.mission-card-frame {
+  z-index: -1;
+  border-radius: 14px;
+  overflow: hidden;
+}
+#mochila-jornada.kit-pack .mission-tool-card .item-illustration {
+  height: 105px;
+  width: 100%;
+  background: none;
+  flex: none;
+}
+#mochila-jornada.kit-pack .mission-tool-card .mission-tool {
+  width: 105px;
+  height: 105px;
+  flex: none;
+}
+#mochila-jornada.kit-pack .mission-tool-card h3 {
+  min-height: 2.3em;
+  display: grid;
+  place-items: center;
+  text-wrap: balance;
+}
+#mochila-jornada.kit-pack .mission-tool-card h3 {
+  color: #173e25;
+  font-size: 22px;
+  text-align: center;
+  margin: 0 0 4px;
+}
+#mochila-jornada.kit-pack .mission-tool-card p {
+  color: #423019;
+  font-size: 16px;
+  line-height: 1.3;
+  text-align: center;
+}
+/* Recortes estáticos preservam os cantos pintados e a proporção das cenas. */
+.kit-presentation .kit-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.kit-presentation .kit-frame {
+  --kit-slice: 18px;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: var(--kit-slice-y, var(--kit-slice)) minmax(0, 1fr) var(
+      --kit-slice-y,
+      var(--kit-slice)
+    );
+  grid-template-columns:
+    var(--kit-slice-x, var(--kit-slice)) minmax(0, 1fr)
+    var(--kit-slice-x, var(--kit-slice));
+  pointer-events: none;
+}
+.kit-presentation .kit-frame > span {
+  min-width: 0;
+  min-height: 0;
+}
+#phase-dialog.kit-presentation {
+  isolation: isolate;
+  width: min(1160px, 96vw);
+  max-width: 96vw;
+  height: min(660px, 92dvh);
+  max-height: 92dvh;
+  padding: 14px;
+  border: 0;
+  border-radius: 23px;
+  color: #173e25;
+  background: linear-gradient(110deg, #fff0d1, #f6dfb3);
+  overflow: hidden;
+}
+#phase-dialog.kit-presentation[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.kit-presentation .brief-window-frame {
+  --kit-slice: 14px;
+  z-index: 4;
+}
+#phase-dialog.kit-presentation > header {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  height: 80px;
+  flex: none;
+  padding: 4px 16px;
+  margin: 0;
+  border: 0;
+  border-radius: 12px;
+  background: #194823;
+}
+#phase-dialog .brief-heading-art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+}
+#phase-dialog #phase-emblem {
+  width: 70px;
+  height: 70px;
+  flex: none;
+}
+.brief-heading-copy {
+  min-width: 0;
+}
+#phase-dialog.kit-presentation #phase-number {
+  color: #fff0bc;
+  font-size: 13px;
+  margin: 0 0 4px;
+  letter-spacing: 0.12em;
+}
+#phase-dialog.kit-presentation #phase-title {
+  color: #fff0bc;
+  font:
+    400 clamp(28px, 3.1vw, 39px) / 1.08 Lilita,
+    Renascenca,
+    system-ui;
+  margin: 0;
+  text-shadow: 0 1px #183d20;
+}
+#phase-dialog.kit-presentation #close-phase {
+  position: static;
+  display: grid;
+  place-items: center;
+  margin: 0 0 0 auto;
+  flex: none;
+  padding: 0;
+  width: 58px;
+  height: 58px;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+#phase-dialog.kit-presentation .phase-columns {
+  grid-template-columns: 40% minmax(0, 1fr);
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 0 13px;
+}
+#phase-dialog.kit-presentation .phase-scene {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-height: 0;
+  margin: 0;
+  padding: 5px;
+  border: 0;
+  border-radius: 15px;
+  background: none;
+  box-shadow: none;
+  overflow: hidden;
+}
+#phase-dialog.kit-presentation .phase-scene::before {
+  content: none;
+}
+.brief-picture {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+#phase-picture {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+[data-picture-ready="true"] #phase-picture {
+  opacity: 1;
+}
+#phase-dialog.kit-presentation .phase-scene figcaption {
+  position: relative;
+  isolation: isolate;
+  inset: auto;
+  padding: 10px 42px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  text-align: center;
+}
+.brief-caption-art {
+  --kit-slice-x: 38px;
+  --kit-slice-y: 17px;
+  z-index: -1;
+  border-radius: 22px;
+  overflow: hidden;
+}
+#phase-dialog.kit-presentation #phase-npc {
+  font:
+    400 26px / 1.1 Lilita,
+    Renascenca,
+    system-ui;
+  color: #fff2c3;
+}
+#phase-dialog.kit-presentation #phase-job {
+  display: block;
+  font-size: 14px;
+  line-height: 1.2;
+  color: #ffe38a;
+}
+#phase-dialog.kit-presentation .phase-copy {
+  min-height: 0;
+  overflow: auto;
+  padding: 0;
+  scrollbar-width: thin;
+}
+#phase-dialog.kit-presentation .phase-copy > section,
+#phase-dialog.kit-presentation .phase-loot > section {
+  position: relative;
+  isolation: isolate;
+  padding: 9px 12px;
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+  background: none;
+  border-radius: 12px;
+}
+#phase-dialog.kit-presentation .phase-copy h3 {
+  position: relative;
+  isolation: isolate;
+  border: 0;
+  padding: 6px 28px;
+  margin: 0 0 8px;
+  background: none;
+  box-shadow: none;
+  color: #fff1c1;
+  font:
+    400 23px / 1.05 Lilita,
+    Renascenca,
+    system-ui;
+}
+.brief-label-art {
+  --kit-slice-x: 31px;
+  --kit-slice-y: 12px;
+  z-index: -1;
+  border-radius: 16px;
+  overflow: hidden;
+}
+#phase-dialog.kit-presentation .phase-copy p,
+#phase-dialog.kit-presentation #phase-goals li {
+  color: #362b1d;
+  font-size: 15px;
+  line-height: 1.3;
+  margin: 0;
+}
+#phase-dialog.kit-presentation .phase-copy > section + section,
+#phase-dialog.kit-presentation .phase-loot {
+  margin-top: 7px;
+}
+#phase-dialog.kit-presentation #phase-goals {
+  padding: 0;
+  margin: 0;
+}
+#phase-dialog.kit-presentation #phase-goals li {
+  padding: 5px 0;
+  margin: 0;
+}
+#phase-dialog.kit-presentation .phase-loot {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 10px;
+}
+#phase-dialog.kit-presentation .phase-loot h3 {
+  font-size: 20px;
+}
+#phase-dialog.kit-presentation #phase-items {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+}
+#phase-dialog.kit-presentation .brief-item-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+#phase-dialog.kit-presentation .brief-item-art .kit-art {
+  width: min(48px, 23%);
+  height: auto;
+  aspect-ratio: 1;
+  min-width: 0;
+  flex: none;
+}
+#phase-dialog.kit-presentation #phase-items > span:last-child {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  text-align: center;
+}
+#phase-dialog.kit-presentation #phase-reward {
+  float: right;
+  width: 56px;
+  height: 72px;
+  margin-left: 8px;
+}
+#phase-dialog.kit-presentation #phase-reward-copy {
+  font-size: 14px;
+}
+#phase-dialog.kit-presentation > footer {
+  display: flex;
+  flex: none;
+  gap: 14px;
+  padding: 0 13px 9px;
+  margin: 0;
+}
+#phase-dialog.kit-presentation > footer .wood-button {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 59px;
+  flex: 1;
+  padding: 6px 34px;
+  border: 0;
+  box-shadow: none;
+  background: none;
+  color: #fff2c3;
+  font:
+    400 26px / 1.1 Lilita,
+    Renascenca,
+    system-ui;
+}
+.brief-action-art {
+  --kit-slice-x: 45px;
+  --kit-slice-y: 21px;
+  z-index: -1;
+  border-radius: 28px;
+  overflow: hidden;
+}
+@media (max-height: 540px) and (orientation: landscape) {
+  #mochila-jornada.kit-pack .mission-tool-card {
+    padding: 10px 9px;
+    gap: 6px;
+  }
+  #mochila-jornada.kit-pack .mission-tool-card .item-illustration {
+    height: 74px;
+  }
+  #mochila-jornada.kit-pack .mission-tool-card .mission-tool {
+    width: 74px;
+    height: 74px;
+  }
+  #mochila-jornada.kit-pack .mission-tool-card h3 {
+    font-size: 14px;
+  }
+  #mochila-jornada.kit-pack .mission-tool-card p {
+    font-size: 11px;
+    line-height: 1.25;
+  }
+  #phase-dialog.kit-presentation {
+    width: min(810px, 96vw);
+    height: min(345px, 90dvh);
+    max-height: 90dvh;
+    padding: 9px;
+    border-radius: 17px;
+  }
+  #phase-dialog.kit-presentation[open] {
+    gap: 6px;
+  }
+  .kit-presentation .brief-window-frame {
+    --kit-slice: 10px;
+  }
+  #phase-dialog.kit-presentation > header {
+    height: 48px;
+    gap: 10px;
+    padding: 0 9px;
+  }
+  #phase-dialog #phase-emblem {
+    width: 43px;
+    height: 43px;
+  }
+  #phase-dialog.kit-presentation #phase-number {
+    font-size: 8px;
+    margin-bottom: 2px;
+  }
+  #phase-dialog.kit-presentation #phase-title {
+    font-size: 24px;
+  }
+  #phase-dialog.kit-presentation #close-phase {
+    width: 44px;
+    height: 44px;
+  }
+  #phase-dialog.kit-presentation .phase-columns {
+    gap: 10px;
+    padding: 0 8px;
+    grid-template-columns: 38% minmax(0, 1fr);
+  }
+  #phase-dialog.kit-presentation .phase-scene {
+    padding: 3px;
+  }
+  #phase-dialog.kit-presentation .phase-scene figcaption {
+    padding: 5px 25px;
+  }
+  #phase-dialog.kit-presentation #phase-npc {
+    font-size: 19px;
+  }
+  #phase-dialog.kit-presentation #phase-job {
+    font-size: 10px;
+  }
+  #phase-dialog.kit-presentation .phase-copy > section,
+  #phase-dialog.kit-presentation .phase-loot > section {
+    padding: 4px 7px;
+  }
+  #phase-dialog.kit-presentation .phase-copy h3 {
+    font-size: 15px;
+    padding: 2px 21px;
+    margin-bottom: 3px;
+  }
+  #phase-dialog.kit-presentation .phase-copy p,
+  #phase-dialog.kit-presentation #phase-goals li {
+    font-size: 10px;
+    line-height: 1.2;
+  }
+  #phase-dialog.kit-presentation #phase-goals li {
+    padding: 1px 0;
+  }
+  #phase-dialog.kit-presentation .phase-copy > section + section,
+  #phase-dialog.kit-presentation .phase-loot {
+    margin-top: 4px;
+  }
+  #phase-dialog.kit-presentation .phase-loot {
+    gap: 6px;
+  }
+  #phase-dialog.kit-presentation .phase-loot h3 {
+    font-size: 14px;
+    padding: 2px 18px;
+  }
+  #phase-dialog.kit-presentation .brief-item-art {
+    gap: 2px;
+  }
+  #phase-dialog.kit-presentation .brief-item-art .kit-art {
+    height: auto;
+    width: 30px;
+    max-width: 23%;
+  }
+  #phase-dialog.kit-presentation #phase-items {
+    gap: 2px;
+  }
+  #phase-dialog.kit-presentation #phase-items > span:last-child {
+    font-size: 9px;
+  }
+  #phase-dialog.kit-presentation #phase-reward {
+    width: 30px;
+    height: 38px;
+    margin-left: 4px;
+  }
+  #phase-dialog.kit-presentation #phase-reward-copy {
+    font-size: 10px;
+  }
+  #phase-dialog.kit-presentation > footer {
+    gap: 10px;
+    padding: 0 8px 6px;
+  }
+  #phase-dialog.kit-presentation > footer .wood-button {
+    min-height: 39px;
+    padding: 4px 26px;
+    font-size: 19px;
+  }
+  .brief-action-art {
+    --kit-slice-x: 30px;
+    --kit-slice-y: 14px;
+    border-radius: 20px;
+  }
+  .kit-presentation .kit-frame {
+    --kit-slice: 12px;
+  }
+  .kit-presentation .brief-caption-art {
+    --kit-slice-x: 28px;
+    --kit-slice-y: 12px;
+  }
+  .kit-presentation .brief-label-art {
+    --kit-slice-x: 23px;
+    --kit-slice-y: 9px;
+    border-radius: 11px;
+  }
+}
+@media (max-height: 350px) and (orientation: landscape) {
+  #phase-dialog.kit-presentation > header {
+    height: 44px;
+  }
+  #phase-dialog.kit-presentation #phase-title {
+    font-size: 21px;
+  }
+  #phase-dialog.kit-presentation .phase-copy h3 {
+    font-size: 14px;
+  }
+  #phase-dialog.kit-presentation .phase-copy > section,
+  #phase-dialog.kit-presentation .phase-loot > section {
+    padding: 4px 6px;
+  }
+  #phase-dialog.kit-presentation .phase-copy > section + section,
+  #phase-dialog.kit-presentation .phase-loot {
+    margin-top: 3px;
+  }
+  #phase-dialog.kit-presentation #phase-goals li {
+    padding: 0;
+  }
+  #phase-dialog.kit-presentation #phase-goals .nature-symbol {
+    width: 12px;
+    height: 12px;
+  }
+  #phase-dialog.kit-presentation #phase-items {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 4px;
+  }
+  #phase-dialog.kit-presentation #phase-items > span:last-child {
+    text-align: left;
+  }
+  #phase-dialog.kit-presentation #phase-npc {
+    font-size: 17px;
+  }
+  #phase-dialog.kit-presentation #phase-job {
+    font-size: 9px;
+  }
+  #phase-dialog.kit-presentation > footer .wood-button {
+    min-height: 35px;
+    font-size: 17px;
+  }
+}
+.reduce-motion #phase-picture {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  #phase-picture {
+    transition: none;
+  }
+}

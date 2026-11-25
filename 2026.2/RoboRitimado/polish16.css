@@ -1,0 +1,92 @@
+/* 0.16: quieter HUD, tactile controls and a pass to every test world. */
+[hidden],.orbit-footer[hidden],#journeyNav[hidden]{display:none!important}
+.safety-dialog .welcome-portrait{left:0;width:43%;clip-path:polygon(10px -30%,145% -30%,145% 125%,49% 125%,49% calc(100% - 12px),10px calc(100% - 12px))}
+.safety-dialog .welcome-portrait img{width:116%;margin-left:-5%}
+.safety-dialog .safety-body .dialog-kicker{color:#3b234f!important;background:#ead5ff}
+.high-contrast .safety-dialog .safety-body .dialog-kicker{color:#fff!important;background:#000}
+input[type=range]{appearance:none;-webkit-appearance:none;height:10px;border-radius:999px;background:linear-gradient(90deg,#e45ac5,#8366dc,#42c7ed);border:1px solid #bb9bd7;cursor:pointer;accent-color:#c673e9}
+input[type=range]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:23px;height:23px;border-radius:50%;border:3px solid #fff;background:radial-gradient(circle at 35% 30%,#fff 0 8%,#eb8cdd 20%,#9768da 75%);box-shadow:0 2px 0 #5d3c83,0 0 0 1px #8662b5;cursor:grab}
+input[type=range]::-moz-range-thumb{width:19px;height:19px;border-radius:50%;border:3px solid #fff;background:#bf78df;box-shadow:0 2px 0 #5d3c83;cursor:grab}
+input[type=range]:active::-webkit-slider-thumb{cursor:grabbing;background:#77dff8}
+input[type=range]:focus-visible{outline:3px solid #54d5ff;outline-offset:7px}
+.dark-mode:not(.photosensitive):not(.high-contrast) .orbit-bg,.dark-mode:not(.photosensitive):not(.high-contrast) .world{filter:none!important}
+.dark-mode .orbit-bg::after,.dark-mode .world::after{content:'';position:absolute;inset:0;background:#09051866;pointer-events:none}
+.dark-mode .app{background:transparent!important}
+.dark-mode .safety-dialog :is(.dialog-kicker,.welcome-warning,.welcome-features span){color:#eef2ff!important}
+.phase-dialog .intro{background:linear-gradient(145deg,#fff6fd,#e6eafd)!important;color:#402151!important}
+.phase-dialog .intro :is(h1,h2,em,p,summary,.eyebrow,.intro-detail,.text-button){color:#482453!important;text-shadow:none!important}
+.phase-dialog .intro .primary-button{color:#2d1745!important}
+.dark-mode .phase-dialog .intro{background:#21172f!important}
+.dark-mode .phase-dialog .intro :is(h1,h2,em,p,summary,.eyebrow,.intro-detail,.text-button){color:#fcf0ff!important}
+.phase-dialog .phase-worlds{background:#ffffff9c;border-radius:14px;padding:9px}
+.dark-mode .phase-dialog .phase-worlds{background:#3b2b4e}
+.app .topbar{justify-content:flex-end}.app .top-actions{margin-left:auto}
+.app .controls,.app footer,.app .dance-badge,.app .song-info span,.app .track-meta #tempoLabel{display:none!important}
+body[data-screen=game] .app{grid-template-rows:48px minmax(0,1fr);min-height:540px;padding-bottom:12px}
+body[data-screen=game] .app main{grid-template-rows:minmax(0,1fr)}
+.app .stage{grid-template-rows:48px minmax(0,1fr) 58px}
+.cinema-controls button:not(:disabled),.travel-controls :is(#nextTravel,#backTravel){font-size:22px;min-width:50px;border-radius:16px;color:#fff;background:#493067;border:2px solid #dda0f0}
+.coach-head{width:34px;height:34px;object-fit:contain;vertical-align:middle;border-radius:50%;background:#3e285b}
+.lesson-rewards #lessonRewards{display:inline-flex;gap:10px;align-items:center}
+.lesson-gem{font-size:27px;line-height:1;color:#403450;-webkit-text-stroke:1px #b39cd8;text-shadow:0 2px #4e345e;display:inline-block}
+.lesson-gem.earned{color:#82e4ff;-webkit-text-stroke:1px #fff;text-shadow:0 2px #7051a2,0 0 12px #e97bd6;transform:scale(1.12)}
+body[data-screen=tutorial] .actor-wrap{width:48%;height:85%;right:-1%;bottom:-5%;pointer-events:none}
+body[data-screen=tutorial] .tutorial-ui{width:53%;padding-top:30px;padding-bottom:25px}
+body[data-screen=tutorial] .tutorial-board{height:36svh;min-height:220px}
+.tutorial-instruction{min-height:0}.tutorial-steps{gap:5px}.tutorial-toolbar{margin-bottom:8px}
+.tune-dialog,.admin-dialog{padding:0;width:min(1000px,94vw);max-width:none;max-height:92svh;border:4px solid #edb4f3;border-radius:30px;background:linear-gradient(140deg,#35234f,#17142f);color:#fff;box-shadow:0 0 0 3px #9ae7ff,0 15px 60px #0008;overflow:auto}
+.tune-dialog[open]{display:flex;align-items:center;min-height:420px;overflow:hidden}
+.tune-portrait{align-self:stretch;position:relative;width:42%;min-height:350px;flex:none;overflow:hidden;border-radius:0 0 0 25px}
+.tune-portrait img{position:absolute;width:118%;height:auto;top:10px;bottom:auto;left:-5%}
+.tune-dialog .dialog-kicker{color:#b6efff;font-size:11px;letter-spacing:.8px}
+.tune-copy{padding:36px 30px 36px 8px;flex:1;position:relative}
+.tune-copy h2{font-family:'Comic Sans MS','Trebuchet MS',sans-serif;font-size:clamp(26px,3.3vw,45px);color:#ffc4ee;text-shadow:0 3px #702e89;margin:16px 0}
+.tune-copy p{line-height:1.6;font-size:16px;color:#e4d9f7}
+.tune-copy progress{width:100%;height:24px;border:2px solid #c9e8ff;border-radius:20px;overflow:hidden;margin-top:20px;background:#171325;accent-color:#e98bd9}
+.tune-copy progress::-webkit-progress-bar{background:#171325}.tune-copy progress::-webkit-progress-value{background:linear-gradient(90deg,#a46cff,#ee80d2,#65d9ff);border-radius:20px}
+.admin-dialog>p{padding:0 24px;line-height:1.6;color:#ded3ef}
+.admin-worlds{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;padding:18px 24px 28px}
+.admin-world{position:relative;isolation:isolate;overflow:hidden;min-height:135px;border:3px solid var(--world-color);border-radius:21px;background:#19132d;color:#fff;cursor:pointer;padding:12px;display:flex;align-items:flex-end;text-align:left;transition:transform .16s}
+.admin-world:hover,.admin-world:focus-visible{transform:translateY(-3px);outline:3px solid #fff;outline-offset:2px}
+.admin-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:.65}
+.admin-world::after{content:'';position:absolute;inset:0;background:linear-gradient(transparent,#10091ce8);z-index:-1}
+.admin-symbol{width:40px;height:40px;object-fit:contain;align-self:flex-start;position:absolute;top:10px;left:10px}
+.admin-world b{font-size:16px;text-shadow:0 2px 3px #000;line-height:1.4}
+.photosensitive .lesson-gem.earned{text-shadow:none}.high-contrast :is(.tune-dialog,.admin-dialog,.phase-dialog .intro){background:#000!important;color:#fff!important}
+.high-contrast .phase-dialog .intro :is(h1,h2,em,p,summary,.eyebrow,.intro-detail,.text-button){color:#fff!important}
+@media(max-width:760px){.admin-worlds{grid-template-columns:repeat(2,1fr);padding:13px;gap:10px}.admin-world{min-height:110px}.tune-dialog[open]{min-height:300px}.tune-portrait{min-height:280px;width:36%}.tune-copy{padding:20px 14px}.tune-copy p{font-size:13px}}
+/* Selecting a portable device immediately switches to the compact horizontal layout. */
+body:is([data-device=mobile],[data-device=tablet]) .scene-shell{height:100svh;min-height:0}
+body:is([data-device=mobile],[data-device=tablet])[data-screen=menu] .menu-content{width:54%;padding:28px 0 24px;margin-left:3%}
+body:is([data-device=mobile],[data-device=tablet])[data-screen=menu] .game-logo{font-size:clamp(40px,6vw,82px);margin:0 0 14px;padding:13px 22px}
+body:is([data-device=mobile],[data-device=tablet])[data-screen=menu] .actor-wrap{width:47%;height:84%;right:0;bottom:3%}
+body:is([data-device=mobile],[data-device=tablet]) .menu-nav{gap:8px}
+body:is([data-device=mobile],[data-device=tablet]) .menu-nav .orbit-button{min-height:48px!important;padding:6px 10px}
+body:is([data-device=mobile],[data-device=tablet]) .menu-nav .button-copy b{font-size:clamp(16px,2.6vw,32px)}
+body:is([data-device=mobile],[data-device=tablet]) .menu-nav .button-icon{width:32px;height:32px;font-size:24px}
+body:is([data-device=mobile],[data-device=tablet]) .pixel-greeting{display:none}
+body:is([data-device=mobile],[data-device=tablet]) .say-hello{bottom:3%;right:12%;left:auto;font-size:12px}
+body:is([data-device=mobile],[data-device=tablet])[data-screen=game] .app{height:100svh;min-height:0;padding:0 12px 4px;grid-template-rows:34px minmax(0,1fr)}
+body:is([data-device=mobile],[data-device=tablet]) .app main{grid-template-rows:minmax(0,1fr) 44px}
+body:is([data-device=mobile],[data-device=tablet]) .app .stage{grid-template-rows:34px minmax(0,1fr) 36px}
+body:is([data-device=mobile],[data-device=tablet]) .app .play-space{grid-template-columns:55% 45%;gap:8px}
+body:is([data-device=mobile],[data-device=tablet]) .app .pixel-art{inset:0}
+body:is([data-device=mobile],[data-device=tablet]) .app .scoreboard{flex-direction:row;min-height:0;padding:2px}
+body:is([data-device=mobile],[data-device=tablet]) .app .scoreboard strong{font-size:18px}
+body:is([data-device=mobile],[data-device=tablet]) .app .scoreboard>div{min-width:65px;padding:0 12px}
+body:is([data-device=mobile],[data-device=tablet]) .app .pixel-speech{top:0;min-height:0;padding:5px 9px}
+body:is([data-device=mobile],[data-device=tablet]) .app .pixel-speech p{font-size:11px}
+body:is([data-device=mobile],[data-device=tablet]) .app .pixel-speech span{display:none}
+body:is([data-device=mobile],[data-device=tablet]) .app .bottom-deck{grid-template-columns:minmax(0,1fr) minmax(145px,27%);gap:8px;padding-top:2px}
+body:is([data-device=mobile],[data-device=tablet]) .app .portal-card{display:block;padding:5px 8px}
+body:is([data-device=mobile],[data-device=tablet]) .portal-card p{display:none}
+body:is([data-device=mobile],[data-device=tablet]) .portal-heading{font-size:8px}
+body:is([data-device=mobile],[data-device=tablet]) .app .song-icon{height:28px;width:28px}
+body:is([data-device=mobile],[data-device=tablet]) .app #track{height:calc(100% - 28px)}
+body:is([data-device=mobile],[data-device=tablet]) .app .track-meta{height:28px;padding:0 10px;font-size:9px}
+body:is([data-device=mobile],[data-device=tablet]) .app .touch-controls{margin:4px 0;gap:12px}
+body:is([data-device=mobile],[data-device=tablet]) .app .touch-controls button{height:35px;font-size:26px;border:2px solid #f4e7ff;border-radius:13px;color:#312044;background:linear-gradient(135deg,#ef8cdb,#a6b7f8);box-shadow:0 3px 0 #654781;line-height:1;touch-action:none}
+body:is([data-device=mobile],[data-device=tablet]) .app .touch-controls button:nth-child(2){background:linear-gradient(135deg,#a9ebff,#71bce9)}
+body:is([data-device=mobile],[data-device=tablet]) .app .touch-controls button:nth-child(3){background:linear-gradient(135deg,#d9acff,#a784ed)}
+body:is([data-device=mobile],[data-device=tablet]) .app .touch-controls button:nth-child(4){background:linear-gradient(135deg,#ffe4a9,#eebc77)}
+@media(orientation:landscape) and (max-height:550px){body[data-screen=tutorial] .tutorial-ui{width:56%;padding:12px 0;margin-left:3%}.tutorial-board{height:31svh!important;min-height:100px!important}.tutorial-toolbar h2{font-size:20px}.tutorial-instruction{padding:8px 12px}.tutorial-instruction .dialogue-text{font-size:13px}.tutorial-steps,.lesson-rewards{margin:4px 0}.tutorial-next .orbit-button{min-height:36px;font-size:14px}.tutorial-touch{display:none}.tutorial-status{font-size:11px}.lesson-gem{font-size:20px}body[data-screen=tutorial] .actor-wrap{height:90%;width:42%;bottom:-5%}.tutorial-toolbar .quiet-button{font-size:11px;padding:6px}.settings-dialog{max-height:94svh}.phase-dialog .intro{padding:10px 18px!important}.phase-dialog .phase-cover{width:42px;height:42px}.phase-dialog .chapter h1{font-size:25px;margin:3px}.phase-dialog .chapter p{font-size:13px}.phase-dialog .intro #introCopy{font-size:12px}.phase-dialog .intro .primary-button{margin-top:5px;min-height:36px;padding:7px 18px}}

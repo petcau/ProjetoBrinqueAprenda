@@ -15,9 +15,9 @@
       <div class="orbit-bg" aria-hidden="true"></div><div class="scene-orbit" aria-hidden="true"></div>
       <canvas id="orbitFx" class="orbit-fx" aria-hidden="true"></canvas><canvas id="cinemaCanvas" class="cinema-canvas" role="img" aria-label="A viagem animada de Pixel pelos portais"></canvas>
 
-      <div id="menuContent" class="menu-content"><span class="menu-kicker">UMA AVENTURA EM CADA PARTIDA!</span>
+      <div id="menuContent" class="menu-content">
         <h1 class="game-logo" aria-label="Robô Ritmado"><i class="logo-note" aria-hidden="true">♫</i><span class="logo-word logo-robot">Robô</span><span class="logo-word logo-rhythm">Ritmado</span><i class="logo-star" aria-hidden="true">✦</i><span class="logo-decoration" aria-hidden="true">✧　♪　✦　♫　✧</span><i class="logo-sparkles" aria-hidden="true"><b>✦</b><b>♩</b><b>✦</b><b>♪</b><b>✦</b></i></h1>
-        <p class="menu-story">Uma guitarra. Muitos mundos!<br> Vem brincar com <strong>Pixel!</strong></p>
+
         <nav class="menu-nav" aria-label="Menu principal">
           <button id="menuPlay" class="orbit-button play" data-cue="play"><span class="button-icon" aria-hidden="true">▷</span>Jogar<span class="button-arrow" aria-hidden="true">↗</span></button>
           <button id="menuResume" class="orbit-button" data-cue="back" hidden><span class="button-icon" aria-hidden="true">↻</span>Continuar partida<span class="button-arrow" aria-hidden="true">→</span></button>
@@ -25,25 +25,24 @@
           <button id="menuOptions" class="orbit-button options" data-cue="options"><span class="button-icon" aria-hidden="true">⚙</span>Opções<span class="button-arrow" aria-hidden="true">→</span></button>
           <button id="menuAccessibility" class="orbit-button accessibility" data-cue="accessibility"><span class="button-icon" aria-hidden="true">◎</span>Acessibilidade<span class="button-arrow" aria-hidden="true">→</span></button>
           <button id="menuAbout" class="orbit-button about" data-cue="about"><span class="button-icon" aria-hidden="true">✧</span>Sobre Nós<span class="button-arrow" aria-hidden="true">→</span></button>
-        </nav><p class="menu-hint"><kbd>Tab</kbd> para navegar · <kbd>Enter</kbd> para escolher<br>Jogue no seu tempo. Ajuste em Acessibilidade.</p>
+        </nav>
       </div>
       <div id="portalScene" class="cinema-portal" aria-hidden="true"></div>
       <div id="orbitActor" class="actor-wrap"><div class="actor-plinth" aria-hidden="true"></div><canvas id="menuStage" class="menu-stage" aria-hidden="true"></canvas><canvas id="orbitPixel" role="img" aria-label="Pixel com seu outfit padrão e guitarra estrela, tocando devagar em OrbitHop"></canvas></div>
-      <div id="pixelGreeting" class="pixel-greeting"><b>Oi, eu sou Pixel!</b><br>Bora fazer uma música e viajar pelas estrelas?</div><button id="sayHello" class="say-hello" data-cue="tutorial">Oi, Pixel! ♡</button><div id="loadingTrip" class="toast" role="status" hidden>✦ Preparando nossa viagem…</div><div id="pixelName" class="pixel-name"><i></i><div>PIXEL<small>SOM QUE CONECTA MUNDOS</small></div></div>
+      <div id="pixelGreeting" class="pixel-greeting"><b>Oi, eu sou Pixel!</b><br>Bora fazer uma música e viajar pelas estrelas?</div><button id="sayHello" class="say-hello" data-cue="tutorial">Oi, Pixel! ♡</button><div id="pixelName" class="pixel-name"><i></i><div>PIXEL<small>SOM QUE CONECTA MUNDOS</small></div></div>
       <div id="cinemaUI" class="cinema-ui" hidden>
-        <div class="cinema-top"><div class="cinema-place"><span id="sceneNumber">PRÓLOGO / 01</span><h2 id="scenePlace">OrbitHop, lar de Pixel</h2></div><div class="view-toolbar"><button id="pauseCinema" class="quiet-button" data-cue="options">Pausar cena</button><button id="skipCinema" class="quiet-button" data-cue="back">Pular introdução</button></div></div>
-        <div class="cinema-bottom"><p id="storyAction" class="story-action"></p><div id="storyCaption" class="story-subtitle" role="status" aria-live="polite"></div><div id="storyProgress" class="cinema-progress" aria-hidden="true"></div><div class="cinema-controls"><button id="backCinema" class="quiet-button" data-cue="back" disabled>← Voltar</button><button id="nextCinema" class="quiet-button" data-cue="play">Avançar cena →</button></div></div>
+        <div class="cinema-top"><div class="cinema-place"><h2 id="scenePlace">OrbitHop, lar de Pixel</h2></div><div class="view-toolbar"><button id="pauseCinema" class="quiet-button" data-cue="options">Pausar cena</button><button id="skipCinema" class="quiet-button" data-cue="back">Pular introdução</button></div></div>
+        <div class="cinema-bottom"><p id="storyAction" class="story-action"></p><div id="storyCaption" class="story-subtitle" role="status" aria-live="polite"></div><div id="storyProgress" class="cinema-progress" aria-hidden="true"></div><div class="cinema-controls"><button id="backCinema" class="quiet-button" data-cue="back" disabled aria-label="Voltar cena">◀</button><button id="nextCinema" class="quiet-button" data-cue="play" aria-label="Avançar cena">▶</button></div></div>
       </div>
       <section id="tutorialUI" class="tutorial-ui" hidden aria-label="Tutorial guiado por Pixel">
         <div class="tutorial-toolbar"><h2>Ensaio com Pixel</h2><button id="leaveTutorial" class="quiet-button" data-cue="back">Voltar ao menu</button></div>
         <div id="tutorialSteps" class="tutorial-steps" aria-label="Progresso do tutorial"></div><div class="lesson-rewards"><span>Estrelinhas do ensaio</span><b id="lessonRewards">☆☆☆☆</b></div>
         <div class="tutorial-board"><canvas id="tutorialCanvas" role="img" aria-label="Pista demonstrativa com quatro direções e alvos fixos"></canvas></div>
-        <div class="tutorial-instruction"><div class="speaker"><span class="coach-mascot" aria-hidden="true">+ᴗ</span> SEU AMIGO PIXEL <span id="lessonNumber"></span></div><p id="tutorialDialogue" class="dialogue-text" aria-live="polite"></p><p id="tutorialFeedback" class="tutorial-status" role="status" aria-live="polite"></p></div>
+        <div class="tutorial-instruction"><div class="speaker"><canvas id="coachHead" class="coach-head" width="64" height="64" aria-hidden="true"></canvas> SEU AMIGO PIXEL <span id="lessonNumber"></span></div><p id="tutorialDialogue" class="dialogue-text" aria-live="polite"></p><p id="tutorialFeedback" class="tutorial-status" role="status" aria-live="polite"></p></div>
         <div class="tutorial-touch" aria-label="Controles do tutorial"><button data-tutorial-lane="0" aria-label="Esquerda">←</button><button data-tutorial-lane="1" aria-label="Baixo">↓</button><button data-tutorial-lane="2" aria-label="Cima">↑</button><button data-tutorial-lane="3" aria-label="Direita">→</button></div>
         <div class="tutorial-next"><button id="tutorialNext" class="orbit-button tutorial" data-cue="tutorial">Começar ensaio →</button><button id="tutorialPlay" class="orbit-button play" data-cue="play" hidden>Jogar a aventura ↗</button></div>
-        <p class="tutorial-caption">Sem vidas e sem pressa. Você avança quando aprender.<br>Use as setas do teclado ou toque nos botões.</p>
+
       </section>
-      <div class="orbit-footer"><div class="now-playing"><span class="equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>Órbita de Casa <span id="menuAudioStatus">· ative o som</span></span><button id="menuSound" class="music-toggle" aria-label="Ativar som do menu">♪ Ativar som</button></div><span class="footer-tag">SEU RITMO CONECTA O UNIVERSO.</span></div>
     </section><div id="gameCaption" class="game-caption" role="status" aria-live="polite" hidden><span id="captionApproach"></span><span id="captionResult"></span></div>
   `);
   document.body.insertAdjacentHTML('beforeend', `
@@ -74,6 +73,14 @@
     </dialog>
     <div id="shellToast" class="toast" role="status" aria-live="polite" hidden></div>
   `);
+
+  function lessonRewards(count){$('lessonRewards').innerHTML=Array.from({length:4},(_,i)=>'<span class="lesson-gem '+(i<count?'earned':'')+'" aria-hidden="true">✦</span>').join('');$('lessonRewards').setAttribute('aria-label',count+' de 4 estrelas');}
+  document.body.insertAdjacentHTML('beforeend',`<dialog id="tuneDialog" class="tune-dialog" aria-labelledby="tuneTitle"><div class="tune-portrait"><img src="assets/pixel-boas-vindas-v11.png" alt="Pixel preparando a aventura"></div><div class="tune-copy"><span class="dialog-kicker">♪ NOSSA CONEXÃO COMEÇA AQUI</span><h2 id="tuneTitle">Afinando os mundos!</h2><p>Minha guitarra e eu estamos preparando tudo para você. ♡</p><progress id="tuneProgress" max="100" value="0" aria-label="Recursos preparados"></progress><p id="tuneStatus" role="status">Conectando nossa aventura…</p><button id="tuneRetry" class="primary-button" hidden>Tentar conectar novamente ↻</button></div></dialog><dialog id="adminDialog" class="admin-dialog" aria-labelledby="adminTitle"><div class="dialog-header"><div><span class="dialog-kicker">ESTAÇÃO DE TESTES · CTRL + M</span><h2 id="adminTitle">Passaporte dos mundos</h2></div><button id="closeAdmin" class="close-icon" aria-label="Fechar estação de testes">×</button></div><p>Escolha um palco para testar. Seu save e seus recordes ficam preservados neste modo.</p><div id="adminWorlds" class="admin-worlds"></div></dialog>`);
+  for(const [index,world] of RR_LEVELS.entries()){const button=document.createElement('button');button.className='admin-world';button.style.setProperty('--world-color',world.accent);button.innerHTML='<img class="admin-background" src="'+world.background+'" alt=""><img class="admin-symbol" src="'+world.symbol+'" alt=""><b>'+String(index+1).padStart(2,'0')+' · '+world.name+'</b>';button.onclick=async()=>{button.disabled=true;try{await RR_BOOT.prepare();$('adminDialog').close();resumeAfterAdmin=false;journeyHeld=false;resumeAfterSettings=false;resumeAfterWelcome=false;for(const id of ['settingsDialog','safetyDialog','aboutDialog','rotateDialog'])if($(id).open)$(id).close();document.body.classList.remove('settings-open','warning-pending');cinemaPaused=true;screen('game');await RR_GAME.inspectWorld(index);}catch(error){toast(error.message);}finally{button.disabled=false;}};$('adminWorlds').append(button);}
+  function closeAdmin(){$('adminDialog').close();if(journeyHeld){journeyHeld=false;RR_GAME.continueJourney();}if(resumeAfterAdmin){resumeAfterAdmin=false;RR_GAME.resume();}}
+  $('closeAdmin').onclick=closeAdmin;$('adminDialog').addEventListener('cancel',event=>{event.preventDefault();closeAdmin();});
+  document.addEventListener('keydown',event=>{if(!event.ctrlKey||event.key.toLowerCase()!=='m'||event.repeat)return;event.preventDefault();if($('adminDialog').open){closeAdmin();return;}if($('tuneDialog').open)return;const state=pixelDiagnostics.snapshot().state;journeyHeld=RR_GAME.holdJourney();resumeAfterAdmin=currentScreen==='game'&&['playing','countdown'].includes(state);if(resumeAfterAdmin)RR_GAME.pause({notice:false});$('adminDialog').showModal();});
+
   const slider = (key,label,min,max,step,help) => `<div class="setting-row"><div class="setting-top"><label for="set-${key}">${label}</label><output id="out-${key}" for="set-${key}"></output></div><p>${help}</p><input id="set-${key}" data-setting="${key}" type="range" min="${min}" max="${max}" step="${step}"></div>`;
   const toggle = (key,label,help,sub='') => `<div class="setting-row"><div class="setting-top"><label for="set-${key}">${label}</label><input id="set-${key}" data-setting="${key}" type="checkbox" aria-describedby="help-${key}"></div><p id="help-${key}">${help}</p>${sub}</div>`;
   const subSlider = (key,label,min,max,step) => `<label for="set-${key}">${label}<output id="out-${key}" for="set-${key}"></output></label><input id="set-${key}" data-setting="${key}" type="range" min="${min}" max="${max}" step="${step}">`;
@@ -93,14 +100,15 @@
   document.body.insertAdjacentHTML('beforeend','<dialog id="rotateDialog" class="rotate-dialog" aria-labelledby="rotateTitle"><div class="rotate-icon" aria-hidden="true">▯ ↻ ▭</div><h2 id="rotateTitle">Vire a tela para jogar</h2><p>Na horizontal, você vê as setas e os personagens com mais espaço.</p><button id="closeRotate" class="quiet-button" data-cue="back">Entendi</button></dialog>');
   for(const word of document.querySelectorAll('.game-logo .logo-word')) word.dataset.text=word.textContent;
   const appActions = document.createElement('div'); appActions.className = 'game-settings';
-  appActions.innerHTML = '<button id="gameMenu" class="quiet-button" data-cue="back" aria-label="Pausar e voltar ao menu">☰ <span class="settings-label">Menu</span></button><button id="gameAccessibility" class="quiet-button" data-cue="accessibility" aria-label="Abrir Acessibilidade">◎</button>';
+  appActions.innerHTML = '<button id="gameMenu" class="quiet-button" data-cue="back" aria-label="Abrir Opções sem sair da partida">⚙ <span class="settings-label">Opções</span></button><button id="gameAccessibility" class="quiet-button" data-cue="accessibility" aria-label="Abrir Acessibilidade">◎</button>';
   document.querySelector('.top-actions').prepend(appActions);
   document.querySelector('.brand')?.addEventListener('click',e=>{e.preventDefault();returnMenu();});
 
   const buttonInfo={menuPlay:['Jogar','Começar a aventura'],menuTutorial:['Tutorial','Aprender com Pixel'],menuOptions:['Opções','Ajustar sons e velocidade'],menuAccessibility:['Acessibilidade','Do seu jeitinho'],menuAbout:['Sobre Nós','Conheça nossa turma']};
-  for(const [id,[title,sub]] of Object.entries(buttonInfo)){const button=$(id);button.setAttribute('aria-label',title);for(const node of [...button.childNodes])if(node.nodeType===Node.TEXT_NODE)node.remove();const label=document.createElement('span');label.className='button-copy';label.innerHTML='<b>'+title+'</b><small>'+sub+'</small>';button.insertBefore(label,button.querySelector('.button-arrow'));}
+  for(const [id,[title,sub]] of Object.entries(buttonInfo)){const button=$(id);button.setAttribute('aria-label',title);for(const node of [...button.childNodes])if(node.nodeType===Node.TEXT_NODE)node.remove();const label=document.createElement('span');label.className='button-copy';label.innerHTML='<b>'+title+'</b>';button.insertBefore(label,button.querySelector('.button-arrow'));}
   let greetingUntil=0;
   $('sayHello').onclick=()=>{const messages=['Oba! Que bom que você veio! ♡','Cada pessoa tem seu ritmo. Vamos achar o nosso?','Minha guitarra tá prontinha! E você?','Toca aqui! A nossa aventura vai ser demais! ✦'];$('pixelGreeting').textContent=messages[Math.floor(Math.random()*messages.length)];greetingUntil=performance.now()+4000;RR_AUDIO.hit(2);};
+  let resumeAfterSettings=false, resumeAfterAdmin=false,journeyHeld=false,welcomeFrom='menu',resumeAfterWelcome=false;
   let currentScreen = 'menu', toastTimer, lastFocused = null, lastColor = 'deuteranopia', dialogueTimer;
   function toast(message) { $('shellToast').textContent=message; $('shellToast').hidden=false; clearTimeout(toastTimer); toastTimer=setTimeout(()=>$('shellToast').hidden=true,4200); }
   function screen(name) {
@@ -120,14 +128,15 @@
     if(name!=='tutorial') tutorialActive=false;
   }
   async function returnMenu() { await RR_GAME.pause(); cinemaPaused=true; screen('menu'); $('menuPlay').focus({preventScroll:true}); }
-  function dismissWarning() { $('safetyDialog').close(); document.body.classList.remove('warning-pending'); if(currentScreen!=='menu')screen('menu');else RR_AUDIO.menu(); }
+  async function dismissWarning() { $('safetyDialog').close(); document.body.classList.remove('warning-pending'); if(welcomeFrom==='game'){if(resumeAfterWelcome){resumeAfterWelcome=false;await RR_GAME.resume();}}else{if(currentScreen!=='menu')screen('menu');else RR_AUDIO.menu();} }
   function openSettings(tab='options') {
     lastFocused=document.activeElement; syncSettings(); selectTab(tab);
+    if(currentScreen==='game'){const state=pixelDiagnostics.snapshot().state;resumeAfterSettings=['playing','countdown'].includes(state);if(resumeAfterSettings)RR_GAME.pause({notice:false});}
     document.body.classList.add('settings-open');
     if(!$('settingsDialog').open) $('settingsDialog').showModal();
     $(tab+'Tab').focus();
   }
-  function closeSettings() { $('settingsDialog').close(); document.body.classList.remove('settings-open'); if(lastFocused?.isConnected) lastFocused.focus({preventScroll:true}); }
+  function closeSettings() { $('settingsDialog').close(); document.body.classList.remove('settings-open'); if(lastFocused?.isConnected) lastFocused.focus({preventScroll:true});if(resumeAfterSettings){resumeAfterSettings=false;RR_GAME.resume();} }
   const tabs=['options','accessibility','preferences'];
   function selectTab(tab) {
     for(const key of tabs) { const active=key===tab; $(key+'Panel').hidden=!active; $(key+'Tab').setAttribute('aria-selected',String(active)); $(key+'Tab').tabIndex=active?0:-1; }
@@ -164,20 +173,17 @@
   $('closeRotate').onclick=()=>$('rotateDialog').close();
   for(const id of ['menuFullscreen','welcomeFullscreen']) $(id).onclick=()=>$('fullscreen').click();
   $('closeSettings').onclick=closeSettings; $('doneSettings').onclick=closeSettings;
-  $('settingsDialog').addEventListener('cancel',()=>{document.body.classList.remove('settings-open');setTimeout(()=>lastFocused?.focus({preventScroll:true}),0);});
-  $('reviewSafety').onclick=()=>{closeSettings();document.body.classList.add('warning-pending');RR_AUDIO.menu();$('safetyDialog').showModal();};
-  $('safetyAccessibility').onclick=()=>{dismissWarning();openSettings('accessibility');}; $('closeSafety').onclick=dismissWarning;
+  $('settingsDialog').addEventListener('cancel',event=>{event.preventDefault();closeSettings();});
+  $('reviewSafety').onclick=()=>{welcomeFrom=currentScreen;resumeAfterWelcome=resumeAfterSettings;resumeAfterSettings=false;closeSettings();document.body.classList.add('warning-pending');if(currentScreen==='menu')RR_AUDIO.menu();$('safetyDialog').showModal();};
+  $('safetyAccessibility').onclick=async()=>{await dismissWarning();openSettings('accessibility');}; $('closeSafety').onclick=dismissWarning;
   $('safetyDialog').addEventListener('cancel',e=>{e.preventDefault();dismissWarning();});
   for(const b of document.querySelectorAll('[data-return-menu]'))b.onclick=returnMenu;
   $('phaseAccessibility').onclick=()=>openSettings('accessibility');
   $('menuOptions').onclick=()=>openSettings('options'); $('menuAccessibility').onclick=()=>openSettings('accessibility');
   $('menuAbout').onclick=()=>$('aboutDialog').showModal();
-  $('gameMenu').onclick=returnMenu;
-  $('gameAccessibility').onclick=async()=>{await RR_GAME.pause();openSettings('accessibility');};
+  $('gameMenu').onclick=()=>openSettings('options');
+  $('gameAccessibility').onclick=()=>openSettings('accessibility');
   $('menuResume').onclick=async()=>{screen('game');await RR_GAME.resume();};
-  $('menuSound').onclick=async()=>{await RR_AUDIO.menu(); if(RR_SETTINGS.get().menuVolume===0)openSettings('options');};
-  document.addEventListener('rr-audio-status',e=>{ $('menuAudioStatus').textContent=e.detail?'· synth ambiente · 78 BPM':'· som indisponível';$('menuSound').textContent=e.detail?'♪ Ajustar som':'♪ Ativar som';$('menuSound').setAttribute('aria-label',e.detail?'Ajustar volume do menu':'Ativar som do menu');});
-  $('menuSound').onclick=()=>{ if(RR_AUDIO.snapshot().state==='running')openSettings('options');else RR_AUDIO.menu(); };
   let hoverStamp=0;
   document.addEventListener('pointerover',e=>{const b=e.target.closest('button[data-cue]');if(!b||b.disabled||b.contains(e.relatedTarget))return; if(performance.now()-hoverStamp<65)return;hoverStamp=performance.now();RR_AUDIO.cue(b.dataset.cue,'hover');});
   document.addEventListener('focusin',e=>{const b=e.target.closest('button[data-cue]');if(b&&!document.body.classList.contains('warning-pending'))RR_AUDIO.cue(b.dataset.cue,'hover');});
@@ -192,22 +198,22 @@
     const [speaker,text]=lines[index],bubble=$('storyCaption');bubble.dataset.speaker=speaker;bubble.replaceChildren();
     const b=document.createElement('b');b.textContent=(speaker==='PIXEL'?'✦ ':'♫ ')+speaker;bubble.append(b,document.createTextNode(text));
     bubble.classList.remove('changed');void bubble.offsetWidth;bubble.classList.add('changed');
-    $('nextCinema').textContent=shot===shots.length-1&&index===lines.length-1?'Vamos tocar! →':'Avançar →';
+    $('nextCinema').textContent='▶';
     $('backCinema').disabled=shot===0&&index===0;
   }
   function renderShot(){
     $('sceneShell').dataset.shot=shot;$('sceneShell').dataset.storyWorld=shots[shot].world;
-    $('sceneNumber').textContent='NOSSA HISTÓRIA / '+String(shot+1).padStart(2,'0');$('scenePlace').textContent=shots[shot].name;
+    $('scenePlace').textContent=shots[shot].name;
     $('storyAction').textContent=shots[shot].action;
     $('storyProgress').innerHTML=shots.map((_,i)=>'<span class="'+(i<=shot?'active':'')+'"></span>').join('');
-    $('nextCinema').textContent=shot===shots.length-1?'Vamos tocar! →':'E depois? →';
+    $('nextCinema').textContent='▶';
     $('cinemaCanvas').setAttribute('aria-label',shots[shot].action);speechKey='';renderSpeech();if(!cinemaPaused)RR_AUDIO.scene(shots[shot].motion);
   }
   async function startCinema(){
-    if(cinemaStarting)return;cinemaStarting=true;$('menuPlay').disabled=true;$('tutorialPlay').disabled=true;$('loadingTrip').hidden=false;
-    try{await cinema.ready;RR_GAME.stop();screen('cutscene');shot=0;shotElapsed=0;cinemaPaused=false;$('sceneShell').classList.remove('cinema-paused');$('pauseCinema').textContent='Pausar cena';renderShot();$('pauseCinema').focus({preventScroll:true});}
+    if(cinemaStarting)return;cinemaStarting=true;$('menuPlay').disabled=true;$('tutorialPlay').disabled=true;
+    try{await RR_BOOT.prepare();await cinema.ready;RR_GAME.stop();screen('cutscene');shot=0;shotElapsed=0;cinemaPaused=false;$('sceneShell').classList.remove('cinema-paused');$('pauseCinema').textContent='Pausar cena';renderShot();$('pauseCinema').focus({preventScroll:true});}
     catch(error){toast('A viagem ainda não carregou. '+error.message);}
-    finally{cinemaStarting=false;$('menuPlay').disabled=false;$('tutorialPlay').disabled=false;$('loadingTrip').hidden=true;}
+    finally{cinemaStarting=false;$('menuPlay').disabled=false;$('tutorialPlay').disabled=false;}
   }
   async function enterAdventure() {
     if(cinemaStarting)return;cinemaStarting=true;RR_AUDIO.silence();
@@ -245,7 +251,7 @@
   function setLesson(n) {
     tutorialPose=null;
     tutorialDirty=true;lesson=n;lessonElapsed=0;tutorialNote=null;tutorialHits=0;seen.clear();feedbackUntil=0;
-    $('lessonRewards').textContent=n===5?'★★★★':'☆☆☆☆';
+    lessonRewards(n===5?4:0);
     $('lessonNumber').textContent=` / ${n+1} DE ${lessons.length}`;dialogue(lessons[n]);$('tutorialFeedback').textContent='';
     $('tutorialSteps').innerHTML=lessons.map((_,i)=>`<i class="${i<n?'complete':i===n?'current':''}"></i>`).join('');
     $('tutorialSteps').setAttribute('aria-label',`Etapa ${n+1} de ${lessons.length}`);
@@ -257,7 +263,7 @@
   }
   function startTutorial(){RR_GAME.stop();screen('tutorial');tutorialActive=true;tutorialScore=0;setLesson(0);$('tutorialNext').focus({preventScroll:true});}
   $('menuTutorial').onclick=startTutorial;$('tutorialNext').onclick=()=>setLesson(Math.min(5,lesson+1));$('tutorialPlay').onclick=startCinema;$('leaveTutorial').onclick=returnMenu;
-  function feedback(message){$('tutorialFeedback').textContent=message;feedbackUntil=lessonElapsed+2;$('lessonRewards').textContent='★'.repeat(Math.min(4,lesson===1?seen.size:tutorialHits))+'☆'.repeat(Math.max(0,4-(lesson===1?seen.size:tutorialHits)));}
+  function feedback(message){$('tutorialFeedback').textContent=message;feedbackUntil=lessonElapsed+2;lessonRewards(Math.min(4,lesson===1?seen.size:tutorialHits));}
   function tutorialInput(lane) {
     if(!tutorialActive||$('settingsDialog').open||$('safetyDialog').open)return;
     tutorialPose={lane,start:lessonElapsed};
@@ -282,7 +288,7 @@
   const frames=[[0,0,418,526],[427,0,367,518],[797,0,366,519],[1166,0,370,520],[0,533,445,480],[448,520,340,494],[790,533,369,480],[1160,559,376,451]];
   const actorCanvas=$('orbitPixel'),act=actorCanvas.getContext('2d'),fxCanvas=$('orbitFx'),fx=fxCanvas.getContext('2d'),tutorialCanvas=$('tutorialCanvas'),tc=tutorialCanvas.getContext('2d');
   const dims=new Map();let standardPose=null;
-  RR_SPRITES.load('assets/pixel-padrao-v1.png').ready.then(im=>{standardPose=document.createElement('canvas');standardPose.width=418;standardPose.height=526;standardPose.getContext('2d').drawImage(im,0,0,418,526,0,0,418,526);});
+  RR_SPRITES.load('assets/pixel-padrao-v1.png').ready.then(im=>{const head=$('coachHead').getContext('2d');head.drawImage(im,115,0,195,170,0,0,64,64);standardPose=document.createElement('canvas');standardPose.width=418;standardPose.height=526;standardPose.getContext('2d').drawImage(im,0,0,418,526,0,0,418,526);});
 
   const menuStage=$('menuStage'),menuStageCtx=menuStage.getContext('2d'),menuStageAsset=RR_SPRITES.load('assets/palco-orbithop-v09.png');
   let menuActorBox={x:0,y:0,w:1,h:1};
@@ -330,19 +336,19 @@
     fx.textAlign='center';for(const [i,p] of motes.entries()){if(currentScreen==='tutorial'&&i%2)continue;const x=p.x*w+Math.sin(elapsed*.12+i)*18,y=h-((p.y+elapsed*p.speed)%1)*h;fx.globalAlpha=.15+Math.sin((y/h)*Math.PI)*.3;fx.fillStyle=i%2?'#a2d9f2':'#f3a5df';fx.font=`${p.s}px Segoe UI`;fx.fillText(p.symbol,x,y);}
     fx.globalAlpha=.28;guitarIcon(w*.84,h*.25,56,Math.sin(elapsed*.15)*.2);guitarIcon(w*.48,h*.75,33,-.7+elapsed*.03);fx.globalAlpha=1;
   }
-  function tutorialArrow(x,y,lane,size,color,filled){tc.save();tc.translate(x,y);tc.rotate([Math.PI,Math.PI/2,-Math.PI/2,0][lane]);tc.beginPath();[[-.44,-.23],[.03,-.23],[.03,-.46],[.49,0],[.03,.46],[.03,.23],[-.44,.23]].forEach(([a,b],i)=>i?tc.lineTo(a*size,b*size):tc.moveTo(a*size,b*size));tc.closePath();tc.lineWidth=filled?2:3;tc.fillStyle=filled?color:'#161b32';tc.strokeStyle=color;tc.fill();tc.stroke();tc.restore();}
+  function tutorialArrow(x,y,lane,size,color,filled){RR_ARROWS.draw(tc,x,y,lane,size,color,filled,{soft:RR_SETTINGS.gentle(),contrast:RR_SETTINGS.get().highContrast,theme:'doces'});}
   let tutorialBase=null,tutorialBaseKey='',tutorialDirty=true;
   window.addEventListener('rr-settings',()=>{tutorialBaseKey='';tutorialDirty=true;});
   function renderTutorial(dt){
     if(!tutorialActive)return;const [w,h]=dims.get(tutorialCanvas)||[1,1],s=RR_SETTINGS.get(),rate=RR_SETTINGS.rate();
     tutorialFrozen=document.hidden||$('settingsDialog').open||$('safetyDialog').open;if(!tutorialFrozen)lessonElapsed+=dt;
-    const colors=RR_GAME.palette(),target=h-52,laneW=w/4,size=Math.min(69*(s.scaleEnabled?s.arrowScale:1),laneW*.79),travel=3.2/rate/s.arrowSpeed;
+    const colors=['#ee80d2','#65d9ff','#c09aff','#ffcf81'],target=h-52,laneW=w/4,size=Math.min(69*(s.scaleEnabled?s.arrowScale:1),laneW*.79),travel=3.2/rate/s.arrowSpeed;
     const key=[w,h,s.highContrast,size,...colors].join('|');
     if(key!==tutorialBaseKey){
       tutorialBaseKey=key;tutorialDirty=true;tc.clearRect(0,0,w,h);
     const board=tc.createLinearGradient(0,0,0,h);board.addColorStop(0,'#58449ac9');board.addColorStop(1,'#2b638dc9');tc.fillStyle=s.highContrast?'#000':board;tc.fillRect(0,0,w,h);
 
-    for(let lane=0;lane<4;lane++){const x=(lane+.5)*laneW;tc.fillStyle=colors[lane]+'32';tc.fillRect(x-laneW/2+2,0,laneW-4,h);tc.strokeStyle='#ddd7ef33';tc.beginPath();tc.moveTo(x-laneW/2,0);tc.lineTo(x-laneW/2,h);tc.stroke();tutorialArrow(x,target,lane,size,colors[lane],false);tc.fillStyle='#e1e8ff';tc.font='bold 12px Trebuchet MS';tc.textAlign='center';tc.fillText(names[lane].toUpperCase(),x,h-17);}
+    for(let lane=0;lane<4;lane++){const x=(lane+.5)*laneW;tc.fillStyle=['#4d3157','#254e64','#40345f','#645039'][lane];tc.fillRect(x-laneW/2+2,0,laneW-4,h);tc.strokeStyle='#ddd7ef33';tc.beginPath();tc.moveTo(x-laneW/2,0);tc.lineTo(x-laneW/2,h);tc.stroke();tutorialArrow(x,target,lane,size,colors[lane],false);tc.fillStyle='#e1e8ff';tc.font='bold 12px Trebuchet MS';tc.textAlign='center';tc.fillText(names[lane].toUpperCase(),x,h-17);}
 
       tutorialBase=document.createElement('canvas');tutorialBase.width=tutorialCanvas.width;tutorialBase.height=tutorialCanvas.height;tutorialBase.getContext('2d').drawImage(tutorialCanvas,0,0);
     }
@@ -360,7 +366,7 @@
   }
   let lastFxDraw=-1000,lastActorDraw=-1000;
   function frame(now){requestAnimationFrame(frame);const dt=Math.min(.05,(now-last)/1000);last=now;
-    if(currentScreen==='game'||document.hidden||$('settingsDialog').open||$('aboutDialog').open||document.body.classList.contains('warning-pending'))return;
+    if(currentScreen==='game'||$('tuneDialog').open||$('adminDialog').open||document.hidden||$('settingsDialog').open||$('aboutDialog').open||document.body.classList.contains('warning-pending'))return;
     if(!document.hidden&&!(currentScreen==='cutscene'&&cinemaPaused))elapsed+=dt;
     if(currentScreen!=='tutorial'||now-lastActorDraw>=32){renderActor(currentScreen==='tutorial'?Math.min(.05,(now-lastActorDraw)/1000):dt);lastActorDraw=now;}if(now-lastFxDraw>=(currentScreen==='tutorial'?48:32)){renderFX();lastFxDraw=now;}renderTutorial(dt);if(currentScreen==='cutscene')renderSpeech();
     if(currentScreen==='cutscene'&&!cinemaPaused&&!document.hidden&&!$('settingsDialog').open){shotElapsed+=dt;if(shotElapsed>=shots[shot].duration)nextShot();}
@@ -373,8 +379,9 @@
   window.RR_FRONT=Object.freeze({snapshot:()=>({screen:currentScreen,cinema:cinema.snapshot(),shotCount:shots.length,warning:$('safetyDialog').open,settings:$('settingsDialog').open,shot,shotElapsed,cinemaPaused,lesson,lessonElapsed,tutorialHits,tutorialScore,tutorialNote:tutorialNote?{...tutorialNote}:null,actorTime,actorReady:actorImage.complete&&actorImage.naturalWidth>0,settingsValue:RR_SETTINGS.get(),audio:RR_AUDIO.snapshot()})});
   window.addEventListener('rr-settings',()=>{document.body.classList.toggle('interface-enlarged',RR_SETTINGS.get().scaleEnabled&&RR_SETTINGS.get().uiScale>1.1);$('gameCaption').hidden=currentScreen!=='game'||!RR_SETTINGS.get().captions;});
   screen('menu');RR_AUDIO.silence();syncSettings();RR_SETTINGS.apply();
-  $('safetyDialog').showModal();
-  RR_AUDIO.menu();
+  async function boot(){try{await RR_BOOT.prepare();$('safetyDialog').showModal();}catch(error){console.warn(error.message);}}
+  $('tuneDialog').addEventListener('cancel',event=>event.preventDefault());
+  $('tuneRetry').onclick=boot;boot();
   function unlockOnGesture(){
     if(currentScreen==='menu')RR_AUDIO.menu();
     document.removeEventListener('pointerdown',unlockOnGesture,true);
