@@ -33,6 +33,10 @@
       E.TutorialModal.nextStep(true);
       steps++;
     }
+    if (E?.GameHUD?.guideIntroActive) {
+      E.GameHUD.dismissGuideIntro(false);
+      steps++;
+    }
     return steps > 0;
   }
 
@@ -44,6 +48,8 @@
     const pre = document.getElementById('preloaderScreen');
     if (pre) pre.remove();
     window.CrystalOnboarding?.skipAll?.();
+    const brinqueSplash = document.getElementById('brinqueSplashScreen');
+    if (brinqueSplash) brinqueSplash.hidden = true;
     const splash = document.getElementById('unebSplashScreen');
     if (splash) splash.hidden = true;
     const wizard = document.getElementById('setupWizardScreen');
@@ -60,6 +66,9 @@
       E.GameHUD.paused = false;
       E.GameHUD.settingsOpen = false;
       E.GameHUD.guideOpen = false;
+      if (E.GameHUD.guideIntroActive) {
+        E.GameHUD.dismissGuideIntro(false);
+      }
     }
   }
 
@@ -95,6 +104,11 @@
         paused: Boolean(E?.GameHUD?.paused),
         muted: Boolean(E?.GameHUD?.muted),
         settingsOpen: Boolean(E?.GameHUD?.settingsOpen),
+        guideOpen: Boolean(E?.GameHUD?.guideOpen),
+        guideWorld: E?.GameHUD?.guideWorld || 'caverna',
+        guideItemIndex: E?.GameHUD?.guideItemIndex ?? 0,
+        guideIntroActive: Boolean(E?.GameHUD?.guideIntroActive),
+        lastViewedTutorialKey: E?.GameHUD?.lastViewedTutorialKey || null,
         godMode: Boolean(E?.GameHUD?.godMode),
         mapLocked: Boolean(E?.GameHUD?.isMapLocked?.())
       },

@@ -2,7 +2,18 @@
 (() => {
   const Previous = GuardiaoAdventureArt;
   const swimScale = 0.78;
+  const assets = new URL("../jornada-final/", document.currentScript.src);
   window.GuardiaoAdventureArt = class extends Previous {
+    async load(...args) {
+      await super.load(...args);
+      if (this.phase !== 2) return;
+      this.dressingImage = new Image();
+      this.dressingImage.src = new URL(
+        JornadaFinalAtlas["vestir-traje"].file,
+        assets,
+      );
+      await this.dressingImage.decode();
+    }
     riverTrash(c, sprites, target, p, progress) {
       if (this.phase !== 2 || !p.swimming || !target)
         return super.riverTrash(c, sprites, target, p, progress);
@@ -26,14 +37,13 @@
     river(c, p, time, reduced, options = {}) {
       if (this.phase !== 2) return super.river(c, p, time, reduced, options);
       if (options.dressing) {
-        // Desenha diretamente o banco carregado, sem atravessar os substitutos de traje.
-        const d = GuardiaoAmanhaAtlas["traje-acoes"],
-          im = this.images.get("traje-acoes"),
+        const d = JornadaFinalAtlas["vestir-traje"],
+          im = this.dressingImage,
           progress = Math.max(0, Math.min(0.999, options.progress || 0)),
-          index = Math.floor(progress * 4),
+          index = Math.min(5, Math.floor(progress * 6)),
           f = d.frames[index],
           b = f.bounds,
-          k = 90 / d.referenceHeight;
+          k = 86 / f.height;
         c.save();
         c.translate(p.x, p.y);
         if (im)

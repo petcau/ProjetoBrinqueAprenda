@@ -106,8 +106,8 @@ window.SettingsBook = (() => {
       nextEl.style.opacity = '1';
       currentSubPage = targetPage;
       if (current === 'about') {
-        if (sheetHeaderIcon) sheetHeaderIcon.src = targetPage === 2 ? 'assets/configuracoes/mural/ui/icone-creditos.webp' : 'assets/configuracoes/mural/ui/icone-sobre-nos.webp';
-        if (sheetMainTitle) sheetMainTitle.textContent = targetPage === 2 ? 'Quem fez a ilha' : 'Ilha do Conhecimento';
+        if (sheetHeaderIcon) sheetHeaderIcon.src = targetPage === 3 ? 'assets/configuracoes/mural/ui/icone-creditos.webp' : 'assets/configuracoes/mural/ui/icone-sobre-nos.webp';
+        if (sheetMainTitle) sheetMainTitle.textContent = targetPage === 3 ? 'Quem fez a ilha' : targetPage === 2 ? 'Equipe e instituição' : 'Ilha do Conhecimento';
       }
       updatePaginationUI();
       setTimeout(() => {

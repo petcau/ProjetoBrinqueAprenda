@@ -1411,3 +1411,186 @@ a {
     top: -8px;
   }
 }
+
+/* The scene fills the viewport; its original framing and credits remain intact. */
+#final-cinema:not([hidden]) {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: block;
+  isolation: isolate;
+  background: #000;
+  overflow: hidden;
+}
+#final-movie {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-height: 100dvh;
+  object-fit: contain;
+  background: #000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.1s ease;
+}
+#final-cinema[data-cinema-state="playing"] #final-movie,
+#final-cinema[data-cinema-state="paused"] #final-movie {
+  opacity: 1;
+}
+#final-cinema::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: #000;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+#final-cinema[data-cinema-state="leaving"]::after {
+  opacity: 1;
+}
+#final-cinema #ending-skip {
+  position: absolute;
+  z-index: 2;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  width: auto;
+  min-height: 44px;
+  padding: 9px 18px;
+  border: 1px solid #e4d09a77;
+  border-radius: 24px;
+  background: #071b17b8;
+  color: #f5ecd6;
+  font: 600 14px/1.2 system-ui;
+  cursor: pointer;
+  opacity: 0.9;
+  transition:
+    opacity 0.5s ease,
+    background 0.2s;
+}
+#final-cinema[data-cinema-quiet="true"] #ending-skip:not(:focus-visible) {
+  opacity: 0;
+}
+#final-cinema #ending-skip:hover {
+  background: #183e32;
+  opacity: 1;
+}
+#cinema-gate:not([hidden]) {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  padding: 22px;
+  background: radial-gradient(ellipse at center, #183c30ed, #000f 75%);
+  color: #fff0cd;
+}
+#cinema-gate .eyebrow {
+  margin: 0;
+  color: #d4c183;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+}
+#cinema-gate h2 {
+  margin: 0;
+  font: 400 clamp(30px, 5vw, 60px) / 1.1 Lilita;
+  color: inherit;
+}
+#final-movie-status {
+  margin: 0;
+  max-width: 540px;
+  font: 400 15px/1.5 system-ui;
+  color: #e5e6d3;
+}
+#cinema-action {
+  margin-top: 12px;
+  padding: 14px 30px;
+  min-height: 48px;
+  border: 1px solid #d4be83;
+  border-radius: 28px;
+  background: linear-gradient(#386446, #214534);
+  color: #fff0cd;
+  font: 600 16px/1.2 system-ui;
+  cursor: pointer;
+}
+#final-cinema :is(#cinema-action, #ending-skip):focus-visible {
+  outline: 3px solid #f2d48c;
+  outline-offset: 4px;
+}
+#final-movie::-webkit-media-controls {
+  display: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  #final-movie,
+  #final-cinema::after,
+  #final-cinema #ending-skip {
+    transition: none;
+  }
+}
+
+#journey-return:not([hidden]) {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  background: #102e24;
+}
+#return-art {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+.return-caption {
+  position: relative;
+  padding: 12px max(20px, env(safe-area-inset-left));
+  padding-right: max(270px, 22vw);
+  background: linear-gradient(100deg, #244d36, #153d2f);
+  border-top: 3px solid #b58b47;
+  color: #fff1cd;
+  min-height: 120px;
+  box-sizing: border-box;
+}
+.return-caption h2 {
+  margin: 3px 0 5px;
+  font: 400 clamp(24px, 3vw, 36px) / 1.1 Lilita;
+  color: #fff1cd;
+}
+.return-caption p {
+  margin: 3px 0;
+  max-width: 800px;
+}
+.return-caption #return-next {
+  position: absolute;
+  right: max(16px, env(safe-area-inset-right));
+  top: 50%;
+  transform: translateY(-50%);
+  width: 230px;
+  min-height: 48px;
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .return-caption {
+    min-height: 92px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-right: 210px;
+    font-size: 12px;
+  }
+  .return-caption h2 {
+    font-size: 24px;
+  }
+  .return-caption .eyebrow {
+    font-size: 10px;
+  }
+  .return-caption #return-next {
+    width: 185px;
+    font-size: 14px;
+    right: 10px;
+  }
+}

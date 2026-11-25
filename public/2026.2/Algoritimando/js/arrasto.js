@@ -22,6 +22,8 @@
    - soltar em espaço ocupado     → as duas cartas trocam de lugar
    - soltar na bandeja            → carta volta para a bandeja
    - soltar em qualquer outro lugar → carta volta para a bandeja
+   Com "Cartas no lugar" ligado nas Configurações, a carta volta
+   sempre para o mesmo lugar da bandeja, e as outras não se mexem.
    ============================================================ */
 
 'use strict';
@@ -94,11 +96,29 @@
     return { tipo: 'bandeja', indice: [...fila.children].indexOf(li) };
   }
 
-  // cria um lugar novo na bandeja e põe a carta nele;
-  // com índice, entra naquela posição (usado na troca, para a carta
-  // deslocada ocupar o lugar de onde a outra saiu)
+  /* "Cartas no lugar" (Configurações, LIGADO de fábrica): cada
+     carta tem um lugar fixo na bandeja (li com data-lugar = id do
+     passo). Ao sair, o lugar fica vazio; ao voltar, ela ocupa o
+     mesmo lugar e as outras não se mexem. */
+  const CHAVE_AJUSTES = 'algoritimando-ajustes';
+  function cartasNoLugar() {
+    // só desliga quem escolheu desligar
+    try { return JSON.parse(localStorage.getItem(CHAVE_AJUSTES) || '{}').cartasNoLugar !== false; }
+    catch { return true; }
+  }
+
+  // põe a carta num lugar da bandeja. Com "cartas no lugar", volta
+  // para o lugar dela; senão cria um lugar novo, no fim ou, com
+  // índice, naquela posição (usado na troca, para a carta deslocada
+  // ocupar o lugar de onde a outra saiu)
   function criarLugarNaBandeja(carta, indice = null) {
+    const id = carta.dataset.passo;
+    if (cartasNoLugar()) {
+      const casa = [...fila.children].find(li => li.dataset.lugar === id);
+      if (casa && !casa.querySelector('.carta')) { casa.appendChild(carta); return; }
+    }
     const li = document.createElement('li');
+    if (id) li.dataset.lugar = id;
     li.appendChild(carta);
     const irmaos = fila.children;
     if (indice !== null && indice >= 0 && indice < irmaos.length) {
@@ -109,15 +129,19 @@
   }
 
   // depois de qualquer movimento: ajusta as classes dos espaços e
-  // remove da bandeja os lugares que ficaram vazios
+  // cuida dos lugares vazios da bandeja (somem, ou ficam marcados
+  // com "cartas no lugar")
   function sincronizar() {
     for (const espaco of espacos()) {
       const tem = !!espaco.querySelector('.carta');
       espaco.classList.toggle('preenchido', tem);
       espaco.classList.toggle('vazio', !tem);
     }
+    const fixo = cartasNoLugar();
     for (const li of [...fila.children]) {
-      if (!li.querySelector('.carta')) li.remove();
+      const vazio = !li.querySelector('.carta');
+      if (vazio && !fixo) li.remove();
+      else li.classList.toggle('lugar-vazio', vazio);
     }
   }
 
@@ -151,6 +175,7 @@
       if (origem.tipo !== 'bandeja') {
         criarLugarNaBandeja(carta);
         aviso = `"${legendaDe(carta)}" voltou para a bandeja.`;
+        if (window.Som && Som.cartaVolta) Som.cartaVolta();
       }
     }
 
@@ -557,6 +582,7 @@
   // a dica do jogo.js coloca a carta com as MESMAS regras de
   // movimento (troca, volta para a bandeja, aviso de 'carta-movida')
   window.Arrasto = {
+    sincronizar,
     mover(carta, alvo) {
       cancelarSelecao();
       const aviso = executarMovimento(carta, alvo);

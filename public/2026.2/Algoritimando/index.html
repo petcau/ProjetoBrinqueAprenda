@@ -7,14 +7,28 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <title>Algoritimando</title>
+    <!-- modo instalável: manifesto, ícones e cor da barra (pwa.js) -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta name="theme-color" content="#8a63c7" />
+    <meta name="description" content="Jogo educativo que ensina algoritmos: ajude os moradores da cidade, passo a passo." />
+    <link rel="icon" type="image/png" href="img/icones/favicon-64.png" />
+    <link rel="apple-touch-icon" href="img/icones/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Algoritimando" />
     <!-- fontes guardadas no projeto: o jogo funciona sem internet -->
-    <link rel="stylesheet" href="fontes/fontes.css?v=202611120212" />
-    <link rel="stylesheet" href="style.css?v=202611120212" />
+    <link rel="stylesheet" href="fontes/fontes.css?v=202611251330" />
+    <link rel="stylesheet" href="style.css?v=202611251330" />
   </head>
   <body>
     <div id="stage">
       <section class="screen bg-city" id="menu">
         <h1 class="logo">Algoritimando</h1>
+        <!-- créditos da equipe, no canto do menu (app.js) -->
+        <button class="chip menu-creditos" id="bCreditos" type="button">Créditos</button>
+        <!-- versão do jogo (js/versao.js, escrito por ferramentas/gerar-sw.js) -->
+        <small class="menu-versao" id="versaoJogo"></small>
         <img class="menu-robo" src="img/robo-sorrindo.webp" alt="" />
         <div class="menu-btns">
           <button class="btn" id="bPlay">Jogar</button>
@@ -47,6 +61,18 @@
         <p class="caption" id="sceneText"></p>
         <div class="dots" id="dots"></div>
         <button class="btn next" id="bNext">Avançar ›</button>
+      </section>
+
+      <!-- animação final: quadros como os da abertura, com zoom lento,
+           confete e o álbum completo (final.js) -->
+      <section class="screen" id="fim">
+        <div class="scene" id="fimArte"></div>
+        <div class="fim-album" id="fimAlbum" hidden></div>
+        <div class="confete" id="fimConfete" aria-hidden="true"></div>
+        <button class="btn small skip" id="bFimPular">Pular ›</button>
+        <p class="caption" id="fimTexto"></p>
+        <div class="dots" id="fimDots"></div>
+        <button class="btn next" id="bFimNext">Avançar ›</button>
       </section>
 
       <section class="screen bg-sand" id="char">
@@ -164,11 +190,15 @@
             <div class="bar"><i id="progBar"></i></div>
             <!-- o próximo objetivo: Agente, Agente Sênior ou nenhum -->
             <small class="prog-meta" id="progMeta"></small>
-            <button class="btn ghost small" id="bIdeias" type="button">
-              Minhas ideias
+            <button class="btn small" id="bAlbum" type="button">
+              Meu álbum
             </button>
-            <button class="btn small" id="bRestart" hidden>
-              ↺ Jogar tudo de novo
+            <button class="btn ghost small" id="bIdeias" type="button">
+              Meus aprendizados
+            </button>
+            <!-- só depois de concluir os 8 chamados (app.js) -->
+            <button class="btn ghost small" id="bCertificado" type="button" hidden>
+              Meu certificado
             </button>
           </div>
           <!-- protótipos de chamados novos, atrás de senha (em-progresso.js).
@@ -265,7 +295,7 @@
             <span class="progresso-texto">Nível 1 de 5</span> ▾
           </button>
           <div class="rodape-direita">
-            <!-- só no celular: a montagem é opcional e troca de lugar com a cena -->
+            <!-- só no celular deitado: a montagem troca de lugar com a bandeja (montagem.js) -->
             <button
               class="chip"
               id="btn-montagem"
@@ -374,6 +404,14 @@
                   >+1 dica</b
                 >
               </div>
+              <!-- figurinha nova no álbum: só na primeira vez que o nível é concluído -->
+              <div class="premio-figurinha" hidden>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 3h10l4 4v14H5Z" />
+                  <path d="M15 3v4h4" />
+                </svg>
+                <b>+1 figurinha</b>
+              </div>
             </div>
             <button class="btn conclusao-continuar" type="button">
               <span class="conclusao-continuar-texto">Próximo nível</span> ›
@@ -427,29 +465,110 @@
         <div class="panel final-panel">
           <h2>Missão cumprida, <span id="finName"></span>!</h2>
           <p id="finTexto">
-            Você ensinou o robô a seguir passos, repetir, decidir e fazer duas
-            coisas ao mesmo tempo. Tudo isso é algoritmo!
+            Você ajudou a cidade inteira seguindo passos, repetindo, decidindo e
+            fazendo duas coisas ao mesmo tempo. Tudo isso é algoritmo!
           </p>
           <div class="final-selos" id="finSelos"></div>
           <p class="final-stars">
             <img src="img/ui/estrela.webp" alt="" />
             <b id="finStarsN">0</b> estrelas
           </p>
+          <div class="row final-extras">
+            <button class="btn ghost small" id="bFimAlbum" type="button">Ver meu álbum</button
+            ><button class="btn small dourado" id="bFimCertificado" type="button">Meu certificado</button
+            ><button class="btn ghost small" id="bFimRever" type="button">Rever a animação</button>
+          </div>
           <div class="row">
-            <button class="btn" id="bAgain">Jogar de novo</button
+            <button class="btn perigo" id="bAgain" type="button">Jogar de novo</button
             ><button class="btn brown" id="bToHub">Voltar à central</button>
           </div>
         </div>
       </section>
 
-      <!-- Minhas ideias: os selos, com a frase e uma carta de exemplo -->
+      <!-- Meus aprendizados: os selos, com a frase e uma carta de exemplo -->
       <div class="modal" id="ideias">
         <div class="panel ideias-painel">
-          <h2>Minhas ideias</h2>
+          <h2>Meus aprendizados</h2>
           <ul class="ideias-lista"></ul>
           <button class="btn ghost" id="bIdeiasFechar" type="button">
             Voltar ao mapa
           </button>
+        </div>
+      </div>
+
+      <!-- Certificado para imprimir (final.js). Na impressão, só ele aparece. -->
+      <div class="modal" id="certificado" role="dialog" aria-modal="true" aria-label="Certificado">
+        <!-- a entrada com festa, no ritmo do som do certificado (final.js) -->
+        <div class="cert-efeitos" aria-hidden="true">
+          <div class="cert-luz"></div>
+          <div class="cert-raios"></div>
+          <div class="cert-clarao"></div>
+          <div class="cert-confete"></div>
+        </div>
+        <div class="certificado-caixa">
+          <article class="certificado-folha">
+            <div class="certificado-moldura">
+              <p class="certificado-jogo">Algoritimando</p>
+              <h2 class="certificado-titulo">Certificado de Agente Sênior</h2>
+              <p class="certificado-frase">Certificamos que</p>
+              <p class="certificado-nome" id="certNome"></p>
+              <p class="certificado-texto" id="certTexto"></p>
+              <ul class="certificado-ideias" id="certIdeias"></ul>
+              <!-- estrelas, código e data logo abaixo das ideias, longe das assinaturas -->
+              <div class="certificado-dados">
+                <span><b id="certEstrelas">0</b> estrelas</span>
+                <span>Código <b id="certCodigo"></b></span>
+                <span id="certData"></span>
+              </div>
+              <div class="certificado-rodape">
+                <img class="certificado-rosto" id="certRosto" alt="" />
+                <div class="certificado-assinaturas">
+                  <span>Professor(a)</span>
+                  <span>Aluno(a)</span>
+                </div>
+                <img class="certificado-guia" src="img/robo-feliz.webp" alt="" />
+              </div>
+            </div>
+          </article>
+          <p class="certificado-dica">Na hora de imprimir, escolha a folha <b>deitada</b> (paisagem).</p>
+          <div class="row certificado-botoes">
+            <button class="btn" id="bCertImprimir" type="button">Imprimir</button
+            ><button class="btn ghost" id="bCertFechar" type="button">Fechar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Meu álbum: uma figurinha (a imagem da lição) por nível concluído (album.js) -->
+      <div class="modal" id="album" role="dialog" aria-modal="true" aria-labelledby="album-h">
+        <div class="panel album-painel">
+          <header class="album-topo">
+            <h2 id="album-h">Meu álbum</h2>
+            <div class="album-progresso">
+              <small class="album-contador">0 de 32 figurinhas</small>
+              <div class="bar album-barra"><i></i></div>
+            </div>
+          </header>
+          <nav class="album-abas" aria-label="Chamados do álbum"></nav>
+          <div class="album-corpo">
+            <button class="chip album-anterior" type="button" aria-label="Página anterior">‹</button>
+            <section class="album-pagina">
+              <div class="album-cabeca">
+                <b class="album-titulo"></b>
+                <small class="album-local"></small>
+              </div>
+              <div class="album-espacos"></div>
+            </section>
+            <button class="chip album-proxima" type="button" aria-label="Próxima página">›</button>
+          </div>
+          <button class="btn ghost album-fechar" type="button">Fechar o álbum</button>
+          <div class="album-zoom" hidden>
+            <div class="album-zoom-cartao">
+              <span class="album-zoom-imagem" role="img" aria-label="Figurinha"></span>
+              <small class="album-zoom-nivel"></small>
+              <b class="album-zoom-texto"></b>
+              <span class="album-zoom-dica">Toque para fechar</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -499,16 +618,22 @@
         </div>
       </div>
 
+      <!-- "Jogar de novo" da tela final: confirma antes de zerar (app.js) -->
       <div class="modal" id="again">
         <div class="panel">
-          <h2>Recomeçar do zero?</h2>
+          <h2>Jogar tudo de novo?</h2>
           <p>
-            Suas estrelas e dicas serão zeradas e todos os chamados voltam para o
-            nível 1.
+            As estrelas, as dicas, as figurinhas e os selos serão apagados, e
+            todos os chamados voltam para o nível 1. O seu nome continua. Isso
+            não pode ser desfeito.
           </p>
           <div class="row">
-            <button class="btn" id="bYes">Sim, recomeçar</button
-            ><button class="btn ghost" id="bNo">Cancelar</button>
+            <button class="btn ghost" id="bAgainNao" type="button">
+              Cancelar
+            </button>
+            <button class="btn perigo" id="bAgainSim" type="button">
+              Sim, recomeçar
+            </button>
           </div>
         </div>
       </div>
@@ -631,6 +756,19 @@
               aria-label="Volume dos efeitos"
             />
           </div>
+          <!-- cartas no lugar: a carta tirada do tabuleiro volta para o mesmo lugar da bandeja -->
+          <div class="som-linha tela-linha" id="linhaCartasNoLugar">
+            <span class="som-nome">Cartas no lugar</span>
+            <button
+              class="btn small som-liga"
+              id="bCartasNoLugar"
+              type="button"
+              aria-pressed="true"
+            >
+              Ligado
+            </button>
+            <span class="tela-dica">Cada carta volta para o mesmo lugar da bandeja. Desligado, as cartas da bandeja se juntam.</span>
+          </div>
           <!-- tela cheia: some onde o navegador não deixa (ex.: iPhone) -->
           <div class="som-linha tela-linha" id="linhaTelaCheia">
             <span class="som-nome">Tela cheia</span>
@@ -644,8 +782,90 @@
             </button>
             <span class="tela-dica">O jogo ocupa a tela toda, sem a barra do navegador.</span>
           </div>
+          <!-- instalar: só pelo site e onde o navegador deixa (pwa.js) -->
+          <div class="som-linha tela-linha" id="linhaInstalar" hidden>
+            <span class="som-nome">Instalar o jogo</span>
+            <button class="btn small som-liga" id="bInstalar" type="button">Instalar</button>
+            <span class="tela-dica" id="instalarDica">Um ícone na tela do aparelho, e o jogo abre mesmo sem internet.</span>
+          </div>
           <button class="btn" id="bSonsFechar" type="button">Pronto</button>
         </div>
+      </div>
+
+      <!-- Créditos: tela inteira, cada pessoa num crachá de agente (style.css,
+           "créditos"). É a mesma tela que fecha o teaser. -->
+      <div class="modal creditos" id="creditos" role="dialog" aria-modal="true" aria-labelledby="creditos-h">
+        <div class="creditos-fundo" aria-hidden="true"></div>
+        <div class="creditos-brilhos" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="creditos-conteudo">
+          <h2 class="creditos-faixa" id="creditos-h"><span>Créditos</span></h2>
+          <p class="creditos-sub">A equipe por trás de Algoritimando</p>
+          <ul class="creditos-equipe">
+            <li class="cred" style="--c: #8a63c7">
+              <span class="cred-cordao" aria-hidden="true"></span>
+              <div class="cracha">
+                <span class="cracha-presilha" aria-hidden="true"></span>
+                <div class="cracha-moldura">
+                  <div class="cracha-cartao">
+                    <p class="cracha-topo"><b>Algoritimando</b><small>Equipe</small></p>
+                    <span class="cred-iniciais" aria-hidden="true">PH</span>
+                    <b class="cracha-nome">Paulo Helder de Santana Souza</b>
+                    <span class="cracha-cargo">Idealizador e gestor do projeto</span>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="cred" style="--c: #e07a4f">
+              <span class="cred-cordao" aria-hidden="true"></span>
+              <div class="cracha">
+                <span class="cracha-presilha" aria-hidden="true"></span>
+                <div class="cracha-moldura">
+                  <div class="cracha-cartao">
+                    <p class="cracha-topo"><b>Algoritimando</b><small>Equipe</small></p>
+                    <span class="cred-iniciais" aria-hidden="true">MV</span>
+                    <b class="cracha-nome">Murilo do Vale Moreira Santana</b>
+                    <span class="cracha-cargo">Designer</span>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="cred" style="--c: #4fae6b">
+              <span class="cred-cordao" aria-hidden="true"></span>
+              <div class="cracha">
+                <span class="cracha-presilha" aria-hidden="true"></span>
+                <div class="cracha-moldura">
+                  <div class="cracha-cartao">
+                    <p class="cracha-topo"><b>Algoritimando</b><small>Equipe</small></p>
+                    <span class="cred-iniciais" aria-hidden="true">ME</span>
+                    <b class="cracha-nome">Maria Eduarda Nascimento Silva</b>
+                    <span class="cracha-cargo">Programadora</span>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="cred" style="--c: #3f8fc9">
+              <span class="cred-cordao" aria-hidden="true"></span>
+              <div class="cracha">
+                <span class="cracha-presilha" aria-hidden="true"></span>
+                <div class="cracha-moldura">
+                  <div class="cracha-cartao">
+                    <p class="cracha-topo"><b>Algoritimando</b><small>Equipe</small></p>
+                    <span class="cred-iniciais" aria-hidden="true">GS</span>
+                    <b class="cracha-nome">Gustavo Santos Souza</b>
+                    <span class="cracha-cargo">Programador</span>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <div class="creditos-orientador">
+            <span class="creditos-medalha" aria-hidden="true"></span>
+            <p><small>Professor orientador</small><b>Peterson Lobato</b></p>
+          </div>
+          <p class="creditos-uneb">Universidade do Estado da Bahia <span>UNEB</span></p>
+          <button class="btn" id="bCreditosFechar" type="button">Voltar</button>
+        </div>
+        <img class="creditos-robo" src="img/robo-feliz.webp" alt="" />
       </div>
 
       <div class="modal" id="how">
@@ -666,17 +886,23 @@
          das cartas numa região, explicações de erro em outra -->
     <div class="sr leitor-avisos" aria-live="polite"></div>
     <div class="sr leitor-explicacao" aria-live="polite"></div>
-    <script src="js/motor.js?v=202611120212"></script>
-    <script src="js/comum.js?v=202611120212"></script>
-    <script src="js/situacoes.js?v=202611120212"></script>
-    <script src="js/em-progresso.js?v=202611120212"></script>
-    <script src="js/som.js?v=202611120212"></script>
-    <script src="js/progresso.js?v=202611120212"></script>
-    <script src="js/perfil.js?v=202611120212"></script>
-    <script src="js/arrasto.js?v=202611120212"></script>
-    <script src="js/conclusao.js?v=202611120212"></script>
-    <script src="js/montagem.js?v=202611120212"></script>
-    <script src="js/jogo.js?v=202611120212"></script>
-    <script src="js/app.js?v=202611120212"></script>
+    <script src="js/versao.js?v=202611251330"></script>
+    <script src="js/motor.js?v=202611251330"></script>
+    <script src="js/comum.js?v=202611251330"></script>
+    <script src="js/situacoes.js?v=202611251330"></script>
+    <script src="js/em-progresso.js?v=202611251330"></script>
+    <script src="js/som.js?v=202611251330"></script>
+    <script src="js/progresso.js?v=202611251330"></script>
+    <script src="js/perfil.js?v=202611251330"></script>
+    <script src="js/arrasto.js?v=202611251330"></script>
+    <script src="js/conclusao.js?v=202611251330"></script>
+    <script src="js/montagem.js?v=202611251330"></script>
+    <script src="js/jogo.js?v=202611251330"></script>
+    <!-- a cópia do certificado que vai para a impressora (final.js) -->
+    <div id="impressao" aria-hidden="true"></div>
+    <script src="js/album.js?v=202611251330"></script>
+    <script src="js/final.js?v=202611251330"></script>
+    <script src="js/app.js?v=202611251330"></script>
+    <script src="js/pwa.js?v=202611251330"></script>
   </body>
 </html>

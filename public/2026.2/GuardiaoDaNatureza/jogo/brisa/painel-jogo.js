@@ -146,8 +146,6 @@
       );
     }
     $("interagir").innerHTML = R.icon("hand") + "<small>CUIDAR</small>";
-    const rotate = $("girar-tela-cheia");
-    if (rotate) R.bindFull(rotate);
     if (phase === 1) {
       const art = document.querySelector(".celebration-art");
       if (art) {

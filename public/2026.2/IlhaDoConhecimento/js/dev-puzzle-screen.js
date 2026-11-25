@@ -123,8 +123,9 @@ window.DevPuzzleScreen = (() => {
           ctx.fillStyle='#fff';ctx.font='bold 16px system-ui';ctx.fillText(b.label,b.x+b.w/2,b.y+26);
         });
       } else if(time<until||world.mountainNearby) {
-        const w=Math.min(width-20,520);ctx.fillStyle='#12202deb';ctx.beginPath();ctx.roundRect((width-w)/2,18,w,48,10);ctx.fill();
-        ctx.fillStyle='#fff';ctx.font='bold 16px system-ui';ctx.fillText(time<until?notice:'E — Examinar a cela',width/2,48,w-16);
+        const w=Math.min(width-20,520),x=Math.max(10,Math.min(width-w-10,(width-w)/2));
+        ctx.fillStyle='#12202deb';ctx.beginPath();ctx.roundRect(x,18,w,48,10);ctx.fill();
+        ctx.fillStyle='#fff';ctx.font='bold 16px system-ui';ctx.fillText(time<until?notice:'E / Enter — Examinar a cela',x+w/2,48,w-16);
       }
       ctx.restore();
     }

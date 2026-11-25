@@ -168,7 +168,7 @@ const GEOMETRIA_LOCAL = {
   cycles:[
     {cols:4,rows:3,pieces:['02','04','05'],travadas:[],solution:[['02','02','05','05'],['02','05','05','04'],['02','05','04','04']]},
     {cols:5,rows:3,pieces:['01','02','03','04'],travadas:[{id:'01',rotation:1,col:1,row:0}],solution:[['02','02','01','04','04'],['02','01','01','03','04'],['02','01','03','03','03']]},
-    {cols:5,rows:4,pieces:['01','02','03','04','05'],travadas:[{id:'05',rotation:1,col:0,row:0},{id:'04',rotation:3,col:3,row:2}],solution:[['05','03','03','03','01'],['05','05','03','01','01'],['02','05','05','01','04'],['02','02','02','04','04']]}
+    {cols:5,rows:4,pieces:['01','02','03','04','05'],travadas:[{id:'05',rotation:1,col:0,row:0}],solution:[['05','03','03','03','01'],['05','05','03','01','01'],['02','05','05','01','04'],['02','02','02','04','04']]}
   ]
 };
 let geometriaLoading;
@@ -209,7 +209,7 @@ const OPERACOES = {FASES:[
   // Metade e mais: calcular a metade do estoque inicial e acrescentar mais.
   {tipo:'metadeMais',carrinhoTem:14,mais:1},
   // Checkpoint 2 pendente: a divisão antiga continua jogável até a troca por valores.
-  {tipo:'divisao',sacos:15,carrocas:3}
+  {tipo:'divisao',sacos:12,carrocas:3}
 ]};
 const OPERACOES_LOCAL = {fases:OPERACOES.FASES}; // Fonte dos números, inclusive sob HTTP.
 const OPERACOES_LAYOUT_LOCAL = {

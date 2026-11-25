@@ -127,6 +127,10 @@
               : t.type === "bed" && old.status === "growing"
                 ? "done"
                 : old.status;
+          if (t.speciesKey === "preguica" && t.status === "returning") {
+            t.status = "safe";
+            t.position = { x: t.x, y: t.y };
+          }
           t.seedSpecies = old.seedSpecies || "ipê";
           t.quizPassed = old.quizPassed === true;
           t.progress = Math.max(0, Math.min(1, Number(old.progress) || 0));
@@ -386,12 +390,12 @@
     return [];
   }
   function rescue(t) {
-    t.status = "returning";
+    t.status = t.speciesKey === "preguica" ? "safe" : "returning";
     t.position = { x: t.x, y: t.y };
     nav.setDynamic(
       tasks.filter((v) => v.type === "cage" && v.status === "pending"),
     );
-    t.route = animalRoute(t);
+    t.route = t.status === "safe" ? [] : animalRoute(t);
 
     t.restoredAt = elapsed;
     message(t.name + " está melhor!", "Kai");
@@ -422,7 +426,7 @@
       t.progress = 1;
       t.restoredAt = elapsed;
       water = Math.max(0, water - 12);
-      message("Uma nova " + t.seedSpecies + " para a floresta!", "Kai");
+      message("Semente de " + t.seedSpecies + " plantada!", "Kai");
     } else if (animal(t)) rescue(t);
     else if (t.type === "recycle") {
       t.status = "carried";
@@ -475,11 +479,11 @@
         ["sun", "Virar para o sol", window.GuardiaoIcones.markup("sun")],
         ["shade", "Virar para a sombra", window.GuardiaoIcones.markup("leaf")],
       ];
-    return [
-      ["recyclable", "Recicláveis", window.GuardiaoColecao.bin("recyclable")],
-      ["organic", "Orgânicos", window.GuardiaoColecao.bin("organic")],
-      ["residual", "Rejeitos", window.GuardiaoColecao.bin("residual")],
-    ];
+    return GuardiaoCidadeBins.map((s) => [
+      s.kind,
+      s.label + " · " + s.colorName,
+      window.GuardiaoColecao.bin(s.kind),
+    ]);
   }
 
   function objectMarkup(i) {
@@ -509,10 +513,10 @@
           window.GuardiaoIcones.markup(icon),
         ])
       : t.type === "bed"
-        ? ["ipê", "ingá", "aroeira"].map((name) => [
+        ? GuardiaoSementes.species.map(({ name }) => [
             name,
             name,
-            window.GuardiaoColecao.plant(name),
+            GuardiaoSementes.markup(name),
           ])
         : choices(t.type);
     if (t.quiz) {
@@ -521,9 +525,9 @@
         "Vamos pensar antes de cuidar de " + t.name + ".";
     }
     if (t.type === "bed") {
-      $("puzzle-title").textContent = "Qual muda vamos plantar?";
+      $("puzzle-title").textContent = "Qual semente vamos plantar?";
       $("puzzle-description").textContent =
-        "Escolha a planta que você quiser. Todas são nativas. Depois plante e regue!";
+        "Escolha uma semente de árvore brasileira ameaçada. Depois, é só plantar e regar.";
     }
     $("puzzle-feedback").removeAttribute("data-correct");
     $("quiz-continue")?.remove();
@@ -533,6 +537,18 @@
         b.type = "button";
         b.dataset.answer = value;
         b.innerHTML = art + "<span>" + label + "</span>";
+        if (t.type === "bed") {
+          const seed = GuardiaoSementes.species.find((s) => s.name === value);
+          b.insertAdjacentHTML(
+            "beforeend",
+            "<small><i>" +
+              seed.scientific +
+              "</i><br>" +
+              seed.status +
+              "</small>",
+          );
+          b.title = seed.fact;
+        }
         b.addEventListener("click", () => answer(value));
         return b;
       }),
@@ -547,7 +563,7 @@
     const correct = t.quiz
       ? value === t.quiz.answer
       : t.type === "bed"
-        ? ["ipê", "ingá", "aroeira"].includes(value)
+        ? GuardiaoSementes.species.some((s) => s.name === value)
         : t.type === "cage"
           ? value === t.answer
           : t.type === "solar"
@@ -558,7 +574,7 @@
         t.type === "bed"
           ? "Este local combina com " + t.native + ". Vamos tentar essa muda?"
           : t.type === "recycle"
-            ? "Recicláveis: papel limpo, plástico e metal. Orgânicos: restos de alimento. Rejeitos: resíduos sem reaproveitamento, como papel sujo. Tente de novo!"
+            ? "Vermelha: plástico. Verde: vidro. Amarela: metal. Azul: papel limpo. Escolha pelo material do objeto. Tente de novo!"
             : "Vamos tentar outra? Você consegue!";
       $("puzzle-feedback").dataset.correct = "false";
       tone(330);
@@ -675,10 +691,7 @@
     }
     if (t.type === "bed") {
       if (t.status === "pending") {
-        t.seedSpecies = ["ipê", "ingá", "aroeira"][
-          tasks.filter((v) => v.type === "bed").indexOf(t) % 3
-        ];
-        startAction(t, "seed", 1.05);
+        showPuzzle(t);
       } else if (t.status === "seeded") {
         if (water >= 12) startAction(t, "water", 1.4);
         else message("Encha o regador na fonte.");
@@ -746,8 +759,12 @@
   }
   function updateHUD() {
     document.querySelectorAll("[data-goal]").forEach((b) => {
-      const type = b.dataset.goal,
-        total = tasks.filter((t) => group(t, type)).length,
+      const type = b.dataset.goal;
+      if (type === "home") {
+        b.querySelector("strong").textContent = "→";
+        return;
+      }
+      const total = tasks.filter((t) => group(t, type)).length,
         done = tasks.filter((t) => group(t, type) && finished(t)).length;
       b.querySelector("strong").textContent = done + "/" + total;
       b.classList.toggle("done", done === total);
@@ -1092,7 +1109,8 @@
         return;
       }
       if (t.type === "key") {
-        if (!finished(t)) icon("key", t.x, t.y - 9, 26);
+        if (!finished(t))
+          GuardiaoRemodelacao.draw(ctx, "materiais/chave", t.x, t.y, 29);
         return;
       }
       if (isAnimal) {
@@ -1199,7 +1217,12 @@
       } else if (t.type === "nest")
         sprites.draw(ctx, "objetos", finished(t) ? 14 : 13, t.x, t.y, 43);
       else if (t.type === "solar") {
-        sprites.draw(ctx, "objetos", finished(t) ? 11 : 10, t.x, t.y, 48);
+        GuardiaoRemodelacao.solar(
+          ctx,
+          t,
+          finished(t),
+          isCurrent ? action.elapsed / action.duration : 0,
+        );
         if (finished(t)) art.energy(ctx, t.x, t.y, time, reduced());
       } else if (t.type === "garden" && finished(t))
         shared.draw(
@@ -1451,7 +1474,9 @@
   function drawCelebration() {
     const c = $("celebration").getContext("2d");
     if (window.RioClaroResumo) {
-      RioClaroResumo.paint(c, 420, 230, time, reduced());
+      RaizesPersonagens.canvas($("celebration"), (ctx, width, height) =>
+        RioClaroResumo.paint(ctx, width, height, time, reduced()),
+      );
       return;
     }
     c.clearRect(0, 0, 420, 175);
@@ -1543,10 +1568,15 @@
             : animal(t)
               ? 53
               : t.type === "solar"
-                ? 60
-                : 37),
-        size = animal(t) ? 24 : 18;
-      ellipse(t.x, y, animal(t) ? 15 : 11, animal(t) ? 15 : 11, "#fff2c6eb");
+                ? 75
+                : 43),
+        size = GuardiaoRemodelacao.has(t.icon)
+          ? 30 / camera.scale
+          : animal(t)
+            ? 24
+            : 18;
+      if (!GuardiaoRemodelacao.has(t.icon))
+        ellipse(t.x, y, animal(t) ? 15 : 11, animal(t) ? 15 : 11, "#fff2c6eb");
       icon(t.icon, t.x, y, size);
       if (
         t === target() &&
@@ -1772,6 +1802,10 @@
     location.reload();
   });
   $("tela-cheia").addEventListener("click", async () => {
+    if (window.GuardiaoTela) {
+      await GuardiaoTela.toggle();
+      return;
+    }
     try {
       if (document.fullscreenElement) await document.exitFullscreen();
       else await $("jogo").requestFullscreen();
@@ -1858,7 +1892,7 @@
           `<button class="goal" data-goal="${type}"><span data-icon="${iconName}"></span><span class="goal-label">${label}</span><strong>0/${total}</strong></button>`,
       )
       .join("") +
-    `<button class="goal return-goal" data-goal="home" hidden><span data-icon="leaf"></span><span>Voltar a ${data.npc}</span><strong>→</strong></button>`;
+    `<button class="goal return-goal" data-goal="home" hidden><span data-icon="leaf"></span><span class="goal-label">Voltar a ${data.npc}</span><strong>→</strong></button>`;
   document.querySelectorAll("[data-goal]").forEach((b) =>
     b.addEventListener("click", () => {
       guide(b.dataset.goal);
@@ -1910,24 +1944,22 @@
   nav.setDynamic(
     tasks.filter((t) => t.type === "cage" && t.status === "pending"),
   );
-  let loaded = 0;
-  function progress() {
-    loaded++;
-    $("loading").textContent =
-      "Preparando " + data.name.toLowerCase() + "… " + loaded;
-  }
   const specific = id === 2 ? ["animais-rio"] : [];
-  Promise.all([
-    sprites.load(["npcs", "objetos", ...specific], progress),
-    shared.load(progress, ["natureza"]),
-    Promise.resolve(null),
-    Promise.resolve(null),
-    window.GuardiaoIcones.load(),
-    life.load(),
-    colar.load(),
-    art.load(),
-    BosqueKai.load(),
-    world.ready,
+  GuardiaoCarregamento.run([
+    {
+      label: "Personagens e objetos",
+      load: () => sprites.load(["npcs", "objetos", ...specific]),
+    },
+    { label: "Natureza", load: () => shared.load(undefined, ["natureza"]) },
+    { label: null, load: () => null },
+    { label: null, load: () => null },
+    { label: "Símbolos", load: () => window.GuardiaoIcones.load() },
+    { label: "Animações", load: () => life.load() },
+    { label: "Colar", load: () => colar.load() },
+    { label: "Artes da fase", load: () => art.load() },
+    { label: "Uniforme de Kai", load: () => BosqueKai.load() },
+    { label: "Cenário", load: () => world.ready },
+    { label: "Novas artes", load: () => GuardiaoRemodelacao.phase(id) },
   ])
     .then((r) => {
       iconImage = r[4];
@@ -1937,7 +1969,7 @@
           { required: true },
         );
       ready = true;
-      $("loading").hidden = true;
+
       document.body.dataset.gameReady = "true";
       resize();
       updateHUD();
@@ -1950,15 +1982,12 @@
         window.GuardiaoMemoria.grant(2);
         window.GuardiaoMemoria.uniform("protecao", { required: true });
       }
+      GuardiaoCarregamento.finish();
       start();
     })
     .catch((error) => {
-      console.error(error);
-      $("loading").innerHTML =
-        'Não foi possível carregar a aventura.<br><a href="' +
-        location.pathname +
-        "?fase=" +
-        id +
-        '">Tentar novamente</a>';
+      ready = false;
+      document.body.dataset.gameReady = "false";
+      GuardiaoCarregamento.fail(error);
     });
 })();

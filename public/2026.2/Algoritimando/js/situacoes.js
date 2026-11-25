@@ -287,8 +287,8 @@ const SITUACAO_ROBO = {
   cena: 'img/pic2.webp',
   fundo: 'img/level2.webp',
   fundoConclusao: 'img/win2.webp',
-  // a imagem que se monta ao lado do tabuleiro (ver motor.js)
-  montagem: 'tirinha',
+  // o robô anda numa grade vista de cima, seguindo as cartas (montagem.js)
+  montagem: 'grade',
   fases: [
 
     /* ---------- FASE 1 · a máquina precisa de ordem (3 passos) ---------- */
@@ -729,8 +729,9 @@ const SITUACAO_ABELHAS = {
   cena: 'img/pic4.webp',
   fundo: 'img/level4.webp',
   fundoConclusao: 'img/win4.webp',
-  // a imagem que se monta ao lado do tabuleiro (ver motor.js)
-  montagem: 'tirinha',
+  // o jardim: a abelha sai, procura a flor, coleta, volta e guarda o
+  // néctar no favo, seguindo as cartas (montagem.js, modo "jardim")
+  montagem: 'jardim',
   fases: [
 
     /* ---------- FASE 1 · a ordem importa (3 passos) ---------- */
@@ -958,8 +959,25 @@ const SITUACAO_MAOS = {
   cena: 'img/pic5.webp',
   fundo: 'img/level5.webp',
   fundoConclusao: 'img/win5.webp',
-  // um quadrinho por passo: lavar as mãos é uma história no tempo
-  montagem: 'tirinha',
+  // a pia: cada carta muda as mãos, a torneira ou a toalha (montagem.js, modo "estado")
+  montagem: 'estado',
+  montagemBase: 'img/pecas/maos-base.webp',
+  montagemObjetos: [
+    // sem a carta "abrir" (níveis 1 e 2), a torneira já começa aberta
+    { id: 'torneira', x: 41, y: 34, w: 13, inicio: 'img/pecas/maos-torneira.webp', inicioSem: { passo: 'abrir', imagem: 'img/pecas/maos-torneira-aberta.webp' }, sempre: true },
+    { id: 'maos',     x: 44, y: 70, w: 30, inicio: 'img/pecas/maos-sujas.webp', sempre: true },
+    { id: 'toalha',   x: 77.6, y: 60.5, w: 13, inicio: 'img/pecas/maos-toalha.webp', passos: ['secar'] },
+  ],
+  montagemRegras: [
+    { quando: ['abrir'], torneira: 'img/pecas/maos-torneira-aberta.webp' },
+    { quando: ['molhar'], maos: 'img/pecas/maos-molhadas.webp' },
+    { quando: ['sabonete'], maos: 'img/pecas/maos-sabonete.webp' },
+    { quando: ['esfregar'], maos: 'img/pecas/maos-espuma.webp' },
+    { quando: ['enxaguar'], maos: 'img/pecas/maos-limpas.webp' },
+    { quando: ['fechar'], torneira: 'img/pecas/maos-torneira.webp' },
+    { quando: ['secar'], maos: 'img/pecas/maos-secas.webp', toalha: 'img/pecas/maos-toalha-usada.webp' },
+  ],
+  montagemOnde: { abrir: 'torneira', molhar: 'maos', sabonete: 'maos', esfregar: 'maos', enxaguar: 'maos', fechar: 'torneira', secar: 'toalha' },
   // o selo da ideia: entregue na lição do último nível (ver motor.js)
   selo: {
     nome: 'Repetição',
@@ -1137,7 +1155,7 @@ const SITUACAO_MAOS = {
 /* ============================================================
    SITUAÇÃO 6 · ATRAVESSAR A RUA
    Condição: uma carta faz a pergunta ("de que cor está o
-   boneco?") e outra decide ("se estiver vermelho, espere").
+   luz?") e outra decide ("se estiver vermelho, espere").
    A mesma regra vale para tudo aqui: olhar cedo demais não vale,
    porque a rua muda.
    ============================================================ */
@@ -1153,8 +1171,9 @@ const SITUACAO_RUA = {
   cena: 'img/pic6.webp',
   fundo: 'img/level6.webp',
   fundoConclusao: 'img/win6.webp',
-  // um quadrinho por passo: no erro, a história trava antes da faixa
-  montagem: 'tirinha',
+  // a rua: o menino vai até a faixa, olha a luz, espera o verde, olha
+  // para os dois lados e atravessa (montagem.js, modo "rua")
+  montagem: 'rua',
   // o selo da ideia: entregue na lição do último nível (ver motor.js)
   selo: {
     nome: 'Condição',
@@ -1202,30 +1221,30 @@ const SITUACAO_RUA = {
     {
       id: 'fase-2',
       titulo: 'Tem um semáforo na faixa!',
-      instrucao: 'Duas cartas novas falam do boneco do semáforo. Uma pergunta, a outra decide!',
+      instrucao: 'Duas cartas novas falam da luz do semáforo. Uma pergunta, a outra decide!',
       mascote: 'Antes de decidir se espera ou se vai, você precisa descobrir uma coisa. O quê?',
       passos: [
         { id: 'faixa', texto: 'Vá até a faixa de pedestres.', imagem: 'img/passos/rua-01.webp', dependeDe: [] },
         {
-          id: 'ver-boneco', texto: 'Olhe a cor do boneco do semáforo.', imagem: 'img/passos/rua-04.webp', dependeDe: ['faixa'],
-          explicacao: 'Olhar o semáforo de longe? Até você chegar à faixa, o boneco pode mudar de cor!',
+          id: 'ver-luz', texto: 'Olhe a cor da luz do semáforo.', imagem: 'img/passos/rua-04.webp', dependeDe: ['faixa'],
+          explicacao: 'Olhar o semáforo de longe? Até você chegar à faixa, a luz pode mudar de cor!',
         },
         {
-          id: 'esperar', texto: 'Se estiver vermelho, espere o verde.', imagem: 'img/passos/rua-05.webp', dependeDe: ['ver-boneco'],
-          explicacao: 'Esperar ou seguir? Sem olhar o semáforo, você não sabe de que cor o boneco está!',
+          id: 'esperar', texto: 'Se estiver vermelho, espere o verde.', imagem: 'img/passos/rua-05.webp', dependeDe: ['ver-luz'],
+          explicacao: 'Esperar ou seguir? Sem olhar o semáforo, você não sabe de que cor a luz está!',
         },
         {
           id: 'olhar', texto: 'Olhe para os dois lados.', imagem: 'img/passos/rua-02.webp', dependeDe: ['faixa', 'esperar'],
           explicacao: {
             faixa:   'Olhar de longe não vale: até você chegar à faixa, pode aparecer um carro que não estava lá!',
-            esperar: 'Olhou e depois ficou esperando o boneco verde? Nesse tempo, outro carro pode chegar sem você ver!',
+            esperar: 'Olhou e depois ficou esperando a luz verde? Nesse tempo, outro carro pode chegar sem você ver!',
           },
         },
         {
           id: 'atravessar', texto: 'Atravesse andando pela faixa.', imagem: 'img/passos/rua-03.webp', dependeDe: ['esperar', 'olhar'],
           explicacao: {
-            esperar: 'Atravessar sem saber se o boneco está verde? Com ele vermelho, a vez é dos carros!',
-            olhar:   'Mesmo com o boneco verde, um carro pode não ter parado. Sem olhar para os lados, você não vê!',
+            esperar: 'Atravessar sem saber se a luz está verde? Com ela vermelha, a vez é dos carros!',
+            olhar:   'Mesmo com a luz verde, um carro pode não ter parado. Sem olhar para os lados, você não vê!',
           },
         },
       ],
@@ -1234,7 +1253,7 @@ const SITUACAO_RUA = {
         imagem: 'img/licoes/rua-2.webp',
         texto: [
           '"Se estiver vermelho, espere o verde" é um passo diferente: ele começa com SE.',
-          'Antes de obedecer, você precisa de uma resposta: de que cor está o boneco? Vermelho, você espera. Verde, você segue.',
+          'Antes de obedecer, você precisa de uma resposta: de que cor está a luz? Vermelho, você espera. Verde, você segue.',
           'Isso se chama condição: o mesmo passo a passo faz coisas diferentes, dependendo do que encontra.',
         ],
         reflexao: [
@@ -1254,26 +1273,26 @@ const SITUACAO_RUA = {
         { id: 'mao', texto: 'Dê a mão para um adulto.', imagem: 'img/passos/rua-06.webp', dependeDe: [] },
         { id: 'faixa', texto: 'Vá até a faixa de pedestres.', imagem: 'img/passos/rua-01.webp', dependeDe: [] },
         {
-          id: 'ver-boneco', texto: 'Olhe a cor do boneco do semáforo.', imagem: 'img/passos/rua-04.webp', dependeDe: ['faixa'],
-          explicacao: 'Olhar o semáforo de longe? Até você chegar à faixa, o boneco pode mudar de cor!',
+          id: 'ver-luz', texto: 'Olhe a cor da luz do semáforo.', imagem: 'img/passos/rua-04.webp', dependeDe: ['faixa'],
+          explicacao: 'Olhar o semáforo de longe? Até você chegar à faixa, a luz pode mudar de cor!',
         },
         {
-          id: 'esperar', texto: 'Se estiver vermelho, espere o verde.', imagem: 'img/passos/rua-05.webp', dependeDe: ['ver-boneco'],
-          explicacao: 'Esperar ou seguir? Sem olhar o semáforo, você não sabe de que cor o boneco está!',
+          id: 'esperar', texto: 'Se estiver vermelho, espere o verde.', imagem: 'img/passos/rua-05.webp', dependeDe: ['ver-luz'],
+          explicacao: 'Esperar ou seguir? Sem olhar o semáforo, você não sabe de que cor a luz está!',
         },
         {
           id: 'olhar', texto: 'Olhe para os dois lados.', imagem: 'img/passos/rua-02.webp', dependeDe: ['faixa', 'esperar'],
           explicacao: {
             faixa:   'Olhar de longe não vale: até você chegar à faixa, pode aparecer um carro que não estava lá!',
-            esperar: 'Olhou e depois ficou esperando o boneco verde? Nesse tempo, outro carro pode chegar sem você ver!',
+            esperar: 'Olhou e depois ficou esperando a luz verde? Nesse tempo, outro carro pode chegar sem você ver!',
           },
         },
         {
           id: 'atravessar', texto: 'Atravesse andando pela faixa.', imagem: 'img/passos/rua-03.webp', dependeDe: ['mao', 'esperar', 'olhar'],
           explicacao: {
             mao:     'Atravessar sem a mão dada? Se você se assustar no meio da rua, não tem ninguém segurando você!',
-            esperar: 'Atravessar sem saber se o boneco está verde? Com ele vermelho, a vez é dos carros!',
-            olhar:   'Mesmo com o boneco verde, um carro pode não ter parado. Sem olhar para os lados, você não vê!',
+            esperar: 'Atravessar sem saber se a luz está verde? Com ela vermelha, a vez é dos carros!',
+            olhar:   'Mesmo com a luz verde, um carro pode não ter parado. Sem olhar para os lados, você não vê!',
           },
         },
       ],
@@ -1281,7 +1300,7 @@ const SITUACAO_RUA = {
         pergunta: 'Quantas coisas precisam ser verdade?',
         imagem: 'img/licoes/rua-3.webp',
         texto: [
-          'Para atravessar, três coisas precisam ser verdade ao mesmo tempo: a mão dada, o boneco verde e os dois lados olhados.',
+          'Para atravessar, três coisas precisam ser verdade ao mesmo tempo: a mão dada, a luz verde e os dois lados olhados.',
           'Se faltar uma só, a resposta é "ainda não". É uma condição com E: isto E isto E isto.',
           'Um passo a passo completo e na ordem certa se chama algoritmo. Com condições, ele sabe até a hora de esperar.',
         ],
@@ -1314,8 +1333,27 @@ const SITUACAO_LIMONADA = {
   fundo: 'img/level7.webp',
   fundoConclusao: 'img/win7.webp',
   // um quadrinho por passo (uma "cena" da jarra pediria peças que
-  // ainda não existem; a tirinha funciona só com as cartas)
-  montagem: 'tirinha',
+  // a bancada: cada carta muda um objeto (montagem.js, modo "estado")
+  montagem: 'estado',
+  montagemBase: 'img/pecas/limonada-base.webp',
+  montagemObjetos: [
+    { id: 'limao',  x: 21, y: 68, w: 17, inicio: 'img/pecas/limonada-limao.webp', passos: ['lavar', 'cortar', 'espremer'] },
+    { id: 'jarra',  x: 45, y: 69, w: 17, inicio: 'img/pecas/limonada-jarra.webp', passos: ['espremer', 'agua', 'misturar'] },
+    { id: 'acucar', x: 65, y: 68, w: 11, inicio: 'img/pecas/limonada-acucar.webp', passos: ['acucar'] },
+    { id: 'copo',   x: 80, y: 68, w: 9,  inicio: 'img/pecas/limonada-copo.webp', passos: ['servir'] },
+  ],
+  montagemRegras: [
+    { quando: ['lavar'], limao: 'img/pecas/limonada-limao-lavado.webp' },
+    { quando: ['cortar'], limao: 'img/pecas/limonada-limao-cortado.webp' },
+    { quando: ['espremer'], limao: 'img/pecas/limonada-limao-espremido.webp', jarra: 'img/pecas/limonada-jarra-suco.webp' },
+    { quando: ['agua'], jarra: 'img/pecas/limonada-jarra-agua.webp' },
+    { quando: ['espremer', 'agua'], jarra: 'img/pecas/limonada-jarra-agua-suco.webp' },
+    { quando: ['acucar'], acucar: 'img/pecas/limonada-acucar-usado.webp' },
+    { quando: ['misturar'], jarra: 'img/pecas/limonada-jarra-limonada.webp' },
+    { quando: ['servir'], copo: 'img/pecas/limonada-copo-cheio.webp' },
+  ],
+  // onde aparece a estrela quando a carta vem antes da hora
+  montagemOnde: { lavar: 'limao', cortar: 'limao', espremer: 'limao', agua: 'jarra', acucar: 'acucar', misturar: 'jarra', servir: 'copo' },
   // o selo da ideia: entregue na lição do último nível (ver motor.js)
   selo: {
     nome: 'Ao mesmo tempo',
@@ -1470,8 +1508,29 @@ const SITUACAO_DENTES = {
   cena: 'img/pic8.webp',
   fundo: 'img/level8.webp',
   fundoConclusao: 'img/win8.webp',
-  // um quadrinho por passo: escovar os dentes é uma história no tempo
-  montagem: 'tirinha',
+  // a bancada da pia: cada carta muda um objeto (montagem.js, modo "estado")
+  montagem: 'estado',
+  montagemBase: 'img/pecas/dentes-base.webp',
+  montagemObjetos: [
+    { id: 'porta',  x: 14, y: 73, w: 12, inicio: 'img/pecas/dentes-porta-escova.webp', sempre: true },
+    { id: 'copo',   x: 27, y: 73, w: 9,  inicio: 'img/pecas/dentes-copo-agua.webp', passos: ['enxaguar'] },
+    { id: 'escova', x: 76, y: 74, w: 19, inicio: null, sempre: true },
+    { id: 'pasta',  x: 91, y: 73, w: 8,  inicio: 'img/pecas/dentes-pasta.webp', sempre: true },
+  ],
+  montagemRegras: [
+    { quando: ['pegar-escova'], porta: 'img/pecas/dentes-porta-vazio.webp', escova: 'img/pecas/dentes-escova.webp' },
+    { quando: ['abrir-pasta'], pasta: 'img/pecas/dentes-pasta-aberta.webp' },
+    { quando: ['por-pasta'], escova: 'img/pecas/dentes-escova-pasta.webp', pasta: 'img/pecas/dentes-pasta-aberta.webp' },
+    { quando: ['fechar-pasta'], pasta: 'img/pecas/dentes-pasta.webp' },
+    { quando: ['escovar'], escova: 'img/pecas/dentes-escova-espuma.webp' },
+    { quando: ['enxaguar'], copo: 'img/pecas/dentes-copo-agua-usado.webp' },
+    { quando: ['lavar-escova'], escova: 'img/pecas/dentes-escova-limpa.webp' },
+    { quando: ['guardar-escova'], porta: 'img/pecas/dentes-porta-escova-limpa.webp', escova: null },
+  ],
+  montagemOnde: {
+    'pegar-escova': 'porta', 'abrir-pasta': 'pasta', 'por-pasta': 'escova', 'fechar-pasta': 'pasta',
+    escovar: 'escova', enxaguar: 'copo', 'lavar-escova': 'escova', 'guardar-escova': 'porta',
+  },
   // o selo da ideia: entregue na lição do último nível (ver motor.js)
   selo: {
     nome: 'Abre e fecha',

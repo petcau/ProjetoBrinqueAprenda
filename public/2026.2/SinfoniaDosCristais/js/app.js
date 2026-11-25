@@ -8,12 +8,36 @@
   let records = {};
   let current = 1;
   let hasSave = false;
+  let unlockedTutorials = [];
+  let lastViewedTutorialKey = null;
+  let guideIntroShown = false;
   let setupCompleted = false;
   let playerName = '';
   let playerGender = 'male';
   let characterCreated = false;
   let screen = 'home';
   let toastTimer = null;
+
+  const DEFAULT_CHARACTER_NAMES = {
+    male: 'Alex',
+    female: 'Marina'
+  };
+  function getDefaultCharacterName(gender) {
+    return gender === 'female' ? DEFAULT_CHARACTER_NAMES.female : DEFAULT_CHARACTER_NAMES.male;
+  }
+  function isDefaultCharacterName(name) {
+    const clean = String(name ?? '').trim().toLowerCase();
+    return !clean
+      || clean === 'protagonista'
+      || clean === DEFAULT_CHARACTER_NAMES.male.toLowerCase()
+      || clean === DEFAULT_CHARACTER_NAMES.female.toLowerCase();
+  }
+
+  function cleanTutorialKeys(list) {
+    return Array.isArray(list)
+      ? [...new Set(list.filter(k => typeof k === 'string' && k.trim().length > 0).map(k => k.trim()))]
+      : [];
+  }
 
   let save = null;
   try {
@@ -33,6 +57,11 @@
       records = loadedRecords;
       current = Math.min(21, Math.max(1, Number(save.current) || 1));
       hasSave = Boolean(save.hasSave || completed.length > 0 || current > 1 || Object.keys(records).length > 0);
+      unlockedTutorials = cleanTutorialKeys(save.unlockedTutorials);
+      lastViewedTutorialKey = (typeof save.lastViewedTutorialKey === 'string' && save.lastViewedTutorialKey.trim())
+        ? save.lastViewedTutorialKey.trim()
+        : null;
+      guideIntroShown = Boolean(save.guideIntroShown || completed.includes(1));
     }
   }
 
@@ -104,6 +133,9 @@
         current,
         records,
         hasSave,
+        unlockedTutorials,
+        lastViewedTutorialKey,
+        guideIntroShown,
         setupCompleted,
         playerName,
         playerGender,
@@ -113,6 +145,57 @@
     } catch {
       return false;
     }
+  }
+
+  function syncTutorialsToEngine() {
+    const hud = window.TruePixelEngine?.GameHUD;
+    if (hud && typeof hud.getTutorialKeysForCompleted === 'function') {
+      const fromCompleted = hud.getTutorialKeysForCompleted(completed);
+      if (fromCompleted.length) {
+        unlockedTutorials = cleanTutorialKeys([...unlockedTutorials, ...fromCompleted]);
+      }
+    }
+    hud?.syncTutorialProgress?.({
+      unlockedTutorials,
+      lastViewedTutorialKey,
+      guideIntroShown,
+      completed,
+      current
+    });
+  }
+
+  function recordTutorialViewed(key, fromEngine = false) {
+    if (typeof key !== 'string' || !key.trim()) return null;
+    const cleanKey = key.trim();
+    const hud = window.TruePixelEngine?.GameHUD;
+    const nextList = [...unlockedTutorials, cleanKey];
+    if (hud && typeof hud.getGuideCatalog === 'function') {
+      const cat = hud.getGuideCatalog();
+      for (const wKey of ['caverna', 'floresta', 'rio', 'caatinga']) {
+        for (const item of (cat[wKey]?.items || [])) {
+          if (Array.isArray(item.linkedKeys) && item.linkedKeys.includes(cleanKey)) {
+            nextList.push(item.key);
+          }
+        }
+      }
+    }
+    unlockedTutorials = cleanTutorialKeys(nextList);
+    lastViewedTutorialKey = cleanKey;
+    hasSave = true;
+    if (!fromEngine) {
+      syncTutorialsToEngine();
+    }
+    persist();
+    return cleanKey;
+  }
+
+  function markGuideIntroShown(fromEngine = false) {
+    guideIntroShown = true;
+    if (!fromEngine) {
+      syncTutorialsToEngine();
+    }
+    persist();
+    return true;
   }
 
   function updateProgressLabels() {
@@ -144,7 +227,7 @@
     document.body.classList.toggle('reduce-motion', settings.motion);
 
     window.TruePixelEngine?.setPlayerProfile?.({
-      name: playerName || 'Protagonista',
+      name: playerName || getDefaultCharacterName(playerGender),
       gender: playerGender
     });
 
@@ -254,8 +337,9 @@
       setTimeout(() => document.querySelector('.journey-node.current')?.focus(), 0);
     } else if (name === 'home') {
       updateProgressLabels();
-      const targetBtn = ($('continueButton') && hasSave) ? $('continueButton') : ($('newGameButton') || $('playButton'));
-      targetBtn?.focus();
+      if (document.activeElement && $('home')?.contains(document.activeElement)) {
+        document.activeElement.blur?.();
+      }
       window.CrystalMenuAudio?.play?.();
     }
   }
@@ -321,8 +405,8 @@
     startLevel(id);
   }
 
-  function startNewGame() {
-    if (window.CrystalAssetsReady === false) return;
+  function startNewGame(opts = {}) {
+    if (window.CrystalAssetsReady === false && !opts?.force) return;
     unlockAudio();
     requestMobileFullscreenAndLandscape();
     settings.music = 0.5;
@@ -332,8 +416,14 @@
     records = {};
     current = 1;
     hasSave = true;
+    unlockedTutorials = [];
+    lastViewedTutorialKey = null;
+    guideIntroShown = false;
+    window.TruePixelEngine?.TutorialModal?.seenKeys?.clear?.();
     if (window.TruePixelEngine?.GameHUD) {
       window.TruePixelEngine.GameHUD.diamonds = 0;
+      window.TruePixelEngine.GameHUD.guideIntroActive = false;
+      window.TruePixelEngine.GameHUD.guideIntroOnDone = null;
     }
     if (window.TruePixelEngine?.DialogueBox?.sockets) {
       window.TruePixelEngine.DialogueBox.sockets.fairy = false;
@@ -342,11 +432,19 @@
       window.TruePixelEngine.DialogueBox.sockets.caatinga = false;
     }
     syncTruePixelSockets();
+    syncTutorialsToEngine();
     persist();
     updateProgressLabels();
     renderMap();
     notify('Novo jogo iniciado! Sua jornada começa na Caverna.');
     startLevel(1);
+  }
+
+  function requestNewGame() {
+    if (window.CrystalAssetsReady === false) return;
+    unlockAudio();
+    requestMobileFullscreenAndLandscape();
+    CrystalOnboarding.openCharacterCreation('new_game');
   }
 
   function continueGame() {
@@ -363,10 +461,16 @@
           records = loadedRecords;
           current = Math.min(21, Math.max(1, Number(savedRaw.current) || 1));
           hasSave = true;
+          unlockedTutorials = cleanTutorialKeys(savedRaw.unlockedTutorials);
+          lastViewedTutorialKey = (typeof savedRaw.lastViewedTutorialKey === 'string' && savedRaw.lastViewedTutorialKey.trim())
+            ? savedRaw.lastViewedTutorialKey.trim()
+            : null;
+          guideIntroShown = Boolean(savedRaw.guideIntroShown || completed.includes(1));
         }
       }
     } catch {}
     syncTruePixelSockets();
+    syncTutorialsToEngine();
     updateProgressLabels();
     goto('map');
     const done20 = completed.filter(id => id <= 20).length;
@@ -504,6 +608,7 @@
     }
     hasSave = true;
     syncTruePixelSockets();
+    syncTutorialsToEngine();
     persist();
     updateProgressLabels();
     if (screen === 'map') renderMap();
@@ -676,7 +781,7 @@
   if ($('testSound')) $('testSound').onclick = () => window.CrystalAudio?.shatter?.();
   if ($('creditsButton')) $('creditsButton').onclick = () => $('creditsDialog')?.showModal();
   if ($('newGameButton')) {
-    $('newGameButton').onclick = startNewGame;
+    $('newGameButton').onclick = requestNewGame;
   }
   if ($('continueButton')) {
     $('continueButton').onclick = continueGame;
@@ -755,10 +860,14 @@
 
   const CrystalOnboarding = {
     splashActive: true,
+    brinqueSplashActive: true,
+    splashStep: 'brinque',
     splashPhase: 'fade-in',
     wizardActive: false,
     wizardStep: 'access',
     characterScreenActive: false,
+    characterSource: 'wizard',
+    usingDefaultName: true,
     selectedGender: playerGender,
     loadingTransitionActive: false,
     onCharacterCreation: null,
@@ -819,8 +928,73 @@
     },
 
     startSplash() {
+      this.startBrinqueSplash();
+    },
+
+    startBrinqueSplash() {
       this.clearTimers();
       this.splashActive = true;
+      this.brinqueSplashActive = true;
+      this.splashStep = 'brinque';
+      this.splashPhase = 'fade-in';
+      window.CrystalMenuAudio?.pause?.();
+      const unebEl = $('unebSplashScreen');
+      if (unebEl) {
+        unebEl.hidden = true;
+        unebEl.classList?.remove?.('phase-fade-in', 'phase-hold', 'phase-fade-out');
+      }
+      const el = $('brinqueSplashScreen');
+      if (el) {
+        el.hidden = false;
+        el.classList?.remove?.('phase-hold', 'phase-fade-out');
+        el.classList?.add?.('phase-fade-in');
+      }
+      window.CrystalAudio?.brinqueIntro?.();
+      this._timers.push(setTimeout(() => {
+        if (!this.brinqueSplashActive) return;
+        this.splashPhase = 'hold';
+        const s = $('brinqueSplashScreen');
+        if (s) {
+          s.classList?.remove?.('phase-fade-in');
+          s.classList?.add?.('phase-hold');
+        }
+      }, 1050));
+      this._timers.push(setTimeout(() => {
+        if (!this.brinqueSplashActive) return;
+        this.splashPhase = 'fade-out';
+        const s = $('brinqueSplashScreen');
+        if (s) {
+          s.classList?.remove?.('phase-hold', 'phase-fade-in');
+          s.classList?.add?.('phase-fade-out');
+        }
+      }, 2350));
+      this._timers.push(setTimeout(() => {
+        if (this.brinqueSplashActive) this.finishBrinqueSplash(false);
+      }, 2880));
+    },
+
+    finishBrinqueSplash(fromUserGesture = false) {
+      if (!this.brinqueSplashActive) return;
+      this.clearTimers();
+      if (fromUserGesture && !window.CrystalAudio?._lastBrinqueIntro?.played) {
+        unlockAudio();
+        window.CrystalAudio?.brinqueChime?.();
+      }
+      this.brinqueSplashActive = false;
+      this.startUnebSplash();
+      const el = $('brinqueSplashScreen');
+      if (el) {
+        el.hidden = true;
+        el.classList?.remove?.('phase-fade-in', 'phase-hold', 'phase-fade-out');
+      }
+      window.CrystalMenuAudio?.autoStart?.();
+    },
+
+    startUnebSplash() {
+      this.clearTimers();
+      this.splashActive = true;
+      this.brinqueSplashActive = false;
+      this.splashStep = 'uneb';
       this.splashPhase = 'fade-in';
       const el = $('unebSplashScreen');
       if (el) {
@@ -829,7 +1003,7 @@
         el.classList?.add?.('phase-fade-in');
       }
       this._timers.push(setTimeout(() => {
-        if (!this.splashActive) return;
+        if (!this.splashActive || this.brinqueSplashActive) return;
         this.splashPhase = 'hold';
         const s = $('unebSplashScreen');
         if (s) {
@@ -838,7 +1012,7 @@
         }
       }, 900));
       this._timers.push(setTimeout(() => {
-        if (!this.splashActive) return;
+        if (!this.splashActive || this.brinqueSplashActive) return;
         this.splashPhase = 'fade-out';
         const s = $('unebSplashScreen');
         if (s) {
@@ -847,26 +1021,31 @@
         }
       }, 2400));
       this._timers.push(setTimeout(() => {
-        if (this.splashActive) this.finishSplash();
+        if (this.splashActive && !this.brinqueSplashActive) this.finishSplash();
       }, 3150));
     },
 
     finishSplash() {
       this.clearTimers();
+      this.brinqueSplashActive = false;
       this.splashActive = false;
+      this.splashStep = 'done';
       this.splashPhase = 'done';
+      const brinqueEl = $('brinqueSplashScreen');
+      if (brinqueEl) {
+        brinqueEl.hidden = true;
+        brinqueEl.classList?.remove?.('phase-fade-in', 'phase-hold', 'phase-fade-out');
+      }
       const el = $('unebSplashScreen');
       if (el) {
         el.hidden = true;
         el.classList?.remove?.('phase-fade-in', 'phase-hold', 'phase-fade-out');
       }
+      window.CrystalMenuAudio?.autoStart?.();
       if (!setupCompleted) {
         this.openWizard('access');
       } else if (!characterCreated) {
-        this.openCharacterCreation();
-      } else {
-        const targetBtn = ($('continueButton') && hasSave) ? $('continueButton') : ($('newGameButton') || $('playButton'));
-        targetBtn?.focus?.();
+        this.openCharacterCreation('wizard');
       }
     },
 
@@ -919,22 +1098,41 @@
       if (typeof this.onCharacterCreation === 'function') {
         this.onCharacterCreation();
       } else {
-        this.openCharacterCreation();
+        this.openCharacterCreation('wizard');
       }
     },
 
-    openCharacterCreation() {
+    syncNameInputVisual() {
+      const nameInput = $('playerNameInput');
+      if (nameInput?.classList?.toggle) {
+        nameInput.classList.toggle('is-default-name', Boolean(this.usingDefaultName));
+      }
+    },
+
+    openCharacterCreation(source = 'wizard') {
       this.characterScreenActive = true;
+      this.characterSource = source === 'new_game' ? 'new_game' : 'wizard';
       this.wizardStep = 'character';
       const screenEl = $('characterCreationScreen');
       if (screenEl) screenEl.hidden = false;
+      const initialGender = (this.selectedGender === 'female' || (this.selectedGender !== 'male' && playerGender === 'female'))
+        ? 'female'
+        : 'male';
+      const keepExistingCustom = this.characterSource === 'wizard'
+        && !this.usingDefaultName
+        && playerName
+        && !isDefaultCharacterName(playerName);
       const nameInput = $('playerNameInput');
-      if (nameInput) {
-        nameInput.value = playerName || '';
-        nameInput.focus?.();
+      if (keepExistingCustom) {
+        this.usingDefaultName = false;
+        if (nameInput) nameInput.value = playerName;
+      } else {
+        this.usingDefaultName = true;
+        if (nameInput) nameInput.value = getDefaultCharacterName(initialGender);
       }
       if ($('playerNameError')) $('playerNameError').hidden = true;
-      this.selectGender(this.selectedGender || playerGender || 'male');
+      this.syncNameInputVisual();
+      this.selectGender(initialGender);
       this.startPreviewLoop();
     },
 
@@ -950,23 +1148,55 @@
         girlBtn.classList?.toggle?.('selected', this.selectedGender === 'female');
         girlBtn.setAttribute?.('aria-pressed', String(this.selectedGender === 'female'));
       }
-      const typedName = String($('playerNameInput')?.value ?? '').trim();
+      const defaultName = getDefaultCharacterName(this.selectedGender);
+      const nameInput = $('playerNameInput');
+      if (nameInput && (this.usingDefaultName || isDefaultCharacterName(String(nameInput.value ?? '').trim()))) {
+        nameInput.value = defaultName;
+        this.usingDefaultName = true;
+        if ($('playerNameError')) $('playerNameError').hidden = true;
+      }
+      this.syncNameInputVisual();
+      const typedName = String(nameInput?.value ?? '').trim();
       window.TruePixelEngine?.setPlayerProfile?.({
-        name: typedName || playerName || 'Protagonista',
+        name: typedName || defaultName,
         gender: this.selectedGender
       });
+    },
+
+    handleNameInputFocus() {
+      const nameInput = $('playerNameInput');
+      if (!nameInput) return;
+      if (this.usingDefaultName) {
+        nameInput.value = '';
+      }
+      this.syncNameInputVisual();
+    },
+
+    handleNameInputBlur() {
+      const nameInput = $('playerNameInput');
+      if (!nameInput) return;
+      if (this.usingDefaultName && !String(nameInput.value ?? '').trim()) {
+        nameInput.value = getDefaultCharacterName(this.selectedGender);
+      }
+      this.syncNameInputVisual();
     },
 
     backFromCharacter() {
       this.stopPreviewLoop();
       this.characterScreenActive = false;
       if ($('characterCreationScreen')) $('characterCreationScreen').hidden = true;
-      this.openWizard('audio');
+      if (this.characterSource === 'new_game') {
+        this.wizardStep = 'done';
+        applySettings();
+        goto('home');
+      } else {
+        this.openWizard('audio');
+      }
     },
 
     confirmCharacter() {
       const nameInput = $('playerNameInput');
-      const rawName = String(nameInput?.value ?? playerName ?? '').trim();
+      const rawName = String(nameInput ? (nameInput.value ?? '') : (playerName || getDefaultCharacterName(this.selectedGender))).trim();
       if (!rawName) {
         if ($('playerNameError')) $('playerNameError').hidden = false;
         nameInput?.focus?.();
@@ -1029,17 +1259,20 @@
         pre.hidden = true;
         pre.remove?.();
       }
-      startNewGame();
+      startNewGame({ force: true });
     },
 
     skipAll() {
       this.clearTimers();
       this.stopPreviewLoop();
+      this.brinqueSplashActive = false;
       this.splashActive = false;
+      this.splashStep = 'done';
       this.splashPhase = 'done';
       this.wizardActive = false;
       this.characterScreenActive = false;
       this.loadingTransitionActive = false;
+      if ($('brinqueSplashScreen')) $('brinqueSplashScreen').hidden = true;
       if ($('unebSplashScreen')) $('unebSplashScreen').hidden = true;
       if ($('setupWizardScreen')) $('setupWizardScreen').hidden = true;
       if ($('characterCreationScreen')) $('characterCreationScreen').hidden = true;
@@ -1047,7 +1280,18 @@
   };
   window.CrystalOnboarding = CrystalOnboarding;
 
+  if ($('brinqueSplashScreen')) $('brinqueSplashScreen').onclick = () => CrystalOnboarding.finishBrinqueSplash(true);
   if ($('unebSplashScreen')) $('unebSplashScreen').onclick = () => CrystalOnboarding.finishSplash();
+  document.addEventListener('keydown', (e) => {
+    if (!CrystalOnboarding.splashActive) return;
+    if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Escape') return;
+    e.preventDefault?.();
+    if (CrystalOnboarding.brinqueSplashActive) {
+      CrystalOnboarding.finishBrinqueSplash(true);
+    } else {
+      CrystalOnboarding.finishSplash();
+    }
+  });
   if ($('wizardNextToAudioBtn')) $('wizardNextToAudioBtn').onclick = () => CrystalOnboarding.advanceWizard();
   if ($('wizardBackToAccessBtn')) $('wizardBackToAccessBtn').onclick = () => CrystalOnboarding.backWizard();
   if ($('wizardFinishBtn')) $('wizardFinishBtn').onclick = () => CrystalOnboarding.completeWizard();
@@ -1056,18 +1300,26 @@
   if ($('characterBackBtn')) $('characterBackBtn').onclick = () => CrystalOnboarding.backFromCharacter();
   if ($('characterConfirmBtn')) $('characterConfirmBtn').onclick = () => CrystalOnboarding.confirmCharacter();
   if ($('playerNameInput')) {
+    $('playerNameInput').onfocus = () => CrystalOnboarding.handleNameInputFocus();
+    $('playerNameInput').onblur = () => CrystalOnboarding.handleNameInputBlur();
     $('playerNameInput').oninput = () => {
+      CrystalOnboarding.usingDefaultName = false;
+      CrystalOnboarding.syncNameInputVisual();
       if ($('playerNameError')) $('playerNameError').hidden = true;
     };
     $('playerNameInput').onkeydown = (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
+        if (CrystalOnboarding.usingDefaultName && !String($('playerNameInput').value ?? '')) {
+          $('playerNameInput').value = getDefaultCharacterName(CrystalOnboarding.selectedGender);
+        }
         CrystalOnboarding.confirmCharacter();
       }
     };
   }
 
   syncTruePixelSockets();
+  syncTutorialsToEngine();
   applySettings();
   if (window.TruePixelEngine?.GameHUD) {
     window.TruePixelEngine.GameHUD.onGodModeChange = (active) => {
@@ -1090,7 +1342,6 @@
   renderMap();
   updateProgressLabels();
   window.CrystalMenuAudio?.setVolume?.(settings.music);
-  window.CrystalMenuAudio?.autoStart?.();
   CrystalOnboarding.startSplash();
 
   window.CrystalApp = {
@@ -1100,9 +1351,12 @@
     startNewGame,
     continueGame,
     syncProgress,
+    recordTutorialViewed,
+    markGuideIntroShown,
     notify,
     openSettings,
     openLevelList,
+    openCharacterCreation: (source = 'new_game') => CrystalOnboarding.openCharacterCreation(source),
     get godMode() {
       return isGodModeActive();
     },
@@ -1119,6 +1373,7 @@
       }
       hasSave = true;
       syncTruePixelSockets();
+      syncTutorialsToEngine();
       persist();
       renderMap();
     },
@@ -1128,8 +1383,11 @@
         records: { ...records },
         current,
         hasSave,
+        unlockedTutorials: [...unlockedTutorials],
+        lastViewedTutorialKey,
+        guideIntroShown,
         setupCompleted,
-        playerName: playerName || 'Protagonista',
+        playerName: playerName || getDefaultCharacterName(playerGender),
         playerGender,
         characterCreated,
         screen,
@@ -1138,6 +1396,8 @@
         settings: { ...settings },
         onboarding: {
           splashActive: CrystalOnboarding.splashActive,
+          brinqueSplashActive: CrystalOnboarding.brinqueSplashActive,
+          splashStep: CrystalOnboarding.splashStep,
           splashPhase: CrystalOnboarding.splashPhase,
           wizardActive: CrystalOnboarding.wizardActive,
           wizardStep: CrystalOnboarding.wizardStep,

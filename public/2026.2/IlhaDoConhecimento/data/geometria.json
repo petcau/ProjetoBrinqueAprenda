@@ -1,0 +1,19 @@
+{
+  "metrics": {"WIDTH":1280,"HEIGHT":714,"GAP_LEFT":410,"GAP_RIGHT":866,"CENTER_X":638,"WALK_Y":260,"SLOT_Y0":262,"BOTTOM":610,"TRAY_LEFT":5,"TRAY_RIGHT":1275,"TRAY_BOTTOM":702,"TRAY_CELL":40,"CHAR_H":150,"WALK_SPEED":260},
+  "background":"assets/puzzles/geometria/fundo.png",
+  "backgroundFallback":"assets/puzzles/geometria/fundo.jpeg",
+  "key":"assets/hud/chave_geometria.png",
+  "pieces": {
+    "01":{"matrix":["##.",".##"],"sprite":"assets/puzzles/geometria/pecas/peca_01.png"},
+    "02":{"matrix":[".#",".#","##"],"sprite":"assets/puzzles/geometria/pecas/peca_02.png"},
+    "03":{"matrix":["###",".#."],"sprite":"assets/puzzles/geometria/pecas/peca_03.png"},
+    "04":{"matrix":["#.","##"],"sprite":"assets/puzzles/geometria/pecas/peca_04.png"},
+    "05":{"matrix":["..#",".##","##."],"sprite":"assets/puzzles/geometria/pecas/peca_05.png"},
+    "06":{"matrix":[".#.","###",".#."],"sprite":"assets/puzzles/geometria/pecas/peca_06.png"}
+  },
+  "cycles": [
+    {"cols":4,"rows":3,"pieces":["02","04","05"],"travadas":[],"solution":[["02","02","05","05"],["02","05","05","04"],["02","05","04","04"]]},
+    {"cols":5,"rows":3,"pieces":["01","02","03","04"],"travadas":[{"id":"01","rotation":1,"col":1,"row":0}],"solution":[["02","02","01","04","04"],["02","01","01","03","04"],["02","01","03","03","03"]]},
+    {"cols":5,"rows":4,"pieces":["01","02","03","04","05"],"travadas":[{"id":"05","rotation":1,"col":0,"row":0}],"solution":[["05","03","03","03","01"],["05","05","03","01","01"],["02","05","05","01","04"],["02","02","02","04","04"]]}
+  ]
+}

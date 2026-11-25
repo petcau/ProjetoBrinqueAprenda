@@ -1200,17 +1200,13 @@
         ctx.fillStyle = "#fff3c5";
         ctx.strokeStyle = "#be8b37";
         ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.arc(a.position.x, y, 12, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
         window.GuardiaoIcones?.paint(
           ctx,
           window.GuardiaoIconesImage,
           "paw",
           a.position.x,
           y,
-          18,
+          30 / camera.scale,
         );
       }
     }
@@ -1328,6 +1324,7 @@
     node.replaceChildren(c);
   }
   function actionIcon(button, index) {
+    if (button === "mochila" && window.GuardiaoHUD) return;
     const mark = document.createElement("span");
     mark.className = "action-symbol";
     mark.innerHTML =
@@ -1451,6 +1448,10 @@
     location.reload();
   });
   $("tela-cheia").addEventListener("click", async () => {
+    if (window.GuardiaoTela) {
+      await GuardiaoTela.toggle();
+      return;
+    }
     try {
       if (document.fullscreenElement) await document.exitFullscreen();
       else await $("jogo").requestFullscreen();
@@ -1557,7 +1558,9 @@
         camera,
       }),
   });
-  window.GuardiaoIcones?.load().then((im) => (window.GuardiaoIconesImage = im));
+  const interfaceReady = window.GuardiaoIcones.load().then(
+    (im) => (window.GuardiaoIconesImage = im),
+  );
   document.addEventListener("guardiao:neutralizar", neutral);
   document.addEventListener("guardiao:acao-principal", () => {
     if (locked()) return;
@@ -1596,35 +1599,32 @@
   load();
   if (itemsGiven) window.GuardiaoMemoria.grant(1);
   W.setHazards([...fires, ...animals]);
-  let loaded = 0,
-    loadFailed = false;
   const activeSheets = Object.keys(ATLAS.sheets).filter(
-      (name) =>
-        ![
-          "kai-repouso",
-          "kai-cuidados",
-          "kai-caminhada",
-          "kai-livre",
-          "flora",
-          "fogo",
-          "kai-recompensa",
-        ].includes(name),
-    ),
-    total = activeSheets.length + 7;
-  function progress() {
-    if (loadFailed) return;
-    loaded++;
-    $("loading").textContent = "Preparando a floresta… " + loaded + "/" + total;
-  }
-  Promise.all([
-    sprites.load(progress, activeSheets),
-    Promise.resolve(null),
-    Promise.resolve(null),
-    life.load(progress),
-    colar.load(),
-    art.load(),
-    equipmentReady,
-    world.ready,
+    (name) =>
+      ![
+        "kai-repouso",
+        "kai-cuidados",
+        "kai-caminhada",
+        "kai-livre",
+        "flora",
+        "fogo",
+        "kai-recompensa",
+      ].includes(name),
+  );
+  GuardiaoCarregamento.run([
+    {
+      label: "Personagens e objetos",
+      load: () => sprites.load(undefined, activeSheets),
+    },
+    { label: null, load: () => null },
+    { label: null, load: () => null },
+    { label: "Animações", load: () => life.load() },
+    { label: "Colar", load: () => colar.load() },
+    { label: "Artes da floresta", load: () => art.load() },
+    { label: "Equipamento de Kai", load: () => equipmentReady },
+    { label: "Cenário", load: () => world.ready },
+    { label: "Novas artes", load: () => GuardiaoRemodelacao.phase(1) },
+    { label: "Símbolos", load: () => interfaceReady },
   ])
     .then((result) => {
       environment = new window.FlorestaAmbiente(sprites, result[1], result[2]);
@@ -1632,7 +1632,7 @@
       if (itemsGiven) GuardiaoMemoria.uniform("explorador", { required: true });
       ready = true;
       document.body.dataset.gameReady = "true";
-      $("loading").hidden = true;
+
       flora.x = player.x - 28;
       flora.y = player.y - 70;
       resize();
@@ -1651,11 +1651,12 @@
         $("vitoria").showModal();
       } else
         speak("Vamos continuar! Toque na missão para encontrar o caminho.");
+      GuardiaoCarregamento.finish();
       start();
     })
-    .catch(() => {
-      loadFailed = true;
-      $("loading").innerHTML =
-        'Não foi possível carregar a floresta.<br><a href="index.html">Toque para tentar novamente</a>';
+    .catch((error) => {
+      ready = false;
+      document.body.dataset.gameReady = "false";
+      GuardiaoCarregamento.fail(error);
     });
 })();

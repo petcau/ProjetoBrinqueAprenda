@@ -39,6 +39,7 @@ window.GameIsland = (() => {
   const visited = new Set(['center']), pointers = new Map();
   const heldCodes = new Set();
   const touchWalkHeld = new Set();
+  const suppressedInteractCodes = new Set();
   const transitionHistory = [];
   const wasdOrder = [];
   const arrowOrder = [];
@@ -148,6 +149,13 @@ window.GameIsland = (() => {
     player.switchesPerSec = transitionHistory.length;
   }
 
+  function suppressInteractKeys() {
+    suppressedInteractCodes.add('Enter');
+    suppressedInteractCodes.add('NumpadEnter');
+    suppressedInteractCodes.add('KeyE');
+    suppressedInteractCodes.add('e');
+  }
+
   function clearInput() {
     joystickSector = null;
     joystickActive = false;
@@ -161,6 +169,7 @@ window.GameIsland = (() => {
     touchWalkHeld.clear();
     pointers.clear();
     resetJoystick();
+    suppressInteractKeys();
     // Para no ponto atual do passo: o mapa não é uma grade fixa, então não há salto.
     Object.assign(player, { moving: false, inStep: false, animTime: 0, prog: 0, walk: 0, turn: 0, was: false, steps: 0, idle: 0, frame: 0, intentName: '(nenhuma)' });
   }
@@ -207,41 +216,28 @@ window.GameIsland = (() => {
     const gpIntent = readGamepadInput();
     if (gpIntent) return gpIntent;
 
-    // 2. Setas do teclado: SOMENTE 4 direções, nunca diagonal; última pressionada manda
-    if (arrowOrder.length > 0 && (wasdOrder.length === 0 || lastInputSource === 'arrow')) {
-      const lastArrow = arrowOrder[arrowOrder.length - 1];
-      if (lastArrow === 'ArrowUp') return { dir: 3, ix: 0, iy: -1, name: '↑' };
-      if (lastArrow === 'ArrowDown') return { dir: 0, ix: 0, iy: 1, name: '↓' };
-      if (lastArrow === 'ArrowLeft') return { dir: 1, ix: -1, iy: 0, name: '←' };
-      if (lastArrow === 'ArrowRight') return { dir: 2, ix: 1, iy: 0, name: '→' };
-    }
+    // 2. Teclado unificado (WASD e Setas): mesmo mapa heldCodes, diagonais completas, teclas opostas se anulam
+    const left = (heldCodes.has('ArrowLeft') || heldCodes.has('KeyA')) ? 1 : 0;
+    const right = (heldCodes.has('ArrowRight') || heldCodes.has('KeyD')) ? 1 : 0;
+    const up = (heldCodes.has('ArrowUp') || heldCodes.has('KeyW')) ? 1 : 0;
+    const down = (heldCodes.has('ArrowDown') || heldCodes.has('KeyS')) ? 1 : 0;
+    const ix = right - left;
+    const iy = down - up;
 
-    // 3. Teclado WASD: diagonais suportadas; teclas opostas resolvem pela última pressionada no eixo
-    if (wasdOrder.length > 0) {
-      let ix = 0, iy = 0;
-      for (let i = wasdOrder.length - 1; i >= 0; i--) {
-        const code = wasdOrder[i];
-        if (ix === 0 && code === 'KeyA') ix = -1;
-        if (ix === 0 && code === 'KeyD') ix = 1;
-        if (iy === 0 && code === 'KeyW') iy = -1;
-        if (iy === 0 && code === 'KeyS') iy = 1;
-      }
-      const keys = [];
-      if (wasdOrder.includes('KeyW')) keys.push('W');
-      if (wasdOrder.includes('KeyA')) keys.push('A');
-      if (wasdOrder.includes('KeyS')) keys.push('S');
-      if (wasdOrder.includes('KeyD')) keys.push('D');
-      const name = keys.join('+');
+    if (ix !== 0 || iy !== 0) {
+      let dir = null;
+      if (ix === 0 && iy > 0) dir = 0;       // baixo
+      else if (ix < 0 && iy === 0) dir = 1;  // esquerda
+      else if (ix > 0 && iy === 0) dir = 2;  // direita
+      else if (ix === 0 && iy < 0) dir = 3;  // cima
+      else if (ix < 0 && iy > 0) dir = 4;    // baixo-esq
+      else if (ix > 0 && iy > 0) dir = 5;    // baixo-dir
+      else if (ix < 0 && iy < 0) dir = 6;    // cima-esq
+      else if (ix > 0 && iy < 0) dir = 7;    // cima-dir
 
-      if (ix === 0 && iy > 0) return { dir: 0, ix, iy, name }; // baixo
-      if (ix < 0 && iy === 0) return { dir: 1, ix, iy, name }; // esquerda
-      if (ix > 0 && iy === 0) return { dir: 2, ix, iy, name }; // direita
-      if (ix === 0 && iy < 0) return { dir: 3, ix, iy, name }; // cima
-      if (ix < 0 && iy > 0) return { dir: 4, ix, iy, name };   // baixo-esq
-      if (ix > 0 && iy > 0) return { dir: 5, ix, iy, name };   // baixo-dir
-      if (ix < 0 && iy < 0) return { dir: 6, ix, iy, name };   // cima-esq
-      if (ix > 0 && iy < 0) return { dir: 7, ix, iy, name };   // cima-dir
-      return { dir: null, ix: 0, iy: 0, name: '(nenhuma)' };
+      const pressedList = Array.from(heldCodes).filter(c => MOVEMENT_CODES.has(c));
+      const name = pressedList.join('+') || '(teclas)';
+      return { dir, ix, iy, name };
     }
 
     // 4. Direcional tátil (data-walk): SOMENTE 4 direções, última pressionada
@@ -449,6 +445,7 @@ window.GameIsland = (() => {
   function tick() {
     if (world.spawnPending) { Object.assign(player, world.spawn); world.spawnPending = false; }
     updateSwitchesPerSec();
+    player.pressedCodes = Array.from(heldCodes).sort().join(', ') || '(nenhuma)';
     const intent = computeIntent();
     player.intentName = intent.name;
     const isMoving = intent.dir !== null;
@@ -558,10 +555,21 @@ window.GameIsland = (() => {
       regionCandidateMs = (elapsed || TICK_MS);
     }
   }
+  function isPointNearby(point) {
+    if (Math.hypot(point.x - player.x, point.y - player.y) < (point.radius || 112)) return true;
+    if (point.zonas && point.zonas.length > 0) {
+      const px = player.x / WORLD_SCALE, py = player.y / WORLD_SCALE;
+      for (let i = 0; i < point.zonas.length; i++) {
+        const z = point.zonas[i];
+        if (px >= z.x && px <= z.x + z.w && py >= z.y && py <= z.y + z.h) return true;
+      }
+    }
+    return false;
+  }
   function updateNearby() {
     const key = window.IslandKeys?.nearest(world, player);
     if (key) { world.mountainNearby = false; near = key; $('#island-interact').disabled = false; $('#island-interact-label').textContent = ''; return; }
-    const next = world.points.filter(point => Math.hypot(point.x - player.x, point.y - player.y) < (point.radius || 112)).sort((a, b) => Math.hypot(a.x - player.x, a.y - player.y) - Math.hypot(b.x - player.x, b.y - player.y))[0] || null;
+    const next = world.points.filter(isPointNearby).sort((a, b) => Math.hypot(a.x - player.x, a.y - player.y) - Math.hypot(b.x - player.x, b.y - player.y))[0] || null;
     world.mountainNearby = next?.id === 'montanha';
     if (next === near) return;
     near = next; $('#island-interact').disabled = !near;
@@ -631,10 +639,12 @@ window.GameIsland = (() => {
     if (active && !blocked()) updateNearby();
     const key = window.IslandKeys?.nearest(world, player);
     if (key && active && !blocked()) {
+      suppressInteractKeys();
       const load = window.PuzzleScenes?.[key.id];
       if (!load) { dev.open(key); return; }
       dev.openScene(key, load, {
         debug: () => renderer.debug, toggleDebug: () => renderer.toggleDebug(), onExit: won => {
+          clearInput();
           if (won && key.id === 'logica') {
             if (window.AdventureProgress) AdventureProgress.award('forest');
             world.keyState.keys.logica = true; player.x = 630 * WORLD_SCALE; player.y = 650 * WORLD_SCALE;
@@ -662,10 +672,12 @@ window.GameIsland = (() => {
       const state = world.keyState ||= { keys: {} }, missing = KEYS.filter(k => !state.keys[k.id]).length;
       if (missing) { const message = `A cela tem 4 cadeados! Faltam ${missing} chaves.`; dev.announce(message); $('#island-announcement').textContent = message; return; }
       foundCat = true;
+      suppressInteractKeys();
       const load = window.PuzzleScenes?.montanha;
       if (!load) { dev.open(near); return; }
       dev.openScene(near, load, {
         state, debug: () => renderer.debug, toggleDebug: () => renderer.toggleDebug(), onExit: (_won, message) => {
+          clearInput();
           if (message) { dev.announce(message); $('#island-announcement').textContent = message; }
         }
       });
@@ -701,6 +713,10 @@ window.GameIsland = (() => {
   document.addEventListener('keydown', event => {
     if (!active || event.defaultPrevented || event.ctrlKey || event.altKey || event.metaKey) return;
     const key = event.key.toLowerCase();
+    const code = event.code || KEY_FALLBACK_TO_CODE[key];
+    if (code === 'Space' || key === ' ' || (code && code.startsWith('Arrow'))) {
+      event.preventDefault();
+    }
     if (key === 'k' && renderer.debug && !event.repeat && !blocked()) {
       event.preventDefault(); window.IslandKeys?.reset(world); updateNearby(); return;
     }
@@ -712,25 +728,19 @@ window.GameIsland = (() => {
       for (const id of window.AdventureProgress?.regions || []) AdventureProgress.award(id);
       updateProgress(); dev.announce('[DEV] As 4 chaves foram concedidas.'); return;
     }
-    const code = event.code || KEY_FALLBACK_TO_CODE[key];
     if (code && MOVEMENT_CODES.has(code)) {
       event.preventDefault();
       if (!event.repeat) {
         heldCodes.add(code);
-        if (code.startsWith('Key')) {
-          const idx = wasdOrder.indexOf(code);
-          if (idx !== -1) wasdOrder.splice(idx, 1);
-          wasdOrder.push(code);
-          lastInputSource = 'wasd';
-        } else if (code.startsWith('Arrow')) {
-          const idx = arrowOrder.indexOf(code);
-          if (idx !== -1) arrowOrder.splice(idx, 1);
-          arrowOrder.push(code);
-          lastInputSource = 'arrow';
-        }
       }
     }
-    else if (key === 'e') { event.preventDefault(); if (!event.repeat) interact(); }
+    else if (code === 'Enter' || code === 'NumpadEnter' || code === 'KeyE' || key === 'e') {
+      event.preventDefault();
+      if (!event.repeat && !blocked() && !suppressedInteractCodes.has(code) && !suppressedInteractCodes.has(key)) {
+        suppressInteractKeys();
+        interact();
+      }
+    }
     else if (key === 'm') { event.preventDefault(); if (!event.repeat) openMap(); }
     else if (key === 'f3') { event.preventDefault(); if (!event.repeat) renderer.toggleDebug(); }
     else if (key === 'escape') { event.preventDefault(); if (!event.repeat) showDialog(pause); }
@@ -740,14 +750,9 @@ window.GameIsland = (() => {
     const code = event.code || KEY_FALLBACK_TO_CODE[key];
     if (code) {
       heldCodes.delete(code);
-      if (code.startsWith('Key')) {
-        const idx = wasdOrder.indexOf(code);
-        if (idx !== -1) wasdOrder.splice(idx, 1);
-      } else if (code.startsWith('Arrow')) {
-        const idx = arrowOrder.indexOf(code);
-        if (idx !== -1) arrowOrder.splice(idx, 1);
-      }
+      suppressedInteractCodes.delete(code);
     }
+    suppressedInteractCodes.delete(key);
   });
   // Direcional por toque (data-walk): multitoque para diagonais combinando botões
   document.querySelectorAll('[data-walk]').forEach(button => {

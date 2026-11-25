@@ -1,0 +1,7 @@
+{
+  "fases": [
+    {"tipo":"dobro","moinho":2,"mesa":3,"carrinho":2},
+    {"tipo":"metadeMais","carrinhoTem":14,"mais":1},
+    {"tipo":"divisao","sacos":12,"carrocas":3}
+  ]
+}

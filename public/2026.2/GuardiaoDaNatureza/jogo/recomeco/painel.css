@@ -1,0 +1,134 @@
+/* O painel e os controles compartilham a proporção 2:1 do kit original. */
+#ra-reset.nova-jornada {
+  container-type: inline-size;
+  box-sizing: border-box;
+  width: min(1040px, 96vw, 184dvh);
+  height: auto;
+  aspect-ratio: 2;
+  max-width: none;
+  max-height: none;
+  border: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 24px;
+  background: transparent;
+  color: #173e25;
+}
+#ra-reset.nova-jornada[open] {
+  display: block;
+}
+#ra-reset .recomeco-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+#ra-reset .recomeco-heading {
+  position: absolute;
+  top: 6.5%;
+  left: 15.2%;
+  right: 4%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  color: #fff0c3;
+}
+#ra-reset.nova-jornada .eyebrow {
+  margin: 0 0 0.3cqw;
+  font:
+    800 2cqw / 1.1 system-ui,
+    sans-serif;
+  letter-spacing: 0.08em;
+  color: #fff0c3;
+  text-shadow: 0 1px 2px #183820;
+}
+#ra-reset.nova-jornada h2 {
+  margin: 0;
+  font:
+    400 5cqw / 1.1 Lilita,
+    Renascenca,
+    system-ui;
+  color: #fff0c3;
+  text-shadow: 0 2px 2px #102d19;
+}
+#ra-reset.nova-jornada > p {
+  position: absolute;
+  left: 7%;
+  width: 86%;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  text-wrap: balance;
+  color: #173e25;
+}
+#ra-reset #ra-reset-description {
+  top: 30%;
+  font:
+    700 2.8cqw / 1.2 system-ui,
+    sans-serif;
+}
+#ra-reset #ra-reset-preferences {
+  top: 54%;
+  font:
+    500 2.7cqw / 1.2 system-ui,
+    sans-serif;
+}
+#ra-reset.nova-jornada .ra-dialog-actions {
+  display: contents;
+}
+#ra-reset.nova-jornada .ra-dialog-actions button {
+  position: absolute;
+  top: 64.6%;
+  width: 46.2%;
+  height: 23%;
+  min-height: 44px;
+  padding: 0 3%;
+  border: 0;
+  border-radius: 999px;
+  margin: 0;
+  background: none;
+  box-shadow: none;
+  color: #fff0c3;
+  font:
+    400 3.5cqw / 1.1 Lilita,
+    Renascenca,
+    system-ui;
+  text-shadow: 0 2px 2px #362617;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    text-shadow 160ms ease;
+}
+#ra-reset.nova-jornada [data-cancel] {
+  left: 3.4%;
+}
+#ra-reset.nova-jornada [data-confirm] {
+  left: 50.7%;
+}
+#ra-reset.nova-jornada .ra-dialog-actions button:focus-visible {
+  outline: 3px solid #fff1b0;
+  outline-offset: -1.8cqw;
+}
+@media (hover: hover) {
+  #ra-reset.nova-jornada .ra-dialog-actions button:hover {
+    background-color: #ffffff12;
+    text-shadow:
+      0 2px 2px #362617,
+      0 0 10px #fff0bb88;
+  }
+}
+#ra-reset.nova-jornada .ra-dialog-actions button:active {
+  background-color: #173e2526;
+}
+.reduce-motion #ra-reset.nova-jornada button {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  #ra-reset.nova-jornada button {
+    transition: none;
+  }
+}

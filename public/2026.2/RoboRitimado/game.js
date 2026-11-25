@@ -26,7 +26,7 @@
     $('captionResult').textContent = text; captionUntil = performance.now() + seconds * 1000;
   }
   let levelIndex = 0, level = LEVELS[0], bankedScore = 0, toysUnlocked = false, unlockedThrough = 0;
-  let offset=0;
+  const offset=0;let debugRun=false;
   let BPM, BEAT, SONG_BEATS, DURATION, COLORS, MELODY, BASS, CHART, MAX_POINTS, GOAL, FRAMES;
   let battle = null, battleEvent = null, coda = null, battleAttempt = 0;
   let battleText = '', holdGrace = 0;
@@ -83,7 +83,8 @@
       sprite: imageAsset(world.sprite),
       background: imageAsset(world.background),
       symbol: imageAsset(world.symbol),
-      dance: world.dance ? imageAsset(world.dance.sprite) : null
+      dance: !world.steps && world.dance ? imageAsset(world.dance.sprite) : null,
+      steps: world.steps ? imageAsset(world.steps.sprite) : null
     };
   }
   levelAssets(0);
@@ -113,13 +114,10 @@
     best = Number(localStorage.getItem('robo-ritmado-best-v04')) || 0;
     toysUnlocked = localStorage.getItem('robo-ritmado-toys-unlocked') === 'true';
     unlockedThrough = Math.max(toysUnlocked ? 1 : 0, Math.min(LEVELS.length-1, Number(localStorage.getItem('rr-worlds-v07')) || 0));
-    offset = Math.max(-200, Math.min(200, Number(localStorage.getItem('pixel-offset')) || 0));
     const saved = localStorage.getItem('pixel-effects');
     if (saved !== null) soft = saved === 'soft';
   } catch { /* The game also runs with browser storage disabled. */ }
   $('best').textContent = String(best).padStart(5, '0');
-  $('offset').value = offset;
-  $('offsetValue').textContent = `${offset > 0 ? '+' : ''}${offset} ms`;
   function save(key, value) { try { localStorage.setItem(key, value); } catch {} }
   const formatTime = t => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
   const worldButtons = RR_CAMPAIGN.map((stage,i)=>{
@@ -136,7 +134,6 @@
       button.dataset.future=String(future);
       const lock=button.querySelector('small');if(lock)lock.textContent=future?'Em breve':locked?'🔒':'✦';
       const copy=phaseButtons[i];copy.disabled=button.disabled;copy.title=button.title;copy.dataset.future=button.dataset.future;copy.setAttribute('aria-current',button.getAttribute('aria-current'));copy.querySelector('small').textContent=lock.textContent;
-      if(i===levelIndex&&document.body.dataset.screen==='game')button.scrollIntoView({block:'nearest',inline:'center'});
     });
   }
   function updateLevelUI() {
@@ -194,7 +191,7 @@
     const token = ++generation;levelAssets(index);
     state = 'loading'; spriteReady = false; dancer.style.visibility = 'hidden'; updateWorldButtons(); clearInterval(scheduler); stopVoices();
     $('start').disabled=true;
-    await Promise.all([assets[index].sprite.ready, assets[index].background.ready, assets[index].dance?.ready, LEVELS[index].id==='fase11' ? RR_FINALE.arenaReady : null]);
+    await Promise.all([assets[index].sprite.ready, assets[index].background.ready, assets[index].dance?.ready, assets[index].steps?.ready, LEVELS[index].id==='fase11' ? RR_FINALE.arenaReady : null]);
     if (token !== generation) return;
     configureLevel(index); bankedScore = carry; sprite = assets[index].sprite.image;
     RR_SPRITES.validate(sprite, FRAMES);
@@ -203,7 +200,7 @@
     stats = { perfect: 0, good: 0, near: 0, miss: 0 };
     modal('intro',true); modal('results',false); modal('pauseOverlay',false);
     $('countdown').innerHTML = ''; $('judgment').classList.remove('show');
-    $('pause').disabled = true; $('offset').disabled = false; $('spriteStatus').hidden = true;
+    $('pause').disabled = true; $('spriteStatus').hidden = true;
     state = 'ready'; updateLevelUI();speak(welcomes[level.id] || 'Vamos descobrir a batida deste mundo juntos!');
     // Wait for visible layout before committing the decoded costume to the canvas.
     await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
@@ -213,7 +210,7 @@
   }
   async function selectWorld(index) {
     if (settingsLocked() || index > unlockedThrough || index>=LEVELS.length) return;
-    try { await showLevel(index, 0); }
+    try { debugRun=false;await showLevel(index, 0); }
     catch (error) { state = 'ready'; $('start').disabled=false; $('spriteStatus').hidden = false; $('spriteStatus').textContent = error.message; updateWorldButtons(); }
   }
   let traveling=false,skipJourney=false;
@@ -221,7 +218,7 @@
   const traveler=RR_TRAVEL.create($('travelCanvas'));
   async function travel(){
     if(traveling||state!=='results'||score<GOAL||isBattle())return;
-    const next=levelIndex+1,carry=bankedScore+score,from={level,sprite,background:assets[levelIndex].background.image};
+    const tripGeneration=generation,next=levelIndex+1,carry=bankedScore+score,from={level,sprite,background:assets[levelIndex].background.image};
     traveling=true;skipJourney=false;state='transition';modal('results',false);updateWorldButtons();$('retryTravel').hidden=true;
     $('travelSummary').textContent=carry.toLocaleString('pt-BR')+' pontos seguem com você.';
     $('travelDestination').textContent=LEVELS[next].name;
@@ -229,14 +226,17 @@
     try{
       levelAssets(next);
       await Promise.all([assets[next].sprite.ready,assets[next].background.ready]);
+      if(tripGeneration!==generation)return;
       const to={level:LEVELS[next],sprite:assets[next].sprite.image,background:assets[next].background.image};
       await RR_AUDIO.unlock();RR_AUDIO.silence();
       if(!skipJourney)await reflection.play(from,RR_NARRATIVE.reflections[levelIndex]);
+      if(tripGeneration!==generation)return;
       if(!skipJourney){
         $('travelDestination').textContent=to.level.name;
         if (to.level.id==='fase11') await RR_FINALE.play('return',from);
         else await traveler.play(from,to);
       }
+      if(tripGeneration!==generation)return;
       RR_AUDIO.silence();$('travelOverlay').close();
       await showLevel(next,carry);
       $('announcer').textContent='Pixel chegou com coragem a '+level.name+'. Confira a fase e entre no ritmo.';
@@ -309,7 +309,7 @@
   function drawDancer(dt,step,now) {
     if(!spriteReady)return;
     const moving=step.lane!=null;
-    if(!dancerDirty&&!moving&&danceModel?.stepLane==null&&!danceSparks.length)return;
+    if(!dancerDirty&&!moving&&danceModel?.stepLane==null&&!danceSparks.length&&(!frenzy||soft||now-lastStagePaint<42))return;
     const dirty=dancerDirty;
     dancerDirty=false;
     danceCtx.clearRect(0,0,dancerWidth,dancerHeight);
@@ -321,18 +321,18 @@
     groove=frenzy?1:judged?Math.max(.1,quality*.85):.28;
     const mood=judged<3?2:quality<.32?0:quality<.55?1:quality<.76?2:quality<.91||combo<8||score<GOAL*.25?3:4;
     const beat=still?0:Math.max(0,clock())/BEAT;
-    if(frenzy)drawAura(moving?beat:0);
+    if(frenzy)drawAura(beat);
     danceModel=RR_PERFORMANCE.draw(danceCtx,sprite,level,{
-      width:dancerWidth,height:dancerHeight,mood,danceImage:assets[levelIndex].dance?.image,...step
+      width:dancerWidth,height:dancerHeight,mood,danceImage:assets[levelIndex].dance?.image,stepImage:assets[levelIndex].steps?.image,...step
     });
     danceFrame=0;
-    if(dirty||lastStageLane!==step.lane||moving&&now-lastStagePaint>=42){
+    if(dirty||lastStageLane!==step.lane||(moving||frenzy)&&now-lastStagePaint>=42){
       lastStagePaint=now;
       lastStageLane=step.lane;
       stageModel=RR_PERFORMANCE.platform(stageCtx,{
         width:dancerWidth,height:stageHeight,floor:danceModel.floor,x:danceModel.x,
-        id:level.id,colors:COLORS,accent:level.accent,power:groove,beat:moving?beat:0,
-        soft,still:still||!moving,deluxe:true,frenzy,symbol:assets[levelIndex].symbol.image
+        id:level.id,colors:COLORS,accent:level.accent,power:groove,beat,
+        soft,still,deluxe:true,frenzy,symbol:assets[levelIndex].symbol.image
       });
     }
     if($('dancePhrase').textContent!==danceModel.phrase)$('dancePhrase').textContent=danceModel.phrase;
@@ -523,7 +523,7 @@
       $('judgment').classList.remove('show');
       modal('intro',false); modal('pauseOverlay',false); modal('results',false);
       $('pause').disabled = false; $('pause').textContent = 'Ⅱ'; $('pause').setAttribute('aria-label', 'Pausar música');
-      $('offset').disabled = true;
+
       state = 'countdown'; epoch = audio.currentTime + .15 + 4 * BEAT;
       updateWorldButtons();
       step = -8; lastCount = null;
@@ -534,18 +534,18 @@
       state = 'ready'; modal('intro',true);
       modal('pauseOverlay',false); modal('results',false);
       $('audioError').textContent = error.message || 'Não foi possível iniciar o áudio. Tente novamente.';
-      $('audioError').hidden = false; $('pause').disabled = true; $('offset').disabled = false;
+      $('audioError').hidden = false; $('pause').disabled = true;
       updateWorldButtons();
     } finally { starting = false; $('start').disabled = false; }
   }
-  async function pause() {
+  async function pause({notice=true}={}) {
     if (!['playing', 'countdown'].includes(state)) return;
     previousState = state; state = 'paused';frameDirty=true;dancerDirty=true;
     clearInterval(scheduler); pressed.fill(false);
-    modal('pauseOverlay',true); $('pause').textContent = '▶';
+    if(notice)modal('pauseOverlay',true); $('pause').textContent = '▶';
     $('pause').setAttribute('aria-label', 'Continuar música');
     await audio.suspend();
-    $('resume').focus({ preventScroll: true });
+    if(notice)$('resume').focus({ preventScroll: true });
     $('announcer').textContent = 'Jogo pausado.'; if ($('captionApproach')) $('captionApproach').textContent = ''; caption('Partida pausada. Música e setas paradas.', 60);
   }
   async function resume() {
@@ -564,7 +564,7 @@
   function spawn(lane, kind) {
     if (preferences().sensitivity) return;
     const x = laneX(lane), y = targetY();
-    for (let i = 0; i < (soft ? 4 : kind === 'perfect' ? 42 : kind === 'miss' ? 8 : 24)*RR_SETTINGS.effects(); i++) {
+    for (let i = 0; i < (soft ? 4 : kind === 'perfect' ? 26 : kind === 'miss' ? 8 : 24)*RR_SETTINGS.effects(); i++) {
       const angle = Math.random() * Math.PI * 2, speed = 40 + Math.random() * 230;
       particles.push({ x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed - 65,
         life: .45 + Math.random() * .6, age: 0, color: kind === 'miss' ? '#b9a6ce' : i % 5 === 0 ? '#fff5cf' : COLORS[(lane + i % 3) % 4],
@@ -648,7 +648,7 @@
   function finish() {
     if (state === 'results') return;
     state = 'results'; danceStep=null;setFrenzy(false); clearInterval(scheduler); stopVoices();
-    $('countdown').innerHTML = ''; $('pause').disabled = true; $('offset').disabled = false;
+    $('countdown').innerHTML = ''; $('pause').disabled = true;
     $('songFill').style.width = '100%';
     document.querySelector('.song-progress').setAttribute('aria-valuenow', '100');
     $('time').textContent = `${formatTime(Math.ceil(DURATION))} / ${formatTime(Math.ceil(DURATION))}`;
@@ -679,7 +679,7 @@
     speak(charged?'Conseguimos! Eu sabia que você podia!':'Seu esforço vale muito. Vamos tentar outra vez?',charged?'celebrate':'encourage');
     const hasNext=levelIndex<LEVELS.length-1;
     if(charged)$('energyHint').textContent=hasNext?'Portal aberto para '+LEVELS[levelIndex+1].name+'!':'Dez mundos no nosso ritmo!';
-    if(charged&&hasNext){unlockedThrough=Math.max(unlockedThrough,levelIndex+1);toysUnlocked=true;save('rr-worlds-v07',unlockedThrough);save('robo-ritmado-toys-unlocked','true');}
+    if(charged&&hasNext&&!debugRun){unlockedThrough=Math.max(unlockedThrough,levelIndex+1);toysUnlocked=true;save('rr-worlds-v07',unlockedThrough);save('robo-ritmado-toys-unlocked','true');}
     $('resultPill').textContent=charged?'✦ FASE '+(levelIndex+1)+' CONCLUÍDA':'♡ MAIS UMA TENTATIVA JUNTOS';
     $('resultTitle').textContent = charged ? (levelIndex ? 'Que grande show!' : 'O portal despertou!') : score ? 'Você fez música!' : 'Vamos tentar juntos?';
     $('resultMessage').textContent = battle ? (charged?'A música voltou a OrbitHop!':'A cidade conta com você. Leia os avisos e tente a batalha novamente.') : charged ? LEVELS[levelIndex+1].name+' espera por você!' : `Você fez ${score.toLocaleString('pt-BR')} de ${GOAL.toLocaleString('pt-BR')} pontos. Vamos praticar?`;
@@ -690,7 +690,7 @@
     $('playAgain').classList.toggle('replay-secondary', charged && hasNext);
     $('resultHint').textContent = battle ? 'Quatro anéis completam a Sinfonia dos Mundos.' : bankedScore ? `Você trouxe ${bankedScore.toLocaleString('pt-BR')} pontos dos mundos anteriores.` : charged ? 'Seus pontos seguem com você pelo portal.' : `Faltaram ${Math.max(0, GOAL - score).toLocaleString('pt-BR')} pontos para abrir o portal.`;
     $('pixelMessage').textContent = charged ? 'Conseguimos! Olha o nosso portal!' : 'Adorei tocar com você. Mais uma?';
-    if (bankedScore + score > best) { best = bankedScore + score; save('robo-ritmado-best-v04', best); $('best').textContent = String(best).padStart(5, '0'); }
+    if (!debugRun && bankedScore + score > best) { best = bankedScore + score; save('robo-ritmado-best-v04', best); $('best').textContent = String(best).padStart(5, '0'); }
     $('announcer').textContent = charged?'Fase concluída!':'Vamos tentar de novo!';
     updateWorldButtons();
     (charged ? hasNext ? $('nextStage') : $('lastStory') : $('playAgain')).focus({ preventScroll: true });
@@ -758,44 +758,7 @@
     }
     context.closePath();
   }
-  function paintArrow(ctx,x,y,lane,size,color,filled,glow) {
-    ctx.save(); ctx.translate(x, y);
-    ctx.rotate([Math.PI, Math.PI / 2, -Math.PI / 2, 0][lane]);
-    ctx.beginPath();
-    const path = [[-.44, -.23], [.03, -.23], [.03, -.46], [.49, 0], [.03, .46], [.03, .23], [-.44, .23]];
-    path.forEach(([px, py], i) => i ? ctx.lineTo(px * size, py * size) : ctx.moveTo(px * size, py * size));
-    ctx.closePath(); ctx.lineJoin = 'round'; ctx.lineWidth = filled ? 2 : 2.5;
-    ctx.shadowColor = color; ctx.shadowBlur = glow;
-    const fill = ctx.createLinearGradient(-size / 2, -size / 2, size / 2, size / 2);
-    fill.addColorStop(0, '#fff7f6'); fill.addColorStop(.35, color); fill.addColorStop(1, color + 'aa');
-    ctx.fillStyle = filled ? (preferences().highContrast ? color : fill) : (preferences().highContrast ? '#000000' : '#19152ed9'); ctx.fill(); ctx.strokeStyle = filled ? '#fff3ffdd' : color; ctx.stroke();
-    if (filled && !soft && !preferences().highContrast) {
-      ctx.save(); ctx.clip(); ctx.shadowBlur = 0;
-      if (level.id!=='doces') {
-        ctx.fillStyle = '#ffffffb0';
-        if(level.id==='pantano'){ctx.beginPath();ctx.ellipse(0,0,size*.07,size*.14,.55,0,Math.PI*2);ctx.fill();}
-        else if(level.id==='deserto'){for(let a=0;a<8;a++){ctx.save();ctx.rotate(a*Math.PI/4);ctx.fillRect(-1,size*.07,2,size*.07);ctx.restore();}ctx.beginPath();ctx.arc(0,0,size*.055,0,Math.PI*2);ctx.fill();}
-        else if(level.id==='gelo'){for(let a=0;a<6;a++){ctx.save();ctx.rotate(a*Math.PI/3);ctx.fillRect(-1,-size*.15,2,size*.3);ctx.restore();}}
-        else if(level.id==='ceu'){ctx.beginPath();[[0,-.16],[.04,-.04],[.16,0],[.04,.04],[0,.16],[-.04,.04],[-.16,0],[-.04,-.04]].forEach(([x,y],i)=>i?ctx.lineTo(x*size,y*size):ctx.moveTo(x*size,y*size));ctx.closePath();ctx.fill();}
-        else{starPath(ctx,0,0,size*.105);ctx.fill();}
-        ctx.fillStyle = '#ffffff75';
-        for (const dx of [-.3, -.15]) { ctx.beginPath(); ctx.arc(dx * size, 0, size * .035, 0, Math.PI * 2); ctx.fill(); }
-      } else {
-        ctx.strokeStyle = '#ffffff85'; ctx.lineWidth = 3;
-        const shift = 4;
-        for (let sx = -size; sx < size; sx += 15) { ctx.beginPath(); ctx.moveTo(sx + shift, -size); ctx.lineTo(sx + size + shift, size); ctx.stroke(); }
-      }
-      ctx.restore();
-      ctx.shadowBlur = 0; ctx.globalAlpha = .45; ctx.translate(-size * .035, -size * .045);
-      ctx.scale(.72, .7); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5;
-      // Canvas paths are not restored by save/restore: rebuild the arrow after
-      // drawing the clipped stripes/star so decorative paths cannot leak out.
-      ctx.beginPath();
-      path.forEach(([px, py], i) => i ? ctx.lineTo(px * size, py * size) : ctx.moveTo(px * size, py * size));
-      ctx.closePath(); ctx.stroke();
-    }
-    ctx.restore();
-  }
+  function paintArrow(ctx,x,y,lane,size,color,filled,glow){RR_ARROWS.draw(ctx,x,y,lane,size,color,filled,{soft,contrast:preferences().highContrast,theme:level.id});}
   let trackArt;
   function trackGraphics(size) {
     const key=[width,height,size,level.id,soft,preferences().sensitivity,preferences().highContrast,...COLORS].join('|');
@@ -926,7 +889,7 @@
     for (let lane = 0; lane < 4; lane++) {
       if (!soft) {
         ctx.save(); ctx.globalAlpha = .28 + pulse * .25; ctx.strokeStyle = COLORS[lane]; ctx.lineWidth = 1;
-        ctx.shadowColor = COLORS[lane]; ctx.shadowBlur = 12;
+        ctx.shadowColor = COLORS[lane]; ctx.shadowBlur = 0;
         ctx.beginPath(); ctx.arc(laneX(lane), target, size * (.65 + pulse * .08), 0, Math.PI * 2); ctx.stroke(); ctx.restore();
       }
       arrow(art,laneX(lane),target,lane,size+(flashes[lane]>.1?4:0),false);
@@ -1002,10 +965,7 @@
   $('volume').addEventListener('input', () => {
     RR_SETTINGS.set('musicVolume', Number($('volume').value));
   });
-  $('offset').addEventListener('input', () => {
-    if (settingsLocked()) return;
-    offset = Number($('offset').value); $('offsetValue').textContent = `${offset > 0 ? '+' : ''}${offset} ms`; save('pixel-offset', offset);
-  });
+
   $('fullscreen').addEventListener('click', async () => {
     try {
       if (document.fullscreenElement) await document.exitFullscreen();
@@ -1048,7 +1008,7 @@
   // Read-only diagnostics for verifying timing, scoring, audio and pause behavior.
   // Gameplay has no autoplay or score-writing test hooks.
   Object.defineProperty(window, 'pixelDiagnostics', { value: Object.freeze({
-    snapshot: () => ({ state, transition:reflection.snapshot().active?reflection.snapshot():traveler.snapshot(), rate: runRate, arrowSpeed: runArrowSpeed, palette: [...COLORS], level: levelIndex + 1, world: level.id, bpm: BPM, song: level.song,
+    snapshot: () => ({ state, debugRun, transition:reflection.snapshot().active?reflection.snapshot():traveler.snapshot(), rate: runRate, arrowSpeed: runArrowSpeed, palette: [...COLORS], level: levelIndex + 1, world: level.id, bpm: BPM, song: level.song,
       duration: DURATION, sprite: level.sprite, choreography: danceModel, instrument: level.instrument, meter: level.meter, background: level.background, stage: stageModel, emotion: {name:danceModel?.mood||'Animando',recent:[...recentResults]}, musicSignature: MELODY.join(',') + '/' + BASS.join(','),
       bankedScore, totalScore: bankedScore + score, unlocked: toysUnlocked, unlockedThrough,
       effects: { trackParticles: particles.length, rings: rings.length, dancerParticles: danceSparks.length, reduced: soft },
@@ -1070,7 +1030,7 @@
   }), writable: false });
   function syncPreferences() {
     frameDirty=true;dancerDirty=true;
-    COLORS = palette(); setSoft(); $('volume').value = preferences().musicVolume;
+    resize();resizeDancer();COLORS = palette(); setSoft(); $('volume').value = preferences().musicVolume;
     if (audio && master) master.gain.setTargetAtTime(preferences().musicVolume / 100 * .72, audio.currentTime, .02);
     if (preferences().sensitivity) { particles = []; rings = []; danceSparks.length = 0; flashes.fill(0); }
   }
@@ -1080,7 +1040,10 @@
     canResume: () => state === 'paused',
     dismissNotices(){for(const id of ['intro','pauseOverlay','results'])modal(id,false);},
     stop() { for(const id of ['intro','pauseOverlay','results'])modal(id,false);++generation; clearInterval(scheduler); stopVoices(); state = 'ready'; notes = []; pressed.fill(false); },
-    async adventure() { await showLevel(0, 0); }
+    async adventure() { debugRun=false;await showLevel(0, 0); },
+    holdJourney(){if(state!=='transition')return false;const c=journeyController();if(c.snapshot?.().paused)return false;c.toggle();return true;},
+    continueJourney(){if(state==='transition')journeyController().toggle();},
+    async inspectWorld(index){if(!Number.isInteger(index)||!LEVELS[index])throw new Error('Mundo inválido');++generation;skipJourney=true;reflection.finish();if(traveler.snapshot().active)traveler.finish();if(RR_FINALE.active())RR_FINALE.finish();$('travelOverlay').close();debugRun=true;await showLevel(index,0);}
   });
   resize(); resizeDancer(); requestAnimationFrame(draw);
 })();

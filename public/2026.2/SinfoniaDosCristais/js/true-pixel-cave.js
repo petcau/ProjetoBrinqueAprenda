@@ -11,8 +11,9 @@
 
   const {
     W, H, SPRITE_FPS, SIM_HZ, bay, mulberry, c32, fromMap, silhouette,
-    P1, drawRing, drawStar, drawPixelText, drawPixelTextCentered, measurePixelText, drawParchmentBox,
-    ActorAnimator, IrisTransition, DialogueBox, TutorialModal, GameHUD, StandardTutorialCards
+    P1, drawRing, drawStar, drawPixelText, drawPixelTextCentered, measurePixelText, drawJustifiedPixelText, drawParchmentBox,
+    TextOverlay,
+    ActorAnimator, IrisTransition, DialogueBox, TutorialModal, GameHUD, VictoryChoreography, StandardTutorialCards
   } = E;
   const R = Math.round;
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -176,7 +177,7 @@
     6: [[-12, -8.5], [-7.5, -12.5], [-2.5, -15], [2.5, -15], [7.5, -12.5], [12, -8.5]]
   };
 
-  function drawExternalOrb(ctx, ox, oy, coreCol, midCol, rimCol, pulse = false) {
+  function drawExternalOrb(ctx, ox, oy, coreCol, midCol, rimCol, pulse = false, specCol = '#ffffff') {
     ox = RH(ox);
     oy = RH(oy);
     const r = pulse ? 3.0 : 2.5;
@@ -195,10 +196,10 @@
     ctx.fillStyle = midCol;
     ctx.fillRect(ox - r + 0.5, oy - r + 0.5, r * 2 - 1, r * 2 - 1);
 
-    // Núcleo brilhante e ponto especular superior esquerdo
+    // Núcleo e ponto especular superior esquerdo
     ctx.fillStyle = coreCol;
     ctx.fillRect(ox - 1, oy - 1, 2, 2);
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = specCol;
     ctx.fillRect(ox - 1, oy - 1.5, 1, 1);
   }
 
@@ -241,24 +242,30 @@
     const orbCoords = EXTERNAL_ORB_ARCS[val] || EXTERNAL_ORB_ARCS[1];
     const recentlyChanged = Boolean(piece.lastValChangeAt && (t - piece.lastValChangeAt) < 0.28);
 
-    const coreCol = piece.shadow
-      ? (piece.type === 'rose' ? '#ffe0eb' : (piece.type === 'opal' ? '#ffe8b8' : '#e0f7ff'))
-      : '#fffdf2';
+    const coreCol = piece.shadow ? '#0d0317' : '#fffdf2';
     const midCol = piece.shadow
-      ? (piece.type === 'rose' ? '#d46a92' : (piece.type === 'opal' ? '#d97538' : '#68b0c9'))
+      ? (piece.type === 'rose' ? '#4a153b' : (piece.type === 'opal' ? '#4f1e14' : '#241442'))
       : piece.type === 'opal'
         ? '#f7b259'
         : piece.type === 'rose'
           ? '#f29bb8'
           : '#7fd4e6';
-    const rimCol = piece.shadow ? '#240b36' : (piece.type === 'opal' ? '#4a1912' : (piece.type === 'rose' ? '#4f1e35' : '#1e3a4d'));
-    const linkCol = piece.shadow ? '#7e22ce' : (piece.type === 'opal' ? '#e68a49' : (piece.type === 'rose' ? '#d97a9c' : '#569bb0'));
+    const rimCol = piece.shadow
+      ? (piece.type === 'rose' ? '#be4b82' : (piece.type === 'opal' ? '#c26238' : '#9333ea'))
+      : (piece.type === 'opal' ? '#4a1912' : (piece.type === 'rose' ? '#4f1e35' : '#1e3a4d'));
+    const specCol = piece.shadow
+      ? (piece.type === 'rose' ? '#f472b6' : (piece.type === 'opal' ? '#fb923c' : '#c084fc'))
+      : '#ffffff';
+    const linkCol = piece.shadow ? '#4c1d95' : (piece.type === 'opal' ? '#e68a49' : (piece.type === 'rose' ? '#d97a9c' : '#569bb0'));
 
-    // Filamento energético suave conectando o arco de bolinhas externas ao topo do cristal
+    // Filamento energético conectando o arco de bolinhas externas ao topo do cristal
     ctx.fillStyle = linkCol;
     for (let i = 0; i < orbCoords.length; i++) {
       const [ox, oy] = orbCoords[i];
       ctx.fillRect(RH(x + ox * 0.65), RH(y + oy * 0.72), 1, 1);
+      if (piece.shadow) {
+        ctx.fillRect(RH(x + ox * 0.45), RH(y + oy * 0.55), 1, 1);
+      }
       if (i < orbCoords.length - 1) {
         const [nx, ny] = orbCoords[i + 1];
         ctx.fillRect(RH(x + (ox + nx) * 0.5), RH(y + (oy + ny) * 0.5), 1, 1);
@@ -267,7 +274,7 @@
 
     for (let i = 0; i < orbCoords.length; i++) {
       const [ox, oy] = orbCoords[i];
-      drawExternalOrb(ctx, x + ox, y + oy, coreCol, midCol, rimCol, recentlyChanged);
+      drawExternalOrb(ctx, x + ox, y + oy, coreCol, midCol, rimCol, recentlyChanged, specCol);
     }
   }
 
@@ -2086,6 +2093,9 @@
 
           if (isPractice) {
             this.practiceHits++;
+            if (typeof CaveChapter1 !== 'undefined') {
+              CaveChapter1.vignettePracticeDone = true;
+            }
           }
           return hit;
         }
@@ -2545,16 +2555,21 @@
         const isCurrent = (i === activeIndex);
 
         if (isCurrent && w.isHold) {
+          const useOv = TextOverlay && TextOverlay.isActiveFor(ctx);
+          const measuredW = useOv ? TextOverlay.measureLogicalText(ctx, w.text, 8.6) : null;
+          const drawW = (measuredW && measuredW > 0) ? measuredW : w.width;
           // Palavra apagada na base
           drawPixelText(ctx, w.text, w.x, w.y, '#6c5b52', null);
           const pHold = clamp((time - w.t) / (w.holdDur || w.dur), 0, 1);
-          const fillW = Math.round(w.width * pHold);
+          const fillW = Math.round(drawW * pHold);
           if (fillW > 0) {
             ctx.save();
             ctx.beginPath();
             ctx.rect(w.x, w.y - 3, fillW, 16);
             ctx.clip();
+            TextOverlay?.pushClipRect?.(ctx, w.x, w.y - 3, fillW, 16);
             drawPixelText(ctx, w.text, w.x, w.y, '#ffe033', '#2c221e');
+            TextOverlay?.popClipRect?.(ctx);
             ctx.restore();
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(w.x + fillW, w.y - 1, 1, 9);
@@ -2651,9 +2666,11 @@
     _lastAudioTime: null,
     _lastAudioPerf: null,
     cloudPopTime: -1,
-    skipMusicalBtnRect: { x: 92, y: 2, w: 58, h: 16 },
+    skipMusicalBtnRect: { x: 74, y: 2, w: 44, h: 16 },
     vignetteCard: 1,
     vignettePracticeTime: 0,
+    vignettePracticeDone: false,
+    vignetteLockFeedbackTimer: 0,
     isHoldingSpace: false,
 
     pieces: [],
@@ -2664,6 +2681,16 @@
     magneticAnim: null,
     equationShockEffect: null,
     ghostHandAnim: null,
+    fase1IntroGuideAnim: null,
+    _fase1IntroGuideDismissed: false,
+    shadowSmokePuffs: [],
+    actionHistory: [],
+    _gestureSnapshot: null,
+    _gestureCommitted: false,
+    _committingAction: false,
+    rewindAnim: null,
+    deadEndAutoRewindPending: false,
+    DEAD_END_REWIND_DELAY: 1.75,
 
     opalDrainTimer: 0,
     opalStepInterval: 0.55,
@@ -2678,7 +2705,7 @@
     STAGE_MIN_Y: 38,          // abaixo do HUD superior (0..20), mantendo as bolinhas externas visíveis
     STAGE_MAX_Y: 128,         // acima do piso de pedra/musgo (y >= 138)
 
-    completeBtnRect: { x: 112, y: 112, w: 96, h: 16 },
+    completeBtnRect: { x: 102, y: 114, w: 116, h: 18 },
     gameOverBtnRect: { x: 96, y: 120, w: 128, h: 16 },
     onChapterFinish: null,
 
@@ -2812,6 +2839,7 @@
           this.canvas.style.background = 'transparent';
           this.canvas.style.boxShadow = 'none';
         }
+        TextOverlay?.hide?.(this.canvas);
       }
     },
 
@@ -2848,6 +2876,7 @@
       GameHUD.settingsOpen = false;
       GameHUD.guideOpen = false;
       GameHUD.onUseAbility1 = () => this.triggerGhostHandHint();
+      GameHUD.onUseAbility2 = () => this.triggerTimeRewind(this.phase === 'defeat_pause');
       if (typeof GameHUD.resetAbilityCharges === 'function') GameHUD.resetAbilityCharges();
       GameHUD.syncAudio();
     },
@@ -2865,6 +2894,14 @@
       this.magneticAnim = null;
       this.equationShockEffect = null;
       this.ghostHandAnim = null;
+      this.fase1IntroGuideAnim = null;
+      this.shadowSmokePuffs = [];
+      this.actionHistory = [];
+      this._gestureSnapshot = null;
+      this._gestureCommitted = false;
+      this._committingAction = false;
+      this.rewindAnim = null;
+      this.deadEndAutoRewindPending = false;
       this.clearTrembleStates();
       this.shards = [];
       this.cushionAlpha = 0;
@@ -2964,6 +3001,7 @@
       cv.style.width = roundFn(W * scale) + 'px';
       cv.style.height = roundFn(H * scale) + 'px';
       cv.style.display = cv.hidden ? 'none' : 'block';
+      TextOverlay?.syncLayout?.(cv);
     },
 
     toLogicalCoords(clientX, clientY) {
@@ -3074,6 +3112,8 @@
         const clickedInEq = this.isInsideEquationAura(eq, x, y);
 
         if (eq && !eq.broken && !eq.expanded && clickedInEq) {
+          this._gestureSnapshot = this.captureStepSnapshot();
+          this._gestureCommitted = false;
           this.equationPointer = {
             startX: x,
             startY: y,
@@ -3088,6 +3128,9 @@
           const p = this.pieces[i];
           if (!p.shadow && !p.broken && p.value > 0 && Math.hypot(x - p.x, y - p.y) <= 16) {
             if (p.inEquation && eq && !eq.expanded) continue;
+            this.dismissFase1IntroGuide();
+            this._gestureSnapshot = this.captureStepSnapshot();
+            this._gestureCommitted = false;
             GameHUD.playSfx(p.type === 'opal' ? 'opalGrab' : (p.type === 'rose' ? 'roseGrab' : 'quartzGrab'));
             this.draggedPiece = p;
             p.dragging = true;
@@ -3099,7 +3142,30 @@
           }
         }
 
+        // Feedback sensorial se tentar arrastar/tocar um cristal sombrio (enraizado pelas sombras)
+        for (let i = this.pieces.length - 1; i >= 0; i--) {
+          const sp = this.pieces[i];
+          if (sp.shadow && !sp.broken && sp.value > 0 && Math.hypot(x - sp.x, y - sp.y) <= 16) {
+            this.dismissFase1IntroGuide();
+            this.triggerShadowCrystalBlocked(sp);
+            return;
+          }
+        }
+        if (this.shadowEquation && !this.shadowEquation.broken && this.isInsideEquationAura(this.shadowEquation, x, y)) {
+          this.dismissFase1IntroGuide();
+          for (const sp of this.pieces) {
+            if (sp.shadow && !sp.broken && sp.value > 0 && sp.inEquation === 'shadow') {
+              sp.rejectUntil = this.t + 0.36;
+            }
+          }
+          this.spawnShadowSmokePuff(this.shadowEquation.x, this.shadowEquation.y);
+          GameHUD.playSfx('shadowBlocked');
+          return;
+        }
+
         if (eq && !eq.broken && eq.expanded && clickedInEq) {
+          this._gestureSnapshot = this.captureStepSnapshot();
+          this._gestureCommitted = false;
           this.equationPointer = {
             startX: x,
             startY: y,
@@ -3174,6 +3240,7 @@
         if (this.equationPointer && this.pureEquation && !this.pureEquation.broken) {
           const wasTap = !this.equationPointer.moved;
           this.equationPointer = null;
+          this.commitActionSnapshot();
           if (wasTap) {
             this.pureEquation.expanded = !this.pureEquation.expanded;
             GameHUD.playSfx(this.pureEquation.expanded ? 'equationExpand' : 'equationCollapse');
@@ -3181,6 +3248,8 @@
           } else {
             GameHUD.playSfx('quartzDrop');
           }
+          this._gestureSnapshot = null;
+          this._gestureCommitted = false;
           this.checkEquationSolved();
           return;
         }
@@ -3194,9 +3263,20 @@
             this.pureEquation.removeHover = false;
           }
           this.clearTrembleStates();
-          if (p.broken || p.value <= 0 || this.phase !== 'gameplay') return;
+          if (p.broken || p.value <= 0 || this.phase !== 'gameplay') {
+            this._gestureSnapshot = null;
+            this._gestureCommitted = false;
+            return;
+          }
+          const startMatch = this._gestureSnapshot?.pieces?.find(k => k.id === p.id);
+          const movedSignificantly = startMatch && Math.hypot(p.x - startMatch.x, p.y - startMatch.y) >= 4;
           GameHUD.playSfx(p.type === 'opal' ? 'opalDrop' : (p.type === 'rose' ? 'roseDrop' : 'quartzDrop'));
           this.checkPieceDrop(p);
+          if (movedSignificantly && !this._gestureCommitted) {
+            this.commitActionSnapshot();
+          }
+          this._gestureSnapshot = null;
+          this._gestureCommitted = false;
           if (this.phase === 'gameplay') {
             this.checkEquationSolved();
             this.triggerDefeatIfImpossible();
@@ -3217,6 +3297,12 @@
 
         if (e.code === 'Space' || e.key === ' ' || e.code === 'Enter' || e.key === 'Enter') {
           if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+          if (GameHUD.guideIntroActive) {
+            e.preventDefault();
+            GameHUD.playSfx('tutorialClose');
+            GameHUD.dismissGuideIntro(false);
+            return;
+          }
           if (DialogueBox.isOpen) {
             e.preventDefault();
             GameHUD.playSfx('click');
@@ -3251,12 +3337,20 @@
               if (!GameHUD.godMode && this.phaseTime < 3.6) return;
               this.vignetteCard = 2;
               this.vignettePracticeTime = 0;
+              this.vignettePracticeDone = false;
+              this.vignetteLockFeedbackTimer = 0;
+              CaveRhythmKaraoke.practiceHits = 0;
               CaveRhythmKaraoke.resetPractice();
               GameHUD.playSfx('click');
               return;
             }
             if (this.vignetteCard === 2) {
               if (e.code === 'Enter' || e.key === 'Enter') {
+                if (!this.isRhythmPracticeUnlocked()) {
+                  this.vignetteLockFeedbackTimer = 1.6;
+                  GameHUD.playSfx('error');
+                  return;
+                }
                 this.startMusicalShow();
                 return;
               }
@@ -3348,6 +3442,7 @@
 
     triggerImmediateAnnulment(purePiece, shadowTarget) {
       if (!purePiece || !shadowTarget || purePiece.broken || shadowTarget.broken) return false;
+      this.commitActionSnapshot();
 
       // Cancela imediatamente o estado de arrasto para evitar ponteiros fantasmas
       purePiece.dragging = false;
@@ -3658,6 +3753,9 @@
       this.pureEquation = null;
       this.shadowEquation = null;
       this.shards = [];
+      this.shadowSmokePuffs = [];
+      this.fase1IntroGuideAnim = null;
+      this._fase1IntroGuideDismissed = false;
       IrisTransition.start('in', 74, 118, 0.75);
 
       if (!this.running) {
@@ -3721,12 +3819,18 @@
       this.openMusicalVignette();
     },
 
+    isRhythmPracticeUnlocked() {
+      return Boolean(GameHUD.godMode || this.vignettePracticeDone || (CaveRhythmKaraoke.practiceHits || 0) >= 1);
+    },
+
     openMusicalVignette() {
       this.currentLevel = 5;
       this.phase = 'musical_vignette';
       this.phaseTime = 0;
       this.vignetteCard = 1;
       this.vignettePracticeTime = 0;
+      this.vignettePracticeDone = false;
+      this.vignetteLockFeedbackTimer = 0;
       this.isHoldingSpace = false;
       this.protag.x = 46;
       this.protag.y = 142;
@@ -3739,6 +3843,7 @@
       this.musicalTime = 0;
       this._lastAudioTime = null;
       this._lastAudioPerf = null;
+      CaveRhythmKaraoke.practiceHits = 0;
       CaveRhythmKaraoke.resetPractice();
       IrisTransition.start('in', 160, 90, 0.45);
 
@@ -3759,18 +3864,26 @@
           GameHUD.playSfx('click');
           this.vignetteCard = 2;
           this.vignettePracticeTime = 0;
+          this.vignettePracticeDone = false;
+          this.vignetteLockFeedbackTimer = 0;
+          CaveRhythmKaraoke.practiceHits = 0;
           CaveRhythmKaraoke.resetPractice();
         }
       } else {
-        const bReset = { x: cx + 10, y: cy + ch - 20, w: 88, h: 15 };
+        const bReset = { x: cx + 10, y: cy + ch - 20, w: 68, h: 15 };
         if (x >= bReset.x && x <= bReset.x + bReset.w && y >= bReset.y && y <= bReset.y + bReset.h) {
           GameHUD.playSfx('click');
           this.vignettePracticeTime = 0;
           CaveRhythmKaraoke.resetPractice();
           return;
         }
-        const bStart = { x: cx + cw - 124, y: cy + ch - 20, w: 114, h: 15 };
+        const bStart = { x: cx + cw - 98, y: cy + ch - 20, w: 88, h: 15 };
         if (x >= bStart.x && x <= bStart.x + bStart.w && y >= bStart.y && y <= bStart.y + bStart.h) {
+          if (!this.isRhythmPracticeUnlocked()) {
+            this.vignetteLockFeedbackTimer = 1.6;
+            GameHUD.playSfx('error');
+            return;
+          }
           GameHUD.playSfx('start');
           this.startMusicalShow();
           return;
@@ -3803,6 +3916,7 @@
     renderMusicalVignette(ctx, tq) {
       ctx.fillStyle = 'rgba(10, 8, 6, 0.65)';
       ctx.fillRect(0, 20, W, H - 20);
+      TextOverlay?.dimLogicalRect?.(ctx, 0, 20, W, H - 20, 'rgba(10, 8, 6, 0.65)');
 
       const cx = 24, cy = 18, cw = 272, ch = 152;
       drawParchmentBox(ctx, cx, cy, cw, ch, { headerH: 18, headerBg: '#3d2b24' });
@@ -3887,13 +4001,30 @@
           drawPixelTextCentered(ctx, 'Treinar >', b.x + b.w / 2, b.y + 4, '#ffffff', '#000000', b.w - 4, 8);
         }
       } else {
-        drawPixelText(ctx, 'Treino Livre de Ritmo', cx + 10, cy + 6, '#ffea31', '#000000', 160, 9);
-        drawPixelText(ctx, 'Página 2/2 • Sem penalidade', cx + 10, cy + 6, '#fff66b', '#000000', cw - 20, 9, 'right');
+        const practiceDone = Boolean(this.vignettePracticeDone || (CaveRhythmKaraoke.practiceHits || 0) >= 1);
+        const isUnlocked = this.isRhythmPracticeUnlocked();
+        const pulse = GameHUD.reducedMotion ? 0 : (Math.floor(tq * 4) & 1);
 
-        drawPixelText(ctx, 'Experimente o salto! Aperte ESPAÇO ou o Botão:', cx + 12, cy + 24, '#ffea31', '#000000', cw - 24, 9);
+        drawPixelText(ctx, 'Treino Livre de Ritmo', cx + 10, cy + 6, '#ffea31', '#000000', 142, 9);
 
-        const practiceBox = { x: cx + 12, y: cy + 40, w: cw - 24, h: 32 };
+        // Selo destacado de Prática Interativa no cabeçalho direito
+        const badge = { x: cx + cw - 118, y: cy + 3, w: 110, h: 12 };
+        GameHUD.drawInteractivePracticeBadge(ctx, badge, practiceDone, tq);
+
+        drawPixelText(ctx, 'Experimente o salto! Aperte ESPAÇO ou TOQUE aqui:', cx + 12, cy + 23, '#ffea31', '#000000', cw - 24, 9);
+
+        const practiceBox = { x: cx + 12, y: cy + 39, w: cw - 24, h: 32 };
         CaveRhythmKaraoke.render(ctx, this.vignettePracticeTime, true, practiceBox);
+
+        // Borda ativa pulsante convidativa ao redor do palco interativo
+        const boxRim = practiceDone
+          ? (pulse ? '#86efac' : '#4ade80')
+          : (this.vignetteLockFeedbackTimer > 0 ? '#f87171' : (pulse ? '#fbbf24' : '#38bdf8'));
+        ctx.fillStyle = boxRim;
+        ctx.fillRect(practiceBox.x - 1, practiceBox.y - 1, practiceBox.w + 2, 1);
+        ctx.fillRect(practiceBox.x - 1, practiceBox.y + practiceBox.h, practiceBox.w + 2, 1);
+        ctx.fillRect(practiceBox.x - 1, practiceBox.y - 1, 1, practiceBox.h + 2);
+        ctx.fillRect(practiceBox.x + practiceBox.w, practiceBox.y - 1, 1, practiceBox.h + 2);
 
         drawPixelTextCentered(
           ctx,
@@ -3960,7 +4091,8 @@
           drawPixelText(ctx, demo.label, cx + 114, cy + 95, activeCol, '#000000', cw - 126, 9);
         }
 
-        const bReset = { x: cx + 10, y: cy + ch - 20, w: 88, h: 15 };
+        // Rodapé do Card 2: [↺ Recomeçar] [Indicador de objetivo prático] [♪ Iniciar Show!]
+        const bReset = { x: cx + 10, y: cy + ch - 20, w: 68, h: 15 };
         ctx.fillStyle = '#14111c';
         ctx.fillRect(bReset.x - 1, bReset.y - 1, bReset.w + 2, bReset.h + 2);
         ctx.fillStyle = '#324b81';
@@ -3968,17 +4100,55 @@
         ctx.fillStyle = '#92e8ff';
         ctx.fillRect(bReset.x, bReset.y, bReset.w, 1);
         ctx.fillRect(bReset.x, bReset.y + bReset.h - 1, bReset.w, 1);
-        drawPixelTextCentered(ctx, '↺ Recomeçar', bReset.x + bReset.w / 2, bReset.y + 3, '#ffffff', '#000000', bReset.w - 4, 8);
+        drawPixelTextCentered(ctx, '↺ Recomeçar', bReset.x + bReset.w / 2, bReset.y + 4, '#ffffff', '#000000', bReset.w - 4, 8);
 
-        const bStart = { x: cx + cw - 124, y: cy + ch - 20, w: 114, h: 15 };
-        ctx.fillStyle = '#14111c';
-        ctx.fillRect(bStart.x - 1, bStart.y - 1, bStart.w + 2, bStart.h + 2);
-        ctx.fillStyle = '#2b689c';
-        ctx.fillRect(bStart.x, bStart.y, bStart.w, bStart.h);
-        ctx.fillStyle = '#92e8ff';
-        ctx.fillRect(bStart.x, bStart.y, bStart.w, 1);
-        ctx.fillRect(bStart.x, bStart.y + bStart.h - 1, bStart.w, 1);
-        drawPixelTextCentered(ctx, '♪ Iniciar Show!', bStart.x + bStart.w / 2, bStart.y + 3, '#ffffff', '#000000', bStart.w - 4, 8);
+        // Indicador de objetivo prático (SEM barra de timer!)
+        const ob = { x: cx + 82, y: cy + ch - 20, w: 88, h: 15 };
+        ctx.fillStyle = '#0f1422';
+        ctx.fillRect(ob.x - 1, ob.y - 1, ob.w + 2, ob.h + 2);
+        ctx.fillStyle = practiceDone ? '#0e3422' : (GameHUD.godMode ? '#281845' : '#1f1c36');
+        ctx.fillRect(ob.x, ob.y, ob.w, ob.h);
+        ctx.fillStyle = practiceDone
+          ? '#4ade80'
+          : (this.vignetteLockFeedbackTimer > 0 ? '#f87171' : (GameHUD.godMode ? '#ffea31' : (pulse ? '#fbbf24' : '#38bdf8')));
+        ctx.fillRect(ob.x, ob.y, ob.w, 1);
+        ctx.fillRect(ob.x, ob.y + ob.h - 1, ob.w, 1);
+        ctx.fillRect(ob.x, ob.y, 1, ob.h);
+        ctx.fillRect(ob.x + ob.w - 1, ob.y, 1, ob.h);
+        const obLabel = practiceDone
+          ? '✓ Prática ok!'
+          : (GameHUD.godMode ? '⚡ God Mode' : 'Acerte 1 nota!');
+        drawPixelTextCentered(
+          ctx,
+          obLabel,
+          ob.x + ob.w / 2,
+          ob.y + 4,
+          practiceDone ? '#86efac' : (this.vignetteLockFeedbackTimer > 0 ? '#fecaca' : '#ffe887'),
+          '#000000',
+          ob.w - 4,
+          8
+        );
+
+        const bStart = { x: cx + cw - 98, y: cy + ch - 20, w: 88, h: 15 };
+        if (!isUnlocked) {
+          ctx.fillStyle = '#0f1422';
+          ctx.fillRect(bStart.x - 1, bStart.y - 1, bStart.w + 2, bStart.h + 2);
+          ctx.fillStyle = '#1b2334';
+          ctx.fillRect(bStart.x, bStart.y, bStart.w, bStart.h);
+          ctx.fillStyle = '#2d3b54';
+          ctx.fillRect(bStart.x, bStart.y, bStart.w, 1);
+          ctx.fillRect(bStart.x, bStart.y + bStart.h - 1, bStart.w, 1);
+          drawPixelTextCentered(ctx, '♪ Iniciar Show!', bStart.x + bStart.w / 2, bStart.y + 4, '#6b7d9b', '#000000', bStart.w - 4, 8);
+        } else {
+          ctx.fillStyle = '#14111c';
+          ctx.fillRect(bStart.x - 1, bStart.y - 1, bStart.w + 2, bStart.h + 2);
+          ctx.fillStyle = '#2b689c';
+          ctx.fillRect(bStart.x, bStart.y, bStart.w, bStart.h);
+          ctx.fillStyle = pulse ? '#ffe887' : '#92e8ff';
+          ctx.fillRect(bStart.x, bStart.y, bStart.w, 1);
+          ctx.fillRect(bStart.x, bStart.y + bStart.h - 1, bStart.w, 1);
+          drawPixelTextCentered(ctx, '♪ Iniciar Show!', bStart.x + bStart.w / 2, bStart.y + 4, '#ffffff', '#000000', bStart.w - 4, 8);
+        }
       }
     },
 
@@ -4175,6 +4345,7 @@
         this.phaseTime = 0;
         this.protag.state = 'celebrate';
         this.ordemActor.state = 'celebrate';
+        VictoryChoreography?.resetAudioState?.(this);
       });
     },
 
@@ -4296,6 +4467,14 @@
       this.magneticAnim = null;
       this.equationShockEffect = null;
       this.ghostHandAnim = null;
+      this.fase1IntroGuideAnim = null;
+      this.shadowSmokePuffs = [];
+      this.actionHistory = [];
+      this._gestureSnapshot = null;
+      this._gestureCommitted = false;
+      this._committingAction = false;
+      this.rewindAnim = null;
+      this.deadEndAutoRewindPending = false;
 
       if (level === 1) {
         this.totalSteps = 1;
@@ -4535,6 +4714,137 @@
       return true;
     },
 
+    /** Captura um snapshot completo do estado atual da etapa para o histórico da Habilidade 2. */
+    captureStepSnapshot() {
+      return {
+        pieces: (this.pieces || []).map((p) => ({
+          id: p.id,
+          type: p.type,
+          value: p.value,
+          shadow: Boolean(p.shadow),
+          broken: Boolean(p.broken),
+          inEquation: p.inEquation || null,
+          x: p.x,
+          y: p.y
+        })),
+        pureEquation: this.pureEquation ? { ...this.pureEquation } : null,
+        shadowEquation: this.shadowEquation ? { ...this.shadowEquation } : null
+      };
+    },
+
+    /** Empilha o snapshot pré-ação no histórico (sem duplicar dentro do mesmo gesto). */
+    commitActionSnapshot(customSnap = null) {
+      if (this._committingAction) return;
+      if (this._gestureSnapshot) {
+        if (!this._gestureCommitted) {
+          this.actionHistory.push(this._gestureSnapshot);
+          this._gestureCommitted = true;
+        }
+        return;
+      }
+      this.actionHistory.push(customSnap || this.captureStepSnapshot());
+    },
+
+    /** Restaura exatamente um snapshot salvo da etapa, gerando trilhas visuais de retorno. */
+    restoreStepSnapshot(snap, isAutoDeadEnd = false) {
+      if (!snap) return false;
+      const visType = (p) => (p.type === 'opal' ? 'opal' : (p.shadow ? 'shadow' : (p.type === 'white' ? 'pure' : p.type)));
+      const curById = new Map((this.pieces || []).map((p) => [p.id, p]));
+      const trails = [];
+      for (const sp of snap.pieces) {
+        if (sp.broken || sp.shadow) continue;
+        const cur = curById.get(sp.id);
+        if (cur && (cur.broken || Math.hypot((cur.x || 0) - sp.x, (cur.y || 0) - sp.y) >= 4 || cur.value !== sp.value)) {
+          trails.push({
+            fromX: cur.x ?? sp.x,
+            fromY: cur.y ?? sp.y,
+            toX: sp.x,
+            toY: sp.y,
+            pieceType: visType(sp),
+            pieceValue: sp.value
+          });
+        }
+      }
+
+      this.pieces = (snap.pieces || []).map((p) => ({
+        ...p,
+        dragging: false,
+        trembling: false
+      }));
+      this.pureEquation = snap.pureEquation ? { ...snap.pureEquation, dropHover: false, removeHover: false } : null;
+      this.shadowEquation = snap.shadowEquation ? { ...snap.shadowEquation } : null;
+      this.draggedPiece = null;
+      this.equationPointer = null;
+      this.magneticAnim = null;
+      this.equationShockEffect = null;
+      this.ghostHandAnim = null;
+      this.opalDrainTimer = 0;
+      this._gestureSnapshot = null;
+      this._gestureCommitted = false;
+      this.deadEndAutoRewindPending = false;
+      this.clearTrembleStates();
+
+      this.phase = 'gameplay';
+      this.phaseTime = 0;
+      this.protag.state = 'idle';
+      this.rewindAnim = {
+        t: 0,
+        duration: 0.75,
+        isAutoDeadEnd: Boolean(isAutoDeadEnd),
+        label: isAutoDeadEnd ? 'BECO SEM SAÍDA DESFEITO!' : 'VOLTANDO NO TEMPO!',
+        trails
+      };
+      this.spawnShatter(160, 96, 'pure', 10);
+      return true;
+    },
+
+    /** Executa a Habilidade 2 (Voltar no Tempo), manual em gameplay ou automática após Beco sem Saída. */
+    triggerTimeRewind(isAutoDeadEnd = false) {
+      const canRunAuto = Boolean(isAutoDeadEnd) && this.phase === 'defeat_pause';
+      if (this.phase !== 'gameplay' && !canRunAuto) return false;
+      if (TutorialModal.isOpen || DialogueBox.isOpen) return false;
+      if (!this.actionHistory || this.actionHistory.length === 0) return false;
+
+      const prevSnap = this.actionHistory.pop();
+      this.restoreStepSnapshot(prevSnap, canRunAuto);
+      GameHUD.playSfx('timeRewind');
+      return true;
+    },
+
+    spawnShadowSmokePuff(x, y) {
+      if (!Array.isArray(this.shadowSmokePuffs)) this.shadowSmokePuffs = [];
+      if (typeof ActorAnimator.spawnShadowSmokePuff === 'function') {
+        ActorAnimator.spawnShadowSmokePuff(this.shadowSmokePuffs, x, y, this.t);
+      }
+    },
+
+    triggerShadowCrystalBlocked(piece) {
+      if (!piece) return;
+      piece.rejectUntil = this.t + 0.36;
+      this.spawnShadowSmokePuff(piece.x, piece.y);
+      GameHUD.playSfx('shadowBlocked');
+    },
+
+    startFase1IntroGuide() {
+      if (this.currentLevel !== 1 || this.currentStep !== 1 || this._fase1IntroGuideDismissed) return;
+      const pure = this.pieces.find(p => !p.shadow && !p.broken && p.value > 0);
+      const shadow = this.pieces.find(p => p.shadow && !p.broken && p.value > 0);
+      if (!pure || !shadow) return;
+      this.fase1IntroGuideAnim = {
+        t: 0,
+        duration: 2.8,
+        fromX: pure.x,
+        fromY: pure.y,
+        toX: shadow.x,
+        toY: shadow.y
+      };
+    },
+
+    dismissFase1IntroGuide() {
+      this.fase1IntroGuideAnim = null;
+      this._fase1IntroGuideDismissed = true;
+    },
+
     spawnShatter(cx, cy, setKey, count = 12) {
       const rnd = mulberry(R(cx * 31 + cy * 17 + this.t * 100));
       for (let i = 0; i < count; i++) {
@@ -4596,6 +4906,9 @@
 
       if (this.opalDrainTimer >= this.opalStepInterval) {
         this.opalDrainTimer -= this.opalStepInterval;
+        this.commitActionSnapshot();
+        this._gestureSnapshot = null;
+        this._gestureCommitted = false;
         activeTarget.value -= 1;
         activeOpal.value -= 1;
         activeTarget.lastValChangeAt = this.t;
@@ -4646,6 +4959,15 @@
     checkPieceDrop(dropped) {
       if (!dropped || dropped.broken || dropped.value <= 0) return;
 
+      const preDropSnap = this._gestureSnapshot || this.captureStepSnapshot();
+      const commitDropOnce = () => {
+        if (this._gestureSnapshot) {
+          this.commitActionSnapshot();
+        } else {
+          this.actionHistory.push(preDropSnap);
+        }
+      };
+
       // Garante limites do cenário e separação sólida ao soltar livremente pelo campo
       const clamped = this.clampCrystalPos(dropped.x, dropped.y);
       dropped.x = clamped.x;
@@ -4669,6 +4991,7 @@
               this.resolveFreeCrystalCollisions();
               return;
             }
+            commitDropOnce();
             other.value += dropped.value;
             other.lastValChangeAt = this.t;
             dropped.broken = true;
@@ -4679,7 +5002,13 @@
             }
             const mergedShadowHit = this.findTouchingCompatibleShadow(other, other.x, other.y);
             if (mergedShadowHit) {
-              this.triggerImmediateAnnulment(other, mergedShadowHit);
+              const prevCommitting = this._committingAction;
+              this._committingAction = true;
+              try {
+                this.triggerImmediateAnnulment(other, mergedShadowHit);
+              } finally {
+                this._committingAction = prevCommitting;
+              }
             }
             return;
           }
@@ -4690,12 +5019,14 @@
       if (this.pureEquation && !this.pureEquation.broken) {
         if (this.isInsideEquationAura(this.pureEquation, dropped.x, dropped.y, true)) {
           if (dropped.inEquation !== 'pure') {
+            commitDropOnce();
             dropped.inEquation = 'pure';
             GameHUD.playSfx('equationInsert');
           }
           this.layoutEquationPieces(this.pureEquation, 'pure');
           return;
         } else if (dropped.inEquation === 'pure') {
+          commitDropOnce();
           dropped.inEquation = null;
           GameHUD.playSfx('equationRemove');
           this.layoutEquationPieces(this.pureEquation, 'pure');
@@ -4805,6 +5136,12 @@
         }
         this.clearTrembleStates();
         GameHUD.playSfx('error');
+        this.deadEndAutoRewindPending = Boolean(
+          this.actionHistory &&
+          this.actionHistory.length > 0 &&
+          typeof GameHUD.canUseAbility === 'function' &&
+          GameHUD.canUseAbility(2)
+        );
         this.phase = 'defeat_pause';
         this.phaseTime = 0;
       }
@@ -4867,6 +5204,9 @@
         this.waveRadius = 1;
         this.phase = 'step_resolving';
         this.phaseTime = 0;
+        this.protag.state = 'celebrate';
+        if (this.ordemActor?.visible) this.ordemActor.state = 'celebrate';
+        GameHUD.playSfx('victoryFanfare');
       }
     },
 
@@ -4930,8 +5270,16 @@
         this.phase = 'tutorial';
         this.setupLevelStep(1, 1);
         TutorialModal.open(StandardTutorialCards.FASE1_INTRO, () => {
-          this.phase = 'gameplay';
-          this.phaseTime = 0;
+          const beginGameplay = () => {
+            this.phase = 'gameplay';
+            this.phaseTime = 0;
+            this.startFase1IntroGuide();
+          };
+          if (!GameHUD.guideIntroShown && typeof GameHUD.openGuideIntro === 'function') {
+            GameHUD.openGuideIntro(beginGameplay);
+          } else {
+            beginGameplay();
+          }
         });
       });
     },
@@ -4958,6 +5306,7 @@
           this.phase = 'celebrate_complete';
           this.phaseTime = 0;
           this.protag.state = 'celebrate';
+          VictoryChoreography?.resetAudioState?.(this);
         });
       } else if (this.currentLevel === 2) {
         global.CrystalApp?.syncProgress?.([1, 2], 3);
@@ -4972,6 +5321,7 @@
           this.phase = 'celebrate_complete';
           this.phaseTime = 0;
           this.protag.state = 'celebrate';
+          VictoryChoreography?.resetAudioState?.(this);
         });
       } else if (this.currentLevel === 3) {
         global.CrystalApp?.syncProgress?.([1, 2, 3], 4);
@@ -4991,6 +5341,7 @@
           this.phase = 'celebrate_complete';
           this.phaseTime = 0;
           this.protag.state = 'celebrate';
+          VictoryChoreography?.resetAudioState?.(this);
         });
       }
     },
@@ -5022,6 +5373,7 @@
       if (this.phase === 'tutorial' && !TutorialModal.isOpen) {
         this.phase = 'gameplay';
         this.phaseTime = 0;
+        this.startFase1IntroGuide();
       }
       if (this.equationShockEffect) {
         this.equationShockEffect.elapsed += dt;
@@ -5033,6 +5385,34 @@
         this.ghostHandAnim.t += dt;
         if (this.ghostHandAnim.t >= (this.ghostHandAnim.duration || 2.2)) {
           this.ghostHandAnim = null;
+        }
+      }
+      if (this.fase1IntroGuideAnim) {
+        if (this.phase !== 'gameplay' || this.currentLevel !== 1 || this.currentStep !== 1 || this.draggedPiece) {
+          if (this.draggedPiece) {
+            this.dismissFase1IntroGuide();
+          } else if (this.currentLevel !== 1 || this.currentStep !== 1) {
+            this.fase1IntroGuideAnim = null;
+          }
+        } else if (!TutorialModal.isOpen && !DialogueBox.isOpen) {
+          const pure = this.pieces.find(p => !p.shadow && !p.broken && p.value > 0);
+          const shadow = this.pieces.find(p => p.shadow && !p.broken && p.value > 0);
+          if (!pure || !shadow) {
+            this.dismissFase1IntroGuide();
+          } else {
+            this.fase1IntroGuideAnim.fromX = pure.x;
+            this.fase1IntroGuideAnim.fromY = pure.y;
+            this.fase1IntroGuideAnim.toX = shadow.x;
+            this.fase1IntroGuideAnim.toY = shadow.y;
+            const dur = this.fase1IntroGuideAnim.duration || 2.8;
+            this.fase1IntroGuideAnim.t = (this.fase1IntroGuideAnim.t + dt) % dur;
+          }
+        }
+      }
+      if (this.rewindAnim) {
+        this.rewindAnim.t += dt;
+        if (this.rewindAnim.t >= (this.rewindAnim.duration || 0.75)) {
+          this.rewindAnim = null;
         }
       }
       if (this.regularAudio && !this.regularAudio.paused) {
@@ -5051,6 +5431,9 @@
       this.updateOpalProximity(dt);
 
       if (this.phase === 'musical_vignette') {
+        if (this.vignetteLockFeedbackTimer > 0) {
+          this.vignetteLockFeedbackTimer = Math.max(0, this.vignetteLockFeedbackTimer - dt);
+        }
         if (this.vignetteCard === 2) {
           this.vignettePracticeTime += dt;
           if (this.vignettePracticeTime >= 7.2) {
@@ -5370,13 +5753,38 @@
           this.setupLevelStep(this.currentLevel, this.currentStep + 1);
         }
       } else if (this.phase === 'step_resolving') {
-        if (this.phaseTime >= 1.35) {
+        this.protag.state = 'celebrate';
+        if (this.ordemActor?.visible) this.ordemActor.state = 'celebrate';
+        const resolveDur = GameHUD.reducedMotion ? 0.95 : 1.50;
+        if (this.phaseTime >= resolveDur) {
           this.obstacleDecay = 1;
           this.openPostLevelDialogue();
         }
+      } else if (this.phase === 'celebrate_complete' || this.phase === 'world_celebrate_complete') {
+        this.protag.state = 'celebrate';
+        if (this.ordemActor?.visible) this.ordemActor.state = 'celebrate';
+        VictoryChoreography?.updateCompletionAudio?.(
+          this,
+          this.phaseTime,
+          this.phase === 'world_celebrate_complete',
+          Boolean(GameHUD.reducedMotion)
+        );
       } else if (this.phase === 'defeat_pause') {
         this.protag.state = 'shock';
-        if (this.phaseTime >= 0.65) {
+        if (
+          this.deadEndAutoRewindPending &&
+          this.actionHistory &&
+          this.actionHistory.length > 0 &&
+          typeof GameHUD.canUseAbility === 'function' &&
+          GameHUD.canUseAbility(2)
+        ) {
+          if (this.phaseTime >= (this.DEAD_END_REWIND_DELAY || 1.75)) {
+            this.deadEndAutoRewindPending = false;
+            if (!GameHUD.useAbility(2)) {
+              this.triggerTimeRewind(true);
+            }
+          }
+        } else if (this.phaseTime >= 0.65) {
           this.phase = 'game_over';
           this.phaseTime = 0;
           GameHUD.playSfx('gameOver');
@@ -5436,44 +5844,24 @@
     },
 
     drawCompletionOverlay(ctx, isWorldFinale = false) {
-      // Card de conclusão em Pergaminho Estilo Owlboy, perfeitamente centralizado e enquadrado
-      const bx = 42, by = 28, bw = 236, bh = 108;
-      drawParchmentBox(ctx, bx, by, bw, bh, { headerH: 17, headerBg: '#163b6c' });
-
-      if (isWorldFinale) {
-        const f12 = Math.floor(this.t * SPRITE_FPS);
-        for (let k = 0; k < 8; k++) {
-          const fx = 24 + ((k * 37) % 272);
-          const fy = 24 + ((f12 * 3 + k * 19) % 110);
-          drawStar(ctx, fx, fy, (k & 1) ? 3 : 2, '#ffffff', (k % 3 === 0) ? '#f2cc6b' : (k % 3 === 1 ? '#68b8c4' : '#e396b1'));
-        }
-        drawPixelTextCentered(ctx, 'Mundo 1 Restaurado!', bx + bw / 2, by + 8, '#ffffff', '#000000', bw - 16, 9);
-        drawPixelTextCentered(ctx, 'A Ordem despertou a Caverna!', bx + bw / 2, by + 28, '#ffea31', '#000000', bw - 20, 10);
-        drawPixelTextCentered(ctx, 'Rumo ao Mundo da Floresta!', bx + bw / 2, by + 41, '#92e8ff', '#000000', bw - 20, 10);
-      } else {
-        drawPixelTextCentered(ctx, `Fase ${this.currentLevel} Concluída!`, bx + bw / 2, by + 8, '#ffffff', '#000000', bw - 16, 9);
-        drawPixelTextCentered(ctx, 'O caminho da Caverna se abriu!', bx + bw / 2, by + 32, '#ffea31', '#000000', bw - 20, 10);
-      }
-
-      const starY = by + 62;
-      for (let i = 0; i < 3; i++) {
-        drawStar(ctx, bx + bw / 2 - 20 + i * 20, starY, 4, '#ffffff', '#e3b454');
-      }
-
-      const b = this.completeBtnRect;
-      ctx.fillStyle = '#14111c';
-      ctx.fillRect(b.x - 1, b.y - 1, b.w + 2, b.h + 2);
-      ctx.fillStyle = '#2b689c';
-      ctx.fillRect(b.x, b.y, b.w, b.h);
-      ctx.fillStyle = '#92e8ff';
-      ctx.fillRect(b.x, b.y, b.w, 1);
-      ctx.fillRect(b.x, b.y + b.h - 1, b.w, 1);
-      drawPixelTextCentered(ctx, isWorldFinale ? 'Ir à Floresta >' : 'Continuar >', b.x + b.w / 2, b.y + 4, '#ffffff', '#000000', b.w - 6, 9);
+      VictoryChoreography.renderCompletionOverlay(ctx, {
+        worldKey: 'cave',
+        isWorldFinale,
+        title: isWorldFinale ? 'Mundo 1 Restaurado!' : `Fase ${this.currentLevel} Concluída!`,
+        line1: isWorldFinale ? 'A Ordem despertou a Caverna!' : 'O caminho da Caverna se abriu!',
+        line2: isWorldFinale ? 'Rumo ao Mundo da Floresta!' : '',
+        buttonLabel: isWorldFinale ? 'Ir à Floresta >' : 'Continuar >',
+        buttonRect: this.completeBtnRect,
+        phaseTime: this.phaseTime,
+        t: this.t,
+        reducedMotion: Boolean(GameHUD.reducedMotion)
+      });
     },
 
     drawGameOverOverlay(ctx) {
       ctx.fillStyle = 'rgba(10, 8, 6, 0.58)';
       ctx.fillRect(0, 20, W, H - 20);
+      TextOverlay?.dimLogicalRect?.(ctx, 0, 20, W, H - 20, 'rgba(10, 8, 6, 0.58)');
 
       const bx = 34, by = 28, bw = 252, bh = 116;
       drawParchmentBox(ctx, bx, by, bw, bh, { headerH: 17, headerBg: '#59221c' });
@@ -5587,11 +5975,14 @@
 
       // Se já entrou no Mapa, desenha apenas o Iris In abrindo sobre o Mapa
       if (this.phase === 'map_iris_in' || this.phase === 'map_active') {
+        TextOverlay?.hide?.(this.canvas);
         ctx.setTransform(2, 0, 0, 2, 0, 0);
         ctx.clearRect(0, 0, W, H);
         IrisTransition.render(ctx);
         return;
       }
+
+      TextOverlay?.beginFrame?.(this.canvas);
 
       this.composeBackground();
       ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -5654,6 +6045,17 @@
         this.renderMusicalElements(ctx, tq);
       }
 
+      const isCelebrating =
+        this.phase === 'step_resolving' ||
+        this.phase === 'celebrate_complete' ||
+        this.phase === 'world_celebrate_complete';
+      const protagJumpY = isCelebrating
+        ? VictoryChoreography.getCelebrationJumpOffset(this.phaseTime, Boolean(GameHUD.reducedMotion), 0)
+        : 0;
+      const ordemJumpY = isCelebrating
+        ? VictoryChoreography.getCelebrationJumpOffset(this.phaseTime, Boolean(GameHUD.reducedMotion), 0.12)
+        : 0;
+
       // Protagonista Hi-Bit (40x54 pixels físicos)
       if (this.phase === 'cutscene_fall' && this.protag.state === 'recover_stand') {
         const recElapsed = Math.max(0, this.phaseTime - 1.1);
@@ -5663,14 +6065,45 @@
         const sw = spr.width * scale, sh = spr.height * scale;
         ctx.drawImage(spr, RH(this.protag.x - sw / 2), RH(this.protag.y - sh), sw, sh);
       } else {
-        ActorAnimator.drawActor(ctx, 'protagonist', this.protag.state, this.protag.x, this.protag.y, tq);
+        ActorAnimator.drawActor(ctx, 'protagonist', this.protag.state, this.protag.x, this.protag.y + protagJumpY, tq);
       }
 
       // Personagem liberta ("Ordem") usando os estados em loop do SpriteBank e flipX coreografado
       if (this.ordemActor.visible) {
-        ActorAnimator.drawActor(ctx, 'ordem', this.ordemActor.state, this.ordemActor.x, this.ordemActor.y, tq, {
+        ActorAnimator.drawActor(ctx, 'ordem', this.ordemActor.state, this.ordemActor.x, this.ordemActor.y + ordemJumpY, tq, {
           flipX: Boolean(this.ordemActor.flipX)
         });
+      }
+
+      if (this.phase === 'step_resolving') {
+        const celebActors = [{ x: this.protag.x, y: this.protag.y + protagJumpY }];
+        if (this.ordemActor.visible) celebActors.push({ x: this.ordemActor.x, y: this.ordemActor.y + ordemJumpY });
+        VictoryChoreography.renderStepResolvingFX(ctx, {
+          worldKey: 'cave',
+          phaseTime: this.phaseTime,
+          tq,
+          waveOrigin: this.waveOrigin,
+          waveRadius: this.waveRadius,
+          barrierX: this.currentLevel === 4 ? 176 : 264,
+          barrierY: this.currentLevel === 4 ? 32 : 110,
+          actors: celebActors,
+          reducedMotion: Boolean(GameHUD.reducedMotion)
+        });
+      } else if (this.phase === 'celebrate_complete' || this.phase === 'world_celebrate_complete') {
+        ActorAnimator.drawMusicNotesLoop(ctx, this.protag.x, this.protag.y + protagJumpY - 26, tq, {
+          count: GameHUD.reducedMotion ? 1 : 3,
+          dirX: 10,
+          dirY: -18,
+          period: 1.5
+        });
+        if (this.ordemActor.visible) {
+          ActorAnimator.drawMusicNotesLoop(ctx, this.ordemActor.x, this.ordemActor.y + ordemJumpY - 26, tq, {
+            count: GameHUD.reducedMotion ? 1 : 3,
+            dirX: -10,
+            dirY: -18,
+            period: 1.4
+          });
+        }
       }
 
       if (
@@ -5697,18 +6130,22 @@
       }
 
       this.drawShards(ctx);
+      if (typeof ActorAnimator.drawShadowSmokePuffs === 'function') {
+        ActorAnimator.drawShadowSmokePuffs(ctx, this.shadowSmokePuffs, tq);
+      }
       if (this.equationShockEffect) {
         ActorAnimator.drawEquationShockwave(ctx, this.equationShockEffect, tq);
       }
 
       ctx.setTransform(2, 0, 0, 2, 0, 0);
-      // HUD Superior Completo (Título da Fase, Etapa + Botões de Pause, Recomeçar, Mudo e Configurações)
+      // HUD Superior Completo (Título da Fase, Etapa + Guia, Mapa, Recomeçar, Tela Cheia, Mudo, Configurações e Casa)
       const inMusical = this.phase === 'musical_part1_shadows' || this.phase === 'musical_part2_bright';
-      GameHUD.renderTopBar(ctx, this.currentLevel, this.currentStep, this.totalSteps, inMusical);
+      GameHUD.renderTopBar(ctx, this.currentLevel, this.currentStep, this.totalSteps, inMusical || this.phase === 'musical_vignette');
 
       // Botão Pular >> no topo durante o show musical, visível apenas no God Mode
       if (inMusical && GameHUD.godMode) {
         const sb = this.skipMusicalBtnRect;
+        TextOverlay?.clearLogicalRect?.(ctx, sb.x, sb.y, sb.w, sb.h);
         ctx.fillStyle = '#3d2b24';
         ctx.fillRect(sb.x, sb.y, sb.w, sb.h);
         ctx.fillStyle = '#d9a85b';
@@ -5725,6 +6162,14 @@
 
       if (this.phase === 'gameplay' && this.ghostHandAnim && typeof E.drawGhostHandHint === 'function') {
         E.drawGhostHandHint(ctx, this.ghostHandAnim, tq);
+      } else if (this.phase === 'gameplay' && this.fase1IntroGuideAnim && typeof E.drawFase1DragGuide === 'function') {
+        E.drawFase1DragGuide(ctx, this.fase1IntroGuideAnim, tq);
+      }
+      if (this.rewindAnim && typeof E.drawTimeRewindEffect === 'function') {
+        E.drawTimeRewindEffect(ctx, this.rewindAnim, tq);
+      }
+      if (this.phase === 'defeat_pause' && typeof E.drawDeadEndAlert === 'function') {
+        E.drawDeadEndAlert(ctx, this.phaseTime, this.deadEndAutoRewindPending, tq, this.pieces);
       }
 
       DialogueBox.render(ctx, tq);
@@ -5748,15 +6193,20 @@
       this._rafId = null;
       if (!this.running) return;
       this._inLoop = true;
-      const currentNow = typeof now === 'number' && Number.isFinite(now) ? now : (typeof performance !== 'undefined' ? performance.now() : Date.now());
-      const prevNow = typeof this.lastNow === 'number' && Number.isFinite(this.lastNow) ? this.lastNow : currentNow;
-      const dt = Math.min(0.1, Math.max(0.001, (currentNow - prevNow) / 1000));
-      this.lastNow = currentNow;
-      this.update(dt);
-      this.render();
-      this._inLoop = false;
-      if (this.running) {
-        this._rafId = requestAnimationFrame((n) => this.loop(n));
+      try {
+        const currentNow = typeof now === 'number' && Number.isFinite(now) ? now : (typeof performance !== 'undefined' ? performance.now() : Date.now());
+        const prevNow = typeof this.lastNow === 'number' && Number.isFinite(this.lastNow) ? this.lastNow : currentNow;
+        const dt = Math.min(0.1, Math.max(0.001, (currentNow - prevNow) / 1000));
+        this.lastNow = currentNow;
+        this.update(dt);
+        this.render();
+      } catch (err) {
+        console.error('[CaveChapter1.loop]', err);
+      } finally {
+        this._inLoop = false;
+        if (this.running) {
+          this._rafId = requestAnimationFrame((n) => this.loop(n));
+        }
       }
     }
   };

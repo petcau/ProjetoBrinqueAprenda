@@ -255,7 +255,8 @@
       ? "Iniciar fase"
       : "Conclua a região anterior";
     $("start-phase").setAttribute("aria-disabled", String(!unlocked(id)));
-    A.load(["npcs", "encontros"]);
+    if (window.CincoMissoes) CincoMissoes.brief(id);
+    else A.load(["npcs", "encontros"]);
     document.querySelector(".phase-scene").style.backgroundImage = "none";
     $("phase-dialog").showModal();
     document.body.dataset.phasePreview = String(id);
@@ -297,15 +298,10 @@
       clearTimeout(captionTimer);
       captionTimer = setTimeout(() => (line.hidden = true), 4500);
     }
-    if (view === "configuracoes") A.load(["flora", "encontros"]);
-    if (view === "sobre")
-      A.load([
-        "kai",
-        "acoes",
-        "flora",
-        "encontros",
-        ...(activeAbout === "equipe" ? ["professor"] : []),
-      ]);
+    if (view === "configuracoes") A.load(["flora"]);
+    if (view === "sobre" && activeAbout === "comandos")
+      A.load(["kai", "acoes", "flora", "encontros"]);
+    if (view === "sobre" && activeAbout === "equipe") A.load(["professor"]);
     if (playEnding) window.VivaFinal?.start();
     else if (view !== "mapa") window.VivaFinal?.stop();
     document.title =
@@ -355,6 +351,11 @@
     time = now / 1000;
     if (!ready) return;
     if (view === "mapa") {
+      if (
+        window.VivaFinal?.active &&
+        document.body.dataset.finaleScene === "video"
+      )
+        return;
       BosqueMapa.paint(time, reduced());
       A.canvas($("map-flora"), (c, w, h) => {
         A.owl(
@@ -429,7 +430,6 @@
       });
     }
     if (view === "sobre") {
-      A.canvas($("about-friends"), (c, w, h) => A.friends(c, w, h, time));
       if (activeAbout === "equipe")
         A.canvas($("professor-portrait"), (c, w, h) => {
           const frame = document.body.classList.contains("reduce-motion")
@@ -467,11 +467,8 @@
       A.canvas($("settings-flora"), (c, w, h) =>
         A.owl(c, w * 0.5, h * 0.9, h * 0.69, time, "ombro", false),
       );
-      A.canvas($("settings-preview"), (c, w, h) => {
-        ArteVivaContextos.settings(c, w, h, time);
-      });
     }
-    if ($("phase-dialog").open)
+    if ($("phase-dialog").open && $("phase-conversation"))
       A.canvas($("phase-conversation"), (c, w, h) =>
         A.meeting(c, w, h, selected, time),
       );
@@ -532,7 +529,8 @@
         .querySelectorAll("[data-about-panel]")
         .forEach((p) => (p.hidden = p.dataset.aboutPanel !== activeAbout));
       $("about-content").scrollTop = 0;
-      if (activeAbout === "comandos") A.load(["kai", "encontros"]);
+      if (activeAbout === "comandos")
+        A.load(["kai", "acoes", "flora", "encontros"]);
       if (activeAbout === "equipe") A.load(["professor"]);
       if (!reduced())
         document.getElementById(activeAbout).animate(
@@ -682,13 +680,10 @@
         }[p.graphicsQuality] || "Gráficos equilibrados");
       if (tab)
         $("settings-explainer").textContent = {
-          audio: "Uma trilha suave e os sons dos seus cuidados.",
-          conforto:
-            "Ajuste leitura, contraste e orientações para explorar com calma.",
-          controles:
-            "Escolha teclado ou toque. O joystick só aparece no modo celular.",
-          imagem:
-            "A prévia acompanha as folhas e o movimento que você escolher.",
+          audio: "Ajuste os sons da sua aventura.",
+          conforto: "Leia e explore com conforto.",
+          controles: "Escolha teclado ou toque.",
+          imagem: "Escolha efeitos e qualidade.",
         }[tab];
     };
     window.addEventListener("viva:settings-tab", (e) =>

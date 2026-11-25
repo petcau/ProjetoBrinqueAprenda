@@ -24,7 +24,7 @@
     'Na cidade de Algoritimando, os chamados de ajuda não param de chegar.',
     'Este é o Robô-guia. Ele sabe onde cada pessoa precisa de ajuda.',
     'Você vai ser o novo estagiário. Aqui está o seu crachá!',
-    'No mapa, cada alfinete com um rosto é um chamado. Ensine o robô, passo a passo.',
+    'No mapa, cada alfinete com um rosto é um chamado. Ajude os moradores, passo a passo.',
   ];
 
   /* ---------------- navegação ---------------- */
@@ -116,7 +116,7 @@
   $('#bReiniciar').onclick = () => $('#reiniciar').classList.add('on');
   $('#bReiniciarNao').onclick = () => $('#reiniciar').classList.remove('on');
   $('#bReiniciarSim').onclick = () => {
-    ['algoritimando-progresso', 'algoritimando-perfil', 'algoritimando-montagem', CHAVE_SEGREDO].forEach(k => {
+    ['algoritimando-progresso', 'algoritimando-perfil', 'algoritimando-montagem', 'algoritimando-album', CHAVE_SEGREDO].forEach(k => {
       try { localStorage.removeItem(k); } catch { /* sem memória: nada a apagar */ }
     });
     location.reload();
@@ -140,6 +140,33 @@
     Som.abrirMenuBotao(b, true);
   });
   $('#bSonsFechar').onclick = () => $('#sons').classList.remove('on');
+
+  /* Cartas no lugar (no painel de configurações; ideia de uma
+     criança no teste): a carta que sai do tabuleiro volta para o
+     mesmo lugar da bandeja. Ligado de fábrica; desligado, a bandeja
+     se reorganiza como antes. Quem usa a opção
+     é o arrasto.js, lendo a mesma chave. */
+  const CHAVE_AJUSTES = 'algoritimando-ajustes';
+  function lerAjustes() {
+    try { return JSON.parse(localStorage.getItem(CHAVE_AJUSTES) || '{}') || {}; }
+    catch { return {}; }
+  }
+  function mostrarCartasNoLugar() {
+    const sim = lerAjustes().cartasNoLugar !== false;
+    const b = $('#bCartasNoLugar');
+    b.textContent = sim ? 'Ligado' : 'Desligado';
+    b.setAttribute('aria-pressed', String(sim));
+    b.classList.toggle('mudo', !sim);
+  }
+  $('#bCartasNoLugar').onclick = () => {
+    const ajustes = lerAjustes();
+    ajustes.cartasNoLugar = ajustes.cartasNoLugar === false;
+    try { localStorage.setItem(CHAVE_AJUSTES, JSON.stringify(ajustes)); } catch { /* sem localStorage: vale só nesta visita */ }
+    mostrarCartasNoLugar();
+    // desligar no meio do nível: os lugares vazios somem já
+    if (window.Arrasto && Arrasto.sincronizar) Arrasto.sincronizar();
+  };
+  mostrarCartasNoLugar();
 
   /* Tela cheia (no painel de configurações): usa a Fullscreen API do
      navegador. Onde ela não existe (iPhone), a linha não aparece. O
@@ -167,6 +194,14 @@
   document.addEventListener('fullscreenchange', mostrarTelaCheia);
   document.addEventListener('webkitfullscreenchange', mostrarTelaCheia);
   mostrarTelaCheia();
+  // a versão do jogo no canto do menu (js/versao.js)
+  const V = window.ALGORITIMANDO_VERSAO;
+  if (V) {
+    $('#versaoJogo').textContent = `v${V.numero} · ${V.data}`;
+    $('#versaoJogo').title = `Versão ${V.numero}, de ${V.data}`;
+  }
+  $('#bCreditos').onclick = () => $('#creditos').classList.add('on');
+  $('#bCreditosFechar').onclick = () => $('#creditos').classList.remove('on');
   $('#bHow').onclick = () => $('#how').classList.add('on');
   $('#bHowClose').onclick = () => $('#how').classList.remove('on');
   $$('[data-home]').forEach(b => { b.onclick = irParaMenu; });
@@ -175,8 +210,13 @@
 
   let qi = 0;
   let revendo = false;   // abertura vista de novo pelo menu
+  /* os quadros passam sozinhos, a cada 5 s. O último espera o botão. */
+  let relogio = null;
+  const tempoDe = () => 5000;   // 5 s por quadro
+  function pararRelogio() { clearTimeout(relogio); relogio = null; }
   function quadro(i) {
     qi = i;
+    pararRelogio();
     // a arte aparece inteira; o fundo desfocado (a mesma imagem)
     // preenche a sobra, seja qual for o formato da tela
     // ?v= faz o navegador buscar a imagem nova quando ela muda
@@ -185,8 +225,19 @@
     $('#dots').innerHTML = ABERTURA.map((_, k) => `<i class="${k === i ? 'on' : ''}"></i>`).join('');
     const ultimo = i === ABERTURA.length - 1;
     $('#bNext').textContent = ultimo ? (revendo ? 'Voltar ao menu' : 'Começar!') : 'Avançar ›';
+    // o primeiro quadro já tem o clique da troca de tela
+    if (i > 0) Som.quadro();
+    // o ponto do quadro atual vira uma barrinha que enche no tempo do quadro
+    $('#dots').classList.toggle('auto', !ultimo);
+    if (!ultimo) {
+      const tempo = tempoDe(ABERTURA[i]);
+      $('#dots').style.setProperty('--tempo', tempo + 'ms');
+      relogio = setTimeout(() => {
+        if ($('#story').classList.contains('on') && qi === i) quadro(i + 1);
+      }, tempo);
+    }
   }
-  const fimDaHistoria = () => (revendo ? irParaMenu() : irParaCracha());
+  const fimDaHistoria = () => { pararRelogio(); return revendo ? irParaMenu() : irParaCracha(); };
   $('#bNext').onclick = () => (qi < ABERTURA.length - 1 ? quadro(qi + 1) : fimDaHistoria());
   $('#bSkip').onclick = fimDaHistoria;
 
@@ -241,11 +292,13 @@
   });
   $$('.avatar').forEach(b => {
     b.onclick = () => {
+      // agente diferente: o som da seleção; o mesmo de novo: só o clique
+      const outro = P.avatar !== b.dataset.a;
       $$('.avatar').forEach(x => x.classList.remove('sel'));
       b.classList.add('sel');
       P.avatar = b.dataset.a;
       atualizarCracha($('#nameIn').value.trim(), true);
-      Som.clique();
+      if (outro) Som.selecaoAgente(); else Som.clique();
     };
   });
   $('#nameIn').oninput = e => atualizarCracha(e.target.value.trim());
@@ -606,13 +659,14 @@
     const n = feitosDe(SITUACOES), total = SITUACOES.length;
     const faltam = faltamParaProxima();
     const proximo = CARGOS[cargo() + 1];
-    $('#bRestart').hidden = n < total;
     $('#progTxt').textContent = `${n} de ${total}`;
     $('#progBar').style.width = (n / total) * 100 + '%';
     $('#progMeta').textContent = proximo
       ? `${plural(faltam, 'Falta 1', 'Faltam #')} para virar ${proximo}`
       : 'Você é Agente Sênior!';
     $('#bIdeias').hidden = !SITUACOES.some(s => s.selo);
+    // quem zerou o jogo pode rever (e imprimir) o certificado
+    $('#bCertificado').hidden = faltamDe(SITUACOES) > 0;
     $('#hubMsg').textContent = mensagem ||
       (!cidadeLiberada() ? 'Seu primeiro chamado é na Casa: ajude a fazer um sanduíche. Depois, a cidade toda se abre!'
         : n === 0 ? 'Toque num lugar do mapa para ver os chamados de lá. Todo chamado concluído conta para a sua promoção.'
@@ -637,7 +691,47 @@
     }
   });
 
-  /* ---------------- minhas ideias (os selos) ----------------
+  /* atalho de desenvolvimento no mapa */
+  (function () {
+    const ZONAS = [
+      { x0: 6, x1: 12, y0: 31, y1: 45 },
+      { x0: 3, x1: 12, y0: 63, y1: 82 },
+    ];
+    const N = 15;
+    let etapa = 0, conta = 0, ultimo = 0;
+    const zerar = () => { etapa = 0; conta = 0; };
+    $('#mapa').addEventListener('click', ev => {
+      if (emProgresso || ev.target.closest('.lugar')) { zerar(); return; }
+      const miolo = $('#mapa .mapa-miolo');
+      if (!miolo) return;
+      const r = miolo.getBoundingClientRect();
+      const x = ((ev.clientX - r.left) / r.width) * 100;
+      const y = ((ev.clientY - r.top) / r.height) * 100;
+      const agora = Date.now();
+      if (agora - ultimo > 2500) zerar();
+      ultimo = agora;
+      const z = ZONAS[etapa];
+      if (!(x >= z.x0 && x <= z.x1 && y >= z.y0 && y <= z.y1)) {
+        // um toque fora: recomeça (ou já conta como o primeiro da árvore)
+        const a = ZONAS[0];
+        zerar();
+        if (x >= a.x0 && x <= a.x1 && y >= a.y0 && y <= a.y1) conta = 1;
+        return;
+      }
+      conta += 1;
+      if (conta < N) return;
+      if (etapa === 0) { etapa = 1; conta = 0; return; }
+      zerar();
+      SITUACOES.forEach(s => {
+        Progresso.gravar(s.id, { fase: s.fases.length, niveis: s.fases.map(() => 3) });
+        P.concluidos[s.id] = true;
+      });
+      Perfil.gravar();
+      seguir('Todos os chamados concluídos! Você pode jogar qualquer um de novo.');
+    });
+  })();
+
+  /* ---------------- meus aprendizados (os selos) ----------------
      Cada selo com a frase da ideia, uma carta do próprio chamado como
      exemplo e uma pergunta para conversar. O que ainda não foi
      conquistado mostra só de qual chamado vem. */
@@ -672,6 +766,8 @@
     $('#ideias').classList.add('on');
   }
   $('#bIdeias').onclick = abrirIdeias;
+  $('#bAlbum').onclick = () => Album.abrir();
+  $('#bCertificado').onclick = () => Final.certificado(P);
   $('#bIdeiasFechar').onclick = () => $('#ideias').classList.remove('on');
 
   /* ---------------- promoção e final ---------------- */
@@ -699,7 +795,7 @@
     $('#promoPara').textContent = CARGOS[p.para];
     $('#promoFrase').textContent = `Agora você é ${CARGOS[p.para]}!`;
     irPara('promo');
-    Som.vitoria();
+    Som.promocao();
   }
 
   /* Depois da promoção: se a outra já está esperando (perfil antigo
@@ -709,7 +805,7 @@
   $('#bPromoNext').onclick = () => {
     const pendente = promocaoPendente();
     if (pendente) { promocao(pendente); return; }
-    if (ultimaPromocao === 'senior') { telaFinal(); return; }
+    if (ultimaPromocao === 'senior') { Final.tocar(P, telaFinal); return; }
     const faltam = faltamDe(SITUACOES);
     central(`Você agora é Agente! ${plural(faltam, 'A cidade ainda tem 1 chamado', 'A cidade ainda tem # chamados')} para você virar Agente Sênior.`);
   };
@@ -757,17 +853,21 @@
     irPara('final');
   }
   $('#bToHub').onclick = () => central();
+  $('#bFimAlbum').onclick = () => Album.abrir();
+  $('#bFimCertificado').onclick = () => Final.certificado(P);
+  $('#bFimRever').onclick = () => Final.tocar(P, telaFinal);
 
   function recomecar() {
     SITUACOES.forEach(s => Progresso.apagar(s.id));
+    Album.esquecer();
     Perfil.recomecar();
     esquecerSegredo();
     central(`Novos chamados chegando! Boa sorte, ${P.nome}!`);
   }
-  $('#bAgain').onclick = recomecar;
-  $('#bRestart').onclick = () => $('#again').classList.add('on');
-  $('#bNo').onclick = () => $('#again').classList.remove('on');
-  $('#bYes').onclick = () => {
+  // a tela final pede confirmação antes de zerar tudo
+  $('#bAgain').onclick = () => $('#again').classList.add('on');
+  $('#bAgainNao').onclick = () => $('#again').classList.remove('on');
+  $('#bAgainSim').onclick = () => {
     $('#again').classList.remove('on');
     recomecar();
   };

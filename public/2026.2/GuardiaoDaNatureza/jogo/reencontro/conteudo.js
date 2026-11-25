@@ -17,7 +17,10 @@
   for (const t of fauna.tasks) {
     if (!problems[t.id]) continue;
     [t.problem, t.problemLabel] = problems[t.id];
-    t.home = GuardiaoElenco.habitat(t.speciesKey);
+    t.home =
+      t.speciesKey === "preguica"
+        ? { x: t.x, y: t.y }
+        : GuardiaoElenco.habitat(t.speciesKey);
   }
   fauna.goals.find((g) => g[0] === "animal")[2] = fauna.tasks.filter(
     (t) => t.type !== "key",

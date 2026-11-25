@@ -1,0 +1,664 @@
+.conquista-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.conquista-frame {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: var(--ck-x, 16px) minmax(0, 1fr) var(--ck-x, 16px);
+  grid-template-rows: var(--ck-y, 16px) minmax(0, 1fr) var(--ck-y, 16px);
+  pointer-events: none;
+}
+.conquista-frame > span {
+  min-width: 0;
+  min-height: 0;
+}
+/* A arte inclui o aro inteiro; o botão não acrescenta uma segunda borda. */
+body #jogo .top-actions button.hud-button,
+body #jogo .actions button.hud-button,
+body #jogo .actions button.hud-tool,
+body .ra-pause-full.hud-button {
+  border: 0 !important;
+  padding: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  position: relative;
+  isolation: isolate;
+}
+body #jogo .top-actions button.hud-button {
+  width: 54px !important;
+  height: 54px !important;
+  min-width: 44px !important;
+  display: grid !important;
+  place-items: center;
+}
+.hud-control-art {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  pointer-events: none;
+}
+body #jogo .actions {
+  padding-bottom: 18px;
+}
+.hud-control-art .conquista-art {
+  width: 100% !important;
+  height: 100% !important;
+}
+body #jogo .top-actions .hud-control-art > .conquista-art,
+body #jogo .actions .hud-control-art > .conquista-art {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  position: static !important;
+  transform: none !important;
+}
+.hud-exit {
+  position: absolute;
+  inset: 17%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.hud-exit-fill {
+  position: absolute;
+  inset: 0;
+}
+.hud-exit > svg:last-child {
+  position: absolute;
+  inset: 12%;
+  width: 76% !important;
+  height: 76% !important;
+}
+.hud-ring {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.hud-ring > .conquista-art {
+  position: absolute;
+  inset: 0;
+}
+.hud-ring-fill {
+  clip-path: circle(34%);
+}
+.hud-ring-border {
+  mask-image: radial-gradient(circle, transparent 48%, #000 49%);
+}
+body #jogo .actions .hud-button > .hud-control-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+body #jogo .actions :is(.hud-button, .hud-tool) small {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  margin-top: 2px;
+  font:
+    400 11px/1.1 Lilita,
+    system-ui !important;
+  text-shadow:
+    0 1px 3px #102d20,
+    0 0 5px #102d20;
+  background: #173d2b9c;
+  border-radius: 8px;
+  padding: 2px 3px;
+  pointer-events: none;
+}
+body #jogo .actions .hud-tool > svg,
+body #jogo .actions .hud-tool .action-symbol,
+body #jogo .actions .hud-tool > #tool-icon {
+  position: absolute !important;
+  inset: 23% !important;
+  width: 54% !important;
+  height: 54% !important;
+  margin: 0 !important;
+}
+body #jogo .actions .hud-tool > svg {
+  display: none;
+}
+body #jogo .actions .hud-tool .action-symbol > svg,
+body #jogo .actions .hud-tool > #tool-icon > svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+body #jogo .actions .hud-trash > #tool-icon {
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+.hud-button:focus-visible,
+.hud-tool:focus-visible {
+  outline: 3px solid #fff1a5 !important;
+  outline-offset: 2px;
+}
+/* Somente a moldura muda: objetivos, atalhos e contadores são os originais. */
+body #jogo :is(.mission, .missions).hud-kit {
+  position: absolute;
+  isolation: isolate;
+  border: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  padding: 14px 16px !important;
+  overflow: visible !important;
+  color: #fff2bc;
+}
+.hud-paper {
+  position: absolute;
+  inset: 10px;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+  border-radius: 16px;
+  background: #143f24;
+  z-index: -2;
+}
+.hud-window {
+  --ck-x: 18px;
+  --ck-y: 16px;
+  z-index: -1;
+}
+body #jogo .hud-kit h1 {
+  position: relative;
+  isolation: isolate;
+  background: none !important;
+  border: 0 !important;
+  padding: 9px 14px !important;
+  margin: 0 0 6px !important;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff2bc !important;
+  text-align: center;
+}
+.hud-title-frame {
+  --ck-x: 28px;
+  --ck-y: 14px;
+  z-index: -1;
+}
+body #jogo .hud-kit h1 button {
+  background: none !important;
+  border: 0 !important;
+  color: inherit !important;
+  width: 100%;
+}
+body #jogo .hud-kit .goal {
+  color: #fff1bb !important;
+}
+body #jogo .hud-kit [data-icon] {
+  display: inline-block;
+  width: 23px;
+  height: 23px;
+  flex: none;
+  vertical-align: middle;
+}
+body #jogo .hud-kit [data-icon] > .conquista-art {
+  width: 100% !important;
+  height: 100% !important;
+}
+body #jogo .hud-kit .goal [data-icon] {
+  display: block;
+  width: 26px;
+  height: 26px;
+  flex: none;
+}
+body #jogo .hud-kit .goal [data-icon] > .conquista-art {
+  width: 100% !important;
+  height: 100% !important;
+}
+body #jogo .hud-kit .current-care {
+  color: #fff1bb !important;
+  border-top: 1px solid #b1c46f88;
+  padding-top: 5px;
+}
+.hud-meter {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  min-width: 30px;
+  height: 19px;
+  flex: 1;
+  vertical-align: middle;
+  pointer-events: none;
+}
+.hud-meter-fill,
+.hud-meter-track {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.hud-meter-fill > .conquista-art {
+  transform: scale(0.97, 0.72);
+}
+.hud-native-meter {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0;
+  pointer-events: none;
+}
+/* O resumo mantém um único destino e usa os componentes vazios do kit. */
+dialog#vitoria.conquista-panel {
+  position: fixed;
+  isolation: isolate;
+  width: min(1080px, 96vw);
+  height: min(680px, 94dvh);
+  max-height: 94dvh;
+  max-width: 96vw;
+  border: 0;
+  padding: 16px 22px;
+  background: none;
+  border-radius: 20px;
+  overflow: hidden;
+  color: #173e25;
+  box-shadow: 0 16px 55px #082d2b99;
+}
+dialog#vitoria.conquista-panel[hidden],
+dialog#vitoria.conquista-panel:not([open]):not(.reward-preview) {
+  display: none !important;
+}
+dialog#vitoria.conquista-panel[open]:not([hidden]),
+dialog#vitoria.conquista-panel.reward-preview:not([open]):not([hidden]) {
+  display: flex !important;
+  flex-direction: column;
+  gap: 8px;
+  height: min(680px, 94dvh);
+}
+.conquista-paper {
+  position: absolute;
+  inset: 10px;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+  border-radius: 16px;
+  z-index: -2;
+}
+.conquista-window {
+  --ck-x: 16px;
+  --ck-y: 16px;
+  z-index: 4;
+}
+#vitoria.conquista-panel .resumo-cabecalho {
+  isolation: isolate;
+  position: relative;
+  flex: none;
+  margin: 0;
+  padding: 8px 65px;
+  border: 0;
+  border-radius: 11px;
+  background: none;
+  box-shadow: none;
+  min-height: 65px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#vitoria.conquista-panel .resumo-cabecalho::before,
+#vitoria.conquista-panel .resumo-cabecalho::after {
+  content: none;
+}
+.conquista-heading {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 11px;
+}
+#vitoria.conquista-panel .resumo-cabecalho p {
+  color: #fff0b9;
+  font: 700 12px/1.1 system-ui;
+  letter-spacing: 0.12em;
+  margin: 0 0 5px;
+}
+#vitoria.conquista-panel .resumo-cabecalho h2 {
+  font:
+    400 clamp(25px, 3.2vw, 38px) / 1.08 Lilita,
+    system-ui;
+  color: #fff0b9;
+  margin: 0;
+}
+#vitoria.conquista-panel .resumo-corpo {
+  display: grid;
+  grid-template-columns: minmax(0, 0.36fr) minmax(0, 1fr);
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  align-items: stretch;
+}
+#vitoria.conquista-panel .resumo-colar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  margin: 0;
+  padding: 0 12px 0 0;
+  border-right: 1px solid #ad9a59;
+  height: 100%;
+  overflow: hidden;
+}
+#vitoria.conquista-panel .resumo-colar > .relicario-view,
+#vitoria.conquista-panel .conquista-colar-art,
+#vitoria.conquista-panel .resumo-colar > .colar-view {
+  width: 100%;
+  height: 0;
+  max-height: none;
+  flex: 1 1 0;
+  min-height: 0;
+  object-fit: contain;
+}
+#vitoria.conquista-panel .resumo-colar figcaption {
+  font: 500 14px/1.2 system-ui;
+  color: #173e25;
+  flex: none;
+  margin: 3px 0;
+}
+#vitoria.conquista-panel .resumo-colar figcaption strong {
+  font:
+    400 26px/1.1 Lilita,
+    system-ui;
+  color: #173e25;
+}
+#vitoria.conquista-panel .resumo-cristais {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  height: 25px;
+  flex: none;
+  margin: 0;
+}
+#vitoria.conquista-panel .resumo-cristais svg {
+  height: 25px;
+  width: 19px;
+}
+#vitoria.conquista-panel .resumo-amigos {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+#vitoria.conquista-panel .celebration-art {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  flex: 1;
+  background: none !important;
+  display: flex;
+}
+#vitoria.conquista-panel .resumo-amigos canvas {
+  width: 100% !important;
+  height: 100% !important;
+  flex: 1;
+  min-height: 0;
+  object-fit: contain;
+  border: 0;
+  border-radius: 16px;
+}
+#vitoria.conquista-panel .resumo-legenda {
+  margin: 4px 0 0;
+  font: 500 13px/1.2 system-ui;
+  color: #173e25;
+  flex: none;
+}
+#vitoria.conquista-panel :is(.completion-stats, #victory-stats) {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 10px;
+  flex: none;
+  margin: 0;
+  padding: 0;
+}
+#vitoria.conquista-panel :is(.completion-stats, #victory-stats) > span {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 50px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-content: center;
+  align-items: center;
+  column-gap: 10px;
+  min-height: 84px;
+  margin: 0;
+  padding: 17px 15px 8px;
+  background: none;
+  border: 0;
+  border-radius: 15px;
+  color: #173e25;
+}
+.conquista-stat-frame {
+  --ck-x: 24px;
+  --ck-y: 24px;
+  z-index: -1;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.conquista-stat-icon {
+  grid-column: 1;
+  grid-row: 1/3;
+  width: 50px;
+  height: 50px;
+}
+.conquista-stat-icon > svg {
+  width: 100%;
+  height: 100%;
+}
+#vitoria.conquista-panel :is(.completion-stats, #victory-stats) strong {
+  grid-column: 2;
+  grid-row: 1;
+  font:
+    400 27px/1.05 Lilita,
+    system-ui;
+  color: #173e25;
+}
+.conquista-stat-label {
+  grid-column: 2;
+  grid-row: 2;
+  font: 600 14px/1.15 system-ui;
+  text-wrap: balance;
+}
+#vitoria.conquista-panel .resumo-nota {
+  margin: 0;
+  flex: none;
+  font-size: 13px;
+  line-height: 1.2;
+  color: #173e25;
+}
+#vitoria.conquista-panel .resumo-nota p {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+#vitoria.conquista-panel .resumo-nota #save-state {
+  font-size: 11px;
+  line-height: 1.2;
+}
+#vitoria.conquista-panel .resumo-acoes {
+  flex: none;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+#vitoria.conquista-panel .resumo-acoes > a.resumo-proximo {
+  position: relative;
+  isolation: isolate;
+  min-height: 80px;
+  height: 80px;
+  width: min(390px, 85%);
+  padding: 10px 50px;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  color: #fff1bc;
+  font:
+    400 26px/1.1 Lilita,
+    system-ui;
+  border-radius: 40px;
+  text-shadow: 0 1px 2px #173c20;
+  overflow: visible;
+}
+#vitoria.conquista-panel .resumo-proximo:hover,
+#vitoria.conquista-panel .resumo-proximo:focus-visible {
+  background: none;
+  box-shadow: none;
+  filter: brightness(1.08);
+  outline: 3px solid #315e3c;
+  outline-offset: 0;
+}
+#vitoria.conquista-panel .resumo-acoes > a.resumo-proximo > .conquista-next {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  z-index: -1;
+}
+@media (max-height: 540px) and (orientation: landscape) {
+  body #jogo .top-actions button.hud-button {
+    width: 46px !important;
+    height: 46px !important;
+  }
+  body #jogo :is(.mission, .missions).hud-kit {
+    padding: 10px 12px !important;
+  }
+  body #jogo .hud-kit h1 {
+    padding: 5px 12px !important;
+    min-height: 25px;
+    margin-bottom: 3px !important;
+  }
+  .hud-window {
+    --ck-x: 13px;
+    --ck-y: 12px;
+  }
+  .hud-title-frame {
+    --ck-x: 23px;
+    --ck-y: 10px;
+  }
+  body #jogo .hud-kit .goal [data-icon] {
+    width: 21px;
+    height: 21px;
+  }
+  .hud-meter {
+    height: 15px;
+  }
+  dialog#vitoria.conquista-panel {
+    padding: 10px 14px;
+  }
+  dialog#vitoria.conquista-panel[open],
+  dialog#vitoria.conquista-panel.reward-preview:not([open]) {
+    gap: 4px;
+  }
+  .conquista-window {
+    --ck-x: 11px;
+    --ck-y: 11px;
+  }
+  #vitoria.conquista-panel .resumo-cabecalho {
+    padding: 5px 48px;
+    min-height: 40px;
+  }
+  #vitoria.conquista-panel .resumo-cabecalho p {
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    margin-bottom: 3px;
+  }
+  #vitoria.conquista-panel .resumo-cabecalho h2 {
+    font-size: 22px;
+  }
+  #vitoria.conquista-panel .resumo-corpo {
+    grid-template-columns: minmax(0, 0.38fr) minmax(0, 1fr);
+    gap: 10px;
+  }
+  #vitoria.conquista-panel .resumo-colar {
+    padding-right: 8px;
+  }
+  #vitoria.conquista-panel .resumo-colar > .relicario-view,
+  #vitoria.conquista-panel .conquista-colar-art,
+  #vitoria.conquista-panel .resumo-colar > .colar-view {
+    max-height: none;
+  }
+  #vitoria.conquista-panel .resumo-colar figcaption {
+    font-size: 9px;
+    margin: 1px 0;
+  }
+  #vitoria.conquista-panel .resumo-colar figcaption strong {
+    font-size: 15px;
+  }
+  #vitoria.conquista-panel .resumo-cristais {
+    gap: 4px;
+    height: 15px;
+  }
+  #vitoria.conquista-panel .resumo-cristais svg {
+    height: 15px;
+    width: 12px;
+  }
+  #vitoria.conquista-panel .resumo-legenda {
+    font-size: 9px;
+    margin-top: 2px;
+  }
+  #vitoria.conquista-panel .resumo-amigos canvas {
+    border-radius: 10px;
+  }
+  #vitoria.conquista-panel :is(.completion-stats, #victory-stats) {
+    gap: 6px;
+  }
+  #vitoria.conquista-panel :is(.completion-stats, #victory-stats) > span {
+    grid-template-columns: 31px minmax(0, 1fr);
+    column-gap: 5px;
+    min-height: 51px;
+    padding: 10px 9px 5px;
+  }
+  .conquista-stat-frame {
+    --ck-x: 16px;
+    --ck-y: 16px;
+    border-radius: 10px;
+  }
+  .conquista-stat-icon {
+    width: 31px;
+    height: 31px;
+  }
+  #vitoria.conquista-panel :is(.completion-stats, #victory-stats) strong {
+    font-size: 19px;
+  }
+  .conquista-stat-label {
+    font-size: 10px;
+    line-height: 1.1;
+  }
+  #vitoria.conquista-panel .resumo-nota {
+    font-size: 9px;
+  }
+  #vitoria.conquista-panel .resumo-nota #save-state {
+    font-size: 8px;
+  }
+  #vitoria.conquista-panel .resumo-acoes > a.resumo-proximo {
+    min-height: 50px;
+    height: 50px;
+    font-size: 18px;
+    padding: 5px 35px;
+    width: min(245px, 75%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hud-button,
+  .hud-tool {
+    transition: none !important;
+  }
+}

@@ -71,7 +71,32 @@
                              guardar o lápis deixa o lápis de fora;
                  "tirinha" — um quadrinho por espaço, como uma
                              história em quadrinhos; no primeiro
-                             erro a história "trava" ali.
+                             erro a história "trava" ali;
+                 "grade"   — só o robô e o cubo: o robô visto de
+                             cima anda numa grade fazendo o que as
+                             cartas mandam (usa os ids dos passos
+                             desse chamado);
+                 "jardim"  — (abelhas) e "rua" (atravessar a rua):
+                             cenas desenhadas pelo jogo, com o cliente
+                             andando por elas. Param na primeira carta
+                             que vem antes de uma dependência, com uma
+                             estrela. Nada a configurar além dos ids
+                             dos passos (sair, procurar, voar-flor…;
+                             faixa, ver-luz, esperar, olhar…).
+                 "estado"  — uma bancada (montagemBase) com objetos
+                             que mudam de figura a cada carta. Usa:
+                   montagemObjetos  [{ id, x, y, w (em % da base:
+                     centro, pé e largura), inicio (figura antes de
+                     tudo), passos (cartas que o fazem aparecer) ou
+                     sempre: true, inicioSem: { passo, imagem }
+                     (outra figura inicial quando a fase não tem
+                     aquele passo) }]
+                   montagemRegras   [{ quando: [ids], <objeto>:
+                     figura }] — vale a última cujas cartas já
+                     foram feitas (null esconde o objeto)
+                   montagemOnde     { idDoPasso: objeto } — onde
+                     aparece a estrela quando a carta vem antes de
+                     uma das suas dependências.
                  Sem o campo, não há montagem.
      selo        o selo da ideia que o chamado ensina, entregue na
                  lição da última fase e guardado no crachá:

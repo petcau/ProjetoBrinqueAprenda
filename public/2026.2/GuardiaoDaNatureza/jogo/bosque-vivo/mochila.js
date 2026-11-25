@@ -31,11 +31,21 @@
     const m = GuardiaoMemoria,
       earned = m.obtained(),
       body = dialog.querySelector("#pack-content");
+    dialog.dataset.packView = tab;
     dialog
       .querySelectorAll("[data-pack-tab]")
       .forEach((b) =>
         b.setAttribute("aria-selected", String(b.dataset.packTab === tab)),
       );
+    const illustrated = !phase && window.MochilaIlustrada;
+    if (illustrated) {
+      const content = illustrated.content(tab, m);
+      if (content !== null) {
+        body.innerHTML = content;
+        body.scrollTop = 0;
+        return;
+      }
+    }
     if (tab === "items") {
       const sorted = [...m.items].sort(
         (a, b) => m.has(b.id) - m.has(a.id) || a.phase - b.phase,
@@ -64,7 +74,11 @@
     dialog.id = "mochila-jornada";
     dialog.className = "ra-dialog ra-pack brisa-pack";
     dialog.setAttribute("aria-labelledby", "pack-title");
-    dialog.innerHTML = `<header><span class="pack-emblem">${A.markup("bag")}</span><div><p class="eyebrow">CUIDADOS QUE VIAJAM COM VOCÊ</p><h2 id="pack-title">Mochila de Kai</h2></div><button type="button" data-pack-close class="icon-button" aria-label="Fechar mochila">${R.icon("close")}</button></header><div class="ra-tabs" role="tablist" aria-label="Dentro da mochila"><button type="button" role="tab" data-pack-tab="items">Ferramentas</button><button type="button" role="tab" data-pack-tab="crystals">Colar</button><button type="button" role="tab" data-pack-tab="uniforms">Trajes</button></div><section id="pack-content" tabindex="0" role="tabpanel" aria-label="Coleção de Kai"></section><p id="pack-status" role="status"></p>`;
+    if (!phase && window.MochilaIlustrada) {
+      dialog.classList.add("kit-pack");
+      dialog.innerHTML = MochilaIlustrada.shell();
+    } else
+      dialog.innerHTML = `<header><span class="pack-emblem">${A.markup("bag")}</span><div><p class="eyebrow">CUIDADOS QUE VIAJAM COM VOCÊ</p><h2 id="pack-title">Mochila de Kai</h2></div><button type="button" data-pack-close class="icon-button" aria-label="Fechar mochila">${R.icon("close")}</button></header><div class="ra-tabs" role="tablist" aria-label="Dentro da mochila"><button type="button" role="tab" data-pack-tab="items">Ferramentas</button><button type="button" role="tab" data-pack-tab="crystals">Colar</button><button type="button" role="tab" data-pack-tab="uniforms">Trajes</button></div><section id="pack-content" tabindex="0" role="tabpanel" aria-label="Coleção de Kai"></section><p id="pack-status" role="status"></p>`;
     document.body.append(dialog);
     dialog.addEventListener("click", (e) => {
       if (e.target.closest("[data-pack-close]")) dialog.close();
@@ -86,6 +100,7 @@
     dialog.addEventListener("keydown", (e) => {
       if (e.key.toLowerCase() === "b") {
         e.preventDefault();
+        e.stopPropagation();
         dialog.close();
       }
       if (
@@ -101,6 +116,9 @@
       }
     });
   }
+  document.addEventListener("guardiao:memoria", () => {
+    if (dialog?.open) render();
+  });
   function open() {
     if (window.VivaFinal?.active) return;
     make();

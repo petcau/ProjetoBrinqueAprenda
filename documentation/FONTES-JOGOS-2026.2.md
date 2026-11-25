@@ -6,20 +6,29 @@ registrada e preserve adaptações que existam apenas no portal.
 
 | Jogo | Repositório | Branch | Commit integrado | Destino no portal | Adaptações locais |
 |---|---|---|---|---|---|
-| Algoritimando | `https://github.com/helder41/Algoritimando-1` | `main` | `85f881ebbbc3855fea67f1c3e4cd622d5d8b8f1c` | `public/2026.2/Algoritimando/` | Progresso adaptado pelo catálogo; capa criada para o portal. |
-| Ilha do Conhecimento | `https://github.com/danielpsts07/Ilha-do-Conhecimento` | `main` | `35d5048d357895da3058313b11a9dc62806873ab` | `public/2026.2/IlhaDoConhecimento/` | Sem alteração no código do jogo; capa criada para o portal. |
-| Robô Ritimado | `https://github.com/asethrya/robo-ritmado` | `main` | `069bc47d044a27b7faeea738f3a6dffd9dcfa887` | `public/2026.2/RoboRitimado/` | Progresso adaptado pelo catálogo; capa criada para o portal. |
-| Sinfonia dos Cristais | `https://github.com/Italoviski/Sinfonia-dos-Cristais` | `main` | `96074336e2599ad5c26e25e4464379fba40d12ed` | `public/2026.2/SinfoniaDosCristais/` | Progresso adaptado pelo catálogo; capa criada para o portal. |
-| RocketBloom | `https://github.com/sm64isdabest/RocketBloom` | `main` | `186bfa5ad981f27f042e2d7850d476ce6e38ecfc` | `public/2026.2/RocketBloom/` | Build com base do portal; progresso adaptado pelo catálogo; capa criada para o portal. |
-| Guardião da Natureza | `https://github.com/iuribrns/GUARDIAO_DA_NATUREZA` | `main` | `af460cbe72b50d0a2070b5f17864958c1700c9f4` | `public/2026.2/GuardiaoDaNatureza/` | Artefato oficial do GitHub Actions; progresso adaptado pelo catálogo; capa criada para o portal. |
+| Algoritimando | `https://github.com/helder41/Algoritimando-1` | `main` | `d330653080b3b6ae2c5ec2f9333546f1482c7dc4` | `public/2026.2/Algoritimando/` | Progresso adaptado pelo catálogo; capa criada para o portal. |
+| Ilha do Conhecimento | `https://github.com/danielpsts07/Ilha-do-Conhecimento` | `main` | `3c16b61ed6512143967821d2a1c37f73d29b2de8` | `public/2026.2/IlhaDoConhecimento/` | Sem alteração no código do jogo; capa criada para o portal. |
+| Robô Ritimado | `https://github.com/asethrya/robo-ritmado` | `main` | `91cb9f5507da562ef2c3f0300de75ee04303f1f1` | `public/2026.2/RoboRitimado/` | Progresso adaptado pelo catálogo; capa criada para o portal. |
+| Sinfonia dos Cristais | `https://github.com/Italoviski/Sinfonia-dos-Cristais` | `main` | `223e061feb62a1e858db66180c862bcd2ecde370` | `public/2026.2/SinfoniaDosCristais/` | Progresso adaptado pelo catálogo; capa criada para o portal. |
+| RocketBloom | `https://github.com/sm64isdabest/RocketBloom` | `main` | `68bcef4becacb6a96989746a3fab90cebd50d852` | `public/2026.2/RocketBloom/` | Build com base do portal; progresso adaptado pelo catálogo; capa criada para o portal. |
+| Guardião da Natureza | `https://github.com/iuribrns/GUARDIAO_DA_NATUREZA` | `main` | `c79728ac87a16e869c2b19b6eebabed6790cf20b` | `public/2026.2/GuardiaoDaNatureza/` | Artefato oficial do GitHub Actions; progresso adaptado pelo catálogo; capa criada para o portal. |
 
 ## Algoritimando
 
 - Integração inicial: 11 de novembro de 2026.
 - Atualizado em 18 de novembro de 2026 (13 commits: tela cheia, desenho para
   celular deitado, botão Configurações e correções da revisão geral).
+- Atualizado em 25 de novembro de 2026 (70 commits: animação final, álbum de
+  figurinhas, certificado para imprimir, novas montagens com bancada, opção
+  "Cartas no lugar", "Meus aprendizados" e modo instalável/PWA).
 - Arquivos publicados: `index.html`, `editor.html`, CSS, JavaScript, fontes,
-  imagens, áudio e licença MIT.
+  imagens, áudio, licença MIT e, desde 25/11, `manifest.webmanifest` e `sw.js`.
+- O `sw.js` (modo offline) fica restrito a `/2026.2/Algoritimando/`, é
+  versionado e busca a página pela rede primeiro, então não interfere no
+  restante do portal. Dentro do iframe, a linha "Instalar o jogo" das
+  Configurações normalmente fica oculta (o navegador só oferece instalação na
+  página principal); no iPhone ela mostra a dica de "Adicionar à Tela de
+  Início". Foi mantida sem adaptação para não alterar o código do jogo.
 - Materiais de desenvolvimento (`docs/`, relatórios e arquivos de prompts) não
   são publicados no portal.
 - Chaves de progresso preservadas por perfil:
@@ -34,7 +43,13 @@ registrada e preserve adaptações que existam apenas no portal.
 - Integração inicial: 11 de novembro de 2026.
 - Atualizado em 18 de novembro de 2026 (organização e limpeza do código: dados
   e introdução passaram para dentro de `assets/`).
-- Arquivos publicados: `index.html`, `assets/`, `css/` e `js/`.
+- Atualizado em 25 de novembro de 2026 (8 commits: tela de carregamento,
+  "Sobre nós", créditos e ajustes nos puzzles da balança, geometria e
+  operações).
+- Arquivos publicados: `index.html`, `assets/`, `css/`, `data/` e `js/`.
+- Correção em 25/11: a pasta `data/` (JSON de geometria, labirinto, álgebra,
+  operações e final) é buscada pelo jogo quando aberto pelo site, mas tinha
+  ficado de fora das integrações anteriores. Passou a ser publicada.
 - Materiais de desenvolvimento (`docs/`, `tools/`, `tests/`,
   `assets/ferramentas-sprites/`, `package-lock.json` e instruções do
   repositório) não são publicados no portal.
@@ -50,6 +65,9 @@ registrada e preserve adaptações que existam apenas no portal.
 
 - Integração inicial: 11 de novembro de 2026.
 - Versão integrada: 0.15.1.
+- Atualizado em 25 de novembro de 2026 (1 commit: interfaces refinadas, poses
+  por mundo e carregamento da aventura). Os arquivos `GERACAO-*.md` de
+  `assets/` (anotações de geração de arte) deixaram de ser publicados.
 - Arquivos publicados: `index.html`, CSS, JavaScript e a pasta `assets/` com
   imagens, animações e áudio necessários para executar o jogo.
 - Relatórios de validação, documentos de pontuação, arquivos de instrução e o
@@ -66,6 +84,11 @@ registrada e preserve adaptações que existam apenas no portal.
 - Integração inicial: 11 de novembro de 2026.
 - Atualizado em 18 de novembro de 2026 (7 commits: habilidades dos cristais,
   novos tutoriais, menu de fases no celular e Modo Livre).
+- Atualizado em 25 de novembro de 2026 (9 commits: habilidade "Voltar no
+  Tempo", coreografia de vitória, menus por bioma, guia com treinos
+  interativos, diálogos reescritos, ajustes de fases e nova introdução).
+  Os arquivos foram copiados com `git archive` das mesmas pastas que o
+  `scripts/build.mjs` copia, sem executar o script.
 - Versão integrada: 1.1.0.
 - O Modo Livre (God Mode), nas configurações, libera todas as fases para
   escolha, mas não marca fases como concluídas nem altera o progresso salvo.
@@ -85,6 +108,11 @@ registrada e preserve adaptações que existam apenas no portal.
 - Atualizado em 18 de novembro de 2026 (escala da tela, alertas de colisão,
   lasers de resposta e novos aviões da Terra). Nessa atualização, os 172
   testes passaram.
+- Atualizado em 25 de novembro de 2026 (68 commits: seletor com ilhas dos
+  planetas, novos cenários, modo infinito por planeta, cofre de ouro com metas
+  globais, laboratório orbital redesenhado e remoção dos desafios especiais e
+  dos diamantes). Nessa atualização, os 273 testes passaram. Como os diamantes
+  saíram do jogo, a ficha do catálogo passou a mostrar "Moedas coletadas".
 - Versão integrada: 0.1.0.
 - Build do Vite gerado com `--base /2026.2/RocketBloom/`, sem alterar os
   arquivos-fonte do repositório. No Git Bash do Windows, rode com
@@ -106,8 +134,12 @@ registrada e preserve adaptações que existam apenas no portal.
 - Versão declarada no repositório: 0.1.0.
 - Build obtido do artefato `github-pages` do workflow oficial concluído com
   sucesso para o commit integrado.
+- Atualizado em 25 de novembro de 2026 (16 commits: kits ilustrados de
+  painéis, mochila, HUD e conclusões, carregamento real das cinco fases,
+  sementes nativas ameaçadas e cinemática final com créditos). O vídeo final
+  (`jogo/viva/assets/cutscene-final-com-creditos.mp4`) tem cerca de 20 MB.
 - Somente os arquivos publicados no artefato foram copiados (276 na
-  integração inicial, 335 na atualização de 18/11); histórico,
+  integração inicial, 335 na atualização de 18/11, 469 na de 25/11); histórico,
   versões arquivadas, ferramentas e materiais de desenvolvimento ficaram fora.
 - Chave principal de progresso preservada: `guardiao.mapa.progresso.v1`.
 - O código do jogo foi mantido sem adaptações locais para permitir atualizações

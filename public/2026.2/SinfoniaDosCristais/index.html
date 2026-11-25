@@ -8,15 +8,35 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/pixel.css?v=10">
+<link rel="stylesheet" href="css/pixel.css?v=12">
 <link rel="stylesheet" href="css/menu.css?v=7">
 <link rel="stylesheet" href="css/journey.css?v=9">
+<link rel="preload" as="image" href="assets/credits/brinque-e-aprenda-logo.png" type="image/png">
 <link rel="preload" as="audio" href="assets/audio/musica-menu.mp3" type="audio/mp3">
 <link rel="stylesheet" href="css/experience.css?v=12">
 <link rel="stylesheet" href="css/responsive.css?v=3">
 </head><body data-screen="home">
 <div id="preloaderScreen" class="preloader-screen" aria-label="Carregando recursos do jogo" role="status"><canvas id="preloaderCanvas" width="640" height="360" aria-hidden="true"></canvas></div>
-<div id="unebSplashScreen" class="uneb-splash-screen phase-fade-in" role="region" aria-label="Apresentação Institucional UNEB">
+<div id="brinqueSplashScreen" class="uneb-splash-screen brinque-splash-screen phase-fade-in" role="region" aria-label="Apresentação Projeto Brinque e Aprenda">
+  <div class="brinque-splash-content">
+    <div class="brinque-logo-stage">
+      <img class="brinque-logo-final" src="assets/credits/brinque-e-aprenda-logo.png" alt="Projeto Brinque e Aprenda" draggable="false">
+      <div class="brinque-text-reveal" aria-hidden="true">
+        <img src="assets/credits/brinque-e-aprenda-logo.png" alt="" draggable="false">
+      </div>
+      <div class="brinque-ball ball-orange" aria-hidden="true">
+        <img src="assets/credits/brinque-e-aprenda-logo.png" alt="" draggable="false">
+      </div>
+      <div class="brinque-ball ball-green" aria-hidden="true">
+        <img src="assets/credits/brinque-e-aprenda-logo.png" alt="" draggable="false">
+      </div>
+      <div class="brinque-ball ball-blue" aria-hidden="true">
+        <img src="assets/credits/brinque-e-aprenda-logo.png" alt="" draggable="false">
+      </div>
+    </div>
+  </div>
+</div>
+<div id="unebSplashScreen" class="uneb-splash-screen" role="region" aria-label="Apresentação Institucional UNEB" hidden>
   <div class="uneb-splash-content">
     <img class="uneb-splash-logo" src="assets/credits/uneb-logo.png" alt="Brasão da Universidade do Estado da Bahia (UNEB)" draggable="false">
     <p class="uneb-splash-text">Esse jogo foi feito por estudantes do curso de graduação Engenharia de Software da UNEB</p>
@@ -98,7 +118,7 @@
     <div class="character-creation-body">
       <div class="character-name-field">
         <label for="playerNameInput">Qual é o seu nome?</label>
-        <input id="playerNameInput" type="text" maxlength="24" placeholder="Digite seu nome..." autocomplete="off">
+        <input id="playerNameInput" type="text" maxlength="24" value="Alex" placeholder="Digite seu nome..." autocomplete="off">
         <small id="playerNameError" class="character-name-error" role="alert" hidden>Por favor, digite seu nome para começar a aventura!</small>
       </div>
       <div class="character-gender-section">
@@ -109,6 +129,7 @@
               <canvas id="previewBoyCanvas" width="64" height="64"></canvas>
             </div>
             <strong class="character-gender-label">Menino</strong>
+            <span class="character-gender-name">Alex</span>
             <span class="character-gender-badge">✦ Selecionado ✦</span>
           </button>
           <button type="button" id="genderGirlBtn" class="character-gender-card" data-gender="female" aria-pressed="false">
@@ -116,6 +137,7 @@
               <canvas id="previewGirlCanvas" width="64" height="64"></canvas>
             </div>
             <strong class="character-gender-label">Menina</strong>
+            <span class="character-gender-name">Marina</span>
             <span class="character-gender-badge">✦ Selecionado ✦</span>
           </button>
         </div>
@@ -210,7 +232,7 @@
       <p class="keyboard-guide">Arraste cristais para somar, subtrair ou anular; toque em Citrinos e Água-Marinhas para dividir; pressione R para reiniciar a fase; pressione F para alternar Tela Cheia.</p>
     </div>
     <footer class="settings-footer crystal-settings-footer">
-      <button class="pixel-button crystal-close-btn" aria-label="Voltar">✦ Voltar ao Santuário ✦</button>
+      <button class="pixel-button crystal-close-btn" aria-label="Voltar">Voltar</button>
     </footer>
     <p id="fileStatus" role="status"></p>
   </form>
@@ -304,18 +326,18 @@
     </footer>
   </form>
 </dialog>
-<script src="js/true-pixel-engine.js?v=25"></script>
+<script src="js/true-pixel-engine.js?v=26"></script>
 <script src="js/preloader.js?v=4"></script>
 <script src="js/true-pixel-cave.js?v=24"></script>
-<script src="js/true-pixel-worlds.js?v=8"></script>
-<script src="js/final-phase.js?v=2"></script>
+<script src="js/true-pixel-worlds.js?v=9"></script>
+<script src="js/final-phase.js?v=3"></script>
 <script src="js/performance.js"></script>
 <script src="js/campaign.js?v=7"></script>
 <script src="js/campaign-current.js?v=3"></script>
 <script src="js/rules.js"></script>
-<script src="js/audio.js?v=16"></script>
+<script src="js/audio.js?v=17"></script>
 <script src="js/journey-map.js?v=5"></script>
-<script src="js/app.js?v=16"></script>
+<script src="js/app.js?v=18"></script>
 <script src="js/menu.js?v=15"></script>
-<script src="js/test-harness.js?v=4"></script>
+<script src="js/test-harness.js?v=5"></script>
 </body></html>

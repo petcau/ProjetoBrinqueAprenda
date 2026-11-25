@@ -1,0 +1,86 @@
+/* Content fits inside the illustrated frame at every HUD size. */
+body #jogo :is(.mission, .missions).hud-kit {
+  box-sizing: border-box;
+  padding: 18px 22px 24px !important;
+  max-width: calc(100vw - 28px);
+}
+body #jogo .hud-kit .goal {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) auto;
+  column-gap: 7px;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+body #jogo .hud-kit .goal .goal-label {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.3;
+}
+body #jogo .hud-kit .goal strong {
+  margin: 0;
+  text-align: right;
+  white-space: nowrap;
+}
+body #jogo .hud-kit .current-care {
+  margin: 6px 0 0;
+  padding: 7px 2px 2px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+}
+body #jogo .hud-kit #water-display {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+body #jogo .hud-kit #water-display[hidden] {
+  display: none;
+}
+body[data-phase="4"] #puzzle-options {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+body[data-phase="4"] #puzzle-options button {
+  padding: 12px 8px;
+  min-width: 0;
+  line-height: 1.25;
+}
+body[data-phase="4"] #puzzle-options .seed-sprite {
+  width: 100%;
+  height: 100px;
+  max-width: 150px;
+}
+body[data-phase="4"] #puzzle-options small {
+  font-size: 11px;
+  line-height: 1.4;
+  font-weight: 400;
+}
+body[data-phase="4"] #puzzle-description {
+  line-height: 1.4;
+}
+@media (max-height: 540px) and (orientation: landscape) {
+  body #jogo :is(.mission, .missions).hud-kit {
+    padding: 12px 17px 19px !important;
+  }
+  body #jogo .hud-kit .goal {
+    grid-template-columns: 21px minmax(0, 1fr) auto;
+  }
+  body[data-phase="4"] #puzzle-options {
+    margin: 8px 0;
+    gap: 7px;
+  }
+  body[data-phase="4"] #puzzle-options button {
+    min-height: 130px;
+    font-size: 12px;
+    padding: 8px 5px;
+  }
+  body[data-phase="4"] #puzzle-options .seed-sprite {
+    height: 58px;
+  }
+  body[data-phase="4"] #puzzle-options small {
+    font-size: 10px;
+  }
+}

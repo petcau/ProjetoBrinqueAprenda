@@ -36,7 +36,7 @@ dialog#vitoria.reward-preview:not([open]) {
   height: fit-content;
   pointer-events: auto;
 }
-body:has(#vitoria.reward-preview)::after {
+body:has(#vitoria.reward-preview:not([hidden]))::after {
   content: "";
   position: fixed;
   inset: 0;

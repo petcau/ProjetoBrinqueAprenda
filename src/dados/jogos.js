@@ -223,12 +223,12 @@ export const TURMAS = [
             const plantas = Array.isArray(progresso.rescuedPlantIds)
               ? new Set(progresso.rescuedPlantIds).size
               : 0;
-            const recursos = (Number(progresso.coins) || 0) + (Number(progresso.diamonds) || 0);
+            const recursos = Number(progresso.coins) || 0;
 
             return [
               fases > 0 && { rotulo: 'Fases concluídas', valor: `${Math.min(fases, 20)} de 20` },
               plantas > 0 && { rotulo: 'Plantas resgatadas', valor: `${Math.min(plantas, 4)} de 4` },
-              recursos > 0 && { rotulo: 'Itens coletados', valor: recursos.toLocaleString('pt-BR') },
+              recursos > 0 && { rotulo: 'Moedas coletadas', valor: recursos.toLocaleString('pt-BR') },
             ].filter(Boolean);
           },
         },
@@ -236,7 +236,7 @@ export const TURMAS = [
         titulo: 'RocketBloom',
         subtitulo: 'Pilote um foguete, resolva desafios matemáticos e resgate plantas em quatro planetas!',
         sinopse: 'Uma corrida espacial educativa que combina operações matemáticas, reflexos e sustentabilidade em uma missão interplanetária.',
-        descricao: 'Em RocketBloom, a criança pilota um foguete científico por Terra, Marte, Saturno e Netuno. Durante cada viagem, precisa desviar de aviões, asteroides, cometas e outros obstáculos, coletar moedas e diamantes e conduzir a nave até a alternativa correta das perguntas matemáticas. A campanha reúne 20 fases com dificuldade progressiva: adição na Terra, subtração em Marte, multiplicação em Saturno e divisão em Netuno. Cada planeta também apresenta uma espécie vegetal a ser resgatada e cultivada no laboratório.',
+        descricao: 'Em RocketBloom, a criança pilota um foguete científico por Terra, Marte, Saturno e Netuno. Durante cada viagem, precisa desviar de aviões, asteroides, cometas e outros obstáculos, coletar moedas e conduzir a nave até a alternativa correta das perguntas matemáticas. A campanha reúne 20 fases com dificuldade progressiva: adição na Terra, subtração em Marte, multiplicação em Saturno e divisão em Netuno. Cada planeta também apresenta uma espécie vegetal a ser resgatada e cultivada no laboratório.',
         chamada: 'Matemática em alta velocidade para explorar planetas, superar obstáculos e fazer a vida florescer pelo espaço!',
         capa: '/capas/rocketbloom.webp',
         dataCriacao: '2026-11',

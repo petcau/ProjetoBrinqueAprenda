@@ -114,7 +114,8 @@
       }
       b.classList.toggle(
         "is-fullscreen",
-        !!(document.fullscreenElement || document.webkitFullscreenElement),
+        window.GuardiaoTela?.state().fullscreen ||
+          !!(document.fullscreenElement || document.webkitFullscreenElement),
       );
     });
   }
@@ -122,6 +123,7 @@
     bind(b);
     fullIcons();
   };
+  window.addEventListener("guardiao:fullscreen", fullIcons);
   document.addEventListener("fullscreenchange", fullIcons);
   document.addEventListener("webkitfullscreenchange", fullIcons);
   document.addEventListener("DOMContentLoaded", fullIcons);

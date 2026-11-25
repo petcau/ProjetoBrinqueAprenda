@@ -186,7 +186,8 @@
     arrival = (async () => {
       if (
         document.body.dataset.gameReady !== "true" &&
-        document.body.dataset.uiReady !== "true"
+        document.body.dataset.uiReady !== "true" &&
+        !document.body.dataset.loadingState
       )
         await limited(
           new Promise((resolve) => {
@@ -194,7 +195,9 @@
               if (
                 document.body.dataset.gameReady === "true" ||
                 document.body.dataset.uiReady === "true" ||
-                document.querySelector("#loading a")
+                document.querySelector("#loading a") ||
+                document.body.dataset.loadingState === "loading" ||
+                document.body.dataset.loadingState === "error"
               ) {
                 observer.disconnect();
                 resolve();
@@ -202,7 +205,11 @@
             });
             observer.observe(document.body, {
               attributes: true,
-              attributeFilter: ["data-game-ready", "data-ui-ready"],
+              attributeFilter: [
+                "data-game-ready",
+                "data-ui-ready",
+                "data-loading-state",
+              ],
               childList: true,
               subtree: true,
             });

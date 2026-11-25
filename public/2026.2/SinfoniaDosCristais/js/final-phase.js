@@ -496,67 +496,14 @@
   };
 
   // ==========================================================================
-  // 4. PORTA ANCESTRAL, INÍCIO DA CAVERNA LÁ DENTRO, LAST DANCE E PAREDE DE CRISTAIS
+  // 4. PORTA ANCESTRAL (ALINHADA À GEOMETRIA CANÔNICA), LAST DANCE E PAREDE FINAL
   // ==========================================================================
-  const DOOR_SOCKETS = {
-    forest:   { x: 230, y: 33, col: '#69f0ae', label: 'Esmeralda' },
-    river:    { x: 242, y: 32, col: '#40c4ff', label: 'Turmalina Paraíba' },
-    caatinga: { x: 254, y: 32, col: '#ff9100', label: 'Opala de Fogo' },
-    fairy:    { x: 266, y: 33, col: '#e040fb', label: 'Gema da Ordem' }
+  const DOOR_SOCKETS = global.TruePixelWorlds?.SANCTUARY_DOOR_SOCKETS || {
+    forest:   { x: 256, y: 33, col: '#69f0ae', label: 'Esmeralda' },
+    river:    { x: 268, y: 32, col: '#40c4ff', label: 'Turmalina Paraíba' },
+    caatinga: { x: 280, y: 32, col: '#ff9100', label: 'Opala de Fogo' },
+    fairy:    { x: 292, y: 33, col: '#e040fb', label: 'Gema da Ordem' }
   };
-
-  function drawBeginningCaveInsideGate(ctx, openRatio, t) {
-    if (openRatio <= 0.02) return;
-    const f12 = Math.floor(t * 12);
-    const gx = 248, gy = 26, gh = 116;
-    const halfOpen = Math.max(2, R(easeInOut(clamp(openRatio, 0, 1)) * 24));
-    const vx0 = gx - halfOpen, vw = halfOpen * 2;
-
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(vx0, gy + 12, vw, gh - 12);
-    ctx.clip();
-
-    // Interior mostra exatamente o INÍCIO DA CAVERNA (feixe de luz vertical da queda inicial + musgo da Fase 1)
-    ctx.fillStyle = '#0f172a';
-    ctx.fillRect(vx0, gy + 12, vw, gh - 12);
-    ctx.fillStyle = 'rgba(158, 240, 255, 0.28)';
-    ctx.fillRect(gx - 12, gy + 12, 24, gh - 20);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
-    ctx.fillRect(gx - 5, gy + 12, 10, gh - 22);
-
-    // Pedras e musgo da entrada inicial da caverna
-    ctx.fillStyle = '#3e7338';
-    ctx.fillRect(vx0, gy + gh - 12, vw, 6);
-    ctx.fillStyle = '#7ec456';
-    ctx.fillRect(vx0, gy + gh - 12, vw, 2);
-
-    // Poeira cristalina na fresta de luz inicial
-    ctx.fillStyle = '#9ef0ff';
-    for (let i = 0; i < 4; i++) {
-      ctx.fillRect(gx - 9 + i * 6, gy + 24 + ((f12 + i * 5) % 48), 2, 2);
-    }
-    ctx.restore();
-  }
-
-  function drawCustomGateSockets(ctx, sockets, t) {
-    const E = global.TruePixelEngine;
-    const f12 = Math.floor(t * 12);
-    for (const [key, s] of Object.entries(DOOR_SOCKETS)) {
-      const unlocked = Boolean(sockets[key]);
-      ctx.fillStyle = '#d9bf86';
-      ctx.fillRect(s.x - 3, s.y - 3, 7, 7);
-      ctx.fillStyle = unlocked ? s.col : '#2b211d';
-      ctx.fillRect(s.x - 2, s.y - 2, 5, 5);
-      if (unlocked) {
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(s.x - 1, s.y - 1, 2, 2);
-        if (E?.drawStar && ((f12 & 1) === 0)) {
-          E.drawStar(ctx, s.x, s.y - 5, 2, '#ffffff', s.col);
-        }
-      }
-    }
-  }
 
   function drawLastDanceWorldScenery(ctx, worldIdx, scrollX, t) {
     const E = global.TruePixelEngine;
@@ -612,7 +559,7 @@
       ctx.fillStyle = '#81c784';
       ctx.fillRect(0, 142, W, 6);
     } else if (worldIdx === 2) {
-      // MUNDO 3: RIO DAS ÁGUAS CLARAS TRANSPARENTE E CRISTALINO
+      // MUNDO 3: RIO DAS ÁGUAS CLARAS E CRISTALINAS
       const g = ctx.createLinearGradient(0, 0, 0, 142);
       g.addColorStop(0, '#29b6f6');
       g.addColorStop(0.55, '#81d4fa');
@@ -641,7 +588,7 @@
       ctx.fillStyle = '#80cbc4';
       ctx.fillRect(0, 142, W, 5);
     } else {
-      // MUNDO 4: CAATINGA FLORIDA COM CACIMBAS CHEIAS E MANDACARUS EM FLOR
+      // MUNDO 4: CAATINGA FLORIDA COM CACIMBAS CHEIAS ENCAIXADAS NO CHÃO E MANDACARUS EM FLOR
       const g = ctx.createLinearGradient(0, 0, 0, 142);
       g.addColorStop(0, '#ffb74d');
       g.addColorStop(0.55, '#ffe082');
@@ -661,13 +608,22 @@
         ctx.fillStyle = '#fff9c4';
         ctx.fillRect(mx + 12, 65, 4, 4);
         ctx.fillRect(mx + 2, 69, 4, 4);
-        ctx.fillStyle = '#29b6f6';
-        ctx.fillRect(mx + 28, 136, 22, 6);
       }
       ctx.fillStyle = '#8bc34a';
       ctx.fillRect(0, 142, W, 38);
       ctx.fillStyle = '#aed581';
       ctx.fillRect(0, 142, W, 5);
+
+      // Cacimbas encaixadas diretamente no solo (y = 142..147) com borda de terra e reflexo
+      for (let i = 0; i < 6; i++) {
+        const mx = ((i * 64 - R(sx * 0.7)) % 384 + 384) % 384 - 24;
+        ctx.fillStyle = '#5d4037';
+        ctx.fillRect(mx + 27, 142, 24, 6);
+        ctx.fillStyle = '#29b6f6';
+        ctx.fillRect(mx + 28, 142, 22, 5);
+        ctx.fillStyle = '#81d4fa';
+        ctx.fillRect(mx + 30, 143, 18, 2);
+      }
     }
 
     for (let f = 0; f < 9; f++) {
@@ -677,14 +633,15 @@
     }
   }
 
-  // Frase "Obrigado por jogar" encravada na parede em fonte facetada de CRISTAIS
+  // Frase "Obrigado por jogar" encravada na parede à esquerda da Porta Ancestral em fonte facetada de CRISTAIS
   function drawCrystalWallInscription(ctx, text, cx, cy, t) {
     const E = global.TruePixelEngine;
     const f12 = Math.floor(t * 12);
 
-    const pw = 256, ph = 42;
+    const pw = 216, ph = 38;
     const px = R(cx - pw / 2), py = R(cy - ph / 2);
 
+    E?.TextOverlay?.clearLogicalRect?.(ctx, px - 3, py - 3, pw + 6, ph + 6);
     ctx.fillStyle = '#140e24';
     ctx.fillRect(px - 3, py - 3, pw + 6, ph + 6);
     ctx.fillStyle = '#281e42';
@@ -704,25 +661,40 @@
       ctx.fillRect(qx - 1, qy - 1, 2, 2);
     });
 
-    ctx.save();
-    ctx.font = 'bold 18px Consolas, "Courier New", monospace';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
+    if (E?.TextOverlay?.isActiveFor?.(ctx)) {
+      const ovOpts = {
+        fontPx: 15,
+        fontFamily: 'Consolas, "Courier New", monospace',
+        weight: '700',
+        textBaseline: 'middle',
+        preserveColor: true,
+        strokeWidth: 0
+      };
+      E.TextOverlay.drawLine(ctx, text, cx + 2, cy + 2, '#090514', false, pw - 18, 16, 'center', ovOpts);
+      E.TextOverlay.drawLine(ctx, text, cx + 1, cy + 1, '#7c4dff', false, pw - 18, 16, 'center', ovOpts);
+      E.TextOverlay.drawLine(ctx, text, cx, cy - 1, '#40c4ff', false, pw - 18, 16, 'center', ovOpts);
+      E.TextOverlay.drawLine(ctx, text, cx, cy, (f12 & 1) ? '#e0f7fa' : '#ffffff', '#090514', pw - 18, 16, 'center', { ...ovOpts, strokeWidth: 0.7 });
+    } else {
+      ctx.save();
+      ctx.font = 'bold 15px Consolas, "Courier New", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
 
-    ctx.fillStyle = '#090514';
-    ctx.fillText(text, cx + 2, cy + 2);
-    ctx.fillStyle = '#7c4dff';
-    ctx.fillText(text, cx + 1, cy + 1);
-    ctx.fillStyle = '#40c4ff';
-    ctx.fillText(text, cx, cy - 1);
-    ctx.fillStyle = (f12 & 1) ? '#e0f7fa' : '#ffffff';
-    ctx.fillText(text, cx, cy);
-    ctx.restore();
+      ctx.fillStyle = '#090514';
+      ctx.fillText(text, cx + 2, cy + 2);
+      ctx.fillStyle = '#7c4dff';
+      ctx.fillText(text, cx + 1, cy + 1);
+      ctx.fillStyle = '#40c4ff';
+      ctx.fillText(text, cx, cy - 1);
+      ctx.fillStyle = (f12 & 1) ? '#e0f7fa' : '#ffffff';
+      ctx.fillText(text, cx, cy);
+      ctx.restore();
+    }
 
     if (E?.drawStar) {
       for (let i = 0; i < 6; i++) {
-        const sx = px + 28 + i * 40 + ((f12 * 3 + i * 7) % 9);
-        const sy = py + 11 + ((i * 11 + f12) % 20);
+        const sx = px + 24 + i * 33 + ((f12 * 3 + i * 7) % 7);
+        const sy = py + 10 + ((i * 11 + f12) % 18);
         if (((f12 + i) % 3) === 0) {
           E.drawStar(ctx, sx, sy, 2, '#ffffff', cornerCols[i % 4]);
         }
@@ -741,10 +713,10 @@
 
     // Estado progressivo das 4 fadas e dos 4 encaixes da Porta Ancestral
     WLD.finalGuardians = {
-      araci:  { x: -20, y: 142, targetX: 54,  state: 'idle', visible: false, flipX: false },
-      irece:  { x: -20, y: 142, targetX: 78,  state: 'idle', visible: false, flipX: false },
+      araci:  { x: -20, y: 142, targetX: 50,  state: 'idle', visible: false, flipX: false },
+      irece:  { x: -20, y: 142, targetX: 76,  state: 'idle', visible: false, flipX: false },
       jurema: { x: -20, y: 142, targetX: 102, state: 'idle', visible: false, flipX: false },
-      ordem:  { x: -20, y: 142, targetX: 126, state: 'idle', visible: false, flipX: false }
+      ordem:  { x: -20, y: 142, targetX: 130, state: 'idle', visible: false, flipX: false }
     };
     WLD.finalDoorSockets = { forest: false, river: false, caatinga: false, fairy: false };
     WLD.finalPuzzleIndex = 1; // 1: Floresta, 2: Rio, 3: Caatinga, 4: Ordem/Musical
@@ -822,7 +794,7 @@
       this.lastDanceState = null;
       this._gateConfusionTriggered = false;
 
-      this.protag.x = 30;
+      this.protag.x = 24;
       this.protag.y = 142;
       this.protag.state = 'idle';
 
@@ -842,7 +814,7 @@
         {
           speaker: 'Protagonista',
           portrait: 'portrait_protagonist',
-          text: 'Cheguei ao Portão das Gemas... O ar aqui é misterioso e os quatro relicários aguardam o poder de cada mundo!'
+          text: 'Uau... o Portão das Gemas! Dá até um friozinho na barriga ver os quatro espaços esperando a gente...'
         }
       ], () => {
         this.startSanctuaryPuzzleStep(1, false);
@@ -861,6 +833,12 @@
       this.pieces = [];
       this.pureEquation = null;
       this.shadowEquation = null;
+      for (const guardianActor of Object.values(this.finalGuardians)) {
+        if (guardianActor.visible) {
+          guardianActor.state = 'idle';
+          guardianActor.flipX = false;
+        }
+      }
 
       const cfg = {
         1: {
@@ -869,7 +847,7 @@
           hud: 'Fase Final - 1/4: Floresta (Araci)',
           speaker: 'Araci (Floresta)',
           portrait: 'portrait_araci',
-          text: 'Eu sou Araci! Para forjar a Esmeralda do Portão, corte 8 cristais puros no ar evitando os cristais sombrios!'
+          text: 'Cheguei trazendo o vento da mata! Mostra aquela agilidade toda e acorda a Esmeralda do Portão!'
         },
         2: {
           guardian: 'irece',
@@ -877,7 +855,7 @@
           hud: 'Fase Final - 2/4: Rio (Irecê)',
           speaker: 'Irecê (Rio)',
           portrait: 'portrait_irece',
-          text: 'Eu sou Irecê! As águas trazem uma nova melodia secreta! Repita as notas dos sinos de cristal na nova ordem!'
+          text: 'Agora é a vez das águas cantarem! Escuta com carinho — inventei uma melodia novinha pra você!'
         },
         3: {
           guardian: 'jurema',
@@ -886,7 +864,7 @@
           speaker: 'Jurema (Caatinga)',
           speakerPortrait: 'portrait_jurema',
           portrait: 'portrait_jurema',
-          text: 'Eu sou Jurema! As areias mudaram de resposta: acompanhe as cúpulas e encontre onde a Opala de Fogo se esconde!'
+          text: 'Prepara o olho, viu? As areias do sertão trocaram o truque — quero ver achar minha Opala agora!'
         },
         4: {
           guardian: 'ordem',
@@ -894,7 +872,7 @@
           hud: 'Fase Final - 4/4: Ordem Musical',
           speaker: 'Rainha da Ordem',
           portrait: 'portrait_ordem',
-          text: 'Agora estamos todas reunidas! Para o último desafio — o Puzzle Musical da Ordem —, cante no ritmo e toque os Cristais na Ordem!'
+          text: 'Chegou a minha vez, pequeno gafanhoto! Vamos fechar com chave de ouro no ritmo da Sinfonia!'
         }
       }[this.finalPuzzleIndex];
 
@@ -916,18 +894,30 @@
           this.forestNinja.floatingBanner = {
             text: 'DESAFIO DE ARACI: CORTE 8 CRISTAIS PUROS!',
             color: '#2ecc71',
-            x: 160,
+            x: 123,
             y: 65,
             timer: 2.2
           };
           FinalPhaseMusic.setMode('floresta_variant');
         } else if (this.finalPuzzleIndex === 2) {
           // PUZZLE ESPECIAL 2: RIO (Sinfonia das Águas com RESPOSTA DIFERENTE da fase 15 normal!)
-          // Na fase 15 normal a sequência é [0, 2, 1, 3, 4]; aqui na Fase Final é [4, 1, 3, 0, 2] em 3 rodadas dinâmicas!
+          // Na fase 15 normal a sequência é [0, 2, 1, 3, 4]; aqui na Fase Final é [4, 1, 3, 0, 2] em rodadas dinâmicas!
           this.startRiverMelodyGame();
           E.TutorialModal.close();
           this.riverMelody.masterSequence = [4, 1, 3, 0];
-          this.riverMelody.finalMaxRound = 2; // 3 rodadas (2, 3 e 4 notas na sequência inédita)
+          this.riverMelody.finalStartRound = 1;
+          this.riverMelody.finalMaxRound = 2; // 2 rodadas (2 e 3 notas na sequência inédita)
+          const sanctuaryRiverXs = [88, 121, 154, 187, 220];
+          for (let i = 0; i < this.riverMelody.crystals.length; i++) {
+            const rc = this.riverMelody.crystals[i];
+            rc.x = sanctuaryRiverXs[i] ?? rc.x;
+            rc.y = 86;
+            rc.baseY = 86;
+            if (this.pieces[i]) {
+              this.pieces[i].x = rc.x;
+              this.pieces[i].y = 86;
+            }
+          }
           this.setupRiverMelodyRound(1);
           this.phase = 'river_melody_game';
           FinalPhaseMusic.setMode('rio_variant');
@@ -1003,12 +993,12 @@
           ]
         },
         nextExpected: 1,
-        // Ordem e posições diferentes de qualquer fase anterior!
+        // Ordem e posições livres da barra superior, das guardiãs e da Porta Ancestral!
         nodes: [
-          { order: 1, x: 194, y: 64, col: '#69f0ae', freq: 523.25, label: '1 · Floresta', lit: false },
-          { order: 2, x: 92,  y: 88, col: '#40c4ff', freq: 659.25, label: '2 · Rio',      lit: false },
-          { order: 3, x: 214, y: 98, col: '#ff9100', freq: 783.99, label: '3 · Caatinga', lit: false },
-          { order: 4, x: 138, y: 58, col: '#e040fb', freq: 1046.5, label: '4 · Ordem',    lit: false }
+          { order: 1, x: 180, y: 62, col: '#69f0ae', freq: 523.25, label: '1 · Floresta', lit: false },
+          { order: 2, x: 72,  y: 74, col: '#40c4ff', freq: 659.25, label: '2 · Rio',      lit: false },
+          { order: 3, x: 204, y: 98, col: '#ff9100', freq: 783.99, label: '3 · Caatinga', lit: false },
+          { order: 4, x: 126, y: 58, col: '#e040fb', freq: 1046.5, label: '4 · Ordem',    lit: false }
         ]
       };
       if (global.CaveRhythmKaraoke) {
@@ -1194,6 +1184,13 @@
                   this.startSanctuaryPuzzleStep(doneStep + 1, false);
                 } else {
                   // Todas as 4 gemas foram entregues: o Portão se abre!
+                  for (const guardianActor of Object.values(this.finalGuardians)) {
+                    if (guardianActor.visible) {
+                      guardianActor.state = 'idle';
+                      guardianActor.flipX = false;
+                    }
+                  }
+                  E.DialogueBox.sockets = { fairy: true, forest: true, river: true, caatinga: true };
                   this.phase = 'final_gate_opening';
                   this.phaseTime = 0;
                   this.gateOpenRatio = 0;
@@ -1213,12 +1210,13 @@
                 {
                   speaker: 'Protagonista',
                   portrait: 'portrait_protagonist',
-                  text: 'Hã?! O portão se abriu... mas lá dentro é o início da caverna! Eu voltei para o começo de tudo?!'
+                  text: 'Hã?! Espera aí... o portão abriu pro COMEÇO da caverna?! Eu dei a volta toda pra cair aqui de novo?!',
+                  shake: true
                 },
                 {
                   speaker: 'Rainha da Ordem',
                   portrait: 'portrait_ordem',
-                  text: '♪ Lá-lá-lá! ♪ Não fique confuso! Ouça minha canção e venha: siga-me para ver tudo o que você transformou!'
+                  text: '♪ Lá-lá-lá! ♪ Relaxa, pequeno gafanhoto! Escuta a música e vem comigo — você precisa ver o que mudou lá fora!'
                 }
               ], () => {
                 // Entra na "LAST DANCE": personagens correndo e fundo mostrando cada cenário resolvido e bonito!
@@ -1257,6 +1255,11 @@
                   // Chegam ao fim na área do portão novamente: "Obrigado por jogar" em cristais + pulando de alegria!
                   this.phase = 'final_wall_thanks';
                   this.phaseTime = 0;
+                  this.gateOpenRatio = 1;
+                  this.finalDoorSockets = { forest: true, river: true, caatinga: true, fairy: true };
+                  this.waveActive = true;
+                  this.waveRadius = 400;
+                  this.protag.x = 126;
                   this.protag.state = 'celebrate';
                   for (const g of Object.values(this.finalGuardians)) {
                     g.state = 'celebrate';
@@ -1371,83 +1374,21 @@
       return res;
     };
 
-    // Hook no render() de TruePixelWorlds para desenhar as Fadas progressivas, Voo da Gema, Início da Caverna, Last Dance e Parede Final
-    const origRender = WLD.render.bind(WLD);
-    WLD.render = function () {
-      if (this.worldKey !== 'sanctuary') {
-        return origRender();
-      }
-
-      const ctx = this.ctx;
-      const tq = Math.floor(this.t * 24) / 24;
-      ctx.imageSmoothingEnabled = false;
-
-      if (this.phase === 'map_iris_in' || this.phase === 'map_active') {
-        return origRender();
-      }
-
-      // 1. CENA DA "LAST DANCE" (Correndo juntos pelos 4 cenários agora resolvidos e bonitos!)
-      if (this.phase === 'final_last_dance' && this.lastDanceState) {
-        ctx.setTransform(2, 0, 0, 2, 0, 0);
-        const ld = this.lastDanceState;
-        drawLastDanceWorldScenery(ctx, ld.worldIdx, ld.scrollX, tq);
-
-        const worldTitles = [
-          '✦ Caverna Cristalina Restaurada ✦',
-          '✦ Floresta Viva e Florida ✦',
-          '✦ Rio das Águas Claras Cristalina ✦',
-          '✦ Caatinga Florida e Renovada ✦'
-        ];
-        E.drawParchmentBox(ctx, 52, 8, 216, 18);
-        E.drawPixelTextCentered(ctx, worldTitles[ld.worldIdx], 160, 13, '#ffea31', '#000000', 204, 9);
-
-        const bounce = Math.sin(tq * 14) * 2;
-        E.ActorAnimator.drawActor(ctx, 'ordem', 'walk', 238, 142 + bounce, tq, { flipX: false });
-        E.ActorAnimator.drawMusicNotesLoop(ctx, 238, 110, tq, { count: 4, dirX: -18, dirY: -14, period: 1.3 });
-        E.ActorAnimator.drawActor(ctx, 'jurema', 'walk', 194, 142 - bounce, tq, { flipX: false });
-        E.ActorAnimator.drawActor(ctx, 'irece', 'walk', 150, 142 + bounce, tq, { flipX: false });
-        E.ActorAnimator.drawActor(ctx, 'araci', 'walk', 106, 142 - bounce, tq, { flipX: false });
-        E.ActorAnimator.drawActor(ctx, 'protagonist', 'walk', 62, 142 + bounce, tq, { flipX: false });
-
-        E.IrisTransition.render(ctx);
-        return;
-      }
-
-      // 2. CENA FINAL DE VOLTA AO PORTÃO COM "OBRIGADO POR JOGAR" ENCRAVADO EM CRISTAIS
+    // Camadas dedicadas chamadas dentro de TruePixelWorlds.render() no z-order correto
+    WLD.renderSanctuaryWorldLayer = function (ctx, tq) {
       if (this.phase === 'final_wall_thanks') {
-        this.waveActive = true;
-        this.waveRadius = 400;
-        origRender();
-
-        ctx.setTransform(2, 0, 0, 2, 0, 0);
-        drawCustomGateSockets(ctx, { forest: true, river: true, caatinga: true, fairy: true }, tq);
-        drawCrystalWallInscription(ctx, 'Obrigado por jogar', 154, 54, tq);
-
-        const jump = Math.abs(Math.sin(tq * 9)) * 7;
-        E.ActorAnimator.drawActor(ctx, 'araci', 'celebrate', 54, 142 - jump, tq, { flipX: false });
-        E.ActorAnimator.drawActor(ctx, 'irece', 'celebrate', 96, 142 - (7 - jump), tq, { flipX: false });
-        E.ActorAnimator.drawActor(ctx, 'protagonist', 'celebrate', 144, 142 - jump * 1.1, tq, { flipX: false });
-        E.ActorAnimator.drawActor(ctx, 'jurema', 'celebrate', 190, 142 - (7 - jump), tq, { flipX: true });
-        E.ActorAnimator.drawActor(ctx, 'ordem', 'celebrate', 226, 142 - jump, tq, { flipX: true });
-
-        E.IrisTransition.render(ctx);
+        const reduced = Boolean(E.GameHUD.reducedMotion);
+        const jump = reduced ? 0 : Math.abs(Math.sin(tq * 9)) * 7;
+        const jumpAlt = reduced ? 0 : 7 - jump;
+        E.ActorAnimator.drawActor(ctx, 'araci', 'celebrate', 34, R(142 - jump), tq, { flipX: false });
+        E.ActorAnimator.drawActor(ctx, 'irece', 'celebrate', 80, R(142 - jumpAlt), tq, { flipX: false });
+        E.ActorAnimator.drawActor(ctx, 'protagonist', 'celebrate', 126, R(142 - jump * 1.1), tq, { flipX: false });
+        E.ActorAnimator.drawActor(ctx, 'jurema', 'celebrate', 172, R(142 - jumpAlt), tq, { flipX: true });
+        E.ActorAnimator.drawActor(ctx, 'ordem', 'celebrate', 218, R(142 - jump), tq, { flipX: true });
         return;
       }
 
-      // 3. RENDERIZAÇÃO PADRÃO DO PORTÃO ANCESTRAL DURANTE OS 4 PUZZLES ESPECIAIS
-      origRender();
-
-      ctx.setTransform(2, 0, 0, 2, 0, 0);
-
-      // Mostra os 4 encaixes na porta conforme as gemas são entregues
-      drawCustomGateSockets(ctx, this.finalDoorSockets, tq);
-
-      // Quando o portão se abre, mostra lá dentro o INÍCIO DA CAVERNA (deixando o protagonista confuso!)
-      if (this.phase === 'final_gate_opening' || this.gateOpenRatio > 0.02) {
-        drawBeginningCaveInsideGate(ctx, this.gateOpenRatio, tq);
-      }
-
-      // Desenha APENAS as fadas que já se reuniram conforme os puzzles iniciaram!
+      // Desenha APENAS as fadas que já se reuniram conforme os puzzles iniciaram
       for (const [key, g] of Object.entries(this.finalGuardians)) {
         if (g.visible) {
           E.ActorAnimator.drawActor(ctx, key, g.state, R(g.x), R(g.y), tq, { flipX: g.flipX });
@@ -1461,17 +1402,19 @@
           }
         }
       }
+    };
 
-      // Renderiza o Puzzle Especial 4 (Musical / Rainha da Ordem)
+    WLD.renderSanctuaryPuzzleLayer = function (ctx, tq) {
+      // Puzzle Especial 4 (Musical / Rainha da Ordem)
       if (this.phase === 'final_musical_order_puzzle' && this.finalMusicalOrder) {
         const mo = this.finalMusicalOrder;
         if (mo.subPhase === 'rhythm_verse') {
-          E.drawParchmentBox(ctx, 32, 24, 256, 18);
-          E.drawPixelTextCentered(ctx, 'Cante com a Ordem! Toque ou pressione ESPAÇO no ritmo!', 160, 29, '#ffea31', '#000000', 244, 8);
+          E.drawParchmentBox(ctx, 6, 23, 232, 16);
+          E.drawPixelTextCentered(ctx, 'Cante com a Ordem! Toque ou pressione ESPAÇO no ritmo!', 122, 27, '#ffea31', '#000000', 220, 8);
           global.CaveRhythmKaraoke?.render(ctx, mo.verseTime, true, { x: 10, y: 153, w: 300, h: 25 });
         } else if (mo.subPhase === 'harmonic_nodes') {
-          E.drawParchmentBox(ctx, 28, 23, 264, 16);
-          E.drawPixelTextCentered(ctx, 'Toque os Cristais Musicais na Ordem: 1 → 2 → 3 → 4', 160, 27, '#ffea31', '#000000', 252, 8);
+          E.drawParchmentBox(ctx, 6, 23, 232, 16);
+          E.drawPixelTextCentered(ctx, 'Toque os Cristais Musicais na Ordem: 1 → 2 → 3 → 4', 122, 27, '#ffea31', '#000000', 220, 8);
 
           for (const node of mo.nodes) {
             const pulse = node.order === mo.nextExpected ? 2 : 0;
@@ -1494,22 +1437,66 @@
         const gf = this.gemFlight;
         const p = easeInOut(gf.progress);
         const gx = R(gf.startX + (gf.endX - gf.startX) * p);
-        const gy = R(gf.startY + (gf.endY - gf.startY) * p - Math.sin(p * Math.PI) * 32);
+        const gy = Math.max(29, R(gf.startY + (gf.endY - gf.startY) * p - Math.sin(p * Math.PI) * 22));
 
-        for (let dy = -6; dy <= 6; dy++) {
-          const hw = 6 - Math.abs(dy);
+        for (let dy = -5; dy <= 5; dy++) {
+          const hw = 5 - Math.abs(dy);
           ctx.fillStyle = gf.col;
           ctx.fillRect(gx - hw, gy + dy, hw * 2 + 1, 1);
         }
         ctx.fillStyle = '#ffffff';
-        ctx.fillRect(gx - 2, gy - 2, 4, 4);
-        if (E.drawStar) E.drawStar(ctx, gx, gy - 8, 3, '#ffffff', gf.col);
+        ctx.fillRect(gx - 2, gy - 2, 3, 3);
+        if (E.drawStar) E.drawStar(ctx, gx, gy - 7, 2, '#ffffff', gf.col);
       }
 
-      E.DialogueBox.render(ctx, tq);
-      E.TutorialModal.render(ctx, tq);
-      E.GameHUD.renderModals(ctx);
-      E.IrisTransition.render(ctx);
+      // Inscrição de agradecimento na parede à esquerda da Porta Ancestral
+      if (this.phase === 'final_wall_thanks') {
+        drawCrystalWallInscription(ctx, 'Obrigado por jogar', 124, 54, tq);
+      }
+    };
+
+    // Hook no render() apenas para a cena fullscreen de "Last Dance"
+    const origRender = WLD.render.bind(WLD);
+    WLD.render = function () {
+      if (this.worldKey === 'sanctuary' && this.phase === 'final_last_dance' && this.lastDanceState) {
+        const ctx = this.ctx;
+        const tq = Math.floor(this.t * 24) / 24;
+        ctx.imageSmoothingEnabled = false;
+
+        E.TextOverlay?.beginFrame?.(this.canvas);
+        ctx.setTransform(2, 0, 0, 2, 0, 0);
+        const ld = this.lastDanceState;
+        drawLastDanceWorldScenery(ctx, ld.worldIdx, ld.scrollX, tq);
+
+        const worldTitles = [
+          '✦ Caverna Cristalina Restaurada ✦',
+          '✦ Floresta Viva e Florida ✦',
+          '✦ Rio das Águas Claras e Cristalinas ✦',
+          '✦ Caatinga Florida e Renovada ✦'
+        ];
+        E.drawParchmentBox(ctx, 42, 8, 236, 18);
+        E.drawPixelTextCentered(ctx, worldTitles[ld.worldIdx], 160, 13, '#ffea31', '#000000', 224, 9);
+
+        const bounce = Math.sin(tq * 14) * 2;
+        E.ActorAnimator.drawActor(ctx, 'ordem', 'walk', 238, 142 + bounce, tq, { flipX: false });
+        E.ActorAnimator.drawMusicNotesLoop(ctx, 238, 110, tq, { count: 4, dirX: -18, dirY: -14, period: 1.3 });
+        E.ActorAnimator.drawActor(ctx, 'jurema', 'walk', 194, 142 - bounce, tq, { flipX: false });
+        E.ActorAnimator.drawActor(ctx, 'irece', 'walk', 150, 142 + bounce, tq, { flipX: false });
+        E.ActorAnimator.drawActor(ctx, 'araci', 'walk', 106, 142 - bounce, tq, { flipX: false });
+        E.ActorAnimator.drawActor(ctx, 'protagonist', 'walk', 62, 142 + bounce, tq, { flipX: false });
+
+        E.IrisTransition.render(ctx);
+        return;
+      }
+
+      if (this.worldKey === 'sanctuary' && this.phase === 'final_wall_thanks') {
+        this.gateOpenRatio = 1;
+        this.finalDoorSockets = { forest: true, river: true, caatinga: true, fairy: true };
+        this.waveActive = true;
+        this.waveRadius = 400;
+      }
+
+      return origRender();
     };
   }
 

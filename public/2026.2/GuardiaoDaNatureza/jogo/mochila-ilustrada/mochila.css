@@ -1,0 +1,519 @@
+/* Os recortes vêm dos dois kits, sem letras incorporadas nem seleção fixa. */
+#mochila-jornada.kit-pack {
+  width: min(1180px, 96vw);
+  max-width: 96vw;
+  height: min(740px, 94dvh);
+  max-height: 94dvh;
+  padding: 14px;
+  border: 0;
+  border-radius: 24px;
+  background: linear-gradient(110deg, #ffefcc, #f7e0b3);
+  color: #173e25;
+  box-shadow: 0 16px 55px #082d2b99;
+  overflow: hidden;
+}
+#mochila-jornada.kit-pack[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+#mochila-jornada.kit-pack::backdrop {
+  background: #092c2cc4;
+  backdrop-filter: blur(5px);
+}
+.kit-pack .kit-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.kit-round-icon {
+  clip-path: circle(50%);
+  border-radius: 50%;
+}
+.kit-pack .kit-frame {
+  --kit-slice: 20px;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: var(--kit-slice-y, var(--kit-slice)) minmax(0, 1fr) var(
+      --kit-slice-y,
+      var(--kit-slice)
+    );
+  grid-template-columns:
+    var(--kit-slice-x, var(--kit-slice)) minmax(0, 1fr)
+    var(--kit-slice-x, var(--kit-slice));
+  pointer-events: none;
+}
+.kit-pack .kit-frame > span {
+  min-width: 0;
+  min-height: 0;
+}
+.kit-pack .kit-window-frame {
+  --kit-slice: 15px;
+  z-index: 4;
+}
+#mochila-jornada .kit-pack-heading {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  flex: none;
+  height: clamp(70px, 12.5vh, 100px);
+  gap: 15px;
+  padding: 3px 18px;
+  border: 0;
+  border-radius: 12px;
+  background: #1e4c23;
+}
+#mochila-jornada .kit-heading-art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+}
+#mochila-jornada .kit-pack-emblem {
+  width: 78px;
+  height: 78px;
+  flex: none;
+}
+.kit-heading-copy {
+  min-width: 0;
+}
+#mochila-jornada.kit-pack .kit-heading-copy .eyebrow {
+  margin: 0 0 5px;
+  color: #f6e8b7;
+  font:
+    700 clamp(10px, 1.1vw, 15px) / 1.2 system-ui,
+    sans-serif;
+  letter-spacing: 0.12em;
+}
+#mochila-jornada.kit-pack #pack-title {
+  margin: 0;
+  color: #fff0bd;
+  text-shadow: 0 2px 1px #183a18;
+  font:
+    400 clamp(29px, 3.4vw, 43px) / 1.08 Lilita,
+    Renascenca,
+    system-ui;
+}
+#mochila-jornada.kit-pack .kit-close {
+  position: static;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 60px;
+  height: 60px;
+  flex: none;
+  padding: 0;
+  margin: 0 0 0 auto;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+#mochila-jornada .kit-close .kit-art {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+#mochila-jornada .kit-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  flex: none;
+  gap: 9px;
+  padding: 0 15px;
+  margin: 0;
+}
+#mochila-jornada .kit-tabs button {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 44px;
+  height: clamp(44px, 7.2vh, 62px);
+  padding: 5px 26px;
+  border: 0;
+  border-radius: 16px;
+  background: none;
+  box-shadow: none;
+  color: #194529;
+  font:
+    400 clamp(18px, 2.25vw, 28px) / 1.1 Lilita,
+    Renascenca,
+    system-ui;
+  transition: filter 160ms ease;
+}
+.kit-tabs .kit-frame {
+  --kit-slice-x: 36px;
+  --kit-slice-y: 15px;
+  z-index: -1;
+  border-radius: 15px;
+  overflow: hidden;
+}
+.kit-tabs .kit-tab-on,
+.kit-tabs [aria-selected="true"] .kit-tab-off {
+  display: none;
+}
+.kit-tabs [aria-selected="true"] .kit-tab-on {
+  display: grid;
+}
+#mochila-jornada .kit-tabs [aria-selected="true"] {
+  color: #fff5d4;
+  text-shadow: 0 1px #163d21;
+}
+.kit-pack button:focus-visible {
+  outline: 3px solid #315e3c;
+  outline-offset: 2px;
+}
+.kit-pack .kit-close:focus-visible {
+  outline-color: #fff0bc;
+}
+.kit-pack button:hover {
+  filter: brightness(1.08);
+}
+#mochila-jornada.kit-pack #pack-content {
+  position: relative;
+  min-height: 0;
+  padding: 0 15px 12px;
+  flex: 1;
+  overflow: auto;
+}
+.kit-pack .kit-crystals {
+  display: grid;
+  grid-template-columns: minmax(0, 0.39fr) minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
+  gap: 18px;
+}
+.kit-pack .kit-necklace {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+}
+.kit-pack .kit-necklace-panel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.kit-pack .kit-necklace-art {
+  position: absolute;
+  top: 2%;
+  left: 7%;
+  width: 86%;
+  height: 82%;
+  overflow: hidden;
+}
+.kit-pack .kit-necklace figcaption {
+  position: absolute;
+  top: 86%;
+  left: 14%;
+  width: 75%;
+  height: 11%;
+  display: grid;
+  place-items: center;
+  color: #fff1be;
+  font:
+    400 clamp(15px, 1.9vw, 25px) / 1.1 Lilita,
+    Renascenca,
+    system-ui;
+  text-align: center;
+  white-space: nowrap;
+}
+.kit-pack .kit-crystal-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  min-height: 0;
+}
+.kit-pack .kit-card {
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  padding: 16px;
+  border: 0;
+  background: none;
+  text-align: center;
+}
+.kit-pack .kit-card-frame {
+  z-index: -1;
+  border-radius: 15px;
+  overflow: hidden;
+}
+.kit-pack .kit-check {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: clamp(21px, 2.7vw, 34px);
+  height: clamp(21px, 2.7vw, 34px);
+  z-index: 2;
+}
+.kit-pack .kit-crystal {
+  grid-column: span 2;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  gap: 4px;
+}
+.kit-pack .kit-crystal:nth-child(4) {
+  grid-column: 2 / span 2;
+}
+.kit-pack .kit-crystal:nth-child(5) {
+  grid-column: 4 / span 2;
+}
+.kit-pack .kit-gem-picture,
+.kit-pack .kit-outfit-picture {
+  min-height: 0;
+  min-width: 0;
+}
+#mochila-jornada.kit-pack .kit-card h3 {
+  margin: 0;
+  padding: 0;
+  color: #173e25;
+  font:
+    400 clamp(16px, 1.8vw, 23px) / 1.1 Lilita,
+    Renascenca,
+    system-ui;
+  text-wrap: balance;
+}
+#mochila-jornada.kit-pack .kit-card p {
+  margin: 0;
+  color: #423019;
+  font:
+    500 clamp(12px, 1.35vw, 17px) / 1.3 system-ui,
+    sans-serif;
+  text-wrap: balance;
+}
+.kit-pack .kit-uniforms {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  gap: 10px;
+}
+#mochila-jornada.kit-pack .collection-hint {
+  flex: none;
+  padding: 0;
+  margin: 0;
+  color: #423019;
+  font-size: 15px;
+}
+.kit-pack .kit-outfit-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  min-height: 0;
+  flex: 1;
+  gap: 10px;
+}
+.kit-pack .kit-uniform {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto auto 28px;
+  gap: 4px;
+  border-radius: 17px;
+}
+#mochila-jornada.kit-pack .kit-uniform h3 {
+  display: grid;
+  place-items: center;
+  min-height: 2.2em;
+}
+.kit-pack .kit-uniform.is-worn {
+  box-shadow:
+    inset 0 0 0 3px #4c7739,
+    0 0 0 2px #d3a74b;
+}
+.kit-pack .kit-uniform.is-worn::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border: 2px solid #426d31;
+  border-radius: 15px;
+  box-shadow: 0 0 0 1px #d3a74b;
+  pointer-events: none;
+}
+.kit-pack .kit-worn-place {
+  min-width: 0;
+  display: grid;
+  align-items: center;
+}
+#mochila-jornada.kit-pack .worn-label {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  padding: 0 3px;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 18px;
+  background: none;
+  color: #fff1bd;
+  font:
+    400 16px / 1 Lilita,
+    Renascenca,
+    system-ui;
+  white-space: nowrap;
+}
+.kit-pack .kit-worn-art {
+  --kit-slice-x: 12px;
+  --kit-slice-y: 9px;
+  z-index: -1;
+}
+.kit-pack .is-undiscovered .kit-outfit,
+.kit-pack .is-undiscovered .kit-gem-picture {
+  opacity: 0.38;
+  filter: grayscale(1) brightness(0.7);
+}
+#mochila-jornada.kit-pack .brisa-item {
+  color: #173e25;
+  background: #fff0cc;
+}
+#mochila-jornada.kit-pack .brisa-item h3 {
+  color: #173e25;
+}
+#mochila-jornada.kit-pack .brisa-item p {
+  color: #423019;
+}
+@media (max-height: 540px) and (orientation: landscape) {
+  #mochila-jornada.kit-pack {
+    padding: 9px;
+    border-radius: 17px;
+  }
+  #mochila-jornada.kit-pack[open] {
+    gap: 6px;
+  }
+  .kit-pack .kit-window-frame {
+    --kit-slice: 10px;
+  }
+  #mochila-jornada .kit-pack-heading {
+    height: 55px;
+    gap: 9px;
+    padding: 0 13px;
+  }
+  #mochila-jornada .kit-pack-emblem {
+    width: 48px;
+    height: 48px;
+  }
+  #mochila-jornada.kit-pack .kit-heading-copy .eyebrow {
+    font-size: 8px;
+    margin-bottom: 3px;
+  }
+  #mochila-jornada.kit-pack #pack-title {
+    font-size: 25px;
+  }
+  #mochila-jornada.kit-pack .kit-close {
+    width: 44px;
+    height: 44px;
+  }
+  #mochila-jornada .kit-tabs {
+    gap: 6px;
+    padding: 0 10px;
+  }
+  #mochila-jornada .kit-tabs button {
+    height: 38px;
+    min-height: 38px;
+    font-size: 19px;
+    padding: 2px 14px;
+  }
+  .kit-tabs .kit-frame {
+    --kit-slice-x: 24px;
+    --kit-slice-y: 10px;
+  }
+  #mochila-jornada.kit-pack #pack-content {
+    padding: 0 10px 8px;
+  }
+  .kit-pack .kit-crystals {
+    gap: 10px;
+  }
+  .kit-pack .kit-crystal-grid {
+    gap: 7px;
+  }
+  .kit-pack .kit-card {
+    padding: 9px;
+    gap: 2px;
+  }
+  .kit-pack .kit-card-frame {
+    --kit-slice: 13px;
+    border-radius: 10px;
+  }
+  .kit-pack .kit-check {
+    width: 21px;
+    height: 21px;
+    top: 6px;
+    right: 6px;
+  }
+  #mochila-jornada.kit-pack .kit-card h3 {
+    font-size: 14px;
+  }
+  #mochila-jornada.kit-pack .kit-card p {
+    font-size: 10px;
+    line-height: 1.2;
+  }
+  .kit-pack .kit-necklace figcaption {
+    font-size: 16px;
+  }
+  .kit-pack .kit-uniforms {
+    gap: 6px;
+  }
+  #mochila-jornada.kit-pack .collection-hint {
+    font-size: 11px;
+  }
+  .kit-pack .kit-outfit-grid {
+    gap: 7px;
+  }
+  .kit-pack .kit-uniform {
+    grid-template-rows: minmax(0, 1fr) auto auto 19px;
+  }
+  #mochila-jornada.kit-pack .kit-uniform h3 {
+    font-size: 13px;
+  }
+  #mochila-jornada.kit-pack .worn-label {
+    height: 19px;
+    font-size: 11px;
+  }
+  .kit-pack .kit-worn-art {
+    --kit-slice-x: 8px;
+    --kit-slice-y: 6px;
+  }
+}
+@media (max-height: 350px) and (orientation: landscape) {
+  #mochila-jornada .kit-pack-heading {
+    height: 49px;
+  }
+  #mochila-jornada.kit-pack #pack-title {
+    font-size: 22px;
+  }
+  #mochila-jornada .kit-tabs button {
+    height: 34px;
+    min-height: 34px;
+    font-size: 17px;
+  }
+  .kit-pack .kit-card {
+    padding: 7px;
+  }
+  #mochila-jornada.kit-pack .kit-card h3 {
+    font-size: 12px;
+  }
+  #mochila-jornada.kit-pack .kit-uniform h3 {
+    font-size: 11px;
+  }
+  #mochila-jornada.kit-pack .kit-card p {
+    font-size: 9px;
+  }
+  .kit-pack .kit-necklace figcaption {
+    font-size: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kit-pack button {
+    transition: none;
+  }
+}

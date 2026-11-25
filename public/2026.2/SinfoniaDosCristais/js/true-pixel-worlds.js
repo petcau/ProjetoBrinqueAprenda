@@ -13,7 +13,8 @@
   const {
     W, H, SPRITE_FPS, SIM_HZ, bay, mulberry, c32, fromMap, silhouette,
     P1, drawRing, drawStar, measurePixelText, drawPixelChar, drawPixelText, drawPixelTextCentered, drawParchmentBox,
-    ActorAnimator, IrisTransition, DialogueBox, TutorialModal, GameHUD, StandardTutorialCards
+    TextOverlay,
+    ActorAnimator, IrisTransition, DialogueBox, TutorialModal, GameHUD, VictoryChoreography, StandardTutorialCards
   } = E;
 
   const R = Math.round;
@@ -178,16 +179,34 @@
     rock: SHARD_ROWS.map((r) => fromMap(r, { W: '#6e635f', L: '#524846', M: '#3b3332', D: '#262020' }))
   };
 
+  const MAX_REGULAR_VALUE = 8;
+  const MAX_SPLITTABLE_EVEN_VALUE = 12;
+  function getMaxPieceValue(typeOrPiece, candidateVal = 8) {
+    const t = typeof typeOrPiece === 'string' ? typeOrPiece : typeOrPiece?.type;
+    if ((t === 'citrine' || t === 'aqua') && candidateVal % 2 === 0) {
+      return MAX_SPLITTABLE_EVEN_VALUE;
+    }
+    return MAX_REGULAR_VALUE;
+  }
+
   const EXTERNAL_ORB_ARCS = {
     1: [[0, -14.5]],
     2: [[-4.5, -14], [4.5, -14]],
     3: [[-7.5, -12.5], [0, -15], [7.5, -12.5]],
     4: [[-9.5, -11], [-3.5, -14.5], [3.5, -14.5], [9.5, -11]],
     5: [[-11, -9.5], [-6, -13.5], [0, -15.5], [6, -13.5], [11, -9.5]],
-    6: [[-12, -8.5], [-7.5, -12.5], [-2.5, -15], [2.5, -15], [7.5, -12.5], [12, -8.5]]
+    6: [[-12, -8.5], [-7.5, -12.5], [-2.5, -15], [2.5, -15], [7.5, -12.5], [12, -8.5]],
+    7: [
+      [-9.5, -10.5], [-3.5, -13.5], [3.5, -13.5], [9.5, -10.5],
+      [-6.5, -18], [0, -19.5], [6.5, -18]
+    ],
+    8: [
+      [-10, -10], [-3.5, -13.5], [3.5, -13.5], [10, -10],
+      [-10, -16], [-3.5, -19.5], [3.5, -19.5], [10, -16]
+    ]
   };
 
-  function drawExternalOrb(ctx, ox, oy, coreCol, midCol, rimCol, pulse = false) {
+  function drawExternalOrb(ctx, ox, oy, coreCol, midCol, rimCol, pulse = false, specCol = '#ffffff') {
     ox = RH(ox);
     oy = RH(oy);
     const r = pulse ? 3.0 : 2.5;
@@ -203,7 +222,7 @@
     ctx.fillRect(ox - r + 0.5, oy - r + 0.5, r * 2 - 1, r * 2 - 1);
     ctx.fillStyle = coreCol;
     ctx.fillRect(ox - 1, oy - 1, 2, 2);
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = specCol;
     ctx.fillRect(ox - 1, oy - 1.5, 1, 1);
   }
 
@@ -215,17 +234,19 @@
   function getOrbPalette(piece) {
     if (piece.shadow) {
       return {
-        core: piece.type === 'rose' ? '#ffe0eb' : (piece.type === 'opal' ? '#ffe8b8' : (piece.type === 'citrine' ? '#fff3ba' : (piece.type === 'aqua' ? '#c9faf7' : '#e0f7ff'))),
-        mid: piece.type === 'rose' ? '#d46a92' : (piece.type === 'opal' ? '#d97538' : (piece.type === 'citrine' ? '#e6c34c' : (piece.type === 'aqua' ? '#399ca1' : '#68b0c9'))),
-        rim: '#240b36',
-        link: '#7e22ce'
+        core: '#0d0317',
+        mid: piece.type === 'rose' ? '#4a153b' : (piece.type === 'opal' ? '#4f1e14' : (piece.type === 'citrine' ? '#4d370e' : (piece.type === 'aqua' ? '#123b45' : '#241442'))),
+        rim: piece.type === 'rose' ? '#be4b82' : (piece.type === 'opal' ? '#c26238' : (piece.type === 'citrine' ? '#b89028' : (piece.type === 'aqua' ? '#2c8596' : '#9333ea'))),
+        spec: piece.type === 'rose' ? '#f472b6' : (piece.type === 'opal' ? '#fb923c' : (piece.type === 'citrine' ? '#facc15' : (piece.type === 'aqua' ? '#67e8f9' : '#c084fc'))),
+        link: '#4c1d95',
+        isShadow: true
       };
     }
-    if (piece.type === 'opal') return { core: '#fffdf2', mid: '#f7b259', rim: '#4a1912', link: '#e68a49' };
-    if (piece.type === 'rose') return { core: '#fffdf2', mid: '#f29bb8', rim: '#4f1e35', link: '#d97a9c' };
-    if (piece.type === 'citrine') return { core: '#fffdf2', mid: '#f5cf64', rim: '#4d2e0a', link: '#d9a43b' };
-    if (piece.type === 'aqua') return { core: '#fffdf2', mid: '#7be3eb', rim: '#143f4a', link: '#4bb2bf' };
-    return { core: '#fffdf2', mid: '#7fd4e6', rim: '#1e3a4d', link: '#569bb0' };
+    if (piece.type === 'opal') return { core: '#fffdf2', mid: '#f7b259', rim: '#4a1912', spec: '#ffffff', link: '#e68a49' };
+    if (piece.type === 'rose') return { core: '#fffdf2', mid: '#f29bb8', rim: '#4f1e35', spec: '#ffffff', link: '#d97a9c' };
+    if (piece.type === 'citrine') return { core: '#fffdf2', mid: '#f5cf64', rim: '#4d2e0a', spec: '#ffffff', link: '#d9a43b' };
+    if (piece.type === 'aqua') return { core: '#fffdf2', mid: '#7be3eb', rim: '#143f4a', spec: '#ffffff', link: '#4bb2bf' };
+    return { core: '#fffdf2', mid: '#7fd4e6', rim: '#1e3a4d', spec: '#ffffff', link: '#569bb0' };
   }
 
   const SHAPE_COLOR_MAP = {
@@ -263,15 +284,46 @@
   }
 
   function drawOrbsForValue(ctx, x, y, rawVal, pal, recentlyChanged) {
-    const total = clamp(Math.round(rawVal || 1), 1, 12);
-    const row1 = Math.min(6, total);
-    const row2 = Math.max(0, total - 6);
+    const total = clamp(Math.round(rawVal || 1), 1, MAX_SPLITTABLE_EVEN_VALUE);
+    if (total <= 8) {
+      const arcs = EXTERNAL_ORB_ARCS[total] || EXTERNAL_ORB_ARCS[1];
+      const splitIdx = total >= 7 ? 4 : arcs.length;
+      const drawArcLinks = (list) => {
+        ctx.fillStyle = pal.link;
+        for (let i = 0; i < list.length; i++) {
+          const [ox, oy] = list[i];
+          ctx.fillRect(RH(x + ox * 0.65), RH(y + oy * 0.72), 1, 1);
+          if (pal.isShadow) {
+            ctx.fillRect(RH(x + ox * 0.45), RH(y + oy * 0.55), 1, 1);
+          }
+          if (i < list.length - 1) {
+            const [nx, ny] = list[i + 1];
+            ctx.fillRect(RH(x + (ox + nx) * 0.5), RH(y + (oy + ny) * 0.5), 1, 1);
+          }
+        }
+      };
+      drawArcLinks(arcs.slice(0, splitIdx));
+      if (splitIdx < arcs.length) {
+        drawArcLinks(arcs.slice(splitIdx));
+      }
+      for (let i = 0; i < arcs.length; i++) {
+        const [ox, oy] = arcs[i];
+        drawExternalOrb(ctx, x + ox, y + oy, pal.core, pal.mid, pal.rim, recentlyChanged, pal.spec || '#ffffff');
+      }
+      return;
+    }
+
+    const row1 = Math.min(6, Math.ceil(total / 2));
+    const row2 = Math.max(0, total - row1);
     const arcs1 = EXTERNAL_ORB_ARCS[row1] || EXTERNAL_ORB_ARCS[1];
 
     ctx.fillStyle = pal.link;
     for (let i = 0; i < arcs1.length; i++) {
       const [ox, oy] = arcs1[i];
       ctx.fillRect(RH(x + ox * 0.65), RH(y + oy * 0.72), 1, 1);
+      if (pal.isShadow) {
+        ctx.fillRect(RH(x + ox * 0.45), RH(y + oy * 0.55), 1, 1);
+      }
       if (i < arcs1.length - 1) {
         const [nx, ny] = arcs1[i + 1];
         ctx.fillRect(RH(x + (ox + nx) * 0.5), RH(y + (oy + ny) * 0.5), 1, 1);
@@ -279,13 +331,13 @@
     }
     for (let i = 0; i < arcs1.length; i++) {
       const [ox, oy] = arcs1[i];
-      drawExternalOrb(ctx, x + ox, y + oy, pal.core, pal.mid, pal.rim, recentlyChanged);
+      drawExternalOrb(ctx, x + ox, y + oy, pal.core, pal.mid, pal.rim, recentlyChanged, pal.spec || '#ffffff');
     }
     if (row2 > 0) {
       const arcs2 = EXTERNAL_ORB_ARCS[row2] || EXTERNAL_ORB_ARCS[1];
       for (let i = 0; i < arcs2.length; i++) {
         const [ox, oy] = arcs2[i];
-        drawExternalOrb(ctx, x + ox, y + oy - 6, pal.core, pal.mid, pal.rim, recentlyChanged);
+        drawExternalOrb(ctx, x + ox, y + oy - 5.5, pal.core, pal.mid, pal.rim, recentlyChanged, pal.spec || '#ffffff');
       }
     }
   }
@@ -1075,50 +1127,139 @@
     }
   }
 
-  function drawAncientSanctuaryGate(ctx, sealRatio, openRatio, t) {
+  const SANCTUARY_GATE = Object.freeze({
+    gx: 274,
+    gy: 26,
+    gw: 61,
+    gh: 116,
+    frameX: 244,
+    frameY: 26,
+    frameW: 61,
+    frameH: 116,
+    lintelX: 246,
+    lintelY: 28,
+    lintelW: 57,
+    lintelH: 11,
+    innerX: 248,
+    innerY: 39,
+    innerW: 53,
+    innerH: 103
+  });
+
+  const SANCTUARY_DOOR_SOCKETS = Object.freeze({
+    forest:   { x: 256, y: 33, col: '#69f0ae', hi: '#b9f6ca', dark: '#1b5e20', label: 'Esmeralda', threshold: 0.25 },
+    river:    { x: 268, y: 32, col: '#40c4ff', hi: '#b3e5fc', dark: '#01579b', label: 'Turmalina Paraíba', threshold: 0.50 },
+    caatinga: { x: 280, y: 32, col: '#ff9100', hi: '#ffe082', dark: '#bf360c', label: 'Opala de Fogo', threshold: 0.75 },
+    fairy:    { x: 292, y: 33, col: '#e040fb', hi: '#f3e5f5', dark: '#6a1b9a', label: 'Gema da Ordem', threshold: 0.99 }
+  });
+
+  function drawBeginningCaveInteriorClipped(ctx, t) {
     const f12 = Math.floor(t * SPRITE_FPS);
-    const gx = 274, gy = 26, gw = 58, gh = 116;
+    const { gx, innerX, innerY, innerW, innerH } = SANCTUARY_GATE;
 
-    // Se o portão está se abrindo, revela o Panorama Radiante dos 4 Biomas ao fundo!
-    if (openRatio > 0.02) {
-      drawNextBiomePanorama(ctx, 'kingdom', openRatio, t, gx - 30, gy + 6, gw + 48, gh - 6);
+    // Interior mostra exatamente o INÍCIO DA CAVERNA (feixe de luz vertical da queda inicial + musgo da Fase 1)
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(innerX, innerY, innerW, innerH);
+    ctx.fillStyle = 'rgba(158, 240, 255, 0.28)';
+    ctx.fillRect(gx - 12, innerY, 24, innerH - 8);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+    ctx.fillRect(gx - 5, innerY, 10, innerH - 10);
+
+    // Base de pedra e musgo da entrada inicial da caverna dentro do vão
+    ctx.fillStyle = '#2d2428';
+    ctx.fillRect(innerX, innerY + innerH - 8, innerW, 8);
+    ctx.fillStyle = '#3e7338';
+    ctx.fillRect(innerX, innerY + innerH - 12, innerW, 5);
+    ctx.fillStyle = '#7ec456';
+    ctx.fillRect(innerX, innerY + innerH - 12, innerW, 2);
+
+    // Poeira cristalina na fresta de luz inicial
+    ctx.fillStyle = '#9ef0ff';
+    for (let i = 0; i < 4; i++) {
+      ctx.fillRect(gx - 9 + i * 6, innerY + 12 + ((f12 + i * 5) % 48), 2, 2);
     }
+  }
 
-    const split = R(easeInOut(clamp(openRatio, 0, 1)) * 24);
-    // Moldura monumental do Portão das Gemas
+  function drawAncientSanctuaryGate(ctx, sealRatio, openRatio, t, customSockets = null, useCaveInterior = false) {
+    const f12 = Math.floor(t * SPRITE_FPS);
+    const {
+      gx, frameX, frameY, frameW, frameH,
+      lintelX, lintelY, lintelW, lintelH,
+      innerX, innerY, innerW, innerH
+    } = SANCTUARY_GATE;
+
+    // Moldura monumental simétrica do Portão das Gemas (x = 244..304, y = 26..142)
     ctx.fillStyle = '#1f1816';
-    ctx.fillRect(gx - 30, gy, 60, gh);
-    ctx.fillStyle = '#4a3a31';
-    ctx.fillRect(gx - 28, gy + 2, 56, 10);
+    ctx.fillRect(frameX, frameY, frameW, frameH);
+    // Pilares laterais esculpidos
+    ctx.fillStyle = '#3d302a';
+    ctx.fillRect(frameX + 1, innerY, 3, innerH);
+    ctx.fillRect(frameX + frameW - 4, innerY, 3, innerH);
 
-    // Folhas duplas de pedra ancestral que deslizam para os lados ao abrir
-    const leafW = Math.max(2, 25 - split);
-    for (const side of [-1, 1]) {
-      const lx = side < 0 ? (gx - 26) : (gx + 26 - leafW);
-      ctx.fillStyle = '#382d29';
-      ctx.fillRect(lx, gy + 12, leafW, gh - 12);
-      ctx.fillStyle = '#574740';
-      ctx.fillRect(lx + 1, gy + 13, Math.max(1, leafW - 2), gh - 14);
-      ctx.fillStyle = '#bfa36f';
-      ctx.fillRect(side < 0 ? lx + leafW - 2 : lx, gy + 12, 2, gh - 12);
+    // Se o portão está se abrindo, revela o interior exatamente recortado ao vão interno da porta
+    const clampedOpen = clamp(openRatio, 0, 1);
+    if (clampedOpen > 0.02) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(innerX, innerY, innerW, innerH);
+      ctx.clip();
+      if (useCaveInterior) {
+        drawBeginningCaveInteriorClipped(ctx, t);
+      } else {
+        drawNextBiomePanorama(ctx, 'kingdom', clampedOpen, t, innerX, innerY, innerW, innerH);
+      }
+      ctx.restore();
     }
 
-    // Os 4 Relicários Primordiais cravados no arco superior do Portão
-    const gems = [
-      [gx - 18, gy + 7, '#68b8c4', sealRatio >= 0.25],
-      [gx - 6,  gy + 6, '#7ec456', sealRatio >= 0.50],
-      [gx + 6,  gy + 6, '#57bbc9', sealRatio >= 0.75],
-      [gx + 18, gy + 7, '#e68a49', sealRatio >= 0.99]
-    ];
-    for (let i = 0; i < gems.length; i++) {
-      const [rx, ry, col, unlocked] = gems[i];
+    // Folhas duplas de pedra ancestral que deslizam para os lados ao abrir (sempre dentro do vão)
+    const split = R(easeInOut(clampedOpen) * 24);
+    const leafW = Math.max(2, 26 - split);
+    for (const side of [-1, 1]) {
+      const lx = side < 0 ? innerX : (innerX + innerW - leafW);
+      ctx.fillStyle = '#382d29';
+      ctx.fillRect(lx, innerY, leafW, innerH);
+      ctx.fillStyle = '#574740';
+      ctx.fillRect(lx + 1, innerY + 1, Math.max(1, leafW - 2), innerH - 2);
+      ctx.fillStyle = '#bfa36f';
+      ctx.fillRect(side < 0 ? lx + leafW - 2 : lx, innerY, 2, innerH);
+    }
+
+    // Verga superior do Portão (desenhada acima das folhas, abrigando os 4 relicários)
+    ctx.fillStyle = '#4a3a31';
+    ctx.fillRect(lintelX, lintelY, lintelW, lintelH);
+    ctx.fillStyle = '#635045';
+    ctx.fillRect(lintelX, lintelY, lintelW, 1);
+    ctx.fillStyle = '#2c221e';
+    ctx.fillRect(lintelX, lintelY + lintelH - 1, lintelW, 1);
+
+    // Único conjunto dos 4 Relicários Primordiais perfeitamente cravados na verga superior
+    const entries = Object.entries(SANCTUARY_DOOR_SOCKETS);
+    for (let i = 0; i < entries.length; i++) {
+      const [key, s] = entries[i];
+      const rx = s.x;
+      const ry = s.y;
+      const unlocked = customSockets ? Boolean(customSockets[key]) : (sealRatio >= s.threshold);
+
+      ctx.fillStyle = '#241a17';
+      ctx.fillRect(rx - 4, ry - 4, 9, 9);
       ctx.fillStyle = '#d9bf86';
       ctx.fillRect(rx - 3, ry - 3, 7, 7);
-      ctx.fillStyle = unlocked ? col : '#2b211d';
-      ctx.fillRect(rx - 2, ry - 2, 5, 5);
+      P1(ctx, rx - 3, ry - 3, '#fff3c4');
+
       if (unlocked) {
+        ctx.fillStyle = s.dark;
+        ctx.fillRect(rx - 2, ry - 2, 5, 5);
+        ctx.fillStyle = s.col;
+        ctx.fillRect(rx - 2, ry - 2, 4, 4);
+        ctx.fillStyle = s.hi;
+        ctx.fillRect(rx - 2, ry - 2, 2, 2);
         P1(ctx, rx - 1, ry - 1, '#ffffff');
-        if (((f12 + i) & 3) === 0) drawStar(ctx, rx, ry - 4, 2, '#ffffff', col);
+        if (((f12 + i) & 3) === 0) drawStar(ctx, rx, ry - 5, 2, '#ffffff', s.col);
+      } else {
+        ctx.fillStyle = '#2b211d';
+        ctx.fillRect(rx - 2, ry - 2, 5, 5);
+        ctx.fillStyle = '#1a1310';
+        ctx.fillRect(rx - 2, ry - 2, 5, 1);
       }
     }
   }
@@ -1359,7 +1500,10 @@
     }
 
     // Afloramentos cristalinos acesos do ambiente (iluminação da Parte 1 do musical!)
-    for (const [cx, cy, ch] of [[38, 282, 22], [62, 284, 15], [586, 282, 20], [608, 284, 14]]) {
+    const ambientClusters = biomeKey === 'sanctuary'
+      ? [[16, 284, 16], [626, 284, 16]]
+      : [[38, 282, 22], [62, 284, 15], [586, 282, 20], [608, 284, 14]];
+    for (const [cx, cy, ch] of ambientClusters) {
       for (let dy = 0; dy < ch; dy++) {
         const hw = Math.max(1, Math.round((1 - dy / ch) * 6));
         for (let dx = -hw; dx <= hw; dx++) {
@@ -1563,36 +1707,41 @@
       },
       introDialogues: {
         1: [
-          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'A Floresta inteira está coberta por cinzas silenciosas...' },
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Ouça! A Guardiã da Esmeralda está cantando além dessas raízes petrificadas!' },
-          { speaker: 'Voz Misteriosa', portrait: 'portrait_mystery_silhouette', text: 'Usem o Altar de Esmeralda para despertar a força das sementes!' }
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Atchim! Que cheiro de folha molhada... mas cadê o verde dessa floresta?!', protagState: 'shock' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Shhh! Escuta só... tem alguém cantando lá atrás dessas raízes gigantes!' },
+          { speaker: 'Voz Misteriosa', portrait: 'portrait_mystery_silhouette', text: 'Por favor... a mata inteira adormeceu... me ajudem a acordar as raízes!' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Ouvimos alto e claro! Bora lá, pequeno gafanhoto — olha os cristais ali!', pointRight: true }
         ],
         4: [
-          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'As raízes petrificadas estão cada vez mais densas por aqui!' },
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Estamos quase no coração da mata! Vamos combinar luz, Citrino, Esmeralda e Fogo para abrir passagem!' }
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Uau, essas raízes ficaram ENORMES! Parece que a floresta inteira travou aqui!', protagState: 'shock' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Sinal de que estamos coladinhos no coração da mata! Mostra o que você aprendeu!', pointRight: true }
         ],
         5: [
-          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Olhe no alto da copa! Um cristal gigante envolto por raízes prende a Guardiã da Floresta!' },
-          { speaker: 'Voz Misteriosa', portrait: 'portrait_mystery_silhouette', text: 'A fumaça me prendeu aqui dentro! Cortem os cristais puros no ar para libertar a mata!' },
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Deslize para fatiar os cristais puros! Cuidado com os sombrios: cada sombra cortada tira 2 segundos do tempo!' }
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Olha lá no alto!! Outro cristal gigante?!', shake: true, protagState: 'shock' },
+          { speaker: 'Voz Misteriosa', portrait: 'portrait_mystery_silhouette', text: 'A fumaça me prendeu aqui em cima! Quebrem esse silêncio antes que a mata apague!' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Segura firme aí em cima! Hora de mostrar reflexo de mestre, pequeno gafanhoto!' }
         ]
       },
       postDialogues: {
         1: [
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'A luz da Esmeralda dobrou nossa energia! As primeiras folhas voltaram a respirar!' }
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Uou! Você viu?! As folhas começaram a abrir sozinhas!', protagState: 'celebrate' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Eu disse que você leva jeito! E isso foi só o aquecimento!' }
         ],
         2: [
-          { speaker: 'Voz Misteriosa', portrait: 'portrait_mystery_silhouette', text: 'Isso! Ao repartir o Citrino Solar, cada raio encontra seu lugar na mata!' }
+          { speaker: 'Voz Misteriosa', portrait: 'portrait_mystery_silhouette', text: 'Ah... esse cheirinho de mato fresco! O sol está voltando a passar pelas copas!' }
         ],
         3: [
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Continuem firmes! Mais uma barreira de raízes e chegaremos ao coração da Floresta!' }
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Aí sim! Mais um empurrãozinho e a gente atravessa esse paredão de raízes!' }
         ],
         4: [
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'O caminho se abriu! Agora vamos resgatar a Guardiã da Floresta na Fase 10!' }
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Passagem livre!! E a música lá na frente ficou bem mais alta!', protagState: 'celebrate' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'É agora! Vamos tirar a Guardiã da Floresta de lá!' }
         ],
         5: [
-          { speaker: 'Araci', portrait: 'portrait_araci', text: 'Livre! Eu sou Araci, Guardiã da Floresta, e a Esmeralda voltou a pulsar!' },
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Mais uma gema primordial acesa! Agora precisamos seguir até o Rio das Águas Claras!' }
+          { speaker: 'Araci', portrait: 'portrait_araci', text: 'Ah, que alívio esticar as asas! Muito obrigada — eu sou Araci, Guardiã da Floresta!' },
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Foi por pouco, hein! E a mata toda ficou linda de novo!', protagState: 'celebrate' },
+          { speaker: 'Araci', portrait: 'portrait_araci', text: 'Com a Esmeralda acesa, até os passarinhos voltaram a fofocar nas árvores!' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Duas gemas já brilham no brasão! Próxima parada: o Rio das Águas Claras!' }
         ]
       },
       tutorialsByLevel: {
@@ -1775,43 +1924,49 @@
       },
       introDialogues: {
         1: [
-          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'As cachoeiras pararam de correr... a água parece pesada e escura.' },
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Veja aquela plataforma de pedra no centro da correnteza!' },
-          { speaker: 'Voz Misteriosa', portrait: 'portrait_mystery_silhouette', text: 'É o Altar de Frações! Coloquem valores iguais em cima e embaixo para liberar a divisão!' }
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Nossa, que ar fresquinho! Pena que a cachoeira parece congelada no tempo...' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Opa, olha aquela pedra brilhando no meio do rio! Nunca vi nada igual!', pointRight: true },
+          { speaker: 'Voz Misteriosa', portrait: 'portrait_mystery_silhouette', text: 'Psiu... a correnteza ficou presa em mim... devolvam o equilíbrio às águas!' },
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Calma aí, já estamos indo! Deixa com a gente!' }
         ],
         2: [
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'A correnteza acelera! Não importa a quantidade de peças: o valor total de cima e de baixo precisa ser idêntico!' }
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Ei, a água começou a mexer de novo! Mas essa pedra ainda tá trancada...' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'É porque a correnteza ficou exigente! Confia no olho e vai com tudo!' }
         ],
         3: [
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'As frações agora revelam caminhos para Equações Cristalinas! Divida primeiro para conectar depois!' }
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Ih, o rio resolveu misturar tudo agora! Mas pra quem já domou a mata, isso é fichinha!' }
         ],
         4: [
-          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Um prisma imenso de Turmalina Paraíba está represando a nascente!' },
-          { speaker: 'Voz Misteriosa', portrait: 'portrait_mystery_silhouette', text: 'Estou presa no gelo turvo da cachoeira! Harmonizem as águas e o fogo com cuidado!' },
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Aguente firme! Vamos libertar a nascente agora mesmo!' }
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Espera... a nascente inteira tá presa naquele cristal azul gigante?!', protagState: 'shock' },
+          { speaker: 'Voz Misteriosa', portrait: 'portrait_mystery_silhouette', text: 'Socorro... não consigo nem cantar com esse silêncio pesado em volta!' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Aguenta só mais um pouquinho! A gente já tá quebrando a última trava!' }
         ],
         5: [
-          { speaker: 'Irecê', portrait: 'portrait_irece', text: 'Vocês alcançaram o coração da cascata! Agora, a música das águas nos libertará!' },
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Cinco cristais sonoros estão flutuando sobre a água!' },
-          { speaker: 'Irecê', portrait: 'portrait_irece', text: 'Ouçam a melodia e toquem os cristais na ordem exata para harmonizar o rio!' }
+          { speaker: 'Irecê', portrait: 'portrait_irece', text: 'Vocês chegaram! Escutem... até as gotinhas estão afinando a voz!' },
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Uau, os cristais estão flutuando sobre a água?! Que incrível!', protagState: 'celebrate' },
+          { speaker: 'Irecê', portrait: 'portrait_irece', text: 'Cantem comigo, nota por nota, e vamos fazer essa cachoeira dançar!' }
         ]
       },
       postDialogues: {
         1: [
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Que limpidez! A fração se quebrou e a divisão fez a primeira gota pura correr!' }
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'SPLASH! Ei, molhou minha bota — mas a água voltou a brilhar!', protagState: 'celebrate' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Hihi, água limpa dá sorte! Continua assim, pequeno gafanhoto!' }
         ],
         2: [
-          { speaker: 'Voz Misteriosa', portrait: 'portrait_mystery_silhouette', text: 'Maravilhoso! Já consigo ouvir a espuma das corredeiras despertando!' }
+          { speaker: 'Voz Misteriosa', portrait: 'portrait_mystery_silhouette', text: 'Que som gostoso... já dá até para ouvir as corredeiras rindo lá embaixo!' }
         ],
         3: [
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Equações e frações unificadas! A correnteza está ganhando força cristalina!' }
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Olha só a força dessa correnteza! Você tá pegando o ritmo rápido demais!' }
         ],
         4: [
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Chegamos à grande queda d’água! Vamos libertar a Guardiã do Rio!' }
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Conseguimos abrir a passagem! Olha o tamanho daquela cachoeira!', protagState: 'celebrate' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Bora lá! Tá na hora de ouvir a voz da Guardiã do Rio!' }
         ],
         5: [
-          { speaker: 'Irecê', portrait: 'portrait_irece', text: 'Obrigada! Eu sou Irecê, e as Águas Claras voltaram a cantar!' },
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Resta apenas uma gema primordial! Vamos levar essa brisa até a Caatinga!' }
+          { speaker: 'Irecê', portrait: 'portrait_irece', text: 'Que acorde lindo! Obrigada de coração — eu sou Irecê, Guardiã das Águas Claras!' },
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Nossa, sua música deixou o ar todo leve! A água tá transparente igual espelho!', protagState: 'celebrate' },
+          { speaker: 'Irecê', portrait: 'portrait_irece', text: 'Quando a gente escuta com calma, até o rio vira canção. Leve essa brisa com você!' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Só falta UMA Gema Primordial! Prepara o chapéu, que agora a gente vai pra Caatinga!' }
         ]
       },
       tutorialsByLevel: {
@@ -1972,36 +2127,43 @@
           { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Mas eu explico no caminho... Veja só, tem uns cristais ali! Quebre eles!', pointRight: true }
         ],
         2: [
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Veja os moldes elétricos nas rochas! Arraste dois cristais direto para dentro do molde: o 1º cria a borda e o 2º preenche o interior!' }
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Ei, aquelas pedras tão dando choque?! Que brilho doido é esse?!', protagState: 'shock' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Hehe, é energia pura do sertão! Vai lá, pequeno gafanhoto — testa encaixar os cristais!', pointRight: true }
         ],
         3: [
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'As formas cristalinas também se atraem! Una duas formas prontas para revelar polígonos ainda maiores!' }
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Espera aí... os cristais estão se encaixando igual quebra-cabeça?!' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Bingo! E quanto mais eles se juntam, mais forte fica o brilho do sertão!' }
         ],
         4: [
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Chegamos aos mosaicos ancestrais! Triângulos formam Losangos e Hexágonos, e cabem dentro de equações!' }
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Nossa, olha essa muralha de pedra... parece uma fortaleza antiga!' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Última parede antes do santuário! Mostra pra esse calor quem é que manda!' }
         ],
         5: [
-          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Encontramos o Santuário da Caatinga! A Opala de Fogo Primordial está selada no Altar!' },
-          { speaker: 'Voz Misteriosa', portrait: 'portrait_mystery_silhouette', text: 'A tempestade de areia trancou minha canção! Usem todas as formas sagradas para purificar o núcleo!' },
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'É a última Gema Primordial! Vamos libertar o Altar!' }
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Achei! A Opala de Fogo tá bem ali... espera, por que aquelas cúpulas estão mexendo?!', protagState: 'shock' },
+          { speaker: 'Voz Misteriosa', portrait: 'portrait_mystery_silhouette', text: 'Haha, o sertão não entrega seus tesouros de graça! Quero ver você acompanhar a areia!' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Olho vivo, pequeno gafanhoto! Se piscar, a Opala foge debaixo do nariz!' }
         ]
       },
       postDialogues: {
         1: [
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'O Círculo Sagrado despertou a primeira brisa dourada entre as chapadas!' }
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Ufa! Bateu um ventinho bom agora... e olha, nasceu uma florzinha ali!', protagState: 'celebrate' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Eu te disse que a Caatinga é cheia de vida! Vamos continuar!' }
         ],
         2: [
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Quadrados, Retângulos e Trapézios alinhados! Você dominou a ordem das cores e facetas!' }
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Uau, que encaixe bonito! Até as rochas deram uma suspirada de alívio!' }
         ],
         3: [
-          { speaker: 'Voz Misteriosa', portrait: 'portrait_mystery_silhouette', text: 'As cacimbas estão brilhando com seus encaixes! Continuem rumo ao santuário!' }
+          { speaker: 'Voz Misteriosa', portrait: 'portrait_mystery_silhouette', text: 'Eita, que dupla arretada! Já sinto a água voltando pras raízes daqui!' }
         ],
         4: [
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'O Hexágono Solar abriu os portões do Santuário da Caatinga! Vamos despertar sua Guardiã!' }
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'A muralha caiu!! O caminho pro santuário tá aberto!', protagState: 'celebrate' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'É a reta final! Bora despertar a última Guardiã!' }
         ],
         5: [
-          { speaker: 'Jurema', portrait: 'portrait_jurema', text: 'Viva! Eu sou Jurema, e a Caatinga inteira floresceu com mandacarus e água cristalina!' },
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Reunimos todas as 4 Gemas Primordiais! Voltemos à Caverna para abrir a Porta Ancestral!' }
+          { speaker: 'Jurema', portrait: 'portrait_jurema', text: 'Oxente, até que enfim! Eu sou Jurema — e vocês devolveram o fogo bom do meu sertão!' },
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Uau!! Os mandacarus floresceram tudo de uma vez! Que coisa mais linda!', protagState: 'celebrate' },
+          { speaker: 'Jurema', portrait: 'portrait_jurema', text: 'Viu só? A Caatinga nunca foi deserto — só precisava de quem acreditasse na raiz dela!' },
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'AS QUATRO GEMAS ESTÃO ACESAS!! Volta pra Caverna, pequeno gafanhoto — a Porta Ancestral espera!', shake: true }
         ]
       },
       tutorialsByLevel: {
@@ -2218,17 +2380,17 @@
       },
       introDialogues: {
         1: [
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'De volta ao Santuário da Caverna! As 4 Gemas Primordiais estão reunidas!' },
-          { speaker: 'Araci', portrait: 'portrait_araci', text: 'A força viva da Floresta pulsa neste altar!' },
-          { speaker: 'Irecê', portrait: 'portrait_irece', text: 'As Águas Claras fluem em harmonia com cada cristal!' },
-          { speaker: 'Jurema', portrait: 'portrait_jurema', text: 'E o calor da Caatinga ilumina os quatro selos ancestrais!' },
-          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Vamos resolver a Grande Harmonia e abrir a Porta das Gemas!' }
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'Voltamos para onde tudo começou... e olha o brasão brilhando inteiro!' },
+          { speaker: 'Araci', portrait: 'portrait_araci', text: 'A floresta inteira veio na ponta das minhas asas torcer por você.' },
+          { speaker: 'Irecê', portrait: 'portrait_irece', text: 'E cada gota do rio está pronta pro grande acorde final!' },
+          { speaker: 'Jurema', portrait: 'portrait_jurema', text: 'Pois bora abrir esse portão logo, que eu tô doida pra ver o que tem atrás!' },
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Beleza!! Todo mundo junto — vamos completar a Sinfonia!', protagState: 'celebrate' }
         ]
       },
       postDialogues: {
         1: [
-          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'A Porta das Gemas se abriu! O Reino inteiro voltou a florescer!' },
-          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Conseguimos! A Sinfonia dos Cristais está completa!' }
+          { speaker: 'Ordem', portrait: 'portrait_ordem', text: 'O Portão se abriu!! O mundo inteiro voltou a cantar junto!' },
+          { speaker: 'Protagonista', portrait: 'portrait_protagonist', text: 'Conseguimos! De verdade, conseguimos!!', protagState: 'celebrate' }
         ]
       },
       tutorialsByLevel: {},
@@ -2329,7 +2491,8 @@
     camPanY: 0,
     shellGame: null,
     shellCalmBtnRect: { x: 8, y: 23, w: 98, h: 14 },
-    forestNinjaComboBadgeRect: { x: 230, y: 23, w: 62, h: 14 },
+    riverCalmBtnRect: { x: 6, y: 38, w: 88, h: 12 },
+    forestNinjaComboBadgeRect: { x: 228, y: 23, w: 66, h: 14 },
     emeraldAltar: null,
     pureEquation: null,
     shadowEquation: null,
@@ -2342,6 +2505,14 @@
     magneticAnim: null,
     equationShockEffect: null,
     ghostHandAnim: null,
+    shadowSmokePuffs: [],
+    actionHistory: [],
+    _gestureSnapshot: null,
+    _gestureCommitted: false,
+    _committingAction: false,
+    rewindAnim: null,
+    deadEndAutoRewindPending: false,
+    DEAD_END_REWIND_DELAY: 1.75,
     opalDrainTimer: 0,
     opalStepInterval: 0.42,
     shards: [],
@@ -2353,8 +2524,8 @@
     STAGE_MIN_Y: 38,
     STAGE_MAX_Y: 126,
 
-    completeBtnRect: { x: 108, y: 115, w: 104, h: 15 },
-    skipMusicalBtnRect: { x: 92, y: 2, w: 58, h: 16 },
+    completeBtnRect: { x: 102, y: 114, w: 116, h: 18 },
+    skipMusicalBtnRect: { x: 74, y: 2, w: 44, h: 16 },
     gameOverBtnRect: { x: 96, y: 118, w: 128, h: 16 },
     forestSlashBtnRect: null,
     _exitIrisStarted: false,
@@ -2413,6 +2584,7 @@
       cv.style.width = roundFn(W * scale) + 'px';
       cv.style.height = roundFn(H * scale) + 'px';
       cv.style.display = cv.hidden ? 'none' : 'block';
+      TextOverlay?.syncLayout?.(cv);
     },
 
     toLogicalCoords(clientX, clientY) {
@@ -2453,6 +2625,7 @@
           this.canvas.style.background = 'transparent';
           this.canvas.style.boxShadow = 'none';
         }
+        TextOverlay?.hide?.(this.canvas);
       }
     },
 
@@ -2542,6 +2715,7 @@
       GameHUD.settingsOpen = false;
       GameHUD.guideOpen = false;
       GameHUD.onUseAbility1 = () => this.triggerGhostHandHint();
+      GameHUD.onUseAbility2 = () => this.triggerTimeRewind(this.phase === 'defeat_pause');
       if (typeof GameHUD.resetAbilityCharges === 'function') GameHUD.resetAbilityCharges();
       GameHUD.syncAudio();
     },
@@ -2607,6 +2781,12 @@
       this.fractionPlatform = null;
       this.equationShockEffect = null;
       this.ghostHandAnim = null;
+      this.actionHistory = [];
+      this._gestureSnapshot = null;
+      this._gestureCommitted = false;
+      this._committingAction = false;
+      this.rewindAnim = null;
+      this.deadEndAutoRewindPending = false;
       this.camPanY = (this.worldKey === 'caatinga' && this.currentLevel === 1) ? -14 : 0;
       this.emeraldAltar = null;
       this.pureEquation = null;
@@ -2615,6 +2795,7 @@
       this.draggedPiece = null;
       this.equationPointer = null;
       this.shards = [];
+      this.shadowSmokePuffs = [];
       this.setupStep(1);
 
       if (this.phase === 'cutscene_enter') {
@@ -2668,8 +2849,15 @@
       this.magneticAnim = null;
       this.equationShockEffect = null;
       this.ghostHandAnim = null;
+      this.actionHistory = [];
+      this._gestureSnapshot = null;
+      this._gestureCommitted = false;
+      this._committingAction = false;
+      this.rewindAnim = null;
+      this.deadEndAutoRewindPending = false;
       this.clearTrembleStates();
       this.shards = [];
+      this.shadowSmokePuffs = [];
       this.waveActive = false;
       this.waveRadius = 0;
       this.obstacleDecay = 0;
@@ -2755,6 +2943,12 @@
       this.magneticAnim = null;
       this.equationShockEffect = null;
       this.ghostHandAnim = null;
+      this.actionHistory = [];
+      this._gestureSnapshot = null;
+      this._gestureCommitted = false;
+      this._committingAction = false;
+      this.rewindAnim = null;
+      this.deadEndAutoRewindPending = false;
       this.selectedPiece = null;
       this.tessellationPreview = null;
       this.tutorialHighlightId = stepDef.tutorialHighlightId || null;
@@ -2907,6 +3101,20 @@
     // ==========================================================================
     // FÍSICA TÁTIL DE CRISTAIS, ALTAR DE ESMERALDA, DIVISÃO E EQUAÇÕES
     // ==========================================================================
+    spawnShadowSmokePuff(x, y) {
+      if (!Array.isArray(this.shadowSmokePuffs)) this.shadowSmokePuffs = [];
+      if (typeof ActorAnimator.spawnShadowSmokePuff === 'function') {
+        ActorAnimator.spawnShadowSmokePuff(this.shadowSmokePuffs, x, y, this.t);
+      }
+    },
+
+    triggerShadowCrystalBlocked(piece) {
+      if (!piece) return;
+      piece.rejectUntil = this.t + 0.36;
+      this.spawnShadowSmokePuff(piece.x, piece.y);
+      GameHUD.playSfx('shadowBlocked');
+    },
+
     spawnShatter(cx, cy, setKey = 'pure', count = 10) {
       for (let i = 0; i < count; i++) {
         const ang = (i / count) * Math.PI * 2 + (i % 3) * 0.2;
@@ -2989,9 +3197,20 @@
       return purePiece.type === shadowPiece.type;
     },
 
+    _removePieceFromFraction(piece) {
+      if (!piece) return false;
+      const had = Boolean(piece.inFraction);
+      piece.inFraction = null;
+      if (this.fractionPlatform) {
+        this.fractionPlatform.topPieces = (this.fractionPlatform.topPieces || []).filter((p) => p !== piece && !p.broken && p.value > 0);
+        this.fractionPlatform.bottomPieces = (this.fractionPlatform.bottomPieces || []).filter((p) => p !== piece && !p.broken && p.value > 0);
+      }
+      return had;
+    },
+
     isCompatibleShadowTarget(purePiece, candidate, px = purePiece.x, py = purePiece.y) {
       if (this.phase !== 'gameplay') return false;
-      if (!purePiece || purePiece.shadow || purePiece.broken || purePiece.value <= 0 || purePiece.inMoldId) return false;
+      if (!purePiece || purePiece.shadow || purePiece.broken || purePiece.value <= 0 || purePiece.inMoldId || purePiece.inFraction) return false;
       if (!candidate || !candidate.shadow || candidate.broken || candidate.value <= 0 || candidate.inEquation) return false;
       if (
         purePiece.inEquation === 'pure' &&
@@ -3022,6 +3241,7 @@
 
     triggerImmediateAnnulment(purePiece, shadowTarget) {
       if (!purePiece || !shadowTarget || purePiece.broken || shadowTarget.broken) return false;
+      this.commitActionSnapshot();
       purePiece.dragging = false;
       if (this.draggedPiece === purePiece) {
         this.draggedPiece = null;
@@ -3030,6 +3250,11 @@
 
       const wasInPureEq = purePiece.inEquation === 'pure';
       purePiece.inEquation = null;
+      if (purePiece.inFraction) {
+        this._removePieceFromFraction(purePiece);
+        this.layoutFractionPieces();
+        this.updateFractionPlatformState();
+      }
       if (this.pureEquation) {
         this.pureEquation.dropHover = false;
         this.pureEquation.removeHover = false;
@@ -3056,17 +3281,26 @@
     },
 
     checkEmeraldAltarBlessing(piece) {
-      if (!this.emeraldAltar || !piece || piece.shadow || piece.broken || piece.value <= 0) return false;
-      if (piece.type === 'opal' || piece.boosted || piece.value * 2 > 6) return false;
+      if (!this.emeraldAltar || !piece || piece.shadow || piece.broken || piece.value <= 0 || piece.inFraction) return false;
+      const doubled = piece.value * 2;
+      const maxVal = getMaxPieceValue(piece, doubled);
+      if (piece.type === 'opal' || piece.boosted || doubled > maxVal) return false;
       if (Math.hypot(piece.x - this.emeraldAltar.x, piece.y - this.emeraldAltar.y) <= 22) {
-        piece.value = clamp(piece.value * 2, 1, 6);
+        this.commitActionSnapshot();
+        piece.value = clamp(doubled, 1, maxVal);
         piece.boosted = true;
         piece.lastValChangeAt = this.t;
         GameHUD.playSfx('reward');
         this.spawnShatter(this.emeraldAltar.x, this.emeraldAltar.y, 'emerald', 10);
         const hit = this.findTouchingCompatibleShadow(piece, piece.x, piece.y);
         if (hit) {
-          this.triggerImmediateAnnulment(piece, hit);
+          const prevCommitting = this._committingAction;
+          this._committingAction = true;
+          try {
+            this.triggerImmediateAnnulment(piece, hit);
+          } finally {
+            this._committingAction = prevCommitting;
+          }
         }
         return true;
       }
@@ -3074,16 +3308,18 @@
     },
 
     trySplitCrystalOnTap(piece) {
-      if (!piece || piece.shadow || piece.broken || piece.inFraction || piece.inMoldId || piece.value < 2 || piece.value % 2 !== 0) return false;
+      if (!piece || piece.shadow || piece.broken || piece.inMoldId || piece.shape || piece.value < 2 || piece.value % 2 !== 0) return false;
       if (piece.type !== 'citrine' && piece.type !== 'aqua') return false;
       if (this.selectedPiece === piece) this.selectedPiece = null;
 
+      this.commitActionSnapshot();
       const half = piece.value / 2;
       piece.value = half;
       piece.lastValChangeAt = this.t;
       const origX = piece.x, origY = piece.y;
       piece.x = clamp(origX - 10, this.STAGE_MIN_X, this.STAGE_MAX_X);
 
+      const inFracSlot = piece.inFraction || null;
       const clone = {
         id: `${piece.id}_sp_${Math.floor(this.t * 1000)}_${this.pieces.length}`,
         type: piece.type,
@@ -3091,6 +3327,7 @@
         shadow: false,
         boosted: Boolean(piece.boosted),
         inEquation: piece.inEquation || null,
+        inFraction: inFracSlot,
         lastValChangeAt: this.t,
         x: clamp(origX + 10, this.STAGE_MIN_X, this.STAGE_MAX_X),
         y: origY
@@ -3100,17 +3337,33 @@
       GameHUD.playSfx('shatter');
       this.spawnShatter(origX, origY, piece.type === 'citrine' ? 'citrine' : 'aqua', 8);
 
-      if (piece.inEquation === 'pure' && this.pureEquation && !this.pureEquation.broken) {
+      if (inFracSlot && this.fractionPlatform && !this.fractionPlatform.broken) {
+        const list = inFracSlot === 'top' ? this.fractionPlatform.topPieces : this.fractionPlatform.bottomPieces;
+        const idx = list.indexOf(piece);
+        if (idx >= 0) {
+          list.splice(idx + 1, 0, clone);
+        } else {
+          list.push(clone);
+        }
+        this.layoutFractionPieces();
+        this.updateFractionPlatformState();
+      } else if (piece.inEquation === 'pure' && this.pureEquation && !this.pureEquation.broken) {
         this.layoutEquationPieces(this.pureEquation, 'pure');
       } else {
         this.resolveFreeCrystalCollisions();
       }
 
-      for (const candidate of [piece, clone]) {
-        if (!candidate.broken) {
-          const hit = this.findTouchingCompatibleShadow(candidate, candidate.x, candidate.y);
-          if (hit) this.triggerImmediateAnnulment(candidate, hit);
+      const prevCommitting = this._committingAction;
+      this._committingAction = true;
+      try {
+        for (const candidate of [piece, clone]) {
+          if (!candidate.broken && !candidate.inFraction) {
+            const hit = this.findTouchingCompatibleShadow(candidate, candidate.x, candidate.y);
+            if (hit) this.triggerImmediateAnnulment(candidate, hit);
+          }
         }
+      } finally {
+        this._committingAction = prevCommitting;
       }
       if (this.phase === 'gameplay') {
         this.checkEquationSolved();
@@ -3120,7 +3373,7 @@
     },
 
     moveDraggedPieceWithCollision(piece, rawX, rawY) {
-      if (!piece || piece.broken || piece.value <= 0 || piece.inFraction) return { annulled: false };
+      if (!piece || piece.broken || piece.value <= 0) return { annulled: false };
 
       const clampedTarget = this.clampCrystalPos(rawX, rawY);
       let curX = clamp(piece.x, this.STAGE_MIN_X, this.STAGE_MAX_X);
@@ -3228,13 +3481,25 @@
         piece.x = curX;
         piece.y = curY;
 
+        if (piece.inFraction && this.fractionPlatform && !this.fractionPlatform.broken) {
+          const fp = this.fractionPlatform;
+          const stillInFrac = Math.abs(curX - fp.x) <= (fp.w * 0.5 + 8) && Math.abs(curY - fp.y) <= (fp.h * 0.5 + 10);
+          if (!stillInFrac) {
+            this.commitActionSnapshot();
+            this._removePieceFromFraction(piece);
+            this.layoutFractionPieces();
+            this.updateFractionPlatformState();
+            GameHUD.playSfx('equationRemove');
+          }
+        }
+
         if (this.checkEmeraldAltarBlessing(piece)) {
           if (piece.broken || this.phase !== 'gameplay') return { annulled: true };
           this.triggerDefeatIfImpossible();
           if (this.phase !== 'gameplay') return { annulled: true };
         }
 
-        if (!piece.shape && !piece.inEquation && this.electricShapes && this.electricShapes.length > 0) {
+        if (!piece.shape && !piece.inEquation && !piece.inFraction && this.electricShapes && this.electricShapes.length > 0) {
           for (const es of this.electricShapes) {
             if (!es.used && es.shape === 'circle' && Math.hypot(curX - es.x, curY - es.y) <= 14) {
               this.tryEnterElectricShapeNode(es, [piece]);
@@ -3444,6 +3709,9 @@
 
       if (this.opalDrainTimer >= this.opalStepInterval) {
         this.opalDrainTimer -= this.opalStepInterval;
+        this.commitActionSnapshot();
+        this._gestureSnapshot = null;
+        this._gestureCommitted = false;
         activeTarget.value -= 1;
         activeOpal.value -= 1;
         activeTarget.lastValChangeAt = this.t;
@@ -3452,12 +3720,20 @@
 
         this.spawnShatter((activeOpal.x + activeTarget.x) * 0.5, (activeOpal.y + activeTarget.y) * 0.5, 'opal', 6);
 
+        const hadTargetFrac = Boolean(activeTarget.inFraction);
+        const hadOpalFrac = Boolean(activeOpal.inFraction);
         if (activeTarget.value <= 0) {
+          if (activeTarget.inFraction) {
+            this._removePieceFromFraction(activeTarget);
+          }
           activeTarget.broken = true;
           activeTarget.dragging = false;
           if (this.draggedPiece === activeTarget) this.draggedPiece = null;
         }
         if (activeOpal.value <= 0) {
+          if (activeOpal.inFraction) {
+            this._removePieceFromFraction(activeOpal);
+          }
           activeOpal.broken = true;
           activeOpal.dragging = false;
           if (this.draggedPiece === activeOpal) this.draggedPiece = null;
@@ -3466,14 +3742,20 @@
           GameHUD.playSfx('shatter');
           this.clearTrembleStates();
         }
-        if (this.fractionPlatform && (activeTarget.inFraction || activeOpal.inFraction)) {
+        if (this.fractionPlatform && (hadTargetFrac || hadOpalFrac || activeTarget.inFraction || activeOpal.inFraction)) {
           this.layoutFractionPieces();
           this.updateFractionPlatformState();
         }
         if (!activeTarget.broken && activeTarget.value > 0) {
           const hit = this.findTouchingCompatibleShadow(activeTarget, activeTarget.x, activeTarget.y);
           if (hit) {
-            this.triggerImmediateAnnulment(activeTarget, hit);
+            const prevCommitting = this._committingAction;
+            this._committingAction = true;
+            try {
+              this.triggerImmediateAnnulment(activeTarget, hit);
+            } finally {
+              this._committingAction = prevCommitting;
+            }
             return;
           }
         }
@@ -3534,6 +3816,21 @@
       if (!target.shape || !dragged.shape) return null;
 
       const s1 = target.shape, s2 = dragged.shape;
+
+      // 0. 2 Círculos da mesma cor -> Círculo único com a soma das unidades
+      if (
+        s1 === 'circle' &&
+        s2 === 'circle' &&
+        (target.borderType || target.type) === (dragged.borderType || dragged.type) &&
+        (target.coreType || target.type) === (dragged.coreType || dragged.type) &&
+        (target.value + dragged.value) <= getMaxPieceValue(target.borderType || target.type, target.value + dragged.value)
+      ) {
+        return {
+          resultShape: 'circle',
+          targetRotAngle: 0,
+          label: 'CÍRCULO + CÍRCULO = CÍRCULO MAIOR!'
+        };
+      }
 
       // 1. 2 Quadrados idênticos -> Retângulo Cristalino (gira 90° e encaixa lado a lado [■|■])
       if (
@@ -3675,6 +3972,7 @@
 
     ejectCrystalFromMold(piece, keepPosition = false) {
       if (!piece || !piece.inMoldId) return false;
+      this.commitActionSnapshot();
       const node = (this.electricShapes || []).find((es) => es.id === piece.inMoldId);
       piece.inMoldId = null;
       if (node && node.firstPieceId === piece.id) {
@@ -3744,6 +4042,7 @@
         if (validList.length !== 1 || validList[0].shape) {
           return this.rejectAtElectricShape(node, validList);
         }
+        this.commitActionSnapshot();
         const p = validList[0];
         const snap = this.snapshotPiece(p);
         p.shape = 'circle';
@@ -3767,7 +4066,15 @@
         this.spawnFloatingBanner('circle', node.x, node.y);
         this.spawnShatter(node.x, node.y, SHARD_SPR[p.type] ? p.type : 'pure', 10);
         const hit = this.findTouchingCompatibleShadow(p, p.x, p.y);
-        if (hit) this.triggerImmediateAnnulment(p, hit);
+        if (hit) {
+          const prevCommitting = this._committingAction;
+          this._committingAction = true;
+          try {
+            this.triggerImmediateAnnulment(p, hit);
+          } finally {
+            this._committingAction = prevCommitting;
+          }
+        }
         return true;
       }
 
@@ -3783,6 +4090,7 @@
         }
 
         if (!existingFirst) {
+          this.commitActionSnapshot();
           const prevEqSnap = (incoming.inEquation === 'pure' && this.pureEquation && !this.pureEquation.broken)
             ? { x: this.pureEquation.x, y: this.pureEquation.y, expanded: Boolean(this.pureEquation.expanded) }
             : null;
@@ -3829,6 +4137,7 @@
         return this.rejectAtElectricShape(node, rejectPair || [second]);
       }
 
+      this.commitActionSnapshot();
       const snap1 = this.snapshotPiece(first);
       const snap2 = this.snapshotPiece(second);
       first.shape = node.shape;
@@ -3863,8 +4172,35 @@
       this.spawnShatter(node.x, node.y, SHARD_SPR[first.type] ? first.type : 'pure', 12);
 
       const hit = this.findTouchingCompatibleShadow(first, first.x, first.y);
-      if (hit) this.triggerImmediateAnnulment(first, hit);
+      if (hit) {
+        const prevCommitting = this._committingAction;
+        this._committingAction = true;
+        try {
+          this.triggerImmediateAnnulment(first, hit);
+        } finally {
+          this._committingAction = prevCommitting;
+        }
+      }
       return true;
+    },
+
+    _releaseCircleMoldOnMerge(piece, snap) {
+      if (!piece) return snap;
+      const nodeId = piece.sourceNodeId || null;
+      if (nodeId) {
+        const node = (this.electricShapes || []).find((es) => es.id === nodeId && es.shape === 'circle');
+        if (node) {
+          node.used = false;
+          node.hover = false;
+          node.firstPieceId = null;
+          node.borderType = null;
+          node.firstValue = 0;
+        }
+        if (snap && Array.isArray(snap.components) && snap.components.length === 1) {
+          return { ...snap.components[0], sourceNodeId: null };
+        }
+      }
+      return snap;
     },
 
     tryTessellateShapes(target, dropped) {
@@ -3876,6 +4212,48 @@
       const snapT = this.snapshotPiece(target);
       const snapD = this.snapshotPiece(dropped);
 
+      // 0. 2 Círculos da mesma cor -> Círculo único com a soma das unidades
+      if (
+        s1 === 'circle' &&
+        s2 === 'circle' &&
+        (target.borderType || target.type) === (dropped.borderType || dropped.type) &&
+        (target.coreType || target.type) === (dropped.coreType || dropped.type) &&
+        (target.value + dropped.value) <= getMaxPieceValue(target.borderType || target.type, target.value + dropped.value)
+      ) {
+        this.commitActionSnapshot();
+        const snapDUnwrapped = this._releaseCircleMoldOnMerge(dropped, snapD);
+        target.shape = 'circle';
+        target.borderType = target.borderType || target.type;
+        target.coreType = target.coreType || target.type;
+        target.value += dropped.value;
+        target.boosted = Boolean(target.boosted || dropped.boosted);
+        target.restorableEquation = target.restorableEquation || dropped.restorableEquation || null;
+        target.components = [snapT, snapDUnwrapped];
+        target.sourceNodeId = null;
+        target.rotAngle = 0;
+        target.targetRotAngle = 0;
+        target.lastValChangeAt = this.t;
+        dropped.broken = true;
+        dropped.inEquation = null;
+        if (this.selectedPiece === dropped) this.selectedPiece = null;
+        this.tessellationPreview = null;
+        GameHUD.playSfx(target.type === 'rose' ? 'roseMerge' : 'quartzMerge');
+        this.spawnFloatingBanner('circle', target.x, target.y);
+        this.spawnShatter(target.x, target.y, SHARD_SPR[target.type] ? target.type : 'pure', 10);
+        if (this.pureEquation && !this.pureEquation.broken && target.inEquation === 'pure') {
+          this.layoutEquationPieces(this.pureEquation, 'pure');
+        } else {
+          this.resolveFreeCrystalCollisions();
+        }
+        const hit = this.findTouchingCompatibleShadow(target, target.x, target.y);
+        if (hit) {
+          const prevC = this._committingAction;
+          this._committingAction = true;
+          try { this.triggerImmediateAnnulment(target, hit); } finally { this._committingAction = prevC; }
+        }
+        return true;
+      }
+
       // 1. 2 Quadrados idênticos -> Retângulo Cristalino
       if (
         s1 === 'square' &&
@@ -3884,6 +4262,7 @@
         (target.borderType || target.type) === (dropped.borderType || dropped.type) &&
         (target.coreType || target.type) === (dropped.coreType || dropped.type)
       ) {
+        this.commitActionSnapshot();
         target.shape = 'rectangle';
         target.joinedSquares = true;
         target.value += dropped.value;
@@ -3898,12 +4277,17 @@
         this.spawnFloatingBanner('rectangle', target.x, target.y);
         this.spawnShatter(target.x, target.y, 'pure', 12);
         const hit = this.findTouchingCompatibleShadow(target, target.x, target.y);
-        if (hit) this.triggerImmediateAnnulment(target, hit);
+        if (hit) {
+          const prevC = this._committingAction;
+          this._committingAction = true;
+          try { this.triggerImmediateAnnulment(target, hit); } finally { this._committingAction = prevC; }
+        }
         return true;
       }
 
       // 2. 1 Trapézio + 1 Triângulo -> Pentágono (preserva 100% as cores do Triângulo no topo e do Trapézio na base)
       if ((s1 === 'trapezoid' && s2 === 'triangle') || (s1 === 'triangle' && s2 === 'trapezoid')) {
+        this.commitActionSnapshot();
         const trap = s1 === 'trapezoid' ? target : dropped;
         const tri = s1 === 'triangle' ? target : dropped;
         const trapB = trap.borderType || trap.type;
@@ -3933,12 +4317,17 @@
         this.spawnFloatingBanner('pentagon', target.x, target.y);
         this.spawnShatter(target.x, target.y, 'citrine', 12);
         const hit = this.findTouchingCompatibleShadow(target, target.x, target.y);
-        if (hit) this.triggerImmediateAnnulment(target, hit);
+        if (hit) {
+          const prevC = this._committingAction;
+          this._committingAction = true;
+          try { this.triggerImmediateAnnulment(target, hit); } finally { this._committingAction = prevC; }
+        }
         return true;
       }
 
       // 3. Tesselação radial de 6 Triângulos equiláteros -> Hexágono
       if (s1 === 'triangle' && s2 === 'triangle' && ((target.subTriangles || 0) > 0 || (dropped.subTriangles || 0) > 0)) {
+        this.commitActionSnapshot();
         const totalTris = (target.subTriangles || 1) + (dropped.subTriangles || 1);
         target.value += dropped.value;
         target.subTriangles = totalTris;
@@ -3957,7 +4346,11 @@
         }
         this.spawnShatter(target.x, target.y, 'citrine', 10);
         const hit = this.findTouchingCompatibleShadow(target, target.x, target.y);
-        if (hit) this.triggerImmediateAnnulment(target, hit);
+        if (hit) {
+          const prevC = this._committingAction;
+          this._committingAction = true;
+          try { this.triggerImmediateAnnulment(target, hit); } finally { this._committingAction = prevC; }
+        }
         return true;
       }
 
@@ -3969,6 +4362,7 @@
         (target.borderType || target.type) === (dropped.borderType || dropped.type) &&
         (target.coreType || target.type) === (dropped.coreType || dropped.type)
       ) {
+        this.commitActionSnapshot();
         target.shape = 'rhombus';
         target.value += dropped.value;
         target.components = [snapT, snapD];
@@ -3982,7 +4376,11 @@
         this.spawnFloatingBanner('rhombus', target.x, target.y);
         this.spawnShatter(target.x, target.y, 'pure', 12);
         const hit = this.findTouchingCompatibleShadow(target, target.x, target.y);
-        if (hit) this.triggerImmediateAnnulment(target, hit);
+        if (hit) {
+          const prevC = this._committingAction;
+          this._committingAction = true;
+          try { this.triggerImmediateAnnulment(target, hit); } finally { this._committingAction = prevC; }
+        }
         return true;
       }
 
@@ -3992,6 +4390,7 @@
     tryDisassembleShapeOnTap(piece) {
       if (!piece || piece.shadow || piece.broken || !piece.shape) return false;
       if (!piece.components || piece.components.length === 0) return false;
+      this.commitActionSnapshot();
 
       const ox = piece.x, oy = piece.y;
       const comps = piece.components;
@@ -4159,22 +4558,47 @@
       const freePure = active.filter((p) => !p.shadow && !p.inEquation && !p.inFraction && !p.inMoldId);
       const freeShadow = active.filter((p) => p.shadow && !p.inEquation);
 
-      // 2. Anulação direta entre cristal puro manipulável e sombrio livre compatível
+      // 2. Anulação direta entre cristal puro manipulável e sombrio livre compatível (sem criar beco sem saída)
       for (const p of active) {
         if (!canManipulatePure(p)) continue;
         for (const s of freeShadow) {
           if (this.isCompatibleShadowTarget(p, s, s.x, s.y)) {
-            return dragHint(p, s.x, s.y, 'Anular cristais!');
+            let safeToAnnul = true;
+            const prevPBroken = p.broken;
+            const prevSBroken = s.broken;
+            try {
+              p.broken = true;
+              s.broken = true;
+              safeToAnnul = this.isStepStillSolvable();
+            } finally {
+              p.broken = prevPBroken;
+              s.broken = prevSBroken;
+            }
+            if (safeToAnnul) {
+              return dragHint(p, s.x, s.y, 'Anular cristais!');
+            }
           }
         }
       }
 
-      // 3. Preencher Plataforma de Fração ainda não equilibrada
+      // 3. Preencher ou equilibrar Plataforma de Fração ainda não equilibrada
       if (fp && !fp.broken && !fp.glowing) {
         const fracCandidate = freePure.find((p) => !p.shape && p.type !== 'opal');
         if (fracCandidate) {
           const destY = (fp.topSum === 0 || fp.topSum < fp.bottomSum) ? fp.topY : fp.bottomY;
           return dragHint(fracCandidate, fp.x, destY, 'Preencher fração!');
+        }
+        if (fp.topSum > fp.bottomSum && (fp.topPieces || []).length > 0) {
+          const movable = fp.topPieces.find((p) => !p.broken && p.value <= fp.topSum - fp.bottomSum) || fp.topPieces[0];
+          if (movable) {
+            return dragHint(movable, fp.x, fp.bottomY, 'Equilibrar fração!');
+          }
+        }
+        if (fp.bottomSum > fp.topSum && (fp.bottomPieces || []).length > 0) {
+          const movable = fp.bottomPieces.find((p) => !p.broken && p.value <= fp.bottomSum - fp.topSum) || fp.bottomPieces[0];
+          if (movable) {
+            return dragHint(movable, fp.x, fp.topY, 'Equilibrar fração!');
+          }
         }
       }
 
@@ -4226,7 +4650,7 @@
 
       // 7. Altar Esmeralda (multiplicação x2)
       if (this.emeraldAltar) {
-        const freeQuartz = freePure.filter((p) => !p.shape && p.type !== 'opal' && !p.boosted);
+        const freeQuartz = freePure.filter((p) => !p.shape && p.type !== 'opal' && !p.boosted && (p.value * 2) <= getMaxPieceValue(p, p.value * 2));
         const altarTarget = freeQuartz.find((p) => freeShadow.some((s) => s.type === p.type && s.value === p.value * 2)) || freeQuartz[0];
         if (altarTarget) {
           return dragHint(altarTarget, this.emeraldAltar.x, this.emeraldAltar.y, 'Multiplicar no altar!');
@@ -4270,7 +4694,8 @@
         }
         for (let i = 0; i < eqQuartz.length; i++) {
           for (let j = i + 1; j < eqQuartz.length; j++) {
-            if (eqQuartz[i].type === eqQuartz[j].type && (eqQuartz[i].value + eqQuartz[j].value) <= 6) {
+            const sumVal = eqQuartz[i].value + eqQuartz[j].value;
+            if (eqQuartz[i].type === eqQuartz[j].type && sumVal <= getMaxPieceValue(eqQuartz[i], sumVal)) {
               return dragHint(eqQuartz[i], eqQuartz[j].x, eqQuartz[j].y, 'Somar na equação!');
             }
           }
@@ -4281,7 +4706,8 @@
       for (let i = 0; i < freeNonOpals.length; i++) {
         for (let j = i + 1; j < freeNonOpals.length; j++) {
           const a = freeNonOpals[i], b = freeNonOpals[j];
-          if (a.type === b.type && (a.value + b.value) <= 6) {
+          const sumVal = a.value + b.value;
+          if (a.type === b.type && sumVal <= getMaxPieceValue(a, sumVal)) {
             return dragHint(a, b.x, b.y, 'Fundir cristais!');
           }
         }
@@ -4319,6 +4745,172 @@
       return true;
     },
 
+    /** Clona recursivamente subcomponentes de formas geométricas da Caatinga. */
+    _cloneComponents(comps) {
+      if (!Array.isArray(comps)) return null;
+      return comps.map((c) => ({
+        ...c,
+        restorableEquation: c.restorableEquation ? { ...c.restorableEquation } : null,
+        components: this._cloneComponents(c.components)
+      }));
+    },
+
+    /** Clona profundamente uma peça dos Mundos 2–5 preservando fração, molde e geometria. */
+    _clonePieceState(p) {
+      return {
+        id: p.id,
+        type: p.type,
+        value: p.value,
+        shadow: Boolean(p.shadow),
+        boosted: Boolean(p.boosted),
+        broken: Boolean(p.broken),
+        inEquation: p.inEquation || null,
+        inFraction: p.inFraction || null,
+        inMoldId: p.inMoldId || null,
+        restorableEquation: p.restorableEquation ? { ...p.restorableEquation } : null,
+        shape: p.shape || null,
+        borderType: p.borderType || null,
+        coreType: p.coreType || null,
+        upperType: p.upperType || null,
+        lowerType: p.lowerType || null,
+        triBorder: p.triBorder || null,
+        triCore: p.triCore || null,
+        trapBorder: p.trapBorder || null,
+        trapCore: p.trapCore || null,
+        joinedSquares: Boolean(p.joinedSquares),
+        subTriangles: p.subTriangles || 0,
+        rotAngle: Number(p.rotAngle) || 0,
+        targetRotAngle: Number(p.targetRotAngle) || 0,
+        sourceNodeId: p.sourceNodeId || null,
+        components: this._cloneComponents(p.components),
+        x: p.x,
+        y: p.y
+      };
+    },
+
+    /** Captura um snapshot completo do estado atual da etapa dos Mundos 2–5. */
+    captureStepSnapshot() {
+      return {
+        pieces: (this.pieces || []).map((p) => this._clonePieceState(p)),
+        pureEquation: this.pureEquation ? { ...this.pureEquation } : null,
+        shadowEquation: this.shadowEquation ? { ...this.shadowEquation } : null,
+        emeraldAltar: this.emeraldAltar ? { ...this.emeraldAltar } : null,
+        tutorialHighlightId: this.tutorialHighlightId || null,
+        fractionPlatform: this.fractionPlatform ? {
+          ...this.fractionPlatform,
+          topPieces: [],
+          bottomPieces: [],
+          topPieceIds: (this.fractionPlatform.topPieces || []).map((p) => p.id),
+          bottomPieceIds: (this.fractionPlatform.bottomPieces || []).map((p) => p.id)
+        } : null,
+        electricShapes: (this.electricShapes || []).map((es) => ({ ...es }))
+      };
+    },
+
+    /** Empilha o snapshot pré-ação no histórico (sem duplicar dentro do mesmo gesto). */
+    commitActionSnapshot(customSnap = null) {
+      if (this._committingAction) return;
+      if (this._gestureSnapshot) {
+        if (!this._gestureCommitted) {
+          this.actionHistory.push(this._gestureSnapshot);
+          this._gestureCommitted = true;
+        }
+        return;
+      }
+      this.actionHistory.push(customSnap || this.captureStepSnapshot());
+    },
+
+    /** Restaura exatamente um snapshot dos Mundos 2–5, reconectando frações/moldes e efeito temporal. */
+    restoreStepSnapshot(snap, isAutoDeadEnd = false) {
+      if (!snap) return false;
+      const visType = (p) => (p.type === 'opal' ? 'opal' : (p.shadow ? 'shadow' : (p.type === 'white' ? 'pure' : p.type)));
+      const curById = new Map((this.pieces || []).map((p) => [p.id, p]));
+      const trails = [];
+      for (const sp of snap.pieces) {
+        if (sp.broken || sp.shadow) continue;
+        const cur = curById.get(sp.id);
+        if (cur && (cur.broken || Math.hypot((cur.x || 0) - sp.x, (cur.y || 0) - sp.y) >= 4 || cur.value !== sp.value || cur.shape !== sp.shape)) {
+          trails.push({
+            fromX: cur.x ?? sp.x,
+            fromY: cur.y ?? sp.y,
+            toX: sp.x,
+            toY: sp.y,
+            pieceType: visType(sp),
+            pieceValue: sp.value
+          });
+        }
+      }
+
+      this.pieces = (snap.pieces || []).map((p) => ({
+        ...this._clonePieceState(p),
+        dragging: false,
+        trembling: false
+      }));
+      this.pureEquation = snap.pureEquation ? { ...snap.pureEquation, dropHover: false, removeHover: false } : null;
+      this.shadowEquation = snap.shadowEquation ? { ...snap.shadowEquation } : null;
+      this.emeraldAltar = snap.emeraldAltar ? { ...snap.emeraldAltar } : null;
+      this.tutorialHighlightId = snap.tutorialHighlightId || null;
+      this.electricShapes = (snap.electricShapes || []).map((es) => ({ ...es, hover: false }));
+
+      if (snap.fractionPlatform) {
+        const pieceMap = new Map(this.pieces.map((p) => [p.id, p]));
+        const restoredFp = { ...snap.fractionPlatform, topHover: false, bottomHover: false };
+        restoredFp.topPieces = (snap.fractionPlatform.topPieceIds || []).map((id) => pieceMap.get(id)).filter(Boolean);
+        restoredFp.bottomPieces = (snap.fractionPlatform.bottomPieceIds || []).map((id) => pieceMap.get(id)).filter(Boolean);
+        delete restoredFp.topPieceIds;
+        delete restoredFp.bottomPieceIds;
+        this.fractionPlatform = restoredFp;
+        if (typeof this.layoutFractionPieces === 'function') {
+          this.layoutFractionPieces();
+        }
+        if (typeof this.updateFractionPlatformState === 'function') {
+          this.updateFractionPlatformState();
+        }
+      } else {
+        this.fractionPlatform = null;
+      }
+
+      this.selectedPiece = null;
+      this.draggedPiece = null;
+      this.dragStartPos = null;
+      this.equationPointer = null;
+      this.tessellationPreview = null;
+      this.magneticAnim = null;
+      this.equationShockEffect = null;
+      this.ghostHandAnim = null;
+      this.opalDrainTimer = 0;
+      this._gestureSnapshot = null;
+      this._gestureCommitted = false;
+      this.deadEndAutoRewindPending = false;
+      this.clearTrembleStates();
+
+      this.phase = 'gameplay';
+      this.phaseTime = 0;
+      this.protag.state = 'idle';
+      this.rewindAnim = {
+        t: 0,
+        duration: 0.75,
+        isAutoDeadEnd: Boolean(isAutoDeadEnd),
+        label: isAutoDeadEnd ? 'BECO SEM SAÍDA DESFEITO!' : 'VOLTANDO NO TEMPO!',
+        trails
+      };
+      this.spawnShatter(160, 96, 'emerald', 10);
+      return true;
+    },
+
+    /** Executa a Habilidade 2 (Voltar no Tempo) nos Mundos 2–5. */
+    triggerTimeRewind(isAutoDeadEnd = false) {
+      const canRunAuto = Boolean(isAutoDeadEnd) && this.phase === 'defeat_pause';
+      if (this.phase !== 'gameplay' && !canRunAuto) return false;
+      if (TutorialModal.isOpen || DialogueBox.isOpen || this.forestNinja || this.riverMelody || this.shellGame) return false;
+      if (!this.actionHistory || this.actionHistory.length === 0) return false;
+
+      const prevSnap = this.actionHistory.pop();
+      this.restoreStepSnapshot(prevSnap, canRunAuto);
+      GameHUD.playSfx('timeRewind');
+      return true;
+    },
+
     updateFractionPlatformState() {
       const fp = this.fractionPlatform;
       if (!fp || fp.broken) return;
@@ -4349,6 +4941,7 @@
     triggerFractionDivide() {
       const fp = this.fractionPlatform;
       if (!fp || fp.broken || !fp.glowing) return;
+      this.commitActionSnapshot();
       fp.broken = true;
 
       this.spawnShatter(fp.x, fp.y, 'rose', 16);
@@ -4387,35 +4980,84 @@
 
     _mergeSameColorPieces(target, source) {
       if (!target || !source || target === source || target.broken || source.broken) return false;
-      if (target.shadow || source.shadow || target.shape || source.shape) return false;
-      if (target.inFraction || source.inFraction || target.type === 'opal' || source.type === 'opal') return false;
-      if (target.type !== source.type || (target.value + source.value) > 6) return false;
+      if (target.shadow || source.shadow) return false;
+      if (target.shape || source.shape) {
+        if (target.shape === 'circle' && source.shape === 'circle') {
+          return this.tryTessellateShapes(target, source);
+        }
+        return false;
+      }
+      if (target.type === 'opal' || source.type === 'opal') return false;
+      const sumVal = target.value + source.value;
+      if (target.type !== source.type || sumVal > getMaxPieceValue(target, sumVal)) return false;
 
-      target.value += source.value;
+      this.commitActionSnapshot();
+      const wasInFrac = Boolean(target.inFraction || source.inFraction);
+      const sourceWasInPureEq = source.inEquation === 'pure';
+      if (source.inFraction) {
+        this._removePieceFromFraction(source);
+      }
+      target.value = sumVal;
       target.boosted = Boolean(target.boosted || source.boosted);
       target.lastValChangeAt = this.t;
-      const keepInEq = target.inEquation === 'pure' ||
-        Boolean(this.pureEquation && !this.pureEquation.broken && this.isInsideEquationAura(this.pureEquation, target.x, target.y, true));
-      if (keepInEq && this.pureEquation && !this.pureEquation.broken) {
-        target.inEquation = 'pure';
+      if (!target.inFraction) {
+        const keepInEq = target.inEquation === 'pure' ||
+          Boolean(this.pureEquation && !this.pureEquation.broken && this.isInsideEquationAura(this.pureEquation, target.x, target.y, true));
+        if (keepInEq && this.pureEquation && !this.pureEquation.broken) {
+          target.inEquation = 'pure';
+        }
+      } else {
+        target.inEquation = null;
       }
       source.broken = true;
       source.inEquation = null;
       if (this.selectedPiece === source) this.selectedPiece = null;
       GameHUD.playSfx(target.type === 'rose' ? 'roseMerge' : 'quartzMerge');
       this.spawnShatter(target.x, target.y, SHARD_SPR[target.type] ? target.type : 'pure', 8);
+      if (wasInFrac && this.fractionPlatform && !this.fractionPlatform.broken) {
+        this.layoutFractionPieces();
+        this.updateFractionPlatformState();
+      }
       if (this.pureEquation && !this.pureEquation.broken) {
-        this.layoutEquationPieces(this.pureEquation, 'pure');
+        if (sourceWasInPureEq && target.inFraction) {
+          const members = this.pieces.filter((p) => !p.broken && !p.shadow && p.value > 0 && p.inEquation === 'pure');
+          if (members.length <= 1) {
+            this.breakPureEquation();
+          } else {
+            this.layoutEquationPieces(this.pureEquation, 'pure');
+          }
+        } else {
+          this.layoutEquationPieces(this.pureEquation, 'pure');
+        }
       } else {
         this.resolveFreeCrystalCollisions();
       }
-      const mergedHit = this.findTouchingCompatibleShadow(target, target.x, target.y);
-      if (mergedHit) this.triggerImmediateAnnulment(target, mergedHit);
+      if (!target.inFraction) {
+        const mergedHit = this.findTouchingCompatibleShadow(target, target.x, target.y);
+        if (mergedHit) {
+          const prevC = this._committingAction;
+          this._committingAction = true;
+          try {
+            this.triggerImmediateAnnulment(target, mergedHit);
+          } finally {
+            this._committingAction = prevC;
+          }
+        }
+      }
       return true;
     },
 
     checkPieceDrop(dropped) {
       if (!dropped || dropped.broken || dropped.value <= 0) return;
+
+      const preDropSnap = this._gestureSnapshot || this.captureStepSnapshot();
+      const commitDropOnce = () => {
+        if (this._gestureSnapshot) {
+          this.commitActionSnapshot();
+        } else {
+          this.actionHistory.push(preDropSnap);
+        }
+      };
 
       const clamped = this.clampCrystalPos(dropped.x, dropped.y);
       dropped.x = clamped.x;
@@ -4424,21 +5066,40 @@
       this.checkEmeraldAltarBlessing(dropped);
       if (dropped.broken || this.phase !== 'gameplay') return;
 
-      // -1. Entrada na Plataforma de Fração do Rio (zona contínua em toda a área da plataforma)
-      if (this.fractionPlatform && !this.fractionPlatform.broken && !dropped.inFraction) {
+      // -1. Plataforma de Fração do Rio (entrada, reorganização interna, fusão interna e saída)
+      if (this.fractionPlatform && !this.fractionPlatform.broken) {
         const fp = this.fractionPlatform;
         const inFracBody = Math.abs(dropped.x - fp.x) <= (fp.w * 0.5 + 8) && Math.abs(dropped.y - fp.y) <= (fp.h * 0.5 + 10);
         // Opala de Fogo não entra na fração: ela subtrai do cristal que está lá dentro.
-        if (inFracBody && dropped.type !== 'opal') {
+        if (inFracBody && dropped.type !== 'opal' && !dropped.shape) {
           let targetSlot;
           if (dropped.y < fp.y - 4) {
             targetSlot = 'top';
           } else if (dropped.y > fp.y + 4) {
             targetSlot = 'bottom';
           } else {
-            targetSlot = ((fp.topPieces?.length || 0) > 0 && (fp.bottomPieces?.length || 0) === 0) ? 'bottom' : (dropped.y < fp.y ? 'top' : 'bottom');
+            const topOthers = (fp.topPieces || []).filter((p) => p !== dropped && !p.broken && p.value > 0);
+            const botOthers = (fp.bottomPieces || []).filter((p) => p !== dropped && !p.broken && p.value > 0);
+            targetSlot = (topOthers.length > 0 && botOthers.length === 0) ? 'bottom' : (dropped.y < fp.y ? 'top' : 'bottom');
           }
+          const targetList = targetSlot === 'top' ? fp.topPieces : fp.bottomPieces;
+          const mergeTarget = (targetList || []).find((other) =>
+            other !== dropped &&
+            !other.broken &&
+            !other.shadow &&
+            !other.shape &&
+            other.value > 0 &&
+            other.type === dropped.type &&
+            Math.hypot(dropped.x - other.x, dropped.y - other.y) <= 20 &&
+            (other.value + dropped.value) <= getMaxPieceValue(other, other.value + dropped.value)
+          );
+          if (mergeTarget && this._mergeSameColorPieces(mergeTarget, dropped)) {
+            return;
+          }
+
+          commitDropOnce();
           const wasInPureEq = dropped.inEquation === 'pure';
+          this._removePieceFromFraction(dropped);
           dropped.inFraction = targetSlot;
           dropped.inEquation = null;
           if (wasInPureEq && this.pureEquation && !this.pureEquation.broken) {
@@ -4449,12 +5110,19 @@
               this.layoutEquationPieces(this.pureEquation, 'pure');
             }
           }
-          const targetList = targetSlot === 'top' ? fp.topPieces : fp.bottomPieces;
-          if (!targetList.includes(dropped)) targetList.push(dropped);
+          const activeTargetList = targetSlot === 'top' ? fp.topPieces : fp.bottomPieces;
+          if (!activeTargetList.includes(dropped)) activeTargetList.push(dropped);
+          activeTargetList.sort((a, b) => a.x - b.x);
           this.layoutFractionPieces();
           this.updateFractionPlatformState();
           GameHUD.playSfx('equationInsert');
           return;
+        } else if (dropped.inFraction) {
+          commitDropOnce();
+          this._removePieceFromFraction(dropped);
+          this.layoutFractionPieces();
+          this.updateFractionPlatformState();
+          GameHUD.playSfx('equationRemove');
         }
       }
 
@@ -4491,6 +5159,18 @@
             if (this.tryTessellateShapes(other, dropped)) {
               return;
             }
+            if (
+              other.shape === 'circle' &&
+              dropped.shape === 'circle' &&
+              (other.borderType || other.type) === (dropped.borderType || dropped.type) &&
+              (other.coreType || other.type) === (dropped.coreType || dropped.type)
+            ) {
+              dropped.rejectUntil = this.t + 0.35;
+              other.rejectUntil = this.t + 0.35;
+              GameHUD.playSfx('error');
+              this.resolveFreeCrystalCollisions();
+              return;
+            }
           }
         }
       }
@@ -4509,7 +5189,8 @@
             other.type === dropped.type &&
             Math.hypot(dropped.x - other.x, dropped.y - other.y) <= 24
           ) {
-            if (other.value + dropped.value <= 6) {
+            const sumVal = other.value + dropped.value;
+            if (sumVal <= getMaxPieceValue(other, sumVal)) {
               this._mergeSameColorPieces(other, dropped);
               return;
             }
@@ -4529,13 +5210,14 @@
               p.value > 0 &&
               p.inEquation === 'pure' &&
               p.type === dropped.type &&
-              (p.value + dropped.value) <= 6
+              (p.value + dropped.value) <= getMaxPieceValue(p, p.value + dropped.value)
             );
             if (sameCol && this._mergeSameColorPieces(sameCol, dropped)) {
               return;
             }
           }
           if (dropped.inEquation !== 'pure') {
+            commitDropOnce();
             dropped.inEquation = 'pure';
             GameHUD.playSfx('equationInsert');
           } else {
@@ -4550,13 +5232,14 @@
           this.layoutEquationPieces(this.pureEquation, 'pure');
           return;
         } else if (dropped.inEquation === 'pure') {
+          commitDropOnce();
           dropped.inEquation = null;
           GameHUD.playSfx('equationRemove');
           this.layoutEquationPieces(this.pureEquation, 'pure');
         }
       }
 
-      // 3. Fusão entre cristais puros da mesma cor (até 6 bolinhas, fora de formas geométricas)
+      // 3. Fusão entre cristais puros da mesma cor (fora de formas geométricas)
       //    ou formação automática do agrupador/parênteses (pureEquation) ao unir cristais puros de cores diferentes!
       if (!dropped.shape && dropped.type !== 'opal') {
         for (const other of this.pieces) {
@@ -4573,6 +5256,7 @@
           ) {
             if (other.type !== dropped.type) {
               if (this.pureEquation || this.shadowEquation) {
+                commitDropOnce();
                 const eq = this.ensurePureEquation((dropped.x + other.x) * 0.5, (dropped.y + other.y) * 0.5);
                 other.inEquation = 'pure';
                 dropped.inEquation = 'pure';
@@ -4590,7 +5274,8 @@
               this.resolveFreeCrystalCollisions();
               return;
             }
-            if (other.value + dropped.value > 6) {
+            const sumVal = other.value + dropped.value;
+            if (sumVal > getMaxPieceValue(other, sumVal)) {
               dropped.rejectUntil = this.t + 0.35;
               other.rejectUntil = this.t + 0.35;
               GameHUD.playSfx('error');
@@ -4672,15 +5357,16 @@
             return d;
           }
 
-          // 1. Altar de Esmeralda (dobra 1 única vez peças <= 3)
+          // 1. Altar de Esmeralda (dobra 1 única vez peças até o limite da cor)
           if (hasAltar) {
             let lastPair = '';
+            const maxAltarVal = canSplit ? MAX_SPLITTABLE_EVEN_VALUE : MAX_REGULAR_VALUE;
             for (let i = 0; i < cur.length; i++) {
               const p = cur[i];
               const pk = `${p.v},${p.b}`;
               if (pk === lastPair) continue;
               lastPair = pk;
-              if (!p.b && p.v * 2 <= 6) {
+              if (!p.b && p.v * 2 <= maxAltarVal) {
                 const next = cur.slice();
                 next[i] = { v: p.v * 2, b: 1 };
                 if (pushState(next, d)) return d;
@@ -4705,12 +5391,14 @@
             }
           }
 
-          // 3. Soma / Fusão entre duas peças da mesma cor (v1 + v2 <= 6)
+          // 3. Soma / Fusão entre duas peças da mesma cor
           const seenMergePairs = new Set();
           for (let i = 0; i < cur.length; i++) {
             for (let j = i + 1; j < cur.length; j++) {
               const a = cur[i], b = cur[j];
-              if (a.v + b.v > 6) continue;
+              const sumVal = a.v + b.v;
+              const maxMergeVal = (canSplit && sumVal % 2 === 0) ? MAX_SPLITTABLE_EVEN_VALUE : MAX_REGULAR_VALUE;
+              if (sumVal > maxMergeVal) continue;
               const mKey = `${a.v}${a.b}+${b.v}${b.b}`;
               if (seenMergePairs.has(mKey)) continue;
               seenMergePairs.add(mKey);
@@ -4718,7 +5406,7 @@
               for (let k = 0; k < cur.length; k++) {
                 if (k !== i && k !== j) next.push(cur[k]);
               }
-              next.push({ v: a.v + b.v, b: (a.b || b.b) ? 1 : 0 });
+              next.push({ v: sumVal, b: (a.b || b.b) ? 1 : 0 });
               if (pushState(next, d)) return d;
             }
           }
@@ -4748,12 +5436,26 @@
       const shadows = this.pieces.filter((p) => p.shadow && !p.broken && p.value > 0);
       if (shadows.length === 0) return true;
       const pures = this.pieces.filter((p) => !p.shadow && !p.broken && p.value > 0);
+      if (pures.length === 0) return false;
       if (this.fractionPlatform && !this.fractionPlatform.broken) {
         return true;
       }
-      if (pures.length === 0) return false;
       if (this.worldKey === 'caatinga' || (this.electricShapes && this.electricShapes.length > 0)) {
-        return true;
+        const hasNonCircleShape =
+          this.pieces.some((p) => !p.broken && p.shape && p.shape !== 'circle') ||
+          (this.electricShapes || []).some((es) => es.shape && es.shape !== 'circle');
+        const hasEq = Boolean((this.pureEquation && !this.pureEquation.broken) || (this.shadowEquation && !this.shadowEquation.broken));
+        if (hasNonCircleShape || hasEq) {
+          return true;
+        }
+        const shadowCirclesNeeded = shadows.filter((s) => s.shape === 'circle').length;
+        const openCircleMolds = (this.electricShapes || []).filter((es) => !es.used && es.shape === 'circle').length;
+        const existingPureCircles = pures
+          .filter((p) => p.shape === 'circle')
+          .reduce((acc, p) => acc + (p.components?.length === 2 && p.components[0]?.shape === 'circle' && p.components[1]?.shape === 'circle' ? 2 : 1), 0);
+        if (existingPureCircles + openCircleMolds < shadowCirclesNeeded) {
+          return false;
+        }
       }
 
       const pureOpals = pures.filter((p) => p.type === 'opal');
@@ -4796,6 +5498,12 @@
         this.equationPointer = null;
         this.clearTrembleStates();
         GameHUD.playSfx('error');
+        this.deadEndAutoRewindPending = Boolean(
+          this.actionHistory &&
+          this.actionHistory.length > 0 &&
+          typeof GameHUD.canUseAbility === 'function' &&
+          GameHUD.canUseAbility(2)
+        );
         this.phase = 'defeat_pause';
         this.phaseTime = 0;
       }
@@ -4900,9 +5608,13 @@
       sg.totalRounds = sg.rounds.length;
       const rDef = sg.rounds[sg.roundIndex];
       const count = rDef.cups;
-      const spacing = count <= 2 ? 56 : (count === 3 ? 46 : (count === 4 ? 38 : 32));
-      const startX = R(160 - ((count - 1) * spacing) * 0.5);
-      const baseY = 104;
+      const isSanctuary = this.worldKey === 'sanctuary';
+      const spacing = isSanctuary
+        ? (count <= 2 ? 48 : (count === 3 ? 40 : (count === 4 ? 32 : 28)))
+        : (count <= 2 ? 56 : (count === 3 ? 46 : (count === 4 ? 38 : 32)));
+      const centerX = isSanctuary ? 166 : 160;
+      const startX = R(centerX - ((count - 1) * spacing) * 0.5);
+      const baseY = isSanctuary ? 90 : 104;
 
       sg.winningCup = sg.roundIndex % count;
       sg.opalCupIdx = sg.winningCup;
@@ -5125,7 +5837,14 @@
         this.protag.state = 'celebrate';
         this.ordemCompanion.state = 'celebrate';
         this.guardianActor.state = 'celebrate';
+        VictoryChoreography?.resetAudioState?.(this);
       });
+    },
+
+    getShellCalmBtnRect() {
+      return this.worldKey === 'sanctuary'
+        ? { x: 6, y: 23, w: 86, h: 14 }
+        : this.shellCalmBtnRect;
     },
 
     drawShellGame(ctx, tq) {
@@ -5133,18 +5852,21 @@
       if (!sg) return;
       const f12 = Math.floor(tq * SPRITE_FPS);
       const rDef = sg.rounds[sg.roundIndex] || sg.rounds[0];
+      const isSanctuary = this.worldKey === 'sanctuary';
 
       if (this.phase === 'shell_game_victory') {
         // A Opala de Fogo Primordial levita ao centro irradiando onda solar, mandacarus em flor de rubi e água cristalina brotando!
-        const gy = R(82 + Math.sin(tq * 4) * 3);
-        drawRing(ctx, 160, gy, 16 + (f12 & 1) * 3, '#FBBF24');
-        drawRing(ctx, 160, gy, 24 + (f12 & 1) * 4, '#FEF3C7');
+        const opalX = isSanctuary ? 174 : 160;
+        const gy = R((isSanctuary ? 78 : 82) + Math.sin(tq * 4) * 3);
+        drawRing(ctx, opalX, gy, 16 + (f12 & 1) * 3, '#FBBF24');
+        drawRing(ctx, opalX, gy, 24 + (f12 & 1) * 4, '#FEF3C7');
         const spr = GEM_SPRITES.opal_pure;
-        ctx.drawImage(spr, RH(160 - spr.width * 0.25), RH(gy - spr.height * 0.25), spr.width * 0.5, spr.height * 0.5);
-        drawStar(ctx, 160, gy - 14, 4, '#ffffff', '#FBBF24');
+        ctx.drawImage(spr, RH(opalX - spr.width * 0.25), RH(gy - spr.height * 0.25), spr.width * 0.5, spr.height * 0.5);
+        drawStar(ctx, opalX, gy - 14, 4, '#ffffff', '#FBBF24');
 
         // Mandacarus florescendo com flores de rubi e filetes de água cristalina brotando do solo rochoso
-        for (const mx of [84, 122, 198, 236]) {
+        const cactiXs = isSanctuary ? [136, 174, 212] : [84, 122, 198, 236];
+        for (const mx of cactiXs) {
           ctx.fillStyle = '#3e7338';
           ctx.fillRect(mx - 2, 118, 5, 22);
           ctx.fillRect(mx - 6, 124, 4, 8);
@@ -5153,25 +5875,45 @@
           ctx.fillStyle = '#6cd9e6';
           ctx.fillRect(mx - 8, 138, 16, 2);
         }
-        drawParchmentBox(ctx, 48, 26, 224, 20);
-        drawPixelTextCentered(ctx, 'A Opala de Fogo Primordial despertou a Caatinga!', 160, 32, '#ffea31', '#000000', 212, 9);
+        if (isSanctuary) {
+          drawParchmentBox(ctx, 8, 24, 230, 18);
+          drawPixelTextCentered(ctx, 'A Opala de Fogo Primordial brilhou no Portão!', 123, 29, '#ffea31', '#000000', 218, 8);
+        } else {
+          drawParchmentBox(ctx, 48, 26, 224, 20);
+          drawPixelTextCentered(ctx, 'A Opala de Fogo Primordial despertou a Caatinga!', 160, 32, '#ffea31', '#000000', 212, 9);
+        }
         return;
       }
 
       // Cabeçalho da Rodada + Botão Modo Calmo (Acessibilidade sem penalização)
-      drawParchmentBox(ctx, 110, 23, 148, 15);
-      drawPixelTextCentered(
-        ctx,
-        `Desafio das Areias - Rodada ${rDef.round}/6`,
-        184,
-        27,
-        '#ffffff',
-        '#000000',
-        140,
-        8
-      );
+      const totalRounds = sg.rounds.length || 6;
+      if (isSanctuary) {
+        drawParchmentBox(ctx, 96, 23, 142, 14);
+        drawPixelTextCentered(
+          ctx,
+          `Desafio das Areias - Rodada ${rDef.round}/${totalRounds}`,
+          167,
+          27,
+          '#ffffff',
+          '#000000',
+          134,
+          8
+        );
+      } else {
+        drawParchmentBox(ctx, 110, 23, 148, 15);
+        drawPixelTextCentered(
+          ctx,
+          `Desafio das Areias - Rodada ${rDef.round}/${totalRounds}`,
+          184,
+          27,
+          '#ffffff',
+          '#000000',
+          140,
+          8
+        );
+      }
 
-      const cb = this.shellCalmBtnRect;
+      const cb = this.getShellCalmBtnRect();
       ctx.fillStyle = '#2c221e';
       ctx.fillRect(cb.x - 1, cb.y - 1, cb.w + 2, cb.h + 2);
       ctx.fillStyle = sg.calmMode ? '#3e7338' : '#4a3830';
@@ -5190,18 +5932,25 @@
       );
 
       // Tapete de areia dourada do altar
-      ctx.fillStyle = '#D97706';
-      ctx.fillRect(54, 112, 212, 6);
-      ctx.fillStyle = '#FEF3C7';
-      ctx.fillRect(58, 112, 204, 1);
+      if (isSanctuary) {
+        ctx.fillStyle = '#D97706';
+        ctx.fillRect(100, 98, 132, 6);
+        ctx.fillStyle = '#FEF3C7';
+        ctx.fillRect(104, 98, 124, 1);
+      } else {
+        ctx.fillStyle = '#D97706';
+        ctx.fillRect(54, 112, 212, 6);
+        ctx.fillStyle = '#FEF3C7';
+        ctx.fillRect(58, 112, 204, 1);
+      }
 
       // Desenha a Opala de Fogo Primordial sob a cúpula vencedora quando o copo está erguido
       const winCup = sg.cups[sg.winningCup];
       if (winCup && winCup.liftY > 2) {
         const spr = GEM_SPRITES.opal_pure;
         const gw = spr.width * 0.5, gh = spr.height * 0.5;
-        ctx.drawImage(spr, RH(winCup.x - gw / 2), RH(104 - gh / 2), gw, gh);
-        drawStar(ctx, R(winCup.x), 92, 3, '#ffffff', '#FBBF24');
+        ctx.drawImage(spr, RH(winCup.x - gw / 2), RH(winCup.y - gh / 2), gw, gh);
+        drawStar(ctx, R(winCup.x), R(winCup.y - 12), 3, '#ffffff', '#FBBF24');
       }
 
       // Desenha as cúpulas de arenito e quartzo dourado
@@ -5242,12 +5991,13 @@
         }
       }
 
+      const bannerBox = isSanctuary ? { x: 20, y: 150, w: 208, h: 15, cx: 124, ty: 154, sz: 8 } : { x: 56, y: 124, w: 208, h: 16, cx: 160, ty: 128, sz: 9 };
       if (this.phase === 'shell_game_show') {
-        drawParchmentBox(ctx, 56, 124, 208, 16);
-        drawPixelTextCentered(ctx, 'Memorize onde está a Opala de Fogo!', 160, 128, '#ffea31', '#000000', 198, 9);
+        drawParchmentBox(ctx, bannerBox.x, bannerBox.y, bannerBox.w, bannerBox.h);
+        drawPixelTextCentered(ctx, 'Memorize onde está a Opala de Fogo!', bannerBox.cx, bannerBox.ty, '#ffea31', '#000000', 198, bannerBox.sz);
       } else if (this.phase === 'shell_game_pick') {
-        drawParchmentBox(ctx, 56, 124, 208, 16);
-        drawPixelTextCentered(ctx, 'Toque na cúpula onde está a Opala de Fogo!', 160, 128, '#ffea31', '#000000', 198, 9);
+        drawParchmentBox(ctx, bannerBox.x, bannerBox.y, bannerBox.w, bannerBox.h);
+        drawPixelTextCentered(ctx, 'Toque na cúpula onde está a Opala de Fogo!', bannerBox.cx, bannerBox.ty, '#ffea31', '#000000', 198, bannerBox.sz);
       }
     },
 
@@ -5271,6 +6021,7 @@
         demoIndex: 0,
         demoTimer: 1.0,
         playerIndex: 0,
+        inputIdleTimer: 0,
         phase: 'demo',
         phaseTimer: 0
       };
@@ -5297,6 +6048,7 @@
             this.riverMelody.phase = 'demo';
             this.riverMelody.demoIndex = 0;
             this.riverMelody.demoTimer = 1.0;
+            this.riverMelody.inputIdleTimer = 0;
           }
         }, false);
       } else {
@@ -5304,6 +6056,7 @@
         this.riverMelody.phase = 'demo';
         this.riverMelody.demoIndex = 0;
         this.riverMelody.demoTimer = 1.0;
+        this.riverMelody.inputIdleTimer = 0;
       }
     },
 
@@ -5314,6 +6067,7 @@
       rm.demoIndex = 0;
       rm.demoTimer = 1.0;
       rm.playerIndex = 0;
+      rm.inputIdleTimer = 0;
       rm.phase = 'demo';
       for (let i = 0; i < rm.crystals.length; i++) {
         const c = rm.crystals[i];
@@ -5345,6 +6099,7 @@
       const expectedNote = targetSeq[rm.playerIndex];
       const crystal = rm.crystals[gemIdx];
       if (!crystal) return false;
+      rm.inputIdleTimer = 0;
 
       if (gemIdx === expectedNote) {
         crystal.liftY = 14;
@@ -5454,28 +6209,44 @@
             }
             rm.phase = 'player_input';
             rm.playerIndex = 0;
+            rm.inputIdleTimer = 0;
           }
         }
+      } else if (rm.phase === 'player_input') {
+        rm.inputIdleTimer = (rm.inputIdleTimer || 0) + dt;
+      } else {
+        rm.inputIdleTimer = 0;
       }
     },
 
     drawRiverMelodyGame(ctx, tq) {
       const rm = this.riverMelody;
       if (!rm) return;
+      const isSanctuary = this.worldKey === 'sanctuary';
 
-      drawParchmentBox(ctx, 84, 23, 152, 15);
+      // Cabeçalho compacto à esquerda, sem sobrepor o botão Modo Calmo nem o cristal gigante central (x=148..204)
+      const titleRect = { x: 6, y: 22, w: 138, h: 14 };
+      drawParchmentBox(ctx, titleRect.x, titleRect.y, titleRect.w, titleRect.h);
+      let melLabel = `Sinfonia das Águas - Melodia ${rm.roundIndex + 1}/5`;
+      if (rm.finalMaxRound !== undefined) {
+        const startR = rm.finalStartRound ?? 1;
+        const dispRound = Math.max(1, rm.roundIndex - startR + 1);
+        const dispTotal = Math.max(1, rm.finalMaxRound - startR + 1);
+        melLabel = `Sinfonia das Águas - Melodia ${dispRound}/${dispTotal}`;
+      }
       drawPixelTextCentered(
         ctx,
-        `Sinfonia das Águas - Melodia ${rm.roundIndex + 1}/5`,
-        160,
-        27,
+        melLabel,
+        titleRect.x + titleRect.w / 2,
+        titleRect.y + 3,
         '#ffffff',
         '#000000',
-        144,
-        8
+        titleRect.w - 8,
+        7
       );
 
-      const cb = this.shellCalmBtnRect;
+      // Botão Modo Calmo compacto logo abaixo do título à esquerda (x=6..94, y=38..50)
+      const cb = this.riverCalmBtnRect || { x: 6, y: 38, w: 88, h: 12 };
       ctx.fillStyle = '#2c221e';
       ctx.fillRect(cb.x - 1, cb.y - 1, cb.w + 2, cb.h + 2);
       ctx.fillStyle = rm.calmMode ? '#1e40af' : '#234e52';
@@ -5486,12 +6257,27 @@
         ctx,
         rm.calmMode ? 'Modo Calmo: ON' : 'Modo Calmo: OFF',
         cb.x + cb.w / 2,
-        cb.y + 3,
+        cb.y + 2,
         '#d9fffb',
         '#082f49',
         cb.w - 4,
-        8
+        7
       );
+
+      // Selo GOD MODE compacto (no Santuário fica à esquerda da Porta Ancestral para não cobrir os encaixes)
+      if (GameHUD.godMode) {
+        const gm = isSanctuary
+          ? { x: 150, y: 23, w: 58, h: 12 }
+          : { x: 256, y: 22, w: 58, h: 12 };
+        ctx.fillStyle = 'rgba(24, 14, 42, 0.88)';
+        ctx.fillRect(gm.x, gm.y, gm.w, gm.h);
+        ctx.fillStyle = '#ffea31';
+        ctx.fillRect(gm.x, gm.y, gm.w, 1);
+        ctx.fillRect(gm.x, gm.y + gm.h - 1, gm.w, 1);
+        ctx.fillRect(gm.x, gm.y, 1, gm.h);
+        ctx.fillRect(gm.x + gm.w - 1, gm.y, 1, gm.h);
+        drawPixelTextCentered(ctx, 'GOD MODE', gm.x + gm.w / 2, gm.y + 2, '#ffea31', '#000000', gm.w - 4, 7);
+      }
 
       const targetSeq = rm.masterSequence.slice(0, rm.roundIndex + 1);
       const expectedNote = rm.phase === 'player_input' ? targetSeq[rm.playerIndex] : -1;
@@ -5538,14 +6324,39 @@
       }
 
       if (rm.phase === 'demo') {
-        drawParchmentBox(ctx, 64, 128, 192, 16);
+        const db = isSanctuary ? { x: 44, y: 150, w: 186, cx: 137, ty: 154 } : { x: 64, y: 134, w: 192, cx: 160, ty: 138 };
+        drawParchmentBox(ctx, db.x, db.y, db.w, 15);
         const demoLabel = (rm.demoIndex === 0 && rm.demoTimer > 0)
           ? 'Observe o cristal de referência...'
           : 'Ouça com atenção a melodia...';
-        drawPixelTextCentered(ctx, demoLabel, 160, 132, '#ffea31', '#000000', 184, 8);
-      } else if (rm.phase === 'player_input') {
-        drawParchmentBox(ctx, 64, 128, 192, 16);
-        drawPixelTextCentered(ctx, `Toque os cristais na ordem! (${rm.playerIndex}/${rm.roundIndex + 1})`, 160, 132, '#ffea31', '#000000', 184, 8);
+        drawPixelTextCentered(ctx, demoLabel, db.cx, db.ty, '#ffea31', '#000000', db.w - 8, 8);
+      } else if (rm.phase === 'player_input' && (rm.inputIdleTimer || 0) >= 4.5) {
+        const idleElapsed = (rm.inputIdleTimer || 0) - 4.5;
+        const hintAlpha = clamp(idleElapsed / 0.6, 0, 1);
+
+        // Aviso suave apenas após inatividade prolongada (>= 4.5s)
+        ctx.save();
+        ctx.globalAlpha = hintAlpha;
+        const hb = isSanctuary ? { x: 50, y: 150, w: 174, cx: 137, ty: 154 } : { x: 74, y: 134, w: 172, cx: 160, ty: 138 };
+        drawParchmentBox(ctx, hb.x, hb.y, hb.w, 15);
+        drawPixelTextCentered(ctx, 'Toque os cristais na ordem!', hb.cx, hb.ty, '#ffea31', '#000000', hb.w - 8, 8);
+        ctx.restore();
+
+        // Se o atraso acontecer no primeiro cristal da sequência, anima a mãozinha clicando sobre o cristal correto
+        if (rm.playerIndex === 0 && expectedNote >= 0 && rm.crystals[expectedNote] && typeof E.drawGhostHandHint === 'function') {
+          const targetCrystal = rm.crystals[expectedNote];
+          E.drawGhostHandHint(ctx, {
+            kind: 'tap',
+            fromX: targetCrystal.x,
+            fromY: targetCrystal.baseY - (targetCrystal.liftY || 0),
+            toX: targetCrystal.x,
+            toY: targetCrystal.baseY - (targetCrystal.liftY || 0),
+            t: idleElapsed,
+            duration: 1.4,
+            loop: true,
+            alpha: hintAlpha * 0.88
+          }, tq);
+        }
       }
     },
 
@@ -5579,6 +6390,7 @@
         this.protag.state = 'celebrate';
         this.ordemCompanion.state = 'celebrate';
         this.guardianActor.state = 'celebrate';
+        VictoryChoreography?.resetAudioState?.(this);
       });
     },
 
@@ -5605,6 +6417,9 @@
 
         score: 0,
         pureCuts: 0,
+        streak: 0,
+        maxStreak: 0,
+        streakGlowTimer: 0,
         maxCombo: 0,
         comboMultiplier: 1,
         lastCombo: 0,
@@ -5635,8 +6450,12 @@
         practiceSpawnTimer: 0.6,
         practiceBanner: null,
         practiceStrokeCuts: 0,
-        practiceStrokeCrystals: []
+        practiceStrokeCrystals: [],
+        practicePureCuts: 0,
+        practiceCompleted: false
       };
+
+      GameHUD.recordTutorialViewed?.('FOREST_SLICING_NINJA');
 
       if (typeof window !== 'undefined') {
         window.ForestCrystalNinja = this.forestNinja;
@@ -5697,6 +6516,8 @@
       const fn = this.forestNinja;
       if (!fn) return;
       fn.strikes = 0;
+      fn.streak = 0;
+      fn.streakGlowTimer = 0;
       fn.stageTimeRemaining = fn.stageDuration;
       fn.flyingCrystals = [];
       fn.halvedCrystals = [];
@@ -5725,20 +6546,33 @@
       const g = 135; // px/s² gravidade
       const speedMult = fn.calmMode ? 0.88 : 1.0;
 
+      const isSanctuary = this.worldKey === 'sanctuary' && !isPractice;
       const makeCrystal = (isShadow, preferredType = null) => {
         const types = ['emerald', 'white', 'citrine', 'aqua', 'rose'];
         const type = isShadow ? 'shadow_bomb' : (preferredType || types[Math.floor(Math.random() * types.length)]);
-        const startX = R(55 + Math.random() * 210);
+        const startX = isSanctuary
+          ? R(54 + Math.random() * 164)
+          : R(55 + Math.random() * 210);
         const startY = 186; // Começa imediatamente abaixo da tela (180px)
 
-        // Vértice do salto rigorosamente entre 32px e 64px para NUNCA cruzar o topo
-        const targetApexY = R(32 + Math.random() * 32);
-        const deltaH = startY - targetApexY; // 122 a 154 px
+        // Vértice do salto rigorosamente abaixo da barra do desafio para nunca cruzar o topo
+        const targetApexY = isSanctuary
+          ? R(46 + Math.random() * 24)
+          : R(32 + Math.random() * 32);
+        const deltaH = startY - targetApexY; // 116 a 154 px
         const vy = -Math.sqrt(2 * g * deltaH) * speedMult;
 
-        // Velocidade horizontal direcionada suavemente ao centro da tela
+        // Velocidade horizontal direcionada suavemente ao centro da arena
         let vx = 0;
-        if (startX < 120) {
+        if (isSanctuary) {
+          if (startX < 105) {
+            vx = (12 + Math.random() * 22) * speedMult;
+          } else if (startX > 170) {
+            vx = (-12 - Math.random() * 22) * speedMult;
+          } else {
+            vx = (-16 + Math.random() * 32) * speedMult;
+          }
+        } else if (startX < 120) {
           vx = (15 + Math.random() * 25) * speedMult;
         } else if (startX > 200) {
           vx = (-15 - Math.random() * 25) * speedMult;
@@ -5833,6 +6667,8 @@
         }
 
         fn.strikes++;
+        fn.streak = 0;
+        fn.streakGlowTimer = 0;
         fn.shakeTimer = 0.35;
         fn.stageTimeRemaining = Math.max(0, fn.stageTimeRemaining - 2.0);
         this.spawnShatter(crystal.x, crystal.y, 'rock', 14);
@@ -5888,6 +6724,9 @@
       }
 
       if (isPractice) {
+        fn.practicePureCuts = (fn.practicePureCuts || 0) + 1;
+        const firstUnlock = !fn.practiceCompleted;
+        fn.practiceCompleted = true;
         fn.practiceStrokeCuts = (fn.practiceStrokeCuts || 0) + 1;
         fn.practiceStrokeCrystals.push(crystal);
         if (fn.practiceStrokeCuts >= 2) {
@@ -5902,18 +6741,27 @@
             count: fn.practiceStrokeCuts
           };
           if (global.CrystalAudio?.comboChime) global.CrystalAudio.comboChime(fn.practiceStrokeCuts);
+        } else if (firstUnlock) {
+          fn.practiceBanner = {
+            text: '✓ Prática concluída! Desafio liberado!',
+            color: '#4ade80',
+            timer: 1.8
+          };
         }
         return true;
       }
 
       fn.pureCuts++;
+      fn.streak = (fn.streak || 0) + 1;
+      fn.maxStreak = Math.max(fn.maxStreak || 0, fn.streak);
+      fn.streakGlowTimer = 0.55;
       fn.score += 10;
       fn.strokePureCuts++;
       fn.strokeCrystals.push(crystal);
 
-      // Mecânica de combo clássica: acerto múltiplo de 2, 3 ou 4 cristais simultâneos / no mesmo golpe
+      // Mecânica de combo de Multi-Corte (em 1 único golpe: 2x, 3x, 4x, 5x+ sem limite artificial)
       if (fn.strokePureCuts >= 2) {
-        const comboCount = Math.min(fn.strokePureCuts, 4);
+        const comboCount = fn.strokePureCuts;
         fn.score += comboCount * 10;
         fn.maxCombo = Math.max(fn.maxCombo, comboCount);
         fn.comboMultiplier = comboCount;
@@ -5925,19 +6773,20 @@
         const avgY = fn.strokeCrystals.reduce((acc, c) => acc + c.y, 0) / fn.strokeCrystals.length;
 
         const bannerColors = {
-          2: { bg: '#064e3b', border: '#10b981', text: '#ffea31', star: '#fbbf24' },
-          3: { bg: '#065f46', border: '#34d399', text: '#67e8f9', star: '#38bdf8' },
-          4: { bg: '#4c1d95', border: '#a855f7', text: '#fde047', star: '#f43f5e' }
+          2: { border: '#10b981', text: '#ffea31', star: '#fbbf24' },
+          3: { border: '#34d399', text: '#67e8f9', star: '#38bdf8' },
+          4: { border: '#a855f7', text: '#fde047', star: '#f43f5e' },
+          5: { border: '#f472b6', text: '#ffffff', star: '#fde047' }
         };
-        const colScheme = bannerColors[comboCount] || bannerColors[2];
+        const colScheme = bannerColors[Math.min(comboCount, 5)] || bannerColors[2];
 
         fn.activeComboBanner = {
           text: comboTxt,
-          x: avgX,
-          y: avgY - 14,
-          scale: 1.5,
+          x: clamp(avgX, 44, W - 44),
+          y: clamp(avgY - 12, 46, H - 24),
+          scale: 1.0,
           alpha: 1.0,
-          timer: 1.5,
+          timer: 1.3,
           count: comboCount,
           colors: colScheme
         };
@@ -5948,29 +6797,29 @@
           x: avgX,
           y: avgY,
           r: 6,
-          maxR: 32 + comboCount * 14,
+          maxR: 28 + Math.min(comboCount, 6) * 10,
           color: colScheme.border,
           alpha: 1.0
         });
 
         fn.comboSparkles = fn.comboSparkles || [];
-        const numParticles = 8 + comboCount * 6;
+        const numParticles = 6 + Math.min(comboCount, 6) * 4;
         for (let p = 0; p < numParticles; p++) {
           const ang = (p / numParticles) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
-          const spd = 35 + Math.random() * 55;
+          const spd = 32 + Math.random() * 48;
           fn.comboSparkles.push({
             x: avgX,
             y: avgY,
             vx: Math.cos(ang) * spd,
             vy: Math.sin(ang) * spd,
-            life: 0.7 + Math.random() * 0.4,
-            maxLife: 1.0,
+            life: 0.6 + Math.random() * 0.35,
+            maxLife: 0.95,
             color: p % 2 === 0 ? colScheme.text : colScheme.star
           });
         }
 
         // Tremor sutil e impactante de tela proporcional ao combo
-        fn.shakeTimer = 0.12 + comboCount * 0.06;
+        fn.shakeTimer = Math.min(0.42, 0.12 + comboCount * 0.05);
 
         if (global.CrystalAudio?.comboChime) {
           global.CrystalAudio.comboChime(comboCount);
@@ -6041,6 +6890,7 @@
       if (this.phase !== 'forest_ninja_game') return;
 
       if (fn.shakeTimer > 0) fn.shakeTimer = Math.max(0, fn.shakeTimer - dt);
+      if (fn.streakGlowTimer > 0) fn.streakGlowTimer = Math.max(0, fn.streakGlowTimer - dt);
 
       // Temporizador do badge de combo no canto superior direito
       if (fn.comboTimer > 0) {
@@ -6115,6 +6965,11 @@
         c.rot += c.vrot * dt;
 
         if (c.y > 195 && c.vy > 0) {
+          // Deixar qualquer cristal puro cair sem cortar zera imediatamente o Combo de Sequência (Streak)
+          if (!c.shadow && !c.sliced) {
+            fn.streak = 0;
+            fn.streakGlowTimer = 0;
+          }
           fn.flyingCrystals.splice(i, 1);
         }
       }
@@ -6133,10 +6988,15 @@
       }
     },
 
+    isForestNinjaPracticeUnlocked() {
+      const fn = this.forestNinja;
+      return Boolean(GameHUD.godMode || fn?.practiceCompleted || (fn?.practicePureCuts || 0) >= 1);
+    },
+
     handleForestNinjaVignetteClick(x, y) {
       const fn = this.forestNinja;
       if (!fn || this.phase !== 'forest_ninja_vignette') return false;
-      const cx = 24, cy = 18, cw = 272, ch = 152;
+      const cx = 24, cy = 21, cw = 272, ch = 149;
 
       if (fn.vignetteCard === 1) {
         // Botão "Praticar Corte >" no Card 1
@@ -6169,15 +7029,24 @@
           fn.practiceSpawnTimer = 0.4;
           return true;
         }
-        // 3. "Iniciar Desafio! ⚔"
+        // 3. "Iniciar Desafio! >" (bloqueado até fatiar pelo menos 1 cristal puro, exceto God Mode)
         const bStart = { x: cx + cw - 96, y: cy + ch - 18, w: 86, h: 14 };
         if (x >= bStart.x && x <= bStart.x + bStart.w && y >= bStart.y && y <= bStart.y + bStart.h) {
+          if (!this.isForestNinjaPracticeUnlocked()) {
+            GameHUD.playSfx('error');
+            fn.practiceBanner = {
+              text: 'Corte pelo menos 1 cristal puro para liberar!',
+              color: '#fbbf24',
+              timer: 1.6
+            };
+            return true;
+          }
           this.startForestNinjaStage(1);
           return true;
         }
 
         // Toque na arena de treino (para cortar cristais)
-        const arena = { x: cx + 12, y: cy + 30, w: cw - 24, h: 88 };
+        const arena = { x: cx + 12, y: cy + 31, w: cw - 24, h: 74 };
         if (x >= arena.x && x <= arena.x + arena.w && y >= arena.y && y <= arena.y + arena.h) {
           fn.isSlicing = true;
           fn.lastStrokeX = x;
@@ -6333,6 +7202,7 @@
         this.protag.state = 'celebrate';
         this.ordemCompanion.state = 'celebrate';
         this.guardianActor.state = 'celebrate';
+        VictoryChoreography?.resetAudioState?.(this);
       });
     },
 
@@ -6442,35 +7312,59 @@
 
       ctx.restore();
 
-      // 4. Barra Superior do Desafio: Etapa / Tempo 20s / Pontuação / Indicador de Combo em Destaque
-      const barBox = { x: 24, y: 22, w: 272, h: 16 };
+      const isSanctuary = this.worldKey === 'sanctuary';
+
+      // 4. Barra Superior do Desafio: Etapa / Tempo / Pontuação / Indicador de Combo em Destaque
+      const barBox = isSanctuary
+        ? { x: 6, y: 22, w: 232, h: 16 }
+        : { x: 24, y: 22, w: 272, h: 16 };
       drawParchmentBox(ctx, barBox.x, barBox.y, barBox.w, barBox.h);
 
-      // Etapa (1 a 4)
-      drawPixelText(ctx, `Etapa ${fn.currentStage}/4`, barBox.x + 6, barBox.y + 4, '#ffffff', '#000000', 50, 8);
-
-      // Tempo de 20 segundos
       const secLeft = Math.max(0, Math.ceil(fn.stageTimeRemaining));
       const timeCol = secLeft <= 4 ? '#ff4d4d' : '#ffea31';
-      drawPixelTextCentered(ctx, `Tempo: ${secLeft}s`, 104, barBox.y + 4, timeCol, '#000000', 58, 8);
-
-      // Barra fina de progresso dos 20s
       const timeFrac = clamp(fn.stageTimeRemaining / fn.stageDuration, 0, 1);
-      ctx.fillStyle = '#4ade80';
-      ctx.fillRect(80, barBox.y + 13, R(48 * timeFrac), 2);
 
-      // Exibição visível da pontuação da criança
-      drawPixelText(ctx, `Pts: ${fn.score}`, 148, barBox.y + 4, '#92e8ff', '#000000', 48, 8);
-
-      // Indicador/Contador de Combo em Destaque no Canto Superior Direito (x: 230..292)
-      this.forestNinjaComboBadgeRect = { x: 230, y: barBox.y + 1, w: 62, h: 14 };
+      if (isSanctuary) {
+        const targetCuts = fn.targetPureCuts || 8;
+        drawPixelText(ctx, `Cortes: ${fn.pureCuts}/${targetCuts}`, 11, barBox.y + 4, '#ffffff', '#000000', 58, 8);
+        drawPixelTextCentered(ctx, `Tempo: ${secLeft}s`, 96, barBox.y + 4, timeCol, '#000000', 52, 8);
+        ctx.fillStyle = '#4ade80';
+        ctx.fillRect(74, barBox.y + 13, R(44 * timeFrac), 2);
+        drawPixelText(ctx, `Pts: ${fn.score}`, 126, barBox.y + 4, '#92e8ff', '#000000', 46, 8);
+        this.forestNinjaComboBadgeRect = { x: 178, y: barBox.y + 1, w: 56, h: 14 };
+      } else {
+        // Etapa (1 a 4)
+        drawPixelText(ctx, `Etapa ${fn.currentStage}/4`, barBox.x + 6, barBox.y + 4, '#ffffff', '#000000', 50, 8);
+        drawPixelTextCentered(ctx, `Tempo: ${secLeft}s`, 104, barBox.y + 4, timeCol, '#000000', 58, 8);
+        ctx.fillStyle = '#4ade80';
+        ctx.fillRect(80, barBox.y + 13, R(48 * timeFrac), 2);
+        drawPixelText(ctx, `Pts: ${fn.score}`, 148, barBox.y + 4, '#92e8ff', '#000000', 48, 8);
+        this.forestNinjaComboBadgeRect = { x: 228, y: barBox.y + 1, w: 66, h: 14 };
+      }
       const cbRect = this.forestNinjaComboBadgeRect;
-      const isComboActive = fn.comboTimer > 0 && fn.comboMultiplier >= 2;
+      const streakVal = Math.max(0, Math.floor(fn.streak || 0));
+      const pulseGlow = fn.streakGlowTimer > 0 && ((Math.floor(tq * 16) & 1) === 0);
       ctx.save();
-      if (isComboActive) {
-        const bgCol = fn.comboMultiplier >= 4 ? '#581c87' : (fn.comboMultiplier === 3 ? '#065f46' : '#854d0e');
-        const borderCol = fn.comboMultiplier >= 4 ? '#d8b4fe' : (fn.comboMultiplier === 3 ? '#6ee7b7' : '#fde047');
-        const textCol = fn.comboMultiplier >= 4 ? '#fef08a' : (fn.comboMultiplier === 3 ? '#a7f3d0' : '#fef9c3');
+      if (streakVal >= 1) {
+        let bgCol = '#064e3b', borderCol = '#34d399', textCol = '#a7f3d0', starCount = 0;
+        if (streakVal >= 20) {
+          bgCol = '#581c87';
+          borderCol = pulseGlow ? '#ffffff' : '#f0abfc';
+          textCol = '#fef08a';
+          starCount = 2;
+        } else if (streakVal >= 10) {
+          bgCol = '#164e63';
+          borderCol = pulseGlow ? '#ffffff' : '#67e8f9';
+          textCol = '#e0f2fe';
+          starCount = 2;
+        } else if (streakVal >= 5) {
+          bgCol = '#854d0e';
+          borderCol = pulseGlow ? '#ffffff' : '#fde047';
+          textCol = '#fef9c3';
+          starCount = 1;
+        } else if (pulseGlow) {
+          borderCol = '#a7f3d0';
+        }
         ctx.fillStyle = bgCol;
         ctx.fillRect(cbRect.x - 1, cbRect.y - 1, cbRect.w + 2, cbRect.h + 2);
         ctx.fillStyle = borderCol;
@@ -6479,10 +7373,14 @@
         ctx.fillRect(cbRect.x, cbRect.y, 1, cbRect.h);
         ctx.fillRect(cbRect.x + cbRect.w - 1, cbRect.y, 1, cbRect.h);
 
-        const comboLabel = `COMBO ${fn.comboMultiplier}x!`;
-        drawPixelTextCentered(ctx, comboLabel, cbRect.x + cbRect.w / 2, cbRect.y + 3, textCol, '#000000', cbRect.w - 4, 8);
-        drawStar(ctx, cbRect.x + 5, cbRect.y + 7, 2, '#ffffff', borderCol);
-        drawStar(ctx, cbRect.x + cbRect.w - 5, cbRect.y + 7, 2, '#ffffff', borderCol);
+        const streakLabel = `SEQ: ${streakVal}`;
+        drawPixelTextCentered(ctx, streakLabel, cbRect.x + cbRect.w / 2, cbRect.y + 3, textCol, '#000000', cbRect.w - 6, 8);
+        if (starCount >= 1) {
+          drawStar(ctx, cbRect.x + 5, cbRect.y + 7, 2, '#ffffff', borderCol);
+        }
+        if (starCount >= 2) {
+          drawStar(ctx, cbRect.x + cbRect.w - 5, cbRect.y + 7, 2, '#ffffff', borderCol);
+        }
       } else {
         ctx.fillStyle = '#1e293b';
         ctx.fillRect(cbRect.x, cbRect.y, cbRect.w, cbRect.h);
@@ -6491,41 +7389,38 @@
         ctx.fillRect(cbRect.x, cbRect.y + cbRect.h - 1, cbRect.w, 1);
         ctx.fillRect(cbRect.x, cbRect.y, 1, cbRect.h);
         ctx.fillRect(cbRect.x + cbRect.w - 1, cbRect.y, 1, cbRect.h);
-        const comboLabel = fn.maxCombo >= 2 ? `MAX: ${fn.maxCombo}x` : 'COMBO: 1x';
-        drawPixelTextCentered(ctx, comboLabel, cbRect.x + cbRect.w / 2, cbRect.y + 3, '#94a3b8', '#000000', cbRect.w - 4, 8);
+        drawPixelTextCentered(ctx, 'SEQ: 0', cbRect.x + cbRect.w / 2, cbRect.y + 3, '#94a3b8', '#000000', cbRect.w - 4, 8);
       }
       ctx.restore();
 
-      // 5. Banner de COMBO (COMBO X2!, COMBO X3!, COMBO X4!)
+      // 5. Combo de Multi-Corte (em 1 golpe): texto flutuante limpo, compacto e SEM caixa opaca
       if (fn.activeComboBanner) {
         const cb = fn.activeComboBanner;
-        const bw = 96, bh = 18;
-        const bx = R(cb.x - bw / 2), by = R(cb.y - bh / 2);
+        const cxB = clamp(R(cb.x), 36, isSanctuary ? 204 : W - 36);
+        const cyB = clamp(R(cb.y), 44, H - 18);
         ctx.save();
         ctx.globalAlpha = clamp(cb.timer / 0.35, 0, 1);
 
-        const col = cb.colors || { bg: '#064e3b', border: '#10b981', text: '#ffea31', star: '#fbbf24' };
-        // Caixa temática de combo com efeito visual brilhante
-        ctx.fillStyle = col.bg;
-        ctx.fillRect(bx - 1, by - 1, bw + 2, bh + 2);
-        ctx.fillStyle = col.border;
-        ctx.fillRect(bx, by, bw, 1);
-        ctx.fillRect(bx, by + bh - 1, bw, 1);
-        ctx.fillRect(bx, by, 1, bh);
-        ctx.fillRect(bx + bw - 1, by, 1, bh);
-
-        // Texto do combo
-        drawPixelTextCentered(ctx, cb.text, bx + bw / 2, by + 4, col.text, '#000000', bw - 10, 10);
-        drawStar(ctx, bx + 10, by + 9, 3, '#ffffff', col.star);
-        drawStar(ctx, bx + bw - 10, by + 9, 3, '#ffffff', col.star);
+        const col = cb.colors || { border: '#10b981', text: '#ffea31', star: '#fbbf24' };
+        // Apenas texto flutuante nítido com contorno preto e pequenas faíscas coloridas (sem fundo opaco)
+        drawPixelTextCentered(ctx, cb.text, cxB, cyB - 3, col.text, '#000000', 80, 7);
+        drawStar(ctx, cxB - 28, cyB, 2, '#ffffff', col.star);
+        drawStar(ctx, cxB + 28, cyB, 2, '#ffffff', col.star);
+        P1(ctx, cxB - 20, cyB - 4, col.border);
+        P1(ctx, cxB + 20, cyB - 4, col.border);
         ctx.restore();
       }
 
       // 6. Banner flutuante de avisos de etapa / penalidade (-2s)
       if (fn.floatingBanner) {
         const fb = fn.floatingBanner;
-        drawParchmentBox(ctx, 40, fb.y, 240, 18);
-        drawPixelTextCentered(ctx, fb.text, 160, fb.y + 5, fb.color || '#ffea31', '#000000', 230, 9);
+        if (isSanctuary) {
+          drawParchmentBox(ctx, 8, fb.y, 230, 18);
+          drawPixelTextCentered(ctx, fb.text, 123, fb.y + 5, fb.color || '#ffea31', '#000000', 218, 8);
+        } else {
+          drawParchmentBox(ctx, 40, fb.y, 240, 18);
+          drawPixelTextCentered(ctx, fb.text, 160, fb.y + 5, fb.color || '#ffea31', '#000000', 230, 9);
+        }
       }
     },
 
@@ -6534,8 +7429,9 @@
       if (!fn) return;
       ctx.fillStyle = 'rgba(10, 14, 8, 0.72)';
       ctx.fillRect(0, 20, W, H - 20);
+      TextOverlay?.dimLogicalRect?.(ctx, 0, 20, W, H - 20, 'rgba(10, 14, 8, 0.72)');
 
-      const cx = 24, cy = 18, cw = 272, ch = 152;
+      const cx = 24, cy = 21, cw = 272, ch = 149;
       drawParchmentBox(ctx, cx, cy, cw, ch, { headerH: 18, headerBg: '#213d28' });
 
       if (fn.vignetteCard === 1) {
@@ -6620,21 +7516,53 @@
         ctx.fillRect(b.x, b.y + b.h - 1, b.w, 1);
         drawPixelTextCentered(ctx, 'Praticar Corte >', b.x + b.w / 2, b.y + 3, '#ffffff', '#000000', b.w - 4, 8);
       } else {
-        // CARD 2: OPORTUNIDADE DE TESTAR / TREINO LIVRE
-        drawPixelText(ctx, 'Treino Livre', cx + 10, cy + 6, '#ffea31', '#000000', 120, 9);
-        drawPixelText(ctx, '2/2', cx + 10, cy + 6, '#ffffff', '#000000', cw - 20, 9, 'right');
+        // CARD 2: OPORTUNIDADE DE TESTAR / TREINO INTERATIVO DE CORTE
+        const practiceDone = Boolean(fn.practiceCompleted || (fn.practicePureCuts || 0) >= 1);
+        const isUnlocked = this.isForestNinjaPracticeUnlocked();
+        const pulse = GameHUD.reducedMotion ? 0 : (Math.floor(tq * 4) & 1);
 
-        drawPixelText(ctx, 'Arraste na área abaixo para testar cortes e combos:', cx + 14, cy + 21, '#ffea31', '#000000', cw - 28, 8);
+        drawPixelText(ctx, 'Treino de Corte', cx + 10, cy + 6, '#ffea31', '#000000', 120, 9);
 
-        // Arena interativa de teste
-        const arena = { x: cx + 12, y: cy + 32, w: cw - 24, h: 86 };
+        // Selo destacado "✋ PRÁTICA INTERATIVA" no cabeçalho direito
+        const badge = { x: cx + cw - 118, y: cy + 3, w: 110, h: 12 };
+        GameHUD.drawInteractivePracticeBadge(ctx, badge, practiceDone, tq);
+
+        drawPixelText(ctx, 'Arraste na arena destacada para fatiar os cristais:', cx + 14, cy + 21, '#ffea31', '#000000', cw - 28, 8);
+
+        // Arena interativa de teste com borda ativa pulsante
+        const arena = { x: cx + 12, y: cy + 31, w: cw - 24, h: 74 };
         ctx.fillStyle = '#0f2015';
         ctx.fillRect(arena.x, arena.y, arena.w, arena.h);
-        ctx.fillStyle = '#22543d';
+        const arenaBorder = practiceDone
+          ? (pulse ? '#86efac' : '#4ade80')
+          : (pulse ? '#fbbf24' : '#38bdf8');
+        ctx.fillStyle = arenaBorder;
         ctx.fillRect(arena.x, arena.y, arena.w, 1);
         ctx.fillRect(arena.x, arena.y + arena.h - 1, arena.w, 1);
         ctx.fillRect(arena.x, arena.y, 1, arena.h);
         ctx.fillRect(arena.x + arena.w - 1, arena.y, 1, arena.h);
+        // Cantos reforçados
+        ctx.fillStyle = practiceDone ? '#4ade80' : '#ffea31';
+        ctx.fillRect(arena.x + 1, arena.y + 1, 5, 1);
+        ctx.fillRect(arena.x + 1, arena.y + 1, 1, 5);
+        ctx.fillRect(arena.x + arena.w - 6, arena.y + 1, 5, 1);
+        ctx.fillRect(arena.x + arena.w - 2, arena.y + 1, 1, 5);
+        ctx.fillRect(arena.x + 1, arena.y + arena.h - 2, 5, 1);
+        ctx.fillRect(arena.x + 1, arena.y + arena.h - 6, 1, 5);
+        ctx.fillRect(arena.x + arena.w - 6, arena.y + arena.h - 2, 5, 1);
+        ctx.fillRect(arena.x + arena.w - 2, arena.y + arena.h - 6, 1, 5);
+
+        if (!practiceDone && !fn.activeComboBanner && !fn.practiceBanner) {
+          drawPixelTextCentered(ctx, 'DESLIZE AQUI PARA CORTAR!', 160, arena.y + 5, '#7dd3fc', '#000000', 180, 7);
+        }
+
+        // Recorta cristais, metades e rastro estritamente dentro da arena interativa
+        ctx.save();
+        if (typeof ctx.beginPath === 'function' && typeof ctx.rect === 'function' && typeof ctx.clip === 'function') {
+          ctx.beginPath();
+          ctx.rect(arena.x + 1, arena.y + 1, arena.w - 2, arena.h - 2);
+          ctx.clip();
+        }
 
         // Cristais de treino no ar
         for (const c of fn.practiceCrystals) {
@@ -6688,14 +7616,41 @@
           }
           ctx.restore();
         }
+        ctx.restore();
 
-        // Aviso / Combo no treino
+        // Aviso / Combo no treino (flutuante e sem caixa opaca)
         if (fn.activeComboBanner) {
-          drawParchmentBox(ctx, 110, arena.y + 6, 100, 15);
-          drawPixelTextCentered(ctx, fn.activeComboBanner.text, 160, arena.y + 9, '#15803d', null, 90, 8);
+          drawPixelTextCentered(ctx, fn.activeComboBanner.text, 160, arena.y + 8, '#ffea31', '#000000', 90, 7);
+          drawStar(ctx, 132, arena.y + 11, 2, '#ffffff', '#fbbf24');
+          drawStar(ctx, 188, arena.y + 11, 2, '#ffffff', '#fbbf24');
         } else if (fn.practiceBanner) {
-          drawPixelTextCentered(ctx, fn.practiceBanner.text, 160, arena.y + 8, fn.practiceBanner.color, null, 180, 8);
+          drawPixelTextCentered(ctx, fn.practiceBanner.text, 160, arena.y + 8, fn.practiceBanner.color, '#000000', 220, 8);
         }
+
+        // Indicador de objetivo prático (SEM barra de timer!) logo abaixo da arena
+        const ob = { x: cx + 12, y: cy + 109, w: cw - 24, h: 14 };
+        ctx.fillStyle = '#0f1422';
+        ctx.fillRect(ob.x - 1, ob.y - 1, ob.w + 2, ob.h + 2);
+        ctx.fillStyle = practiceDone ? '#0e3422' : (GameHUD.godMode ? '#281845' : '#1f1c36');
+        ctx.fillRect(ob.x, ob.y, ob.w, ob.h);
+        ctx.fillStyle = practiceDone ? '#4ade80' : (GameHUD.godMode ? '#ffea31' : (pulse ? '#fbbf24' : '#38bdf8'));
+        ctx.fillRect(ob.x, ob.y, ob.w, 1);
+        ctx.fillRect(ob.x, ob.y + ob.h - 1, ob.w, 1);
+        ctx.fillRect(ob.x, ob.y, 1, ob.h);
+        ctx.fillRect(ob.x + ob.w - 1, ob.y, 1, ob.h);
+        const obText = practiceDone
+          ? '✓ Prática concluída! Pode iniciar o desafio!'
+          : (GameHUD.godMode ? '⚡ God Mode: liberado para iniciar' : 'Pratique 1×: corte 1 cristal puro para liberar');
+        drawPixelTextCentered(
+          ctx,
+          obText,
+          ob.x + ob.w / 2,
+          ob.y + 3,
+          practiceDone ? '#86efac' : (GameHUD.godMode ? '#ffea31' : '#ffe887'),
+          '#000000',
+          ob.w - 8,
+          8
+        );
 
         // Botões do Card 2:
         // 1. "< Vídeo"
@@ -6720,16 +7675,27 @@
         ctx.fillRect(bReset.x, bReset.y + bReset.h - 1, bReset.w, 1);
         drawPixelTextCentered(ctx, '↺ Recomeçar', bReset.x + bReset.w / 2, bReset.y + 3, '#ffffff', '#1e3a8a', bReset.w - 4, 8);
 
-        // 3. "Iniciar Desafio! >"
+        // 3. "Iniciar Desafio! >" (bloqueado até fatiar 1 cristal puro, exceto God Mode)
         const bStart = { x: cx + cw - 96, y: cy + ch - 18, w: 86, h: 14 };
-        ctx.fillStyle = '#142918';
-        ctx.fillRect(bStart.x - 1, bStart.y - 1, bStart.w + 2, bStart.h + 2);
-        ctx.fillStyle = '#15803d';
-        ctx.fillRect(bStart.x, bStart.y, bStart.w, bStart.h);
-        ctx.fillStyle = '#fde047';
-        ctx.fillRect(bStart.x, bStart.y, bStart.w, 1);
-        ctx.fillRect(bStart.x, bStart.y + bStart.h - 1, bStart.w, 1);
-        drawPixelTextCentered(ctx, 'Iniciar Desafio! >', bStart.x + bStart.w / 2, bStart.y + 3, '#ffffff', '#142918', bStart.w - 4, 8);
+        if (!isUnlocked) {
+          ctx.fillStyle = '#0f1422';
+          ctx.fillRect(bStart.x - 1, bStart.y - 1, bStart.w + 2, bStart.h + 2);
+          ctx.fillStyle = '#1b2334';
+          ctx.fillRect(bStart.x, bStart.y, bStart.w, bStart.h);
+          ctx.fillStyle = '#2d3b54';
+          ctx.fillRect(bStart.x, bStart.y, bStart.w, 1);
+          ctx.fillRect(bStart.x, bStart.y + bStart.h - 1, bStart.w, 1);
+          drawPixelTextCentered(ctx, 'Iniciar Desafio! >', bStart.x + bStart.w / 2, bStart.y + 3, '#6b7d9b', '#000000', bStart.w - 4, 8);
+        } else {
+          ctx.fillStyle = '#142918';
+          ctx.fillRect(bStart.x - 1, bStart.y - 1, bStart.w + 2, bStart.h + 2);
+          ctx.fillStyle = '#15803d';
+          ctx.fillRect(bStart.x, bStart.y, bStart.w, bStart.h);
+          ctx.fillStyle = pulse ? '#fde047' : '#86efac';
+          ctx.fillRect(bStart.x, bStart.y, bStart.w, 1);
+          ctx.fillRect(bStart.x, bStart.y + bStart.h - 1, bStart.w, 1);
+          drawPixelTextCentered(ctx, 'Iniciar Desafio! >', bStart.x + bStart.w / 2, bStart.y + 3, '#ffffff', '#142918', bStart.w - 4, 8);
+        }
       }
     },
 
@@ -6750,6 +7716,10 @@
         this.waveRadius = 1;
         this.phase = 'step_resolving';
         this.phaseTime = 0;
+        this.protag.state = 'celebrate';
+        if (this.ordemCompanion?.visible) this.ordemCompanion.state = 'celebrate';
+        if (this.guardianActor?.visible) this.guardianActor.state = 'celebrate';
+        GameHUD.playSfx('victoryFanfare');
       }
     },
 
@@ -6923,6 +7893,7 @@
         this.protag.state = 'celebrate';
         this.ordemCompanion.state = 'celebrate';
         if (this.guardianActor.visible) this.guardianActor.state = 'celebrate';
+        VictoryChoreography?.resetAudioState?.(this);
       });
     },
 
@@ -6941,6 +7912,9 @@
       DialogueBox.open(lines, () => {
         this.phase = 'celebrate_complete';
         this.phaseTime = 0;
+        this.protag.state = 'celebrate';
+        if (this.ordemCompanion?.visible) this.ordemCompanion.state = 'celebrate';
+        VictoryChoreography?.resetAudioState?.(this);
       });
     },
 
@@ -7071,7 +8045,7 @@
         }
 
         if (this.phase && this.phase.startsWith('shell_game_') && this.shellGame) {
-          const cb = this.shellCalmBtnRect;
+          const cb = this.getShellCalmBtnRect();
           if (cb && x >= cb.x && x <= cb.x + cb.w && y >= cb.y && y <= cb.y + cb.h) {
             GameHUD.playSfx('click');
             this.shellGame.calmMode = !this.shellGame.calmMode;
@@ -7090,7 +8064,7 @@
         }
 
         if (this.phase === 'river_melody_game' && this.riverMelody) {
-          const cb = this.shellCalmBtnRect;
+          const cb = this.riverCalmBtnRect || this.shellCalmBtnRect;
           if (cb && x >= cb.x && x <= cb.x + cb.w && y >= cb.y && y <= cb.y + cb.h) {
             GameHUD.playSfx('click');
             this.riverMelody.calmMode = !this.riverMelody.calmMode;
@@ -7142,9 +8116,19 @@
 
         if (this.phase !== 'gameplay') return;
 
+        this._gestureSnapshot = this.captureStepSnapshot();
+        this._gestureCommitted = false;
+
         if (this.fractionPlatform?.glowing && !this.fractionPlatform.broken && this.isInsideFractionPlatform(x, y)) {
-          this.triggerFractionDivide();
-          return;
+          // Se o clique não foi diretamente sobre um cristal dentro da fração (ou foi na barra central), divide na hora;
+          // se foi sobre um cristal, permite arrastá-lo para fora/reorganizar ou dividir com clique rápido (onUp).
+          const hitFracPiece = this.pieces.some((p) => !p.shadow && !p.broken && p.value > 0 && p.inFraction && Math.hypot(x - p.x, y - p.y) <= 14);
+          if (!hitFracPiece) {
+            this.triggerFractionDivide();
+            this._gestureSnapshot = null;
+            this._gestureCommitted = false;
+            return;
+          }
         }
 
         if (
@@ -7198,7 +8182,6 @@
         for (let i = this.pieces.length - 1; i >= 0; i--) {
           const p = this.pieces[i];
           if (!p.shadow && !p.broken && p.value > 0 && Math.hypot(x - p.x, y - p.y) <= 16) {
-            if (p.inFraction) continue;
             if (p.inEquation && eq && !eq.expanded) continue;
             GameHUD.playSfx(p.type === 'opal' ? 'opalGrab' : (p.type === 'rose' ? 'roseGrab' : 'quartzGrab'));
             this.draggedPiece = p;
@@ -7215,6 +8198,29 @@
 
         if (eq && !eq.broken && eq.expanded && clickedInEq) {
           this.equationPointer = { startX: x, startY: y, origX: eq.x, origY: eq.y, moved: false };
+          return;
+        }
+
+        // Feedback sensorial se tentar arrastar/tocar um cristal sombrio (enraizado pelas sombras)
+        for (let i = this.pieces.length - 1; i >= 0; i--) {
+          const sp = this.pieces[i];
+          if (sp.shadow && !sp.broken && sp.value > 0 && Math.hypot(x - sp.x, y - sp.y) <= 16) {
+            this.triggerShadowCrystalBlocked(sp);
+            this._gestureSnapshot = null;
+            this._gestureCommitted = false;
+            return;
+          }
+        }
+        if (this.shadowEquation && !this.shadowEquation.broken && this.isInsideEquationAura(this.shadowEquation, x, y)) {
+          for (const sp of this.pieces) {
+            if (sp.shadow && !sp.broken && sp.value > 0 && sp.inEquation === 'shadow') {
+              sp.rejectUntil = this.t + 0.36;
+            }
+          }
+          this.spawnShadowSmokePuff(this.shadowEquation.x, this.shadowEquation.y);
+          GameHUD.playSfx('shadowBlocked');
+          this._gestureSnapshot = null;
+          this._gestureCommitted = false;
         }
       };
 
@@ -7258,12 +8264,14 @@
           const res = this.moveDraggedPieceWithCollision(this.draggedPiece, x, y);
           if (res && res.annulled) return;
 
-          if (this.draggedPiece && this.fractionPlatform && !this.fractionPlatform.broken && !this.draggedPiece.inFraction && this.draggedPiece.type !== 'opal') {
+          if (this.draggedPiece && this.fractionPlatform && !this.fractionPlatform.broken && !this.draggedPiece.shape && this.draggedPiece.type !== 'opal') {
             const fp = this.fractionPlatform;
             const dp = this.draggedPiece;
             const inFrac = Math.abs(dp.x - fp.x) <= (fp.w * 0.5 + 8) && Math.abs(dp.y - fp.y) <= (fp.h * 0.5 + 10);
             if (inFrac) {
-              const forceBottom = Math.abs(dp.y - fp.y) <= 4 && (fp.topPieces?.length || 0) > 0 && (fp.bottomPieces?.length || 0) === 0;
+              const topOthers = (fp.topPieces || []).filter((k) => k !== dp && !k.broken && k.value > 0);
+              const botOthers = (fp.bottomPieces || []).filter((k) => k !== dp && !k.broken && k.value > 0);
+              const forceBottom = Math.abs(dp.y - fp.y) <= 4 && topOthers.length > 0 && botOthers.length === 0;
               fp.topHover = !forceBottom && dp.y < fp.y;
               fp.bottomHover = forceBottom || dp.y >= fp.y;
             } else {
@@ -7352,8 +8360,11 @@
             if (splittableInEq) {
               this.pureEquation.expanded = true;
               this.trySplitCrystalOnTap(splittableInEq);
+              this._gestureSnapshot = null;
+              this._gestureCommitted = false;
               return;
             }
+            this.commitActionSnapshot();
             this.pureEquation.expanded = !this.pureEquation.expanded;
             GameHUD.playSfx(this.pureEquation.expanded ? 'equationExpand' : 'equationCollapse');
             this.layoutEquationPieces(this.pureEquation, 'pure');
@@ -7370,9 +8381,12 @@
               }
             }
             if (!enteredShape) {
+              this.commitActionSnapshot();
               GameHUD.playSfx('quartzDrop');
             }
           }
+          this._gestureSnapshot = null;
+          this._gestureCommitted = false;
           if (this.phase === 'gameplay') {
             this.checkEquationSolved();
             this.triggerDefeatIfImpossible();
@@ -7391,24 +8405,80 @@
             this.pureEquation.removeHover = false;
           }
           this.clearTrembleStates();
-          if (p.broken || p.value <= 0 || this.phase !== 'gameplay') return;
+          if (p.broken || p.value <= 0 || this.phase !== 'gameplay') {
+            this._gestureSnapshot = null;
+            this._gestureCommitted = false;
+            return;
+          }
 
           if (wasQuickTap) {
+            if (p.inFraction && this.fractionPlatform?.glowing && !this.fractionPlatform.broken) {
+              this.triggerFractionDivide();
+              this.selectedPiece = null;
+              this._gestureSnapshot = null;
+              this._gestureCommitted = false;
+              return;
+            }
             if (p.inMoldId) {
               this.ejectCrystalFromMold(p);
               this.selectedPiece = null;
+              this._gestureSnapshot = null;
+              this._gestureCommitted = false;
+              return;
+            }
+            if (
+              this.selectedPiece &&
+              this.selectedPiece !== p &&
+              !this.selectedPiece.broken &&
+              !this.selectedPiece.shadow &&
+              this.selectedPiece.value > 0 &&
+              this.selectedPiece.shape &&
+              p.shape &&
+              this.getTessellationMatch(this.selectedPiece, p)
+            ) {
+              const prev = this.selectedPiece;
+              this.selectedPiece = null;
+              if (this.tryTessellateShapes(prev, p)) {
+                this._gestureSnapshot = null;
+                this._gestureCommitted = false;
+                if (this.phase === 'gameplay') {
+                  this.checkEquationSolved();
+                  this.triggerDefeatIfImpossible();
+                }
+                return;
+              }
+            }
+            const hasMergeableCircleMate = p.shape === 'circle' && !this.selectedPiece && this.pieces.some((other) => (
+              other !== p &&
+              !other.broken &&
+              !other.shadow &&
+              other.shape === 'circle' &&
+              other.value > 0 &&
+              Boolean(this.getTessellationMatch(p, other))
+            ));
+            if (hasMergeableCircleMate) {
+              this.selectedPiece = p;
+              this._gestureSnapshot = null;
+              this._gestureCommitted = false;
+              GameHUD.playSfx('click');
               return;
             }
             if (this.tryDisassembleShapeOnTap(p)) {
               this.selectedPiece = null;
+              this._gestureSnapshot = null;
+              this._gestureCommitted = false;
               return;
             }
             if (this.trySplitCrystalOnTap(p)) {
               this.selectedPiece = null;
+              this._gestureSnapshot = null;
+              this._gestureCommitted = false;
               return;
             }
             if (this.selectedPiece === p) {
               this.selectedPiece = null;
+              this._gestureSnapshot = null;
+              this._gestureCommitted = false;
               GameHUD.playSfx('click');
               return;
             }
@@ -7416,14 +8486,18 @@
               const prev = this.selectedPiece;
               this.selectedPiece = null;
               if (prev.shape && p.shape && this.tryTessellateShapes(prev, p)) {
+                this._gestureSnapshot = null;
+                this._gestureCommitted = false;
                 if (this.phase === 'gameplay') {
                   this.checkEquationSolved();
                   this.triggerDefeatIfImpossible();
                 }
                 return;
               }
-              if (!prev.shape && !p.shape && prev.type === p.type && p.type !== 'opal' && (prev.value + p.value) <= 6) {
+              if (!prev.shape && !p.shape && prev.type === p.type && p.type !== 'opal' && (prev.value + p.value) <= getMaxPieceValue(p, prev.value + p.value)) {
                 if (this._mergeSameColorPieces(p, prev)) {
+                  this._gestureSnapshot = null;
+                  this._gestureCommitted = false;
                   if (this.phase === 'gameplay') {
                     this.checkEquationSolved();
                     this.triggerDefeatIfImpossible();
@@ -7432,11 +8506,14 @@
                 }
               }
               if (this.pureEquation || this.shadowEquation) {
+                this.commitActionSnapshot();
                 const eq = this.ensurePureEquation((prev.x + p.x) * 0.5, (prev.y + p.y) * 0.5);
                 prev.inEquation = 'pure';
                 p.inEquation = 'pure';
                 GameHUD.playSfx('equationInsert');
                 this.layoutEquationPieces(eq, 'pure');
+                this._gestureSnapshot = null;
+                this._gestureCommitted = false;
                 if (this.phase === 'gameplay') {
                   this.checkEquationSolved();
                   this.triggerDefeatIfImpossible();
@@ -7445,6 +8522,8 @@
               }
             } else {
               this.selectedPiece = p;
+              this._gestureSnapshot = null;
+              this._gestureCommitted = false;
               GameHUD.playSfx('click');
               return;
             }
@@ -7453,6 +8532,8 @@
           this.selectedPiece = null;
           GameHUD.playSfx(p.type === 'opal' ? 'opalDrop' : (p.type === 'rose' ? 'roseDrop' : 'quartzDrop'));
           this.checkPieceDrop(p);
+          this._gestureSnapshot = null;
+          this._gestureCommitted = false;
           if (this.phase === 'gameplay') {
             this.checkEquationSolved();
             this.triggerDefeatIfImpossible();
@@ -7479,6 +8560,12 @@
 
         if (e.code === 'Space' || e.key === ' ' || e.code === 'Enter' || e.key === 'Enter') {
           if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+          if (GameHUD.guideIntroActive) {
+            e.preventDefault();
+            GameHUD.playSfx('tutorialClose');
+            GameHUD.dismissGuideIntro(false);
+            return;
+          }
           if (DialogueBox.isOpen) {
             e.preventDefault();
             GameHUD.playSfx('click');
@@ -7593,6 +8680,12 @@
           this.ghostHandAnim = null;
         }
       }
+      if (this.rewindAnim) {
+        this.rewindAnim.t += dt;
+        if (this.rewindAnim.t >= (this.rewindAnim.duration || 0.75)) {
+          this.rewindAnim = null;
+        }
+      }
       if (this.regularAudio && !this.regularAudio.paused) {
         global.CrystalAudio?.checkSeamlessLoop?.(this.regularAudio);
       }
@@ -7627,12 +8720,12 @@
           this.ordemCompanion.state = 'idle';
           this.openIntroIfAny();
         }
-      } else if (this.phase === 'intro_dialogue') {
+      } else if (this.phase === 'intro_dialogue' || this.phase === 'post_dialogue' || this.phase === 'post_musical_dlg') {
         const dlgIdx = DialogueBox.currentIndex ?? DialogueBox.idx ?? 0;
         const curLine = DialogueBox.isOpen && DialogueBox.queue ? DialogueBox.queue[dlgIdx] : null;
         if (curLine && curLine.protagState) {
-          this.protag.state = curLine.protagState === 'shock' ? 'shock' : 'idle';
-        } else if (this.worldKey === 'caatinga' && this.currentLevel === 1) {
+          this.protag.state = (curLine.protagState === 'shock' || curLine.protagState === 'celebrate') ? curLine.protagState : 'idle';
+        } else if (this.phase === 'intro_dialogue') {
           this.protag.state = 'idle';
         }
       } else if (this.phase === 'equation_magnetic' && this.magneticAnim) {
@@ -7774,13 +8867,40 @@
           this.setupStep(this.currentStep + 1);
         }
       } else if (this.phase === 'step_resolving') {
-        if (this.phaseTime >= 1.35) {
+        this.protag.state = 'celebrate';
+        if (this.ordemCompanion?.visible) this.ordemCompanion.state = 'celebrate';
+        if (this.guardianActor?.visible) this.guardianActor.state = 'celebrate';
+        const resolveDur = GameHUD.reducedMotion ? 0.95 : 1.50;
+        if (this.phaseTime >= resolveDur) {
           this.obstacleDecay = 1;
           this.openPostLevelDialogue();
         }
+      } else if (this.phase === 'celebrate_complete' || this.phase === 'world_celebrate_complete') {
+        this.protag.state = 'celebrate';
+        if (this.ordemCompanion?.visible) this.ordemCompanion.state = 'celebrate';
+        if (this.guardianActor?.visible) this.guardianActor.state = 'celebrate';
+        VictoryChoreography?.updateCompletionAudio?.(
+          this,
+          this.phaseTime,
+          this.phase === 'world_celebrate_complete',
+          Boolean(GameHUD.reducedMotion)
+        );
       } else if (this.phase === 'defeat_pause') {
         this.protag.state = 'shock';
-        if (this.phaseTime >= 0.65) {
+        if (
+          this.deadEndAutoRewindPending &&
+          this.actionHistory &&
+          this.actionHistory.length > 0 &&
+          typeof GameHUD.canUseAbility === 'function' &&
+          GameHUD.canUseAbility(2)
+        ) {
+          if (this.phaseTime >= (this.DEAD_END_REWIND_DELAY || 1.75)) {
+            this.deadEndAutoRewindPending = false;
+            if (!GameHUD.useAbility(2)) {
+              this.triggerTimeRewind(true);
+            }
+          }
+        } else if (this.phaseTime >= 0.65) {
           this.phase = 'game_over';
           this.phaseTime = 0;
           GameHUD.playSfx('gameOver');
@@ -7841,42 +8961,24 @@
 
     drawCompletionOverlay(ctx, isWorldFinale = false) {
       const spec = this.getSpec();
-      const bx = 42, by = 28, bw = 236, bh = 108;
-      drawParchmentBox(ctx, bx, by, bw, bh, { headerH: 17, headerBg: '#3d2b24' });
-
-      if (isWorldFinale) {
-        const f12 = Math.floor(this.t * SPRITE_FPS);
-        for (let k = 0; k < 8; k++) {
-          const fx = 24 + ((k * 37) % 272);
-          const fy = 24 + ((f12 * 3 + k * 19) % 110);
-          drawStar(ctx, fx, fy, (k & 1) ? 3 : 2, '#ffffff', (k % 3 === 0) ? '#f2cc6b' : (k % 3 === 1 ? '#7ec456' : '#68b8c4'));
-        }
-        drawPixelTextCentered(ctx, spec.worldClearedTitle, bx + bw / 2, by + 8, '#ffea31', '#000000', bw - 16, 9);
-        drawPixelTextCentered(ctx, spec.worldClearedLine1, bx + bw / 2, by + 28, '#ffffff', '#000000', bw - 20, 10);
-        drawPixelTextCentered(ctx, spec.worldClearedLine2, bx + bw / 2, by + 41, '#92e8ff', '#000000', bw - 20, 10);
-      } else {
-        drawPixelTextCentered(ctx, `${spec.hudLabel} - Fase ${this.currentLevel} Concluída!`, bx + bw / 2, by + 8, '#ffea31', '#000000', bw - 16, 9);
-        drawPixelTextCentered(ctx, spec.phaseClearedLine, bx + bw / 2, by + 32, '#ffffff', '#000000', bw - 20, 10);
-      }
-
-      for (let i = 0; i < 3; i++) {
-        drawStar(ctx, bx + bw / 2 - 20 + i * 20, by + 62, 4, '#ffffff', '#e3b454');
-      }
-
-      const b = this.completeBtnRect;
-      ctx.fillStyle = '#2c221e';
-      ctx.fillRect(b.x - 1, b.y - 1, b.w + 2, b.h + 2);
-      ctx.fillStyle = '#3e7338';
-      ctx.fillRect(b.x, b.y, b.w, b.h);
-      ctx.fillStyle = '#d9a85b';
-      ctx.fillRect(b.x, b.y, b.w, 1);
-      ctx.fillRect(b.x, b.y + b.h - 1, b.w, 1);
-      drawPixelTextCentered(ctx, isWorldFinale ? spec.nextWorldButton : 'Continuar >', b.x + b.w / 2, b.y + 4, '#ffffff', '#000000', b.w - 6, 9);
+      VictoryChoreography.renderCompletionOverlay(ctx, {
+        worldKey: this.worldKey || 'forest',
+        isWorldFinale,
+        title: isWorldFinale ? spec.worldClearedTitle : `${spec.hudLabel} - Fase ${this.currentLevel} Concluída!`,
+        line1: isWorldFinale ? spec.worldClearedLine1 : spec.phaseClearedLine,
+        line2: isWorldFinale ? spec.worldClearedLine2 : '',
+        buttonLabel: isWorldFinale ? spec.nextWorldButton : 'Continuar >',
+        buttonRect: this.completeBtnRect,
+        phaseTime: this.phaseTime,
+        t: this.t,
+        reducedMotion: Boolean(GameHUD.reducedMotion)
+      });
     },
 
     drawGameOverOverlay(ctx) {
       ctx.fillStyle = 'rgba(10, 8, 6, 0.58)';
       ctx.fillRect(0, 20, W, H - 20);
+      TextOverlay?.dimLogicalRect?.(ctx, 0, 20, W, H - 20, 'rgba(10, 8, 6, 0.58)');
       const bx = 34, by = 28, bw = 252, bh = 116;
       drawParchmentBox(ctx, bx, by, bw, bh, { headerH: 17, headerBg: '#59221c' });
       drawPixelTextCentered(ctx, 'Equilíbrio Perdido!', bx + bw / 2, by + 8, '#ffea31', '#000000', bw - 16, 9);
@@ -7952,11 +9054,14 @@
       ctx.imageSmoothingEnabled = false;
 
       if (this.phase === 'map_iris_in' || this.phase === 'map_active') {
+        TextOverlay?.hide?.(this.canvas);
         ctx.setTransform(2, 0, 0, 2, 0, 0);
         ctx.clearRect(0, 0, W, H);
         IrisTransition.render(ctx);
         return;
       }
+
+      TextOverlay?.beginFrame?.(this.canvas);
 
       const bgSet = getBiomeBgSet(this.worldKey);
       this.composeBackground(bgSet);
@@ -7974,7 +9079,14 @@
       const spec = this.getSpec();
 
       if (this.worldKey === 'sanctuary') {
-        drawAncientSanctuaryGate(ctx, this.obstacleDecay, this.gateOpenRatio, tq);
+        drawAncientSanctuaryGate(
+          ctx,
+          this.obstacleDecay,
+          this.gateOpenRatio,
+          tq,
+          this.finalDoorSockets || null,
+          Boolean(this._finalPhaseInstalled)
+        );
       } else if (this.phase === 'post_musical_dlg' || this.phase === 'world_celebrate_complete' || this.phase === 'walk_to_world_exit') {
         drawNextBiomePanorama(ctx, spec.nextBiome, 1.0, tq);
       } else if (this.isWorldFinale()) {
@@ -8007,16 +9119,32 @@
         this.renderMusicalElements(ctx, tq);
       }
 
-      ActorAnimator.drawActor(ctx, 'protagonist', this.protag.state, this.protag.x, this.protag.y, tq);
+      const isCelebrating =
+        this.phase === 'step_resolving' ||
+        this.phase === 'celebrate_complete' ||
+        this.phase === 'world_celebrate_complete';
+      const protagJumpY = isCelebrating
+        ? VictoryChoreography.getCelebrationJumpOffset(this.phaseTime, Boolean(GameHUD.reducedMotion), 0)
+        : 0;
+      const ordemJumpY = isCelebrating
+        ? VictoryChoreography.getCelebrationJumpOffset(this.phaseTime, Boolean(GameHUD.reducedMotion), 0.1)
+        : 0;
+      const guardJumpY = isCelebrating
+        ? VictoryChoreography.getCelebrationJumpOffset(this.phaseTime, Boolean(GameHUD.reducedMotion), 0.2)
+        : 0;
+
+      if (!(this.worldKey === 'sanctuary' && this.phase === 'final_wall_thanks')) {
+        ActorAnimator.drawActor(ctx, 'protagonist', this.protag.state, this.protag.x, this.protag.y + protagJumpY, tq);
+      }
       if (this.ordemCompanion.visible) {
-        ActorAnimator.drawActor(ctx, 'ordem', this.ordemCompanion.state, this.ordemCompanion.x, this.ordemCompanion.y, tq, {
+        ActorAnimator.drawActor(ctx, 'ordem', this.ordemCompanion.state, this.ordemCompanion.x, this.ordemCompanion.y + ordemJumpY, tq, {
           flipX: Boolean(this.ordemCompanion.flipX)
         });
       }
-      if (this.worldKey === 'caatinga' && this.phase === 'intro_dialogue' && DialogueBox.isOpen && DialogueBox.queue) {
+      if (this.phase === 'intro_dialogue' && DialogueBox.isOpen && DialogueBox.queue) {
         const dlgIdx = DialogueBox.currentIndex ?? DialogueBox.idx ?? 0;
         const curLine = DialogueBox.queue[dlgIdx];
-        if (curLine && (curLine.protagState === 'panting' || curLine.protagState === 'shock')) {
+        if (curLine && (curLine.protagState === 'panting' || (this.worldKey === 'caatinga' && curLine.protagState === 'shock'))) {
           const f12 = Math.floor(tq * 12);
           const dropY = this.protag.y - 22 + (f12 % 5);
           P1(ctx, this.protag.x - 7, dropY, '#7be1f6');
@@ -8032,15 +9160,61 @@
         }
       }
       if (this.guardianActor.visible) {
-        ActorAnimator.drawActor(ctx, spec.guardianKey, this.guardianActor.state, this.guardianActor.x, this.guardianActor.y, tq, {
+        ActorAnimator.drawActor(ctx, spec.guardianKey, this.guardianActor.state, this.guardianActor.x, this.guardianActor.y + guardJumpY, tq, {
           flipX: Boolean(this.guardianActor.flipX)
         });
       }
       if (this.worldKey === 'sanctuary' && (this.phase === 'intro_dialogue' || this.phase === 'post_musical_dlg' || this.phase === 'world_celebrate_complete')) {
         const st = this.phase === 'world_celebrate_complete' ? 'celebrate' : 'idle';
-        ActorAnimator.drawActor(ctx, 'araci', st, 126, 142, tq, { flipX: false });
-        ActorAnimator.drawActor(ctx, 'irece', st, 156, 142, tq, { flipX: true });
-        ActorAnimator.drawActor(ctx, 'jurema', st, 184, 142, tq, { flipX: true });
+        const qJump1 = this.phase === 'world_celebrate_complete' ? VictoryChoreography.getCelebrationJumpOffset(this.phaseTime, Boolean(GameHUD.reducedMotion), 0.08) : 0;
+        const qJump2 = this.phase === 'world_celebrate_complete' ? VictoryChoreography.getCelebrationJumpOffset(this.phaseTime, Boolean(GameHUD.reducedMotion), 0.16) : 0;
+        const qJump3 = this.phase === 'world_celebrate_complete' ? VictoryChoreography.getCelebrationJumpOffset(this.phaseTime, Boolean(GameHUD.reducedMotion), 0.24) : 0;
+        ActorAnimator.drawActor(ctx, 'araci', st, 126, 142 + qJump1, tq, { flipX: false });
+        ActorAnimator.drawActor(ctx, 'irece', st, 156, 142 + qJump2, tq, { flipX: true });
+        ActorAnimator.drawActor(ctx, 'jurema', st, 184, 142 + qJump3, tq, { flipX: true });
+      }
+      if (this.worldKey === 'sanctuary' && typeof this.renderSanctuaryWorldLayer === 'function') {
+        this.renderSanctuaryWorldLayer(ctx, tq);
+      }
+
+      if (this.phase === 'step_resolving') {
+        const celebActors = [{ x: this.protag.x, y: this.protag.y + protagJumpY }];
+        if (this.ordemCompanion.visible) celebActors.push({ x: this.ordemCompanion.x, y: this.ordemCompanion.y + ordemJumpY });
+        if (this.guardianActor.visible) celebActors.push({ x: this.guardianActor.x, y: this.guardianActor.y + guardJumpY });
+        VictoryChoreography.renderStepResolvingFX(ctx, {
+          worldKey: this.worldKey || 'forest',
+          phaseTime: this.phaseTime,
+          tq,
+          waveOrigin: this.waveOrigin,
+          waveRadius: this.waveRadius,
+          barrierX: this.isWorldFinale() ? 176 : 258,
+          barrierY: this.isWorldFinale() ? 34 : 108,
+          actors: celebActors,
+          reducedMotion: Boolean(GameHUD.reducedMotion)
+        });
+      } else if (this.phase === 'celebrate_complete' || this.phase === 'world_celebrate_complete') {
+        ActorAnimator.drawMusicNotesLoop(ctx, this.protag.x, this.protag.y + protagJumpY - 26, tq, {
+          count: GameHUD.reducedMotion ? 1 : 3,
+          dirX: 10,
+          dirY: -18,
+          period: 1.5
+        });
+        if (this.ordemCompanion.visible) {
+          ActorAnimator.drawMusicNotesLoop(ctx, this.ordemCompanion.x, this.ordemCompanion.y + ordemJumpY - 26, tq, {
+            count: GameHUD.reducedMotion ? 1 : 3,
+            dirX: -10,
+            dirY: -18,
+            period: 1.4
+          });
+        }
+        if (this.guardianActor.visible) {
+          ActorAnimator.drawMusicNotesLoop(ctx, this.guardianActor.x, this.guardianActor.y + guardJumpY - 26, tq, {
+            count: GameHUD.reducedMotion ? 1 : 3,
+            dirX: 8,
+            dirY: -18,
+            period: 1.35
+          });
+        }
       }
 
       if ((this.phase && this.phase.startsWith('shell_game_')) || (this.phase === 'tutorial' && this.shellGame)) {
@@ -8049,8 +9223,11 @@
       if (this.phase === 'river_melody_game' || (this.phase === 'tutorial' && this.riverMelody)) {
         this.drawRiverMelodyGame(ctx, tq);
       }
-      if (this.phase === 'forest_ninja_vignette' || this.phase === 'forest_ninja_game' || (this.phase && this.phase.startsWith('forest_ninja_'))) {
+      if (this.phase === 'forest_ninja_game' || (this.phase && this.phase.startsWith('forest_ninja_') && this.phase !== 'forest_ninja_vignette')) {
         this.drawForestNinjaGame(ctx, tq);
+      }
+      if (this.worldKey === 'sanctuary' && typeof this.renderSanctuaryPuzzleLayer === 'function') {
+        this.renderSanctuaryPuzzleLayer(ctx, tq);
       }
 
       if (
@@ -8122,17 +9299,44 @@
       }
 
       this.drawShards(ctx);
+      if (typeof ActorAnimator.drawShadowSmokePuffs === 'function') {
+        ActorAnimator.drawShadowSmokePuffs(ctx, this.shadowSmokePuffs, tq);
+      }
       if (this.equationShockEffect) {
         ActorAnimator.drawEquationShockwave(ctx, this.equationShockEffect, tq);
       }
 
       ctx.setTransform(2, 0, 0, 2, 0, 0);
       const inMusical = this.phase === 'musical_part1_shadows' || this.phase === 'musical_part2_bright';
-      const hudCustomTitle = spec.customHudTitle || (this.phase && this.phase.startsWith('shell_game_') ? 'Caatinga - O Desafio das Areias' : (this.phase === 'river_melody_game' ? 'Rio - Melodia das Águas' : null));
-      GameHUD.renderTopBar(ctx, this.currentLevel, this.currentStep, this.totalSteps, inMusical, hudCustomTitle);
+      const inSpecialMinigame = this.worldKey === 'sanctuary'
+        ? false
+        : (
+            inMusical ||
+            Boolean(this.forestNinja) ||
+            Boolean(this.riverMelody) ||
+            Boolean(this.shellGame) ||
+            Boolean(this.phase && (
+              this.phase.startsWith('forest_ninja_') ||
+              this.phase === 'river_melody_game' ||
+              this.phase.startsWith('shell_game_')
+            ))
+          );
+      const hudCustomTitle = spec.customHudTitle || (
+        this.phase && this.phase.startsWith('shell_game_')
+          ? 'Caatinga - O Desafio das Areias'
+          : (this.phase === 'river_melody_game'
+              ? 'Rio - Melodia das Águas'
+              : (this.phase && this.phase.startsWith('forest_ninja_') ? 'Floresta - Corte Cristalino' : null))
+      );
+      GameHUD.renderTopBar(ctx, this.currentLevel, this.currentStep, this.totalSteps, inSpecialMinigame, hudCustomTitle);
+
+      if (this.phase === 'forest_ninja_vignette') {
+        this.drawForestNinjaVignette(ctx, tq);
+      }
 
       if (inMusical && GameHUD.godMode) {
         const sb = this.skipMusicalBtnRect;
+        TextOverlay?.clearLogicalRect?.(ctx, sb.x, sb.y, sb.w, sb.h);
         ctx.fillStyle = '#3d2b24';
         ctx.fillRect(sb.x, sb.y, sb.w, sb.h);
         ctx.fillStyle = '#d9a85b';
@@ -8146,6 +9350,12 @@
       DialogueBox.render(ctx, tq);
       if (this.phase === 'gameplay' && this.ghostHandAnim && typeof E.drawGhostHandHint === 'function') {
         E.drawGhostHandHint(ctx, this.ghostHandAnim, tq);
+      }
+      if (this.rewindAnim && typeof E.drawTimeRewindEffect === 'function') {
+        E.drawTimeRewindEffect(ctx, this.rewindAnim, tq);
+      }
+      if (this.phase === 'defeat_pause' && typeof E.drawDeadEndAlert === 'function') {
+        E.drawDeadEndAlert(ctx, this.phaseTime, this.deadEndAutoRewindPending, tq, this.pieces);
       }
 
       TutorialModal.render(ctx, tq);
@@ -8180,5 +9390,8 @@
   };
 
   TruePixelWorlds.GEM_PALETTES = GEM_PALETTES;
+  TruePixelWorlds.SANCTUARY_GATE = SANCTUARY_GATE;
+  TruePixelWorlds.SANCTUARY_DOOR_SOCKETS = SANCTUARY_DOOR_SOCKETS;
+  TruePixelWorlds.drawAncientSanctuaryGate = drawAncientSanctuaryGate;
   global.TruePixelWorlds = TruePixelWorlds;
 })(typeof window !== 'undefined' ? window : globalThis);

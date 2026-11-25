@@ -3,7 +3,7 @@
   const $ = id => document.getElementById(id);
   const files = {
     ruins:'orbithop-ruinas-v14.png', encore:'orbithop-encore-v14.png', boss:'galactus-v14.png',
-    pixel:'pixel-padrao-v1.png', walking:'pixel-backstage-v13.png',
+    pixel:'pixel-padrao-v1.png', walking:'pixel-camarim-v16.png',
     dressing:'orbithop-dressing-v13.png', backstage:'orbithop-backstage-v13.png'
   };
   const asset=key=>RR_SPRITES.load('assets/'+files[key]);
@@ -87,6 +87,7 @@
     ctx.fillStyle=light;ctx.fillText(symbol,x,y+r*.63);ctx.restore();
   }
   const arenaCanvas=$('battleArt');
+  const heroStage=document.createElement('canvas'),heroStageCtx=heroStage.getContext('2d');
   let arenaBounds=null,lastArenaPaint=-Infinity;
   new ResizeObserver(([entry])=>{
     arenaBounds=entry.contentRect;
@@ -95,7 +96,7 @@
 
   function drawArena(canvas,sprite,beat,event,battle,step,now) {
     const profile=RR_SETTINGS.get().device;
-    const interval=profile==='pc'?16:32;
+    const interval=32;
     if(now-lastArenaPaint<interval)return;
     lastArenaPaint=now;
     const {ctx,width:w,height:h}=surface(canvas,arenaBounds,profile==='pc'?1.2:1);
@@ -104,6 +105,10 @@
     const t=quiet?0:beat;
     const floor=h*.95, x=w*.175,bx=w*.835;
     const ph=Math.min(h*.67,w*.33),bh=Math.min(h*.93,w*.44);
+    const stageWidth=w*.34;
+    if(heroStage.width!==Math.ceil(stageWidth)||heroStage.height!==Math.ceil(h)){heroStage.width=Math.ceil(stageWidth);heroStage.height=Math.ceil(h);}
+    RR_PERFORMANCE.platform(heroStageCtx,{width:stageWidth,height:h,floor,x:stageWidth*.52,id:'fase11',colors:['#ee80d2','#65d9ff','#c09aff','#ffcf81'],accent:'#e294ff',power:battle.frenzy?1:.36,beat:t,soft:quiet,still:quiet,deluxe:true,frenzy:battle.frenzy,symbol:RR_SPRITES.load('assets/symbol-fase11.svg').image});
+    ctx.drawImage(heroStage,x-stageWidth*.52,0,stageWidth,h);
     ruinsFX(ctx,w,h,t*.5);
     const recent=battle.result&&beat-battle.result.beat<2.4?battle.result:null;
     const recoil=recent?.damage&&!quiet?Math.sin(smooth((beat-recent.beat)/2.4)*Math.PI):0;
@@ -156,7 +161,7 @@
     $('travelStatus').dataset.speaker=speaker;
     $('travelAction').textContent=action;
     $('backTravel').disabled=scene===0;
-    $('nextTravel').textContent=scene===story.length-1?'Concluir →':'Avançar →';
+    $('nextTravel').textContent='▶';
     $('finalCredits').hidden=kind!=='credits';
     $('travelOverlay').dataset.memory='false';
     if(!paused)RR_AUDIO.scene(kind);
