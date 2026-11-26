@@ -83,7 +83,7 @@ export const TURMAS = [
           { icone: '🤖', titulo: 'Robô-guia', descricao: 'Dicas explicam as consequências de uma ordem incorreta sem entregar toda a resposta.' },
           { icone: '⭐', titulo: 'Progressão por missões', descricao: 'O jogador conquista estrelas, selos e promoções ao concluir os chamados da cidade.' },
         ],
-        autores: ['Paulo Helder de Santana Souza', 'Maria Eduarda'],
+        autores: ['Paulo Helder de Santana Souza', 'Murilo do Vale Moreira Santana', 'Maria Eduarda Nascimento Silva', 'Gustavo Santos Souza'],
         jogo: { tipo: 'estatico', entrada: '/2026.2/Algoritimando/index.html' },
       },
       {
@@ -205,7 +205,7 @@ export const TURMAS = [
           { icone: '🌿', titulo: 'Quatro biomas', descricao: 'Caverna, Floresta, Rio e Caatinga formam uma campanha com 20 fases e uma grande conclusão.' },
           { icone: '🎵', titulo: 'Desafios musicais', descricao: 'Ritmo, padrões sonoros e sequências visuais tornam a jornada variada e multissensorial.' },
         ],
-        autores: ['Heitor Givercy Nascimento Macedo', 'Eyder Sanshes Brandão', 'Ítalo José Bomfim da Rocha'],
+        autores: ['Heitor Givercy Nascimento Macedo', "Ítalo Marcus de Sant'Ana Freitas", 'Eyder Gabriel Sanches Brandão', 'Ítalo José Bomfim da Rocha'],
         jogo: { tipo: 'estatico', entrada: '/2026.2/SinfoniaDosCristais/index.html' },
       },
       {
