@@ -69,6 +69,7 @@ export const TURMAS = [
         descricao: 'Em Algoritimando, a criança se torna agente de uma central de ajuda e recebe chamados como preparar um sanduíche, organizar uma mochila e orientar a travessia de uma rua. Para resolver cada missão, é preciso arrastar os cartões e colocar as ações em uma ordem válida, observando dependências, repetições, condições e etapas que podem acontecer ao mesmo tempo. A cada nível concluído, o Robô-guia relaciona a atividade ao conceito de algoritmo.',
         chamada: 'Uma forma visual e divertida de desenvolver pensamento computacional, raciocínio lógico e capacidade de decompor problemas!',
         capa: '/capas/algoritimando.webp',
+        video: 'ZmbR8xGsXE8',
         dataCriacao: '2026-11',
         publicoAlvo: 'a-partir-4ano',
         habilidades: [
@@ -94,6 +95,7 @@ export const TURMAS = [
         descricao: 'Em Ilha do Conhecimento, a criança explora uma ilha conectada e precisa conquistar quatro chaves para libertar um gato. Cada região propõe um tipo de desafio: operações aritméticas, álgebra inicial, geometria e um labirinto que trabalha memória e raciocínio lógico. Entre um desafio e outro, o jogador movimenta a personagem pelo mapa, encontra caminhos e acompanha uma história em quadrinhos que apresenta a missão.',
         chamada: 'Explore, calcule e pense com estratégia em uma aventura matemática colorida, acolhedora e cheia de segredos!',
         capa: '/capas/ilha-do-conhecimento.webp',
+        video: 'qMFyPW43UGM',
         dataCriacao: '2026-11',
         publicoAlvo: 'a-partir-4ano',
         habilidades: [
@@ -133,6 +135,7 @@ export const TURMAS = [
         descricao: 'Em Robô Ritimado, a criança acompanha as setas no compasso da música e usa o teclado ou os controles de toque para ajudar Pixel a completar cada apresentação. A jornada passa por dez mundos com cenários, músicas e metas próprias, além de uma fase final que conclui a história. Sequências precisas ativam o Frenesi e aumentam a pontuação, enquanto diálogos, tutoriais e mensagens de incentivo acolhem diferentes ritmos de aprendizagem. O jogo também oferece ajustes de cores, movimento, velocidade, legendas, som e sensibilidade visual.',
         chamada: 'Uma jornada de música e descobertas que desenvolve percepção rítmica, coordenação motora e concentração!',
         capa: '/capas/robo-ritmado.webp',
+        video: 'VnDeM4QQQg0',
         dataCriacao: '2026-11',
         publicoAlvo: 'a-partir-4ano',
         habilidades: [
@@ -188,6 +191,7 @@ export const TURMAS = [
         descricao: 'Em Sinfonia dos Cristais, a criança ajuda uma pequena fada a restaurar a energia de quatro biomas: Caverna, Floresta, Rio e Caatinga. Ao longo de 20 fases e uma sequência final, os desafios apresentam de forma visual fusão e separação de quantidades, frações, divisão, padrões e relações matemáticas. Cristais podem ser arrastados, combinados e conectados, enquanto fases musicais convidam o jogador a observar sequências e acompanhar o ritmo. A experiência aceita mouse, teclado e toque e inclui ajustes de acessibilidade.',
         chamada: 'Matemática, música e natureza se encontram em uma jornada visual repleta de cristais, ritmo e descobertas!',
         capa: '/capas/sinfonia-dos-cristais.webp',
+        video: 'dTWXbi_qgrU',
         dataCriacao: '2026-11',
         publicoAlvo: 'a-partir-4ano',
         habilidades: [
@@ -239,6 +243,7 @@ export const TURMAS = [
         descricao: 'Em RocketBloom, a criança pilota um foguete científico por Terra, Marte, Saturno e Netuno. Durante cada viagem, precisa desviar de aviões, asteroides, cometas e outros obstáculos, coletar moedas e conduzir a nave até a alternativa correta das perguntas matemáticas. A campanha reúne 20 fases com dificuldade progressiva: adição na Terra, subtração em Marte, multiplicação em Saturno e divisão em Netuno. Cada planeta também apresenta uma espécie vegetal a ser resgatada e cultivada no laboratório.',
         chamada: 'Matemática em alta velocidade para explorar planetas, superar obstáculos e fazer a vida florescer pelo espaço!',
         capa: '/capas/rocketbloom.webp',
+        video: 'yYbFPtfU9ro',
         dataCriacao: '2026-11',
         publicoAlvo: 'a-partir-4ano',
         habilidades: [
@@ -288,6 +293,7 @@ export const TURMAS = [
         descricao: 'Em Guardião da Natureza, a criança acompanha Kai e sua coruja Flora por cinco regiões que precisam de cuidado. A jornada combina exploração, diálogos, coleta de itens e pequenas missões ambientais para recuperar a floresta, os cursos d’água e outros ecossistemas. Cada região concluída entrega um fragmento para o colar do guardião e devolve vida ao mapa. Ao reunir os cinco cristais, o jogador pode chegar à Árvore Guardiã e concluir a história. O jogo oferece controles por teclado, toque e opções de áudio, imagem e acessibilidade.',
         chamada: 'Explore, cuide e transforme cada região em uma jornada de amizade, responsabilidade e renovação ambiental!',
         capa: '/capas/guardiao-da-natureza.webp',
+        video: 'T0GIqYmKqqY',
         dataCriacao: '2026-11',
         publicoAlvo: 'a-partir-4ano',
         habilidades: [

@@ -32,13 +32,26 @@ function Jogo() {
 
       <article className="bq-largura bq-ficha">
         <div className="bq-ficha-topo">
-          <img
-            className="bq-ficha-capa"
-            src={jogo.capa}
-            alt={`Capa do jogo ${jogo.titulo}`}
-            width="1200"
-            height="675"
-          />
+          {jogo.video ? (
+            <iframe
+              className="bq-ficha-capa"
+              src={`https://www.youtube-nocookie.com/embed/${jogo.video}?rel=0`}
+              title={`Vídeo do jogo ${jogo.titulo}`}
+              width="1200"
+              height="675"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          ) : (
+            <img
+              className="bq-ficha-capa"
+              src={jogo.capa}
+              alt={`Capa do jogo ${jogo.titulo}`}
+              width="1200"
+              height="675"
+            />
+          )}
 
           <div>
             <h1 className="bq-ficha-titulo">{jogo.titulo}</h1>

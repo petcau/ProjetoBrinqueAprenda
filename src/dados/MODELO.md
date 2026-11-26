@@ -121,6 +121,11 @@ E dentro de `jogos`, a entrada do seu jogo. Copie este modelo:
 
   capa: '/capas/meu-jogo.webp',
 
+  // Opcional: o ID do vídeo no YouTube (o trecho depois de "watch?v=").
+  // Quando existe, a ficha mostra o vídeo no lugar da capa. Os cards e o
+  // destaque da home continuam usando a capa.
+  video: 'dTWXbi_qgrU',
+
   // Quando o jogo ficou pronto, no formato ANO-MÊS.
   dataCriacao: '2026-07',
 
